@@ -27,4 +27,4 @@ nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :verical resize 30<CR>
 nnoremap <silent> <leader>+ :vertical resize +5<CR>
 nnoremap <silent> <leader>- :vertical resize -5<CR>
 
-colorscheme industry
+colorscheme industry 
