@@ -1,8 +1,10 @@
-# .vimrc
+# klebster2's .vimrc
 
-first clone repo at depth=1
+Inspired by https://github.com/amix/vimrc.git
 
-`git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime`
+first clone repo w/ depth=1
+
+`git clone --depth=1 https://github.com/klebster2/myvimrc ~/.vim_runtime`
 
 next run the creator
 
