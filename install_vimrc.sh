@@ -1,21 +1,21 @@
 #!/bin/bash
 
-set -e
+set -xe
 
-repo_dir="`dirname \"$0\"`"
+#if [ -d ~/.vim ]; then
+#    rm -r ~/.vim
+#fi
 
-#pushd $(realpath "~/.vim_runtime")
+#mkdir ~/.vim
+mkdir -p ~/.vim/undodir
 
-echo 'set runtimepath+=~/.vim_runtime
+echo "Installed vim configuration successfully."
+
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+echo "set runtimepath+=~/.vim_runtime
 source ~/.vim_runtime/vimrcs/basic.vim
-"source ~/.vim_runtime/vimrcs/filetypes.vim
-"source ~/.vim_runtime/vimrcs/plugins_config.vim
-"source ~/.vim_runtime/vimrcs/extended.vim
+" > ~/.vimrc
 
-"try
-"source ~/.vim_runtime/my_configs.vim
-"catch
-"endtry' > ~/.vimrc
-
-echo "Installed klebster2's Vim configuration successfully."
-
+vim +PlugInstall +qall
