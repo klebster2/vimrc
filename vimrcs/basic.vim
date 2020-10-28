@@ -29,10 +29,11 @@ Plug 'colepeters/spacemacs-theme.vim'
 Plug 'jremmen/vim-ripgrep'
 " github (vim friendly)
 Plug 'tpope/vim-fugitive'
-Plug 'git@github.com:kien/ctrlp.vim.git'
+Plug 'ctrlpvim/ctrlp.vim'
 " filepath/ var autocompleter
 Plug 'ycm-core/YouCompleteMe'
 Plug 'mbbill/undotree'
+Plug 'alfredodeza/pytest.vim'
 call plug#end()
 
 colorscheme gruvbox
@@ -57,7 +58,6 @@ nnoremap <leader>ps :Rg<SPACE>
 " split resize
 nnoremap <silent> <leader>+ :vertical resize +5<CR>
 nnoremap <silent> <leader>- :vertical resize -5<CR>
-
 " YCM
 nnoremap <silent> <leader>gd :YcmCompleter GoTo<CR>
 nnoremap <silent> <leader>gf :YcmCompleter FixIt<CR>
