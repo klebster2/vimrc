@@ -19,3 +19,7 @@ source ~/.vim_runtime/vimrcs/basic.vim
 " > ~/.vimrc
 
 vim +PlugInstall +qall
+
+pushd ~/.vim/plugged/YouCompleteMe
+./install.py --all
+popd
