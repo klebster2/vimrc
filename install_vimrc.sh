@@ -1,10 +1,9 @@
 #!/bin/bash
 
 set -xe
-
+echo "Starting vimrc setup..."
 mkdir -p ~/.vim/undodir
 
-echo "Installed vim configuration successfully."
 
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -18,3 +17,5 @@ vim +PlugInstall +qall
 pushd ~/.vim/plugged/YouCompleteMe
 ./install.py --all
 popd
+
+echo "Installed dependencies for vim configuration successfully."

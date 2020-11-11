@@ -5,6 +5,7 @@ set noerrorbells
 "tab
 set tabstop=4 softtabstop=4
 set shiftwidth=4
+set shiftround
 set expandtab
 "indent
 set smartindent
@@ -45,6 +46,8 @@ endif
 
 let g:mapleader=" "
 
+" plugin remaps
+" window
 nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>j :wincmd j<CR>
 nnoremap <leader>k :wincmd k<CR>
@@ -58,17 +61,42 @@ nnoremap <leader>ps :Rg<SPACE>
 " split resize
 nnoremap <silent> <leader>+ :vertical resize +5<CR>
 nnoremap <silent> <leader>- :vertical resize -5<CR>
+
 " YCM
 nnoremap <silent> <leader>gd :YcmCompleter GoTo<CR>
 nnoremap <silent> <leader>gf :YcmCompleter FixIt<CR>
 
+" pytest on entire file
+nnoremap <leader>ptf :Pytest<SPACE>file<CR>
+" pytest check last error msg
+nnoremap <leader>ptl :Pytest<SPACE>last<CR>
+
 ":echo $MYVIMRC to echo your vimrc
 
-" ECHOING MESSAGES
+"c1 ECHOING MESSAGES
 ":echo "Hello world"
 ":echom "hello"
 ":messages
 
 "message "hello" will be in the message list but not Hello world
 
+"also instructions for how to use nnoremap
+
+"c2 BOOLEAN OPTS 
+":set number
+":set nonumber
+
+"bang toggles bool
+":set number!
+
+"set shiftround -> when shifting lines (<,>), round indentation to nearest multiple
+"of "shiftround"
+
+"set shiftwidth?
+
+"save on typing multiple set commands:
+"set number numberwidth=6
+
+"c3: mapping
+"
 
