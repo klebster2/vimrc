@@ -21,22 +21,6 @@ set path+=**
 set wildmenu
 set wildmode=longest:list,full
 
-" Plugins
-call plug#begin('~/.vim/plugged')
-" gruvbox colourscheme
-Plug 'morhetz/gruvbox'
-Plug 'colepeters/spacemacs-theme.vim'
-" ripgrep
-Plug 'jremmen/vim-ripgrep'
-" github (vim friendly)
-Plug 'tpope/vim-fugitive'
-Plug 'ctrlpvim/ctrlp.vim'
-" filepath/ var autocompleter
-Plug 'ycm-core/YouCompleteMe'
-Plug 'mbbill/undotree'
-Plug 'alfredodeza/pytest.vim'
-call plug#end()
-
 colorscheme gruvbox
 set background=dark
 
