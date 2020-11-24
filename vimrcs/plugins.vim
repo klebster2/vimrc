@@ -1,8 +1,9 @@
 " Plugins
+" colorschemes
 call plug#begin('~/.vim/plugged')
-" gruvbox colourscheme
+" colourschemes (incl. gruvbox)
+Plug 'rafi/awesome-vim-colorschemes'
 Plug 'morhetz/gruvbox'
-Plug 'colepeters/spacemacs-theme.vim'
 " ripgrep
 Plug 'jremmen/vim-ripgrep'
 " github (vim friendly)
@@ -11,6 +12,9 @@ Plug 'ctrlpvim/ctrlp.vim'
 " filepath/ var autocompleter
 Plug 'ycm-core/YouCompleteMe', { 'commit':'d98f896' }
 Plug 'mbbill/undotree'
+" pytest
 Plug 'alfredodeza/pytest.vim'
+Plug 'sheerun/vim-polyglot'
+Plug 'chriskempson/base16-vim'
 call plug#end()
 
