@@ -9,7 +9,9 @@ set shiftround
 set expandtab
 "indent
 set smartindent
+"set number relativenumber
 set nu rnu
+" don't wrap lines
 set nowrap
 set smartcase
 set noswapfile
@@ -30,32 +32,38 @@ endif
 
 let g:mapleader=" "
 
-" plugin remaps
-" window
+" basic remaps
+nnoremap <leader>pi :PlugInstall<CR>
+"" window
 nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>j :wincmd j<CR>
 nnoremap <leader>k :wincmd k<CR>
 nnoremap <leader>l :wincmd l<CR>
-" undotree side explorer
-nnoremap <leader>u :UndotreeShow<CR>
-" open small side explorer
-nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
-" ripgrep PS Project Search
-nnoremap <leader>ps :Rg<SPACE>
-" split resize
+"" split resize
 nnoremap <silent> <leader>+ :vertical resize +5<CR>
 nnoremap <silent> <leader>- :vertical resize -5<CR>
 
-" YCM
+" plugin remaps
+"" undotree side explorer
+nnoremap <leader>u :UndotreeShow<CR>
+"" open small side explorer
+nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
+"" ripgrep PS Project Search
+nnoremap <leader>ps :Rg<SPACE>
+"" YCM
 nnoremap <silent> <leader>gd :YcmCompleter GoTo<CR>
 nnoremap <silent> <leader>gf :YcmCompleter FixIt<CR>
-
 " pytest on entire file
 nnoremap <leader>ptf :Pytest<SPACE>file<CR>
 " pytest check last error msg
 nnoremap <leader>ptl :Pytest<SPACE>last<CR>
 
-":echo $MYVIMRC to echo your vimrc
+" colorschemes:
+nnoremap <leader>csg :colorscheme gruvbox<CR>
+nnoremap <leader>csa :colorscheme afterglow<CR>
+nnoremap <leader>csd :colorscheme dogrun<CR>:colo<CR> 
+
+    ":echo $MYVIMRC to echo your vimrc
 
 "c1 ECHOING MESSAGES
 ":echo "Hello world"
