@@ -2,14 +2,24 @@
 
 Inspired by https://github.com/amix/vimrc.git and ThePrimeagen
 
-first clone repo w/ depth=1
+This setup assumes that you are also setting up vim
+
+first clone repo with history depth=1 to directory `~/.vim_runtime`
 
 `git clone --depth=1 https://github.com/klebster2/myvimrc ~/.vim_runtime`
 
-next run dependency installer (assumes Ubuntu)
+change directory to `~/.vim_runtime`
+
+`cd ~/.vim_runtime`
+
+next run dependency installer (assumes you are using Ubuntu)
 
 `sudo make dependencies`
 
 finally run the installer
 
-`~/.vim_runtime/install_awesome_vimrc.sh`
+`./install_vimrc.sh`
+
+you could also just use
+
+`sudo make dependencies && ./install_vimrc.sh`
