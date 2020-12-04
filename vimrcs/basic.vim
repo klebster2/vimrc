@@ -67,7 +67,60 @@ nnoremap <leader>csg :colorscheme gruvbox<CR>
 nnoremap <leader>csa :colorscheme afterglow<CR>
 nnoremap <leader>csd :colorscheme dogrun<CR>:colo<CR> 
 
-    ":echo $MYVIMRC to echo your vimrc
+" uppercase entire word while in insert/normal mode
+inoremap <c-u> <esc>viwu<cr>i
+nnoremap <c-u> <esc>viwu<cr>i
+" create new + empty line below cursor in normal mode
+nnoremap <c-o> <esc>o<esc>
+nnoremap <c-O> <esc>O<esc>
+
+" edit vimrcs/basic
+nnoremap <leader>ev :vsplit ~/.vim_runtime/vimrcs/basic.vim<cr>
+" source vimrcs/basic
+nnoremap <leader>sv :source ~/.vimrc<cr>
+inoremap jk <esc>
+
+""NOTES:
+":w !sudo tee % - write out the current file using sudo 
+" 3== - re-indent 3 lines
+" =% - re-indent a block with () or {} (cursor on brace)
+" =iB - re-indent inner block with {}
+" gg=G - re-indent entire buffer
+" ]p - paste and adjust indent to current line 
+" 
+" vim[grep] /pattern/ {`{file}`} - search for pattern in multiple files
+" e.g. :vim[grep] /foo/ **/*
+"
+"    :cn[ext] - jump to the next match
+"    :cp[revious] - jump to the previous match
+"    :cope[n] - open a window containing the list of matches
+"    :ccl[ose] - close the quickfix window
+"
+
+
+":tabnew or :tabnew {page.words.file} - open a file in a new tab
+"Ctrl + wT - move the current split window into its own tab
+"gt or :tabn[ext] - move to the next tab
+"gT or :tabp[revious] - move to the previous tab
+"#gt - move to tab number #
+":tabm[ove] # - move current tab to the #th position (indexed from 0)
+":tabc[lose] - close the current tab and all its windows
+":tabo[nly] - close all tabs except for the current one
+":tabdo command - run the command on all tabs (e.g. :tabdo q - closes all opened tabs)
+
+
+"zf - manually define a fold up to motion
+"zd - delete fold under the cursor
+"za - toggle fold under the cursor
+"zo - open fold under the cursor
+"zc - close fold under the cursor
+"zr - reduce (open) all folds by one level
+"zm - fold more (close) all folds by one level
+"zi - toggle folding functionality
+"]c - jump to start of next change
+"[c - jump to start of previous change 
+
+":echo $MYVIMRC to echo your vimrc
 
 "c1 ECHOING MESSAGES
 ":echo "Hello world"
@@ -95,4 +148,3 @@ nnoremap <leader>csd :colorscheme dogrun<CR>:colo<CR>
 
 "c3: mapping
 "
-
