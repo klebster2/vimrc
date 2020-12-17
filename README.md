@@ -4,15 +4,11 @@ Inspired by https://github.com/amix/vimrc.git and ThePrimeagen
 
 This setup assumes that you are also setting up vim
 
-first clone repo with history depth=1 to directory `~/.vim_runtime`
+first clone repo with history depth=1 to directory `~/.vim_runtime` and change directory to `~/.vim_runtime`:
 
-`git clone --depth=1 https://github.com/klebster2/myvimrc ~/.vim_runtime`
+`git clone --depth=1 https://github.com/klebster2/myvimrc ~/.vim_runtime && cd ~/.vim_runtime`
 
-change directory to `~/.vim_runtime`
-
-`cd ~/.vim_runtime`
-
-next run dependency installer (assumes you are using Ubuntu)
+next run the dependency installer (assumes you are using Ubuntu)
 
 `sudo make dependencies`
 
