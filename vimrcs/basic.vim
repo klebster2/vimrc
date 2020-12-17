@@ -79,6 +79,9 @@ nnoremap <leader>ev :vsplit ~/.vim_runtime/vimrcs/basic.vim<cr>
 " source vimrcs/basic
 nnoremap <leader>sv :source ~/.vimrc<cr>
 inoremap jk <esc>
+" a trick to learning (a mapping) is to force yourself to use it by disabling
+" the old key!
+inoremap <esc> <nop>
 
 ""NOTES:
 ":w !sudo tee % - write out the current file using sudo 
