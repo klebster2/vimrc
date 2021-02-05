@@ -64,8 +64,9 @@ nnoremap <leader>ptl :Pytest<SPACE>last<CR>
 
 " colorschemes:
 nnoremap <leader>csg :colorscheme gruvbox<CR>
-nnoremap <leader>csa :colorscheme afterglow<CR>
-nnoremap <leader>csd :colorscheme dogrun<CR>:colo<CR> 
+
+nnoremap <leader>bl :set background=light<CR>
+nnoremap <leader>bd :set background=dark<CR>
 
 " uppercase entire word while in insert/normal mode
 inoremap <c-u> <esc>viwu<cr>i

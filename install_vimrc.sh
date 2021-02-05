@@ -19,9 +19,9 @@ vim +PlugInstall +qall
 echo "source ~/.vim_runtime/vimrcs/basic.vim
 " >> ~/.vimrc
 
-### YCM c++ fix
+# YCM c++ fix
 pushd ~/.vim/plugged/YouCompleteMe
-
+git submodule update --init --recursive
 CXX="$(whereis c++ | cut -d ' ' -f 2)" ./install.py --clangd-completer
 popd
 
