@@ -62,10 +62,6 @@ nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 "" ripgrep PS Project Search
 nnoremap <leader>ps :Rg<SPACE>
 
-"" YCM
-nnoremap <silent> <leader>gd :YcmCompleter GoTo<CR>
-nnoremap <silent> <leader>gf :YcmCompleter FixIt<CR>
-
 " pytest on entire file
 nnoremap <leader>ptf :Pytest<SPACE>file<CR>
 
