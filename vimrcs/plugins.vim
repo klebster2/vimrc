@@ -16,5 +16,7 @@ Plug 'mbbill/undotree'
 Plug 'alfredodeza/pytest.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'chriskempson/base16-vim'
+" c# completion
+Plug 'OmniSharp/omnisharp-vim'
 call plug#end()
 
