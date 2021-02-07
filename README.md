@@ -19,7 +19,6 @@ Finally run the installer
 # Windows Terminal Setup
 
 Assuming that you have already installed Vim and Windows terminal from Chocolatey
-`git clone --depth=1 https://github.com/klebster2/myvimrc $HOME/.vim_runtime; cd $HOME/.vim_runtime`
 
 Run
 
