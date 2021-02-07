@@ -10,7 +10,6 @@ Plug 'jremmen/vim-ripgrep'
 Plug 'tpope/vim-fugitive'
 Plug 'ctrlpvim/ctrlp.vim'
 " filepath/ var autocompleter
-Plug 'ycm-core/YouCompleteMe', { 'commit':'d98f896' }
 Plug 'mbbill/undotree'
 " pytest
 Plug 'alfredodeza/pytest.vim'
