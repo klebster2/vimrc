@@ -1,9 +1,6 @@
 syntax on
 
-"Inspired by ThePrimeagen https://www.youtube.com/watch?v=n9k9scbTuQ
 set noerrorbells
-"tab
-set tabstop=4 softtabstop=4
 set shiftwidth=4
 set shiftround
 set expandtab
@@ -22,6 +19,7 @@ set incsearch
 set path+=**
 set wildmenu
 set wildmode=longest:list,full
+set list
 colorscheme gruvbox
 set background=dark
 
@@ -35,14 +33,19 @@ if executable('rg')
 endif
 
 let g:mapleader=" "
+let g:maplocalleader=";"
 
-" basic remaps
+"" LEARN VIMSCRIPT THE HARD WAY: 
+" a trick to learning is to force yourself to use it by disabling alternatives
+" (basic remaps)
 nnoremap <leader>pi :PlugInstall<CR>
+
 "" window
 nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>j :wincmd j<CR>
 nnoremap <leader>k :wincmd k<CR>
 nnoremap <leader>l :wincmd l<CR>
+
 "" split resize
 nnoremap <silent> <leader>+ :vertical resize +5<CR>
 nnoremap <silent> <leader>- :vertical resize -5<CR>
@@ -50,22 +53,24 @@ nnoremap <silent> <leader>- :vertical resize -5<CR>
 " plugin remaps
 "" undotree side explorer
 nnoremap <leader>u :UndotreeShow<CR>
+
 "" open small side explorer
 nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
+
 "" ripgrep PS Project Search
 nnoremap <leader>ps :Rg<SPACE>
-"" YCM
-nnoremap <silent> <leader>gd :YcmCompleter GoTo<CR>
-nnoremap <silent> <leader>gf :YcmCompleter FixIt<CR>
+
 " pytest on entire file
 nnoremap <leader>ptf :Pytest<SPACE>file<CR>
+
 " pytest check last error msg
 nnoremap <leader>ptl :Pytest<SPACE>last<CR>
 
 " colorschemes:
 nnoremap <leader>csg :colorscheme gruvbox<CR>
-nnoremap <leader>csa :colorscheme afterglow<CR>
-nnoremap <leader>csd :colorscheme dogrun<CR>:colo<CR> 
+
+nnoremap <leader>bl :set background=light<CR>
+nnoremap <leader>bd :set background=dark<CR>
 
 " uppercase entire word while in insert/normal mode
 inoremap <c-u> <esc>viwu<cr>i
@@ -74,15 +79,63 @@ nnoremap <c-u> <esc>viwu<cr>i
 nnoremap <c-o> <esc>o<esc>
 nnoremap <c-O> <esc>O<esc>
 
-" edit vimrcs/basic
+" edit vimrc (basic.vim)
 nnoremap <leader>ev :vsplit ~/.vim_runtime/vimrcs/basic.vim<cr>
+
 " source vimrcs/basic
 nnoremap <leader>sv :source ~/.vimrc<cr>
+
+" first word and EOL remaps
+nnoremap H 0w
+nnoremap L $
+
+" quote text
+vnoremap <leader>" :s/\%V\(.*\)\%V/"\1\"/<cr>
+vnoremap <leader>` :s/\%V\(.*\)\%V/`\1\`/<cr>
+vnoremap <leader>' :s/\%V\(.*\)\%V/'\1\'/<cr>
+
+command WriteSudo w !sudo tee %:t
+nnoremap <leader>W :WriteSudo<cr>
+
+" remap <esc> to quick jk
 inoremap jk <esc>
-" a trick to learning (a mapping) is to force yourself to use it by disabling
-" the old key!
-inoremap <esc> <nop>
-""NOTES:
+
+" write any files as soon as you open a new
+autocmd BufNewFile * :write
+autocmd BufWritePre,BufRead *.html setlocal nowrap
+
+" File-specific comment syntax for BOL
+"
+augroup c_file
+    autocmd!
+    autocmd FileType c nnoremap <buffer> <localleader>c I/*<esc>
+augroup END
+
+augroup vim_file
+    autocmd!
+    autocmd FileType vim nnoremap <buffer> <localleader>c I"<esc>''
+augroup END
+
+augroup python_file
+    autocmd!
+    autocmd FileType python nnoremap <buffer> <localleader>c I#<esc>
+    autocmd FileType python :iabbrev <buffer> if: if:<left>
+    autocmd FileType python :iabbrev <buffer> elif: elif:<left>
+augroup END
+
+augroup bash_file
+    autocmd!
+    autocmd FileType python nnoremap <buffer> <localleader>c I#<esc>
+augroup END
+
+
+augroup javascript
+    autocmd!
+    autocmd FileType javascript :iabbrev <buffer> iff if ()<left>
+augroup END
+
+
+"NOTES:
 ":w !sudo tee % - write out the current file using sudo 
 " 3== - re-indent 3 lines
 " =% - re-indent a block with () or {} (cursor on brace)
@@ -91,14 +144,13 @@ inoremap <esc> <nop>
 " ]p - paste and adjust indent to current line 
 " 
 " vim[grep] /pattern/ {`{file}`} - search for pattern in multiple files
-" e.g. :vim[grep] /foo/ **/*
+" e.g. :vim[grep] /foo/ **/
 "
 "    :cn[ext] - jump to the next match
 "    :cp[revious] - jump to the previous match
 "    :cope[n] - open a window containing the list of matches
 "    :ccl[ose] - close the quickfix window
 "
-
 
 ":tabnew or :tabnew {page.words.file} - open a file in a new tab
 "Ctrl + wT - move the current split window into its own tab
