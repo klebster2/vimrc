@@ -19,11 +19,7 @@ set incsearch
 set path+=**
 set wildmenu
 set wildmode=longest:list,full
-<<<<<<< HEAD
-=======
 set list
-
->>>>>>> beb8190... update commands and vimrc
 colorscheme gruvbox
 set background=dark
 
@@ -101,14 +97,7 @@ nnoremap <leader>W :WriteSudo<cr>
 
 " remap <esc> to quick jk
 inoremap jk <esc>
-<<<<<<< HEAD
 "
-""NOTES:
-":w !sudo tee % - write out the current file using sudo 
-" 3== - re-indent 3 lines
-" =% - re-indent a block with () or {} (cursor on brace)
-=======
-
 " write any files as soon as you open a new
 autocmd BufNewFile * :write
 autocmd BufWritePre,BufRead *.html setlocal nowrap
@@ -145,7 +134,10 @@ augroup END
 
 
 "NOTES:
->>>>>>> beb8190... update commands and vimrc
+":w !sudo tee % - write out the current file using sudo 
+" 3== - re-indent 3 lines
+" =% - re-indent a block with () or {} (cursor on brace)
+
 " =iB - re-indent inner block with {}
 " gg=G - re-indent entire buffer
 " ]p - paste and adjust indent to current line 
