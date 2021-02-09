@@ -97,7 +97,7 @@ nnoremap <leader>W :WriteSudo<cr>
 
 " remap <esc> to quick jk
 inoremap jk <esc>
-"
+
 " write any files as soon as you open a new
 autocmd BufNewFile * :write
 autocmd BufWritePre,BufRead *.html setlocal nowrap
