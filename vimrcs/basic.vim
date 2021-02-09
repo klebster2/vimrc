@@ -35,7 +35,9 @@ endif
 let g:mapleader=" "
 let g:maplocalleader=";"
 
-" basic remaps
+"" LEARN VIMSCRIPT THE HARD WAY: 
+" a trick to learning is to force yourself to use it by disabling alternatives
+" (basic remaps)
 nnoremap <leader>pi :PlugInstall<CR>
 
 "" window
