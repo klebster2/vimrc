@@ -35,7 +35,9 @@ endif
 let g:mapleader=" "
 let g:maplocalleader=";"
 
-" basic remaps
+"" LEARN VIMSCRIPT THE HARD WAY: 
+" a trick to learning is to force yourself to use it by disabling alternatives
+" (basic remaps)
 nnoremap <leader>pi :PlugInstall<CR>
 
 "" window
@@ -97,7 +99,7 @@ nnoremap <leader>W :WriteSudo<cr>
 
 " remap <esc> to quick jk
 inoremap jk <esc>
-"
+
 " write any files as soon as you open a new
 autocmd BufNewFile * :write
 autocmd BufWritePre,BufRead *.html setlocal nowrap
