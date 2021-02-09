@@ -22,10 +22,10 @@ set incsearch
 set path+=**
 set wildmenu
 set wildmode=longest:list,full
-
 colorscheme gruvbox
 set background=dark
 
+set t_Co=256
 " shell highlighting for bash
 let b:is_bash = 1
 set ft=sh
@@ -82,7 +82,6 @@ inoremap jk <esc>
 " a trick to learning (a mapping) is to force yourself to use it by disabling
 " the old key!
 inoremap <esc> <nop>
-
 ""NOTES:
 ":w !sudo tee % - write out the current file using sudo 
 " 3== - re-indent 3 lines
