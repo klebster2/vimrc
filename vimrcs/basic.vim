@@ -27,6 +27,8 @@ set cmdheight=2
 set shortmess+=c
 
 colorscheme gruvbox
+set background=dark
+set t_Co=256
 
 highlight Normal guibg=NONE
 " shell highlighting for bash
@@ -40,7 +42,9 @@ endif
 let g:mapleader=" "
 let g:maplocalleader=";"
 
-" basic remaps
+"" LEARN VIMSCRIPT THE HARD WAY: 
+" a trick to learning is to force yourself to use it by disabling alternatives
+" (basic remaps)
 nnoremap <leader>pi :PlugInstall<CR>
 
 "" window
@@ -70,11 +74,12 @@ nnoremap <leader>ptf :Pytest<SPACE>file<CR>
 nnoremap <leader>ptl :Pytest<SPACE>last<CR>
 
 " colorschemes:
-nnoremap <leader>csg :colorscheme gruvbox<CR>
-
-nnoremap <leader>bl :set background=light<CR>
+nnoremap <leader>gb :colorscheme gruvbox<CR>
+nnoremap <leader>jb :colorscheme jellybeans<CR>
 nnoremap <leader>bd :set background=dark<CR>
+let g:jellybeans_use_lowcolor_black = 1
 
+nnoremap <leader>pw :lua require('telescope.builtin').grep_string { search = vim.fn.expand("<cword>") }<CR>
 " uppercase entire word while in insert/normal mode
 inoremap <c-u> <esc>viwu<cr>i
 nnoremap <c-u> <esc>viwu<cr>i
@@ -97,8 +102,7 @@ vnoremap <leader>" :s/\%V\(.*\)\%V/"\1\"/<cr>
 vnoremap <leader>` :s/\%V\(.*\)\%V/`\1\`/<cr>
 vnoremap <leader>' :s/\%V\(.*\)\%V/'\1\'/<cr>
 
-command WriteSudo w !sudo tee %:t
-nnoremap <leader>W :WriteSudo<cr>
+nnoremap <leader>W :w! sudo tee %:t<cr>
 
 " remap <esc> to quick jk
 inoremap jk <esc>
@@ -108,7 +112,6 @@ autocmd BufNewFile * :write
 autocmd BufWritePre,BufRead *.html setlocal nowrap
 
 " File-specific comment syntax for BOL
-"
 augroup c_file
     autocmd!
     autocmd FileType c nnoremap <buffer> <localleader>c I/*<esc>
@@ -132,13 +135,44 @@ augroup bash_file
 augroup END
 
 
-augroup javascript
+augroup javascript_file
     autocmd!
     autocmd FileType javascript :iabbrev <buffer> iff if ()<left>
 augroup END
 
+augroup markdown_file
+    autocmd!
+    autocmd FileType markdown set wrap
+augroup END
+
+function! Smart_TabComplete()
+  let line = getline('.')                         " current line
+
+  let substr = strpart(line, -1, col('.')+1)      " from the start of the current
+                                                  " line to one character right
+                                                  " of the cursor
+  let substr = matchstr(substr, "[^ \t]*$")       " word till cursor
+  if (strlen(substr)==0)                          " nothing to match on empty string
+    return "\<tab>"
+  endif
+  let has_period = match(substr, '\.') != -1      " position of period, if any
+  let has_slash = match(substr, '\/') != -1       " position of slash, if any
+  if (!has_period && !has_slash)
+    return "\<C-X>\<C-P>"                         " existing text matching
+  elseif ( has_slash )
+    return "\<C-X>\<C-F>"                         " file matching
+  else
+    return "\<C-X>\<C-O>"                         " plugin matching
+  endif
+endfunction
+
+inoremap <tab> <c-r>=Smart_TabComplete()<CR>
 
 "NOTES:
+":w !sudo tee % - write out the current file using sudo 
+" 3== - re-indent 3 lines
+" =% - re-indent a block with () or {} (cursor on brace)
+
 " =iB - re-indent inner block with {}
 " gg=G - re-indent entire buffer
 " ]p - paste and adjust indent to current line 
