@@ -7,7 +7,7 @@ set expandtab
 "indent
 set smartindent
 "set number relativenumber
-set nu rnu
+set nu nornu
 " don't wrap lines
 set nowrap
 set smartcase
@@ -16,14 +16,19 @@ set nobackup
 set undodir=~/.vim_runtime/undodir
 set undofile
 set incsearch
+set termguicolors
+set colorcolumn=80
+set signcolumn=yes
 set path+=**
 set wildmenu
 set wildmode=longest:list,full
 set list
+set cmdheight=2
+set shortmess+=c
 
 colorscheme gruvbox
-set background=dark
 
+highlight Normal guibg=NONE
 " shell highlighting for bash
 let b:is_bash = 1
 set ft=sh

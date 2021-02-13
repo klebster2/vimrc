@@ -17,5 +17,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'chriskempson/base16-vim'
 " c# completion
 Plug 'OmniSharp/omnisharp-vim'
+" mql4
+Plug 'vobornik/vim-mql4'
 call plug#end()
 
