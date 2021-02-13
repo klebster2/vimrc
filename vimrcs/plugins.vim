@@ -17,5 +17,9 @@ Plug 'sheerun/vim-polyglot'
 Plug 'chriskempson/base16-vim'
 " c# completion
 Plug 'OmniSharp/omnisharp-vim'
+" telescope requirements
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-lua/telescope.nvim'
 call plug#end()
 
