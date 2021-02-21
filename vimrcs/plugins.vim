@@ -21,7 +21,6 @@ Plug 'OmniSharp/omnisharp-vim'
 Plug 'vobornik/vim-mql4'
 " telescope requirements
 Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-lua/telescope.nvim'
 call plug#end()
 
