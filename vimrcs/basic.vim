@@ -4,12 +4,14 @@ set noerrorbells
 set shiftwidth=4
 set shiftround
 set expandtab
+
 "indent
 set smartindent
 "set number relativenumber
 set nu nornu
 " don't wrap lines
 set nowrap
+
 set smartcase
 set noswapfile
 set nobackup
@@ -28,9 +30,13 @@ set shortmess+=c
 
 colorscheme gruvbox
 set background=dark
-set t_Co=256
+"set t_Co=256
 
-highlight Normal guibg=NONE
+set ruler
+set rulerformat=%55(%{strftime('%a\ %b\ %e\ %I:%M\ %p')}\ %5l,%-6(%c%V%)\ %P%)
+
+"highlight Normal guibg=NONE
+
 " shell highlighting for bash
 let b:is_bash = 1
 set ft=sh
@@ -42,10 +48,9 @@ endif
 let g:mapleader=" "
 let g:maplocalleader=";"
 
-"" LEARN VIMSCRIPT THE HARD WAY: 
-" a trick to learning is to force yourself to use it by disabling alternatives
+" LEARN VIMSCRIPT THE HARD WAY
+" A trick to learning is to force yourself to use it by disabling alternatives
 " (basic remaps)
-nnoremap <leader>pi :PlugInstall<CR>
 
 "" window
 nnoremap <leader>h :wincmd h<CR>
@@ -69,7 +74,6 @@ nnoremap <leader>ps :Rg<SPACE>
 
 " pytest on entire file
 nnoremap <leader>ptf :Pytest<SPACE>file<CR>
-
 " pytest check last error msg
 nnoremap <leader>ptl :Pytest<SPACE>last<CR>
 
@@ -77,37 +81,64 @@ nnoremap <leader>ptl :Pytest<SPACE>last<CR>
 nnoremap <leader>gb :colorscheme gruvbox<CR>
 nnoremap <leader>jb :colorscheme jellybeans<CR>
 nnoremap <leader>bd :set background=dark<CR>
-let g:jellybeans_use_lowcolor_black = 1
+"let g:jellybeans_use_lowcolor_black = 1
 
 nnoremap <leader>pw :lua require('telescope.builtin').grep_string { search = vim.fn.expand("<cword>") }<CR>
+
 " uppercase entire word while in insert/normal mode
-inoremap <c-u> <esc>viwu<cr>i
-nnoremap <c-u> <esc>viwu<cr>i
+nnoremap <leader>vwg <esc>viw~<cr>
+nnoremap <leader>vWg <esc>viW~<cr>
+
 " create new + empty line below cursor in normal mode
 nnoremap <c-o> <esc>o<esc>
 nnoremap <c-O> <esc>O<esc>
 
 " edit vimrc (basic.vim)
+" -    -
 nnoremap <leader>ev :vsplit ~/.vim_runtime/vimrcs/basic.vim<cr>
-
-" source vimrcs/basic
+" source vimrc
+" _      _
 nnoremap <leader>sv :source ~/.vimrc<cr>
 
-" first word and EOL remaps
+" hard H and L remaps
 nnoremap H 0w
 nnoremap L $
 
-" quote text
+" quote text in visual mode
 vnoremap <leader>" :s/\%V\(.*\)\%V/"\1\"/<cr>
 vnoremap <leader>` :s/\%V\(.*\)\%V/`\1\`/<cr>
 vnoremap <leader>' :s/\%V\(.*\)\%V/'\1\'/<cr>
 
 nnoremap <leader>W :w! sudo tee %:t<cr>
 
-" remap <esc> to quick jk
+" operator pending mappings
+" in next parenthesis
+onoremap in( :<c-u>normal! f(vi(<cr>
+" in last parenthesis
+onoremap il( :<c-u>normal! F)vi(<cr>
+" and next parenthesis
+onoremap an( :<c-u>normal! f(va(<cr>
+" and last parentthesis
+onoremap al( :<c-u>normal! F)va(<cr>
+
+" more operator pending mappings (change inside next email address)
+onoremap in@ :<c-u>execute "normal! ?^.+@$\rvg_"<cr>
+onoremap an@ :<c-u>execute "normal! ?^\\S\\+@\\S\\+$\r:nohlsearch\r0vg"<cr>
+
+" set number sidebar
+nnoremap <leader>sn :set number!<cr>
+nnoremap <leader>srn :set relativenumber!<cr>
+nnoremap <leader>sw :set wrap!<cr>
+
 inoremap jk <esc>
 
-" write any files as soon as you open a new
+" Check filetypes known to vim
+nnoremap <leader>ft :setfiletype <c-d>
+
+" expand current script path
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
+
+" write any files as soon as you open new
 autocmd BufNewFile * :write
 autocmd BufWritePre,BufRead *.html setlocal nowrap
 
@@ -119,7 +150,9 @@ augroup END
 
 augroup vim_file
     autocmd!
-    autocmd FileType vim nnoremap <buffer> <localleader>c I"<esc>''
+    autocmd FileType vim nnoremap <buffer> <localleader>c I"<esc>
+    autocmd FileType vim onoremap b /return<cr>
+    autocmd FileType vim nnoremap <leader>pi :PlugInstall<CR>
 augroup END
 
 augroup python_file
@@ -127,13 +160,14 @@ augroup python_file
     autocmd FileType python nnoremap <buffer> <localleader>c I#<esc>
     autocmd FileType python :iabbrev <buffer> if: if:<left>
     autocmd FileType python :iabbrev <buffer> elif: elif:<left>
+    autocmd FileType python onoremap b /return<cr>
 augroup END
 
 augroup bash_file
     autocmd!
-    autocmd FileType python nnoremap <buffer> <localleader>c I#<esc>
+    autocmd FileType sh nnoremap <buffer> <localleader>c I#<esc>
+    autocmd FileType sh nnoremap <buffer> <localleader>bb I#!/bin/bash<cr><esc>
 augroup END
-
 
 augroup javascript_file
     autocmd!
@@ -143,30 +177,17 @@ augroup END
 augroup markdown_file
     autocmd!
     autocmd FileType markdown set wrap
+    "16 - more operator pending mappings
+    autocmd FileType markdown onoremap ih :<c-u>execute "normal! ?^[=-]\\+$\r:nohlsearch\rkvg_"<cr>
+    autocmd FileType markdown onoremap ah :<c-u>execute "normal! ?^[=-]\\+$\r:nohlsearch\rg_vk0"<cr>
 augroup END
 
-function! Smart_TabComplete()
-  let line = getline('.')                         " current line
+"\<C-X>\<C-P>" " existing text matching
+"\<C-X>\<C-F>" " file matching
+"\<C-X>\<C-O>" " plugin matching
 
-  let substr = strpart(line, -1, col('.')+1)      " from the start of the current
-                                                  " line to one character right
-                                                  " of the cursor
-  let substr = matchstr(substr, "[^ \t]*$")       " word till cursor
-  if (strlen(substr)==0)                          " nothing to match on empty string
-    return "\<tab>"
-  endif
-  let has_period = match(substr, '\.') != -1      " position of period, if any
-  let has_slash = match(substr, '\/') != -1       " position of slash, if any
-  if (!has_period && !has_slash)
-    return "\<C-X>\<C-P>"                         " existing text matching
-  elseif ( has_slash )
-    return "\<C-X>\<C-F>"                         " file matching
-  else
-    return "\<C-X>\<C-O>"                         " plugin matching
-  endif
-endfunction
+"inoremap <tab> <c-r>=Smart_TabComplete()<CR>
 
-inoremap <tab> <c-r>=Smart_TabComplete()<CR>
 
 "NOTES:
 ":w !sudo tee % - write out the current file using sudo 
