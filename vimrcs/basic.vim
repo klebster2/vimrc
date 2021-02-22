@@ -129,6 +129,7 @@ onoremap an@ :<c-u>execute "normal! ?^\\S\\+@\\S\\+$\r:nohlsearch\r0vg"<cr>
 nnoremap <leader>sn :set number!<cr>
 nnoremap <leader>srn :set relativenumber!<cr>
 nnoremap <leader>sw :set wrap!<cr>
+nnoremap <leader>sp :set paste!<cr>
 
 inoremap jk <esc>
 
