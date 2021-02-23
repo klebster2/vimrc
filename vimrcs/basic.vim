@@ -72,6 +72,7 @@ nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 "" ripgrep PS Project Search
 nnoremap <leader>ps :Rg<SPACE>
 
+
 " pytest on entire file
 nnoremap <leader>ptf :Pytest<SPACE>file<CR>
 " pytest check last error msg
@@ -143,10 +144,13 @@ cnoremap %% <C-R>=expand('%:h').'/'<cr>
 autocmd BufNewFile * :write
 autocmd BufWritePre,BufRead *.html setlocal nowrap
 
+filetype plugin on
+
 " File-specific comment syntax for BOL
 augroup c_file
     autocmd!
     autocmd FileType c nnoremap <buffer> <localleader>c I/*<esc>
+    autocmd FileType c setl ofu=ccomplete#CompleteCpp
 augroup END
 
 augroup vim_file
