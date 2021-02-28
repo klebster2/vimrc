@@ -182,7 +182,7 @@ augroup END
 
 augroup python_file
     autocmd!
-    autocmd FileType python inoremap <buffer> <C-x><C-m> <C-r>=MyComplete("/.vim_runtime/dicts/custom_pycompletions")<cr>
+    autocmd FileType python inoremap <buffer> <localleader>m <C-r>=MyComplete("/.vim_runtime/dicts/custom_pycompletions")<cr>
     autocmd FileType python nnoremap <buffer> <localleader>c I#<esc>
     autocmd FileType python :iabbrev <buffer> if: if:<left>
     autocmd FileType python :iabbrev <buffer> elif: elif:<left>
