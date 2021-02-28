@@ -1,7 +1,5 @@
 # klebster2's vimrc
 
-Inspired by https://github.com/amix/vimrc.git and ThePrimeagen
-
 Ubuntu Setup
 ============
 klebnoel@gmail.com
