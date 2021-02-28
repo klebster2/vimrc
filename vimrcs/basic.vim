@@ -114,8 +114,6 @@ autocmd BufNewFile * :write
 autocmd BufWritePre,BufRead *.html setlocal nowrap
 filetype plugin on
 
-" Map <C-x><C-m> for our custom completion
-inoremap <C-x><C-m> <C-r>=MyComplete()<CR>
 " Make subsequent <C-m> presses after <C-x><C-m> go to the next entry (just like
 " other <C-x>* mappings)
 inoremap <expr> <C-m> pumvisible() ?  "\<C-n>" : "\<C-m>"
@@ -164,6 +162,9 @@ fun! MyComplete(dictfilepath)
 endfun
 
 inoremap <C-x><C-m> <C-r>=MyComplete()<CR>
+
+" Map <C-x><C-m> for our custom completion
+inoremap <buffer> <C-x><C-m> <C-r>=MyComplete("/.vim_runtime/dicts/idioms")<CR>
 
 " File-specific comment syntax for BOL
 augroup c_file
