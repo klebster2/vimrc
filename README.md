@@ -2,7 +2,7 @@
 
 Ubuntu Setup
 ============
-klebnoel@gmail.com
+
 First clone repo with history depth=1 to directory `~/.vim_runtime` and change directory to `~/.vim_runtime`:
 
 ```bash
