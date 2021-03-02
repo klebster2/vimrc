@@ -1,7 +1,7 @@
 " klebster2's vimrc file ----- {{{
 "  thanks for visiting
 " }}}
-" GLORIOUS LINE FROM 'LEARN VIMSCRIPT THE HARD WAY' -------- {{{
+" Quote from 'Learn Vimscript the Hard Way' -------- {{{
 " A trick to learning something is to force yourself to use it
 " by disabling alternatives (basic remaps)
 " }}}
@@ -48,6 +48,11 @@ endif
 let g:mapleader=" "
 let g:maplocalleader=";"
 set foldlevelstart=0
+let g:netrw_banner=0
+let g:netrw_browse_split=4
+let g:netrw_altv=1
+let g:netrw_liststyle=3
+let g:netrw_list_hide=netrw_gitignore#Hide()
 " }}}
 
 " Leader Window Movement Remaps --------- {{{
@@ -64,7 +69,7 @@ nnoremap <silent> <leader>- :vertical resize -5<CR>
 nnoremap <leader>o :only<cr>
 " }}}
 " Leader Window Explorer --------- {{{
-nnoremap <leader>hx :Vex<cr>
+nnoremap <leader>vx :Vex<cr>
 nnoremap <leader>sx :Sex<cr>
 " }}}
 " Leader Plugin Remaps --------- {{{
@@ -204,6 +209,7 @@ inoremap <buffer> <leader><C-m> <C-r>=MyComplete("/.vim_runtime/dicts/idioms")<C
 " expand current script path
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 " }}}
+
 " C/C++ file settings ------------------------ {{{
 augroup c_file
     autocmd!
@@ -311,4 +317,8 @@ augroup END
 "set shiftwidth?
 "save on typing multiple set commands:
 "set number numberwidth=6
+"
+"
+"
+":help internal-variables
 " }}}
