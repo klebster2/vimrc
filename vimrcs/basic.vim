@@ -175,7 +175,6 @@ fun! MyComplete(dictfilepath)
         " Check if it matches what we're trying to complete; in this case we
         " want to match against the start of both the first and second list
         " entries (i.e. the name and email address)
-        echom m
         if l:m !~? '^' . l:base
             " no match
             continue
@@ -205,7 +204,6 @@ inoremap <buffer> <leader><C-m> <C-r>=MyComplete("/.vim_runtime/dicts/idioms")<C
 " expand current script path
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 " }}}
-
 " C/C++ file settings ------------------------ {{{
 augroup c_file
     autocmd!
@@ -265,7 +263,6 @@ augroup END
 "
 " 3== - re-indent 3 lines
 " =% - re-indent a block with () or {} (cursor on brace)
-
 " =iB - re-indent inner block with {}
 " gg=G - re-indent entire buffer
 " ]p - paste and adjust indent to current line 
