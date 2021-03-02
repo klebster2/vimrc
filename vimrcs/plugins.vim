@@ -23,4 +23,3 @@ Plug 'vobornik/vim-mql4'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/telescope.nvim'
 call plug#end()
-
