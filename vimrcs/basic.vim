@@ -47,6 +47,7 @@ endif
 let g:mapleader=" "
 let g:maplocalleader=";"
 set foldlevelstart=0
+" netrw tree
 let g:netrw_banner=0
 let g:netrw_browse_split=4
 let g:netrw_altv=1
@@ -94,6 +95,9 @@ nnoremap <leader>sp :set paste!<cr>
 " }}}
 " Leader edit vimrc (basic.vim) ---- {{{
 nnoremap <leader>ev :vsplit ~/.vim_runtime/vimrcs/basic.vim<cr>
+" }}}
+" Leader edit vimrc plugins (plugins.vim) ---- {{{
+nnoremap <leader>ep :vsplit ~/.vim_runtime/vimrcs/plugins.vim<cr>
 " }}}
 " Leader source vimrc ---- {{{
 nnoremap <leader>sv :source ~/.vimrc<cr>
@@ -220,7 +224,21 @@ inoremap <buffer> <leader><C-m> <C-r>=MyComplete("/.vim_runtime/dicts/idioms")<C
 " expand current script path
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 " }}}
-
+" settings for all files ------------------------- {{{
+"  trimwhitespace --- {{{
+fun! TrimWhitespace()
+    let l:save = winsaveview()
+    keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
+endfun
+" }}}
+" Trim command ---- {{{
+augroup Trim
+    autocmd!
+    autocmd BufWritePre * :call TrimWhitespace()
+augroup END
+" }}}
+" }}}
 " C/C++ file settings ------------------------ {{{
 augroup c_file
     autocmd!
@@ -282,8 +300,8 @@ augroup END
 " =% - re-indent a block with () or {} (cursor on brace)
 " =iB - re-indent inner block with {}
 " gg=G - re-indent entire buffer
-" ]p - paste and adjust indent to current line 
-" 
+" ]p - paste and adjust indent to current line
+"
 " vim[grep] /pattern/ {`{file}`} - search for pattern in multiple files
 " e.g. :vim[grep] /foo/ **/
 "
@@ -310,7 +328,7 @@ augroup END
 "zm - fold more (close) all folds by one level
 "zi - toggle folding functionality
 "]c - jump to start of next change
-"[c - jump to start of previous change 
+"[c - jump to start of previous change
 ":echo $MYVIMRC to echo your vimrc
 "c1 ECHOING MESSAGES
 ":echo "Hello world"
@@ -318,7 +336,7 @@ augroup END
 ":messages
 "message "hello" will be in the message list but not Hello world
 "also instructions for how to use nnoremap
-"c2 BOOLEAN OPTS 
+"c2 BOOLEAN OPTS
 ":set number
 ":set nonumber
 "bang toggles bool
