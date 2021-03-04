@@ -174,8 +174,10 @@ function! s:thesaurus()
     augroup END
     return ":set iskeyword+=32\<cr>vaWovea\<c-x>\<c-t>"
 endfunction
-nnoremap <expr> <leader>t <SID>thesaurus()<esc>viWs/_/ /g<cr>
-set thesaurus+=~/.vim_runtime/theasurus.txt
+
+nnoremap <expr> <leader>t <SID>thesaurus()
+
+set thesaurus+=~/.vim_runtime/thesaurus.txt
 " Custom complete function ------------------- {{{
 fun! MyComplete(dictfilepath)
     " The data. In this example it's static, but you could read it from a file,
