@@ -5,7 +5,6 @@
 " A trick to learning something is to force yourself to use it
 " by disabling alternatives (basic remaps)
 " }}}
-
 " Default set -------- {{{
 syntax on
 filetype plugin indent on
@@ -54,7 +53,6 @@ let g:netrw_altv=1
 let g:netrw_liststyle=3
 let g:netrw_list_hide=netrw_gitignore#Hide()
 " }}}
-
 " Leader Window Movement Remaps --------- {{{
 nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>j :wincmd j<CR>
@@ -161,6 +159,19 @@ inoremap <s-tab> <c-n>
 " }}}
 " }}}
 " Custom Completion ------ {{{
+function! s:thesaurus()
+    let s:saved_ut = &ut
+    if &ut > 200 | let &ut = 200 | endif
+    augroup ThesaurusAuGroup
+        autocmd CursorHold,CursorHoldI <buffer>
+                    \ let &ut = s:saved_ut |
+                    \ set iskeyword-=32 |
+                    \ autocmd! ThesaurusAuGroup
+    augroup END
+    return ":set iskeyword+=32\<cr>vaWovea\<c-x>\<c-t>"
+endfunction
+nnoremap <expr> <leader>t <SID>thesaurus()<esc>viWs/_/ /g<cr>
+set thesaurus+=~/.vim_runtime/theasurus.txt
 " Custom complete function ------------------- {{{
 fun! MyComplete(dictfilepath)
     " The data. In this example it's static, but you could read it from a file,
