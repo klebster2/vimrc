@@ -193,6 +193,7 @@ fun! MyComplete(dictfilepath, ...)
     " first record a:1 wordstarts
     for l:idx in range(1, a:1)
         let l:start = col('.') - l:prev_start - 1
+        let l:start -= 1
         while l:start > 0 && l:line[l:start - 1] =~ '\a'
             let l:start -= 1
         endwhile
@@ -206,7 +207,6 @@ fun! MyComplete(dictfilepath, ...)
     for l:start in reverse(l:start_list)
 
         let l:base = substitute(l:line[l:start : col('.')-1], '\v^\s*([^ ]+)\s*$', '\1', '')
-        echom l:base
         " Find matches
         for m in l:data
             " Check if it matches what we're trying to complete; in this case we
