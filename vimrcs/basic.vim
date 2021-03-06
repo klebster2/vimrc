@@ -42,6 +42,8 @@ set statusline=%F
 set backspace=indent,eol,start
 "highlight Normal guibg=NONE
 " shell highlighting for bash
+let b:is_bash = 1
+set ft=sh
 if executable('rg')
     let g:rg_derive_root='true'
 endif
