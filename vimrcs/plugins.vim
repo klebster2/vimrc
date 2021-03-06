@@ -19,7 +19,4 @@ Plug 'chriskempson/base16-vim'
 Plug 'OmniSharp/omnisharp-vim'
 " mql4
 Plug 'vobornik/vim-mql4'
-" telescope requirements
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/telescope.nvim'
 call plug#end()

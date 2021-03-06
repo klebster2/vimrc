@@ -1,4 +1,5 @@
-" klebster2's vimrc file ----- {{{
+
+"klebster1's vimrc file ----- {{{
 "  thanks for visiting
 " }}}
 " Quote from 'Learn Vimscript the Hard Way' -------- {{{
@@ -140,6 +141,7 @@ onoremap an@ :<c-u>execute "normal! ?^\\S\\+@\\S\\+$\r:nohlsearch\r0vg"<cr>
 " * Insert mode ------------ {{{
 " Remap esc --------------  {{{
 inoremap jk <esc>
+
 " }}}
 " Autocomplete tab functionality ---- {{{
 " InsertTabWrapper ------- {{{
@@ -163,62 +165,76 @@ inoremap <s-tab> <c-n>
 " }}}
 " }}}
 " Custom Completion ------ {{{
-function! s:thesaurus()
-    let s:saved_ut = &ut
-    if &ut > 200 | let &ut = 200 | endif
-    augroup ThesaurusAuGroup
+function! Keyword32()
+    let s:saved_iskeyword = &iskeyword
+    let s:saved_updatetime = &updatetime
+    if &updatetime > 200 | let &updatetime = 200 | endif
+    augroup Keyword32
         autocmd CursorHold,CursorHoldI <buffer>
-                    \ let &ut = s:saved_ut |
-                    \ set iskeyword-=32 |
-                    \ autocmd! ThesaurusAuGroup
+                    \ let &updatetime = s:saved_updatetime |
+                    \ let &iskeyword = s:saved_iskeyword |
+                    \ autocmd! Keyword32
     augroup END
-    return ":set iskeyword+=32\<cr>vaWovea\<c-x>\<c-t>"
+    set iskeyword+=32
 endfunction
 
-nnoremap <expr> <leader>t <SID>thesaurus()
-
-set thesaurus+=~/.vim_runtime/thesaurus.txt
+inoremap <c-x><c-t> <C-O>:call Keyword32()<CR><c-x><c-t>
+set thesaurus+=~/.vim_runtime/thesaurus-no-names.txt
 " Custom complete function ------------------- {{{
-fun! MyComplete(dictfilepath)
-    " The data. In this example it's static, but you could read it from a file,
-    " get it from a command, etc.
+fun! MyComplete(dictfilepath, ...)
+    " Data from a file
     let l:data = readfile($HOME.a:dictfilepath, '')
+
     " Locate the start of the word and store the text we want to match in l:base
     let l:line = getline('.')
-    let l:start = col('.') - 1
-    while l:start > 0 && l:line[l:start - 1] =~ '\a'
-        let l:start -= 1
-    endwhile
-    let l:base = l:line[l:start : col('.')-1]
-    " Record what matches − we pass this to complete() later
+    let l:start_list = []
+    let l:prev_start = 0
+
+    " first record a:1 wordstarts
+    for l:idx in range(1, a:1)
+        let l:start = col('.') - l:prev_start - 1
+        while l:start > 0 && l:line[l:start - 1] =~ '\a'
+            let l:start -= 1
+        endwhile
+        " append start of words to list
+        call add(l:start_list, l:start)
+        let l:prev_start = l:start
+    endfor
+
+    " Record what matches − pass this to complete() later
     let l:res = []
-    " Find matches
-    for m in l:data
-        " Check if it matches what we're trying to complete; in this case we
-        " want to match against the start of both the first and second list
-        " entries (i.e. the name and email address)
-        if l:m !~? '^' . l:base
-            " no match
-            continue
-        endif
-        " match, see :help complete() for the full docs on the key names
-        " for this dict.
-        call add(l:res, {
-            \ 'icase': 1,
-            \ 'word': l:m,
-            \ 'abbr': l:m,
-            \ 'menu': 'placeholder',
-            \ 'info': 'placeholder',
-        \ })
+    for l:start in reverse(l:start_list)
+
+        let l:base = substitute(l:line[l:start : col('.')-1], '\v^\s*([^ ]+)\s*$', '\1', '')
+        echom l:base
+        " Find matches
+        for m in l:data
+            " Check if it matches what we're trying to complete; in this case we
+            " want to match against the start of both the first and second list
+            " entries (i.e. the name and email address)
+            if l:m !~? '^' . l:base
+                " no match
+                continue
+            endif
+            " match, see :help complete() for the full docs on the key names
+            " for this dict.
+            call add(l:res, {
+                \ 'icase': 1,
+                \ 'word': l:m,
+                \ 'abbr': l:m,
+                \ 'menu': $HOME.a:dictfilepath,
+                \ 'info': 'whitespaces'.a:1,
+            \ })
+        endfor
     endfor
     " Now call the complete() function
     call complete(l:start + 1, l:res)
     return ''
 endfun
-"
 " }}}
+
 " Custom completion -------- {{{
-inoremap <buffer> <leader><C-m> <C-r>=MyComplete("/.vim_runtime/dicts/idioms")<CR>
+inoremap <buffer> <C-x><C-p> <C-r>=MyComplete("/.vim_runtime/dicts/proverbs_and_common_phrases", 2)<CR>
 " }}}
 " }}}
 " }}}
