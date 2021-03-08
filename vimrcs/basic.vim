@@ -278,7 +278,7 @@ augroup markdown_file
     autocmd FileType markdown onoremap ah :<c-u>execute "normal! ?^[=-]\\+$\r:nohlsearch\rg_vk0"<cr>
 augroup END
 " }}}
-
+hi Terminal ctermbg=lightgrey ctermfg=blue guibg=black guifg=blue
 " OTHER NOTES: ----- {{{
 " below is some stuff that I don't currently do. I keep it incase I forget it
 " to.
