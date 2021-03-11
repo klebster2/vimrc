@@ -1,20 +1,18 @@
-
-"klebster1's vimrc file ----- {{{
+" klebster1's vimrc file ----- {{{
 "  thanks for visiting
 " }}}
 " Quote from 'Learn Vimscript the Hard Way' -------- {{{
-" A trick to learning something is to force yourself to use it
-" by disabling alternatives (basic remaps)
+" A trick to learning something is to force yourself to use it (in this case- remaps)
 " }}}
+
 " Default set -------- {{{
 syntax on
+set autoindent
 filetype plugin indent on
 set noerrorbells
 set shiftwidth=4
 set shiftround
 set expandtab
-"indent
-set smartindent
 "set number relativenumber
 set nu nornu
 " don't wrap lines
@@ -74,6 +72,7 @@ nnoremap <leader>o :only<cr>
 nnoremap <leader>vx :Vex<cr>
 nnoremap <leader>sx :Sex<cr>
 " }}}
+
 " Leader Plugin Remaps --------- {{{
 "" undotree side explorer
 nnoremap <leader>u :UndotreeShow<CR>
@@ -96,6 +95,7 @@ nnoremap <leader>srn :set relativenumber!<cr>
 nnoremap <leader>sw :set wrap!<cr>
 nnoremap <leader>sp :set paste!<cr>
 " }}}
+
 " Leader edit vimrc (basic.vim) ---- {{{
 nnoremap <leader>ev :vsplit ~/.vim_runtime/vimrcs/basic.vim<cr>
 " }}}
@@ -105,6 +105,7 @@ nnoremap <leader>ep :vsplit ~/.vim_runtime/vimrcs/plugins.vim<cr>
 " Leader source vimrc ---- {{{
 nnoremap <leader>sv :source ~/.vimrc<cr>
 " }}}
+
 " Leader quote text in Visual mode --------------- {{{
 vnoremap <leader>" :s/\%V\(.*\)\%V/"\1\"/<cr>
 vnoremap <leader>` :s/\%V\(.*\)\%V/`\1\`/<cr>
@@ -162,8 +163,8 @@ function! InsertTabWrapper()
 endfunction
 " }}}
 " Tab Remaps ---------- {{{
-inoremap <expr> <tab> InsertTabWrapper()
-inoremap <s-tab> <c-n>
+inoremap <expr> <s-tab> InsertTabWrapper()
+inoremap <tab> <c-n>
 " }}}
 " }}}
 " Custom Completion ------ {{{
@@ -179,6 +180,8 @@ function! Keyword32()
     augroup END
     set iskeyword+=32
 endfunction
+
+
 
 inoremap <c-x><c-t> <C-O>:call Keyword32()<CR><c-x><c-t>
 set thesaurus+=~/.vim_runtime/thesaurus-no-names.txt
@@ -244,6 +247,7 @@ inoremap <buffer> <C-x><C-p> <C-r>=MyComplete("/.vim_runtime/dicts/proverbs_and_
 " expand current script path
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 " }}}
+
 " settings for all files ------------------------- {{{
 "  trimwhitespace --- {{{
 fun! TrimWhitespace()
@@ -311,8 +315,8 @@ augroup END
 " }}}
 
 " OTHER NOTES: ----- {{{
-" below is some stuff that I don't currently do. I keep it incase I forget it
-" to.
+" Below is some stuff I don't currently do.
+" I keep it incase I forget how to.
 "
 " autocmd BufWritePre,BufRead *.html setlocal nowrap
 "
