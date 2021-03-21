@@ -109,7 +109,7 @@ vnoremap <leader>` :s/\%V\(.*\)\%V/`\1\`/<cr>
 vnoremap <leader>' :s/\%V\(.*\)\%V/'\1\'/<cr>
 " }}}
 " Leader write with permissions ------------- {{{
-nnoremap <leader>W :w! sudo tee %:t<cr>
+nnoremap <leader>W :w !sudo tee %:t<cr>
 " }}}
 
 " * Normal-mode remaps ---------------- {{{
