@@ -11,12 +11,10 @@ if [ ! -d "~/.vim/autoload/plug.vim" ]; then
 fi
 
 echo "set runtimepath+=~/.vim_runtime
-source ~/.vim_runtime/vimrcs/plugins.vim
-" > ~/.vimrc
+source ~/.vim_runtime/vimrcs/plugins.vim" > ~/.vimrc
 
 vim +PlugInstall +qall
 
-echo "source ~/.vim_runtime/vimrcs/basic.vim
-" >> ~/.vimrc
+echo "source ~/.vim_runtime/vimrcs/basic.vim" >> ~/.vimrc
 
 echo "Installed dependencies for vim configuration successfully."

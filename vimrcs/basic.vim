@@ -6,7 +6,7 @@
 " A trick to learning something is to force yourself to use it
 " by disabling alternatives (basic remaps)
 " }}}
-" Default set -------- {{{
+" basic settings -------- {{{
 syntax on
 filetype plugin indent on
 set noerrorbells
@@ -34,27 +34,116 @@ set wildmode=longest:list,full
 set list
 set cmdheight=1
 set shortmess+=c
-colorscheme gruvbox
 set background=dark
 set ruler
 set rulerformat=%55(%{strftime('%a\ %b\ %e\ %I:%M\ %p')}\ %5l,%-6(%c%V%)\ %P%)
 set statusline=%F
 set backspace=indent,eol,start
 "highlight Normal guibg=NONE
-" shell highlighting for bash
 if executable('rg')
     let g:rg_derive_root='true'
 endif
+
 let g:mapleader=" "
 let g:maplocalleader=";"
 set foldlevelstart=0
-" netrw tree
+" }}}
+" plugin settings
+" gruvbox --- {{{
+colorscheme gruvbox
+" }}}
+" netrw file tree settings -- {{{
 let g:netrw_banner=0
 let g:netrw_browse_split=4
 let g:netrw_altv=1
 let g:netrw_liststyle=3
 let g:netrw_list_hide=netrw_gitignore#Hide()
 " }}}
+" FZF settings ------------------ {{{
+" This is the default option:
+"   - Preview window on the right with 50% width
+"   "   - CTRL-/ will toggle preview window.
+"   " - Note that this array is passed as arguments to fzf#vim#with_preview
+"   function.
+"   " - To learn more about preview window options, see `--preview-window`
+" section of `man fzf`.
+" let g:fzf_preview_window = ['right:50%', 'ctrl-/']
+
+" Preview window on the upper side of the window with 40% height,
+" hidden by default, ctrl-/ to toggle
+" let g:fzf_preview_window = ['up:40%:hidden', 'ctrl-/']
+
+" Empty value to disable preview window altogether
+" let g:fzf_preview_window = []
+" [Buffers] Jump to the existing window if possible
+" let g:fzf_buffers_jump = 1
+"
+" " [[B]Commits] Customize the options used by 'git log':
+let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
+"
+"  " [Tags] Command to generate tags file
+" let g:fzf_tags_command = 'ctags -R'
+"
+"  " [Commands] --expect expression for directly executing the command
+" let g:fzf_commands_expect = 'alt-enter,ctrl-x'
+
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+
+" See `man fzf-tmux` for available options
+if exists('$TMUX')
+  let g:fzf_layout = { 'tmux': '-p90%,60%' }
+else
+  let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+endif
+
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, {'options': ['--layout=reverse', '--info=inline', '--preview', '~/.vim/plugged/fzf.vim/bin/preview.sh {}']}, <bang>0)
+
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview(), <bang>0)
+
+inoremap <expr> <c-x><c-f> fzf#vim#complete#path('fd')
+inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')
+"inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'window': { 'width': 0.2, 'height': 0.9, 'xoffset': 1 }})
+
+function! s:update_fzf_colors()
+  let rules =
+  \ { 'fg':      [['Normal',       'fg']],
+    \ 'bg':      [['Normal',       'bg']],
+    \ 'hl':      [['Comment',      'fg']],
+    \ 'fg+':     [['CursorColumn', 'fg'], ['Normal', 'fg']],
+    \ 'bg+':     [['CursorColumn', 'bg']],
+    \ 'hl+':     [['Statement',    'fg']],
+    \ 'info':    [['PreProc',      'fg']],
+    \ 'prompt':  [['Conditional',  'fg']],
+    \ 'pointer': [['Exception',    'fg']],
+    \ 'marker':  [['Keyword',      'fg']],
+    \ 'spinner': [['Label',        'fg']],
+    \ 'header':  [['Comment',      'fg']] }
+  let cols = []
+  for [name, pairs] in items(rules)
+    for pair in pairs
+      let code = synIDattr(synIDtrans(hlID(pair[0])), pair[1])
+      if !empty(name) && code > 0
+        call add(cols, name.':'.code)
+        break
+      endif
+    endfor
+  endfor
+  let s:orig_fzf_default_opts = get(s:, 'orig_fzf_default_opts', $FZF_DEFAULT_OPTS)
+  let $FZF_DEFAULT_OPTS = s:orig_fzf_default_opts .
+        \ empty(cols) ? '' : (' --color='.join(cols, ','))
+endfunction
+
+augroup _fzf
+  autocmd!
+  autocmd ColorScheme * call <sid>update_fzf_colors()
+augroup END
+
+" }}}
+" Leader remaps
 " Leader Window Movement Remaps --------- {{{
 nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>j :wincmd j<CR>
@@ -62,8 +151,18 @@ nnoremap <leader>k :wincmd k<CR>
 nnoremap <leader>l :wincmd l<CR>
 " }}}
 " Leader Window reize remaps --------- {{{
-nnoremap <silent> <leader>+ :vertical resize +5<CR>
-nnoremap <silent> <leader>- :vertical resize -5<CR>
+" simplify resizing splits
+if has('unix')
+    nnoremap j <C-w>-5
+    nnoremap k <C-w>+5
+    nnoremap h <C-w><5
+    nnoremap l <C-w>>5
+else
+    nnoremap <M-j> <C-w>-
+    nnoremap <M-k> <C-w>+
+    nnoremap <M-h> <C-w><
+    nnoremap <M-l> <C-w>>
+endif
 " }}}
 " Leader Window closing remaps ---------- {{{
 nnoremap <leader>o :only<cr>
@@ -78,14 +177,13 @@ nnoremap <leader>u :UndotreeShow<CR>
 "" open small side explorer
 nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 "" ripgrep PS Project Search
-nnoremap <leader>ps :Rg<SPACE>
+nnoremap <leader>ps :Rg<CR>
 " pytest on entire file
 nnoremap <leader>ptf :Pytest<SPACE>file<CR>
 " pytest check last error msg
 nnoremap <leader>ptl :Pytest<SPACE>last<CR>
 " colorschemes:
 nnoremap <leader>gb :colorscheme gruvbox<CR>
-nnoremap <leader>jb :colorscheme jellybeans<CR>
 nnoremap <leader>bd :set background=dark<CR>
 " }}}
 " Leader Set Toggle remaps ------------- {{{
@@ -111,7 +209,7 @@ vnoremap <leader>' :s/\%V\(.*\)\%V/'\1\'/<cr>
 " Leader write with permissions ------------- {{{
 nnoremap <leader>W :w !sudo tee %:t<cr>
 " }}}
-
+" modus operandi remapant
 " * Normal-mode remaps ---------------- {{{
 " use zi to disable and enable folding on the fly
 " create new + empty line below cursor in normal mode
@@ -139,6 +237,7 @@ onoremap in@ :<c-u>execute "normal! ?^.+@$\rvg_"<cr>
 onoremap an@ :<c-u>execute "normal! ?^\\S\\+@\\S\\+$\r:nohlsearch\r0vg"<cr>
 " }}}
 " * Insert mode ------------ {{{
+
 " Remap esc --------------  {{{
 inoremap jk <esc>
 
@@ -233,7 +332,7 @@ fun! MyComplete(dictfilepath, ...)
 endfun
 " }}}
 
-" Custom completion -------- {{{
+" Custom phrase and proverb completion -------- {{{
 inoremap <buffer> <C-x><C-p> <C-r>=MyComplete("/.vim_runtime/dicts/proverbs_and_common_phrases", 2)<CR>
 " }}}
 " }}}
@@ -242,7 +341,8 @@ inoremap <buffer> <C-x><C-p> <C-r>=MyComplete("/.vim_runtime/dicts/proverbs_and_
 " expand current script path
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 " }}}
-" settings for all files ------------------------- {{{
+" file settings
+" general settings files ------------------------- {{{
 "  trimwhitespace --- {{{
 fun! TrimWhitespace()
     let l:save = winsaveview()
@@ -253,18 +353,18 @@ endfun
 " Trim command ---- {{{
 augroup Trim
     autocmd!
-    autocmd BufWritePre * :call TrimWhitespace()
+    autocmd BufWritePre *.rb,*.py,*.sh,*.c,*.md :call TrimWhitespace()
 augroup END
 " }}}
 " }}}
-" C/C++ file settings ------------------------ {{{
+" c/c++ file settings ------------------------ {{{
 augroup c_file
     autocmd!
     autocmd FileType c nnoremap <buffer> <localleader>c I/*<esc>
     autocmd FileType c setl ofu=ccomplete#CompleteCpp
 augroup END
 " }}}
-" Vimscript file settings ---------------------- {{{
+" vimscript file settings ---------------------- {{{
 augroup vim_file
     autocmd!
     autocmd FileType vim nnoremap <buffer> <localleader>c I"<esc>
@@ -273,7 +373,7 @@ augroup vim_file
     autocmd FileType vim nnoremap <leader>pi :PlugInstall<CR>
 augroup END
 " }}}
-" Python File settings --------------------- {{{
+" python File settings --------------------- {{{
 augroup python_file
     autocmd!
     autocmd FileType python inoremap <buffer> <localleader>m <C-r>=MyComplete("/.vim_runtime/dicts/custom_pycompletions")<cr>
@@ -284,18 +384,12 @@ augroup python_file
     autocmd FileType python setlocal foldmethod=expr foldexpr=getline(v:lnum)=~'^\\s*#'
 augroup END
 " }}}
-" Bash File settings ----------- {{{
+" bash/sh File settings ----------- {{{
 augroup bash_file
     autocmd!
     autocmd FileType sh nnoremap <buffer> <localleader>c I#<esc>
     autocmd FileType sh nnoremap <buffer> <localleader>bb I#!/bin/bash<cr><esc>
-augroup END
-" }}}
-" Javascript file ------------------- {{{
-augroup javascript_file
-    autocmd!
-    autocmd FileType javascript :iabbrev <buffer> iff if ()<left>
-    autocmd FileType javascript BufNewFile * :write
+    autocmd FileType sh :set syn=sh
 augroup END
 " }}}
 " Markdown file settings ------------------ {{{
@@ -307,7 +401,10 @@ augroup markdown_file
     autocmd FileType markdown onoremap ah :<c-u>execute "normal! ?^[=-]\\+$\r:nohlsearch\rg_vk0"<cr>
 augroup END
 " }}}
-hi Terminal ctermbg=lightgrey ctermfg=blue guibg=black guifg=blue
+augroup json_file
+    autocmd!
+    autocmd FileType json nnoremap <buffer> <localleader>j :%!jq '.'<cr>
+
 " OTHER NOTES: ----- {{{
 " below is some stuff that I don't currently do. I keep it incase I forget it
 " to.
