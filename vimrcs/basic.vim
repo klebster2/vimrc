@@ -343,25 +343,18 @@ cnoremap %% <C-R>=expand('%:h').'/'<cr>
 " }}}
 " file settings
 " general settings files ------------------------- {{{
-"  trimwhitespace --- {{{
 fun! TrimWhitespace()
     let l:save = winsaveview()
     keeppatterns %s/\s\+$//e
     call winrestview(l:save)
 endfun
 " }}}
-" Trim command ---- {{{
-augroup Trim
-    autocmd!
-    autocmd BufWritePre *.rb,*.py,*.sh,*.c,*.md :call TrimWhitespace()
-augroup END
-" }}}
-" }}}
 " c/c++ file settings ------------------------ {{{
 augroup c_file
     autocmd!
     autocmd FileType c nnoremap <buffer> <localleader>c I/*<esc>
     autocmd FileType c setl ofu=ccomplete#CompleteCpp
+    autocmd BufWritePre :call TrimWhitespace()
 augroup END
 " }}}
 " vimscript file settings ---------------------- {{{
@@ -371,6 +364,7 @@ augroup vim_file
     autocmd FileType vim onoremap b /return<cr>
     autocmd FileType vim setlocal foldmethod=marker
     autocmd FileType vim nnoremap <leader>pi :PlugInstall<CR>
+    autocmd BufWritePre :call TrimWhitespace()
 augroup END
 " }}}
 " python File settings --------------------- {{{
@@ -382,6 +376,7 @@ augroup python_file
     autocmd FileType python :iabbrev <buffer> elif: elif:<left>
     autocmd FileType python onoremap b /return<cr>
     autocmd FileType python setlocal foldmethod=expr foldexpr=getline(v:lnum)=~'^\\s*#'
+    autocmd BufWritePre :call TrimWhitespace()
 augroup END
 " }}}
 " bash/sh File settings ----------- {{{
@@ -390,6 +385,7 @@ augroup bash_file
     autocmd FileType sh nnoremap <buffer> <localleader>c I#<esc>
     autocmd FileType sh nnoremap <buffer> <localleader>bb I#!/bin/bash<cr><esc>
     autocmd FileType sh :set syn=sh
+    autocmd BufWritePre :call TrimWhitespace()
 augroup END
 " }}}
 " Markdown file settings ------------------ {{{
@@ -399,11 +395,14 @@ augroup markdown_file
     "16 - more operator pending mappings
     autocmd FileType markdown onoremap ih :<c-u>execute "normal! ?^[=-]\\+$\r:nohlsearch\rkvg_"<cr>
     autocmd FileType markdown onoremap ah :<c-u>execute "normal! ?^[=-]\\+$\r:nohlsearch\rg_vk0"<cr>
+    autocmd BufWritePre :call TrimWhitespace()
 augroup END
 " }}}
 augroup json_file
     autocmd!
     autocmd FileType json nnoremap <buffer> <localleader>j :%!jq '.'<cr>
+    autocmd BufWritePre :call TrimWhitespace()
+augroup END
 
 " OTHER NOTES: ----- {{{
 " below is some stuff that I don't currently do. I keep it incase I forget it
