@@ -1,5 +1,4 @@
-
-"klebster1's vimrc file ----- {{{
+"klebster0's vimrc file ----- {{{
 "  thanks for visiting
 " }}}
 " Quote from 'Learn Vimscript the Hard Way' -------- {{{
@@ -50,6 +49,7 @@ let g:mapleader=" "
 let g:maplocalleader=";"
 set foldlevelstart=0
 " }}}
+
 " plugin settings
 " gruvbox --- {{{
 colorscheme gruvbox
@@ -209,9 +209,10 @@ vnoremap <leader>` :s/\%V\(.*\)\%V/`\1\`/<cr>
 vnoremap <leader>' :s/\%V\(.*\)\%V/'\1\'/<cr>
 " }}}
 " Leader write with permissions ------------- {{{
-nnoremap <leader>W :w !sudo tee %:t<cr>
+nnoremap <leader>W :w !sudo tee %<cr><cr>
 " }}}
 " modus operandi remapant
+"
 " * Normal-mode remaps ---------------- {{{
 " use zi to disable and enable folding on the fly
 " create new + empty line below cursor in normal mode
@@ -283,6 +284,7 @@ endfunction
 
 inoremap <c-x><c-t> <C-O>:call Keyword32()<CR><c-x><c-t>
 set thesaurus+=~/.vim_runtime/thesaurus-no-names.txt
+
 " Custom complete function ------------------- {{{
 fun! MyComplete(dictfilepath, ...)
     " Data from a file
@@ -336,9 +338,53 @@ fun! MyComplete(dictfilepath, ...)
 endfun
 " }}}
 
+fun! CallCompleteApi(script, ...)
+    let l:line = getline('.')
+    let l:start = col('.')
+
+    while l:start > 0 && l:line[l:start - 1] =~ '\a'
+        let l:start -= 1
+        echom l:start
+    endwhile
+
+    let l:base = l:line[l:start : col('.')-1]
+
+    let l:res = []
+    echom l:script
+
+    execute 'silent !'.$HOME.a:script.' '.l:base.' &' | redraw!
+
+    let l:data = readfile($HOME.a:1, '')
+    echom l:data
+    " Find matches
+"    for m in l:data
+        " Check if it matches what we're trying to complete; in this case we
+        " want to match against the start of both the first and second list
+        " entries (i.e. the name and email address)
+        " match, see :help complete() for the full docs on the key names
+        " for this dict.
+"        call add(l:res, {
+"            \ 'icase': 1,
+"            \ 'word': l:m,
+"            \ 'abbr': l:m,
+"            \ 'menu': 'placeholder',
+"            \ 'info': 'placeholder',
+"        \ })
+"    endfor
+
+    " Now call the complete() function
+    call complete(l:start + 1, l:res)
+    return ''
+endfun
+":
 " Custom phrase and proverb completion -------- {{{
 inoremap <buffer> <C-x><C-p> <C-r>=MyComplete("/.vim_runtime/dicts/proverbs_and_common_phrases", 2)<CR>
 " }}}
+"inoremap <buffer> <C-x><C-s> <C-r>=CallCompleteApi("/.vim_runtime/searchrhymezone_api.sh", "/.vim_runtime/rhymezone_wordlist_pretty")
+" }}}
+" Random commit message --- {{{
+nnoremap <buffer> <leader>q :r!curl -s 'http://whatthecommit.com/index.txt'<cr>
+
 " }}}
 " }}}
 " * Command mode mappings -------------- {{{

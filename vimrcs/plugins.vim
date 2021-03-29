@@ -13,14 +13,12 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'mbbill/undotree'
 " pytest
 Plug 'alfredodeza/pytest.vim'
-Plug 'sheerun/vim-polyglot'
-Plug 'chriskempson/base16-vim'
-" c# completion
-Plug 'OmniSharp/omnisharp-vim'
 " mql4
 Plug 'vobornik/vim-mql4'
 " telescope requirements
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-rooter'
+" vim-tmux navigator
+Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
