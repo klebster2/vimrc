@@ -178,6 +178,10 @@ nnoremap <leader>sx :Sex<cr>
 nnoremap <leader>u :UndotreeShow<CR>
 "" open small side explorer
 nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
+"" open small side explorer
+nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
+"" Preview markdown
+nnoremap <leader>pm :PreviewMarkdown<CR>
 "" ripgrep PS Project Search
 nnoremap <leader>ps :Rg<CR>
 " pytest on entire file
@@ -187,6 +191,10 @@ nnoremap <leader>ptl :Pytest<SPACE>last<CR>
 " colorschemes:
 nnoremap <leader>gb :colorscheme gruvbox<CR>
 nnoremap <leader>bd :set background=dark<CR>
+" git-fugitive:
+nnoremap <leader>gh :diffget //3<CR>
+nnoremap <leader>gu :diffget //2<CR>
+nnoremap <leader>gs :G<CR>
 " }}}
 " Leader Set Toggle remaps ------------- {{{
 nnoremap <leader>sn :set number!<cr>

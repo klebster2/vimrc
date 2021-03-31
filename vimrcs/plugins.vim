@@ -15,10 +15,12 @@ Plug 'mbbill/undotree'
 Plug 'alfredodeza/pytest.vim'
 " mql4
 Plug 'vobornik/vim-mql4'
-" telescope requirements
+" fzf
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-rooter'
 " vim-tmux navigator
 Plug 'christoomey/vim-tmux-navigator'
+" markdown
+Plug 'skanehira/preview-markdown.vim'
 call plug#end()
