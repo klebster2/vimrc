@@ -108,6 +108,8 @@ command! -bang -nargs=* Rg
 
 inoremap <expr> <c-x><c-f> fzf#vim#complete#path('fd')
 inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')
+nnoremap <leader>f :Files<cr>
+nnoremap <leader>F :FZF .<cr>
 "inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'window': { 'width': 0.2, 'height': 0.9, 'xoffset': 1 }})
 
 function! s:update_fzf_colors()
@@ -191,7 +193,7 @@ nnoremap <leader>ptl :Pytest<SPACE>last<CR>
 " colorschemes:
 nnoremap <leader>gb :colorscheme gruvbox<CR>
 nnoremap <leader>bd :set background=dark<CR>
-" git-fugitive:
+" vim-fugitive:
 nnoremap <leader>gh :diffget //3<CR>
 nnoremap <leader>gu :diffget //2<CR>
 nnoremap <leader>gs :G<CR>
