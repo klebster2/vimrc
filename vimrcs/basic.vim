@@ -47,7 +47,8 @@ if executable('rg')
 endif
 let g:mapleader=" "
 let g:maplocalleader=";"
-set foldlevelstart=0
+set foldlevelstart=1
+"set foldcolumn=0
 " netrw tree
 let g:netrw_banner=0
 let g:netrw_browse_split=4
@@ -105,6 +106,12 @@ nnoremap <leader>ep :vsplit ~/.vim_runtime/vimrcs/plugins.vim<cr>
 " Leader source vimrc ---- {{{
 nnoremap <leader>sv :source ~/.vimrc<cr>
 " }}}
+" Leader disregard tab (delete tab) ---- {{{
+nnoremap <leader>qq :quit<cr>
+" }}}
+" Leader disregard tab (delete tab) ---- {{{
+nnoremap <leader>ss :hsplit<cr>
+" }}}
 
 " Leader quote text in Visual mode --------------- {{{
 vnoremap <leader>" :s/\%V\(.*\)\%V/"\1\"/<cr>
@@ -112,7 +119,7 @@ vnoremap <leader>` :s/\%V\(.*\)\%V/`\1\`/<cr>
 vnoremap <leader>' :s/\%V\(.*\)\%V/'\1\'/<cr>
 " }}}
 " Leader write with permissions ------------- {{{
-nnoremap <leader>W :w! sudo tee %:t<cr>
+cnoremap w!! w !sudo tee > /dev/null %
 " }}}
 
 " * Normal-mode remaps ---------------- {{{
