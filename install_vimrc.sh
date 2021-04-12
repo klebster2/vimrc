@@ -28,8 +28,7 @@ if [ ! -d "~/.vim/autoload/plug.vim" ]; then
 fi
 
 echo "set runtimepath+=~/.vim_runtime
-source ~/.vim_runtime/vimrcs/plugins.vim
-" > ~/.vimrc
+source ~/.vim_runtime/vimrcs/plugins.vim" > ~/.vimrc
 
 echo "Installing Plugins..."
 

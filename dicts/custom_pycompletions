@@ -3,8 +3,8 @@ yield
 json
 import
 from
-argparse.ArgumentParser
-p.add_argument
+argparse.ArgumentParser()
+p.add_argument()
 __future__
 collections
 defaultdict
@@ -71,5 +71,7 @@ Generator
 Set
 Sequence
 Tuple
-urllib.request
+urllib.request()
+request()
 urlopen
+pdb.set_trace()
