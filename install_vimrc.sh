@@ -35,7 +35,6 @@ echo "Installing Plugins..."
 
 vim +PlugInstall +qall
 
-
 echo "source ~/.vim_runtime/vimrcs/basic.vim" >> ~/.vimrc
 
 echo "Installed dependencies for vim configuration successfully."
