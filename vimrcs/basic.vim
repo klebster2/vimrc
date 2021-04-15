@@ -7,7 +7,7 @@
 " by disabling alternatives (basic remaps)
 " }}}
 " basic settings -------- {{{
-"syntax on
+syntax on
 filetype plugin indent on
 set noerrorbells
 set shiftwidth=4
@@ -44,7 +44,7 @@ if executable('rg')
     let g:rg_derive_root='true'
 endif
 " bash syn
-let b:is_bash = 1 | setfiletype sh
+let g:is_bash = 1 | setfiletype sh
 
 let g:mapleader=" "
 let g:maplocalleader=";"
