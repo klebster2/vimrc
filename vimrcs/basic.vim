@@ -45,6 +45,7 @@ set backspace=indent,eol,start
 if executable('rg')
     let g:rg_derive_root='true'
 endif
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-file -oc --exclude-standard']
 let g:mapleader=" "
 let g:maplocalleader=";"
 set foldlevelstart=0
@@ -259,7 +260,7 @@ augroup END
 augroup bash_file
     autocmd!
     autocmd FileType sh nnoremap <buffer> <localleader>c I#<esc>
-    autocmd FileType sh nnoremap <buffer> <localleader>bb I#!/bin/bash<cr><esc>
+    autocmd FileType sh nnoremap <buffer> <localleader>b I#!/bin/bash<cr><esc>
 augroup END
 " }}}
 " Javascript file ------------------- {{{
