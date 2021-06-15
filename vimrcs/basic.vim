@@ -1,20 +1,18 @@
-" klebster2's vimrc file ----- {{{
+" klebster1's vimrc file ----- {{{
 "  thanks for visiting
 " }}}
 " Quote from 'Learn Vimscript the Hard Way' -------- {{{
-" A trick to learning something is to force yourself to use it
-" by disabling alternatives (basic remaps)
+" A trick to learning something is to force yourself to use it (in this case- remaps)
 " }}}
 
 " Default set -------- {{{
 syntax on
+set autoindent
 filetype plugin indent on
 set noerrorbells
 set shiftwidth=4
 set shiftround
 set expandtab
-"indent
-set smartindent
 "set number relativenumber
 set nu nornu
 " don't wrap lines
@@ -34,21 +32,27 @@ set wildmode=longest:list,full
 set list
 set cmdheight=1
 set shortmess+=c
-colorscheme gruvbox
 set background=dark
+colorscheme gruvbox
 set ruler
 set rulerformat=%55(%{strftime('%a\ %b\ %e\ %I:%M\ %p')}\ %5l,%-6(%c%V%)\ %P%)
 set statusline=%F
 set backspace=indent,eol,start
 "highlight Normal guibg=NONE
 " shell highlighting for bash
+let b:is_bash = 1
+set ft=sh
 if executable('rg')
     let g:rg_derive_root='true'
 endif
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-file -oc --exclude-standard']
+" bash syn
+let g:is_bash = 1 | setfiletype sh
+
 let g:mapleader=" "
 let g:maplocalleader=";"
-set foldlevelstart=0
+set foldlevelstart=1
+"set foldcolumn=0
 " netrw tree
 let g:netrw_banner=0
 let g:netrw_browse_split=4
@@ -57,6 +61,7 @@ let g:netrw_liststyle=3
 let g:netrw_list_hide=netrw_gitignore#Hide()
 " }}}
 
+" Leader remaps ---- {{{
 " Leader Window Movement Remaps --------- {{{
 nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>j :wincmd j<CR>
@@ -64,8 +69,18 @@ nnoremap <leader>k :wincmd k<CR>
 nnoremap <leader>l :wincmd l<CR>
 " }}}
 " Leader Window reize remaps --------- {{{
-nnoremap <silent> <leader>+ :vertical resize +5<CR>
-nnoremap <silent> <leader>- :vertical resize -5<CR>
+" simplify resizing splits
+if has('unix')
+    nnoremap j <C-w>-5
+    nnoremap k <C-w>+5
+    nnoremap h <C-w><5
+    nnoremap l <C-w>>5
+else
+    nnoremap <M-j> <C-w>-
+    nnoremap <M-k> <C-w>+
+    nnoremap <M-h> <C-w><
+    nnoremap <M-l> <C-w>>
+endif
 " }}}
 " Leader Window closing remaps ---------- {{{
 nnoremap <leader>o :only<cr>
@@ -74,21 +89,31 @@ nnoremap <leader>o :only<cr>
 nnoremap <leader>vx :Vex<cr>
 nnoremap <leader>sx :Sex<cr>
 " }}}
+" }}}
+
 " Leader Plugin Remaps --------- {{{
 "" undotree side explorer
 nnoremap <leader>u :UndotreeShow<CR>
 "" open small side explorer
 nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
+"" open small side explorer
+nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
+"" Preview markdown
+nnoremap <leader>pm :PreviewMarkdown<CR>
 "" ripgrep PS Project Search
-nnoremap <leader>ps :Rg<SPACE>
+nnoremap <leader>ps :Rg<CR>
+let g:rg_command = 'rg --vimgrep -S'
 " pytest on entire file
 nnoremap <leader>ptf :Pytest<SPACE>file<CR>
 " pytest check last error msg
 nnoremap <leader>ptl :Pytest<SPACE>last<CR>
 " colorschemes:
 nnoremap <leader>gb :colorscheme gruvbox<CR>
-nnoremap <leader>jb :colorscheme jellybeans<CR>
 nnoremap <leader>bd :set background=dark<CR>
+" vim-fugitive:
+nnoremap <leader>gh :diffget //3<CR>
+nnoremap <leader>gu :diffget //2<CR>
+nnoremap <leader>gs :G<CR>
 " }}}
 " Leader Set Toggle remaps ------------- {{{
 nnoremap <leader>sn :set number!<cr>
@@ -96,6 +121,7 @@ nnoremap <leader>srn :set relativenumber!<cr>
 nnoremap <leader>sw :set wrap!<cr>
 nnoremap <leader>sp :set paste!<cr>
 " }}}
+
 " Leader edit vimrc (basic.vim) ---- {{{
 nnoremap <leader>ev :vsplit ~/.vim_runtime/vimrcs/basic.vim<cr>
 " }}}
@@ -105,15 +131,22 @@ nnoremap <leader>ep :vsplit ~/.vim_runtime/vimrcs/plugins.vim<cr>
 " Leader source vimrc ---- {{{
 nnoremap <leader>sv :source ~/.vimrc<cr>
 " }}}
+" Leader disregard tab (delete tab) ---- {{{
+nnoremap <leader>qq :quit<cr>
+" }}}
+" Leader disregard tab (delete tab) ---- {{{
+nnoremap <leader>ss :hsplit<cr>
+" }}}
+
 " Leader quote text in Visual mode --------------- {{{
 vnoremap <leader>" :s/\%V\(.*\)\%V/"\1\"/<cr>
 vnoremap <leader>` :s/\%V\(.*\)\%V/`\1\`/<cr>
 vnoremap <leader>' :s/\%V\(.*\)\%V/'\1\'/<cr>
 " }}}
 " Leader write with permissions ------------- {{{
-nnoremap <leader>W :w! sudo tee %:t<cr>
+cnoremap w!! w !sudo tee > /dev/null %
 " }}}
-
+"
 " * Normal-mode remaps ---------------- {{{
 " use zi to disable and enable folding on the fly
 " create new + empty line below cursor in normal mode
@@ -141,8 +174,10 @@ onoremap in@ :<c-u>execute "normal! ?^.+@$\rvg_"<cr>
 onoremap an@ :<c-u>execute "normal! ?^\\S\\+@\\S\\+$\r:nohlsearch\r0vg"<cr>
 " }}}
 " * Insert mode ------------ {{{
+
 " Remap esc --------------  {{{
 inoremap jk <esc>
+
 " }}}
 " Autocomplete tab functionality ---- {{{
 " InsertTabWrapper ------- {{{
@@ -160,60 +195,23 @@ function! InsertTabWrapper()
     endif
 endfunction
 " }}}
+
 " Tab Remaps ---------- {{{
-inoremap <expr> <tab> InsertTabWrapper()
-inoremap <s-tab> <c-n>
+inoremap <expr> <s-tab> InsertTabWrapper()
+inoremap <tab> <c-n>
 " }}}
+
 " }}}
-" Custom Completion ------ {{{
-" Custom complete function ------------------- {{{
-fun! MyComplete(dictfilepath)
-    " The data. In this example it's static, but you could read it from a file,
-    " get it from a command, etc.
-    let l:data = readfile($HOME.a:dictfilepath, '')
-    " Locate the start of the word and store the text we want to match in l:base
-    let l:line = getline('.')
-    let l:start = col('.') - 1
-    while l:start > 0 && l:line[l:start - 1] =~ '\a'
-        let l:start -= 1
-    endwhile
-    let l:base = l:line[l:start : col('.')-1]
-    " Record what matches − we pass this to complete() later
-    let l:res = []
-    " Find matches
-    for m in l:data
-        " Check if it matches what we're trying to complete; in this case we
-        " want to match against the start of both the first and second list
-        " entries (i.e. the name and email address)
-        if l:m !~? '^' . l:base
-            " no match
-            continue
-        endif
-        " match, see :help complete() for the full docs on the key names
-        " for this dict.
-        call add(l:res, {
-            \ 'icase': 1,
-            \ 'word': l:m,
-            \ 'abbr': l:m,
-            \ 'menu': 'placeholder',
-            \ 'info': 'placeholder',
-        \ })
-    endfor
-    " Now call the complete() function
-    call complete(l:start + 1, l:res)
-    return ''
-endfun
-"
-" }}}
-" Custom completion -------- {{{
-inoremap <buffer> <leader><C-m> <C-r>=MyComplete("/.vim_runtime/dicts/idioms")<CR>
-" }}}
+" Random commit message --- {{{
+nnoremap <buffer> <leader>q :r!curl -s 'http://whatthecommit.com/index.txt'<cr>
+
 " }}}
 " }}}
 " * Command mode mappings -------------- {{{
 " expand current script path
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 " }}}
+
 " settings for all files ------------------------- {{{
 "  trimwhitespace --- {{{
 fun! TrimWhitespace()
@@ -222,21 +220,14 @@ fun! TrimWhitespace()
     call winrestview(l:save)
 endfun
 " }}}
-" Trim command ---- {{{
-augroup Trim
-    autocmd!
-    autocmd BufWritePre * :call TrimWhitespace()
-augroup END
-" }}}
-" }}}
-" C/C++ file settings ------------------------ {{{
+" c/c++ file settings ------------------------ {{{
 augroup c_file
     autocmd!
     autocmd FileType c nnoremap <buffer> <localleader>c I/*<esc>
     autocmd FileType c setl ofu=ccomplete#CompleteCpp
 augroup END
 " }}}
-" Vimscript file settings ---------------------- {{{
+" vimscript file settings ---------------------- {{{
 augroup vim_file
     autocmd!
     autocmd FileType vim nnoremap <buffer> <localleader>c I"<esc>
@@ -245,7 +236,7 @@ augroup vim_file
     autocmd FileType vim nnoremap <leader>pi :PlugInstall<CR>
 augroup END
 " }}}
-" Python File settings --------------------- {{{
+" python File settings --------------------- {{{
 augroup python_file
     autocmd!
     autocmd FileType python inoremap <buffer> <localleader>m <C-r>=MyComplete("/.vim_runtime/dicts/custom_pycompletions")<cr>
@@ -256,10 +247,11 @@ augroup python_file
     autocmd FileType python setlocal foldmethod=expr foldexpr=getline(v:lnum)=~'^\\s*#'
 augroup END
 " }}}
-" Bash File settings ----------- {{{
-augroup bash_file
+" bash/sh File settings ----------- {{{
+augroup sh_file
     autocmd!
     autocmd FileType sh nnoremap <buffer> <localleader>c I#<esc>
+<<<<<<< HEAD
     autocmd FileType sh nnoremap <buffer> <localleader>b I#!/bin/bash<cr><esc>
 augroup END
 " }}}
@@ -268,6 +260,10 @@ augroup javascript_file
     autocmd!
     autocmd FileType javascript :iabbrev <buffer> iff if ()<left>
     autocmd FileType javascript BufNewFile * :write
+=======
+    autocmd FileType sh nnoremap <buffer> <localleader>bb I#!/bin/bash<cr><esc>
+    " use bash by default
+>>>>>>> d98bc95ccf54d6e21b7613d877791203c9da0691
 augroup END
 " }}}
 " Markdown file settings ------------------ {{{
@@ -279,10 +275,14 @@ augroup markdown_file
     autocmd FileType markdown onoremap ah :<c-u>execute "normal! ?^[=-]\\+$\r:nohlsearch\rg_vk0"<cr>
 augroup END
 " }}}
+augroup json_file
+    autocmd!
+    autocmd FileType json nnoremap <buffer> <localleader>j :%!jq '.'<cr>
+augroup END
 
 " OTHER NOTES: ----- {{{
-" below is some stuff that I don't currently do. I keep it incase I forget it
-" to.
+" Below is some stuff I don't currently do.
+" I keep it incase I forget how to.
 "
 " autocmd BufWritePre,BufRead *.html setlocal nowrap
 "
