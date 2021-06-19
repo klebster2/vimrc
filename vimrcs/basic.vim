@@ -251,21 +251,10 @@ augroup END
 augroup sh_file
     autocmd!
     autocmd FileType sh nnoremap <buffer> <localleader>c I#<esc>
-<<<<<<< HEAD
     autocmd FileType sh nnoremap <buffer> <localleader>b I#!/bin/bash<cr><esc>
 augroup END
 " }}}
-" Javascript file ------------------- {{{
-augroup javascript_file
-    autocmd!
-    autocmd FileType javascript :iabbrev <buffer> iff if ()<left>
-    autocmd FileType javascript BufNewFile * :write
-=======
-    autocmd FileType sh nnoremap <buffer> <localleader>bb I#!/bin/bash<cr><esc>
-    " use bash by default
->>>>>>> d98bc95ccf54d6e21b7613d877791203c9da0691
-augroup END
-" }}}
+" use bash by default
 " Markdown file settings ------------------ {{{
 augroup markdown_file
     autocmd!
