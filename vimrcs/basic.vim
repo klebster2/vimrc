@@ -96,10 +96,6 @@ nnoremap <leader>sx :Sex<cr>
 nnoremap <leader>u :UndotreeShow<CR>
 "" open small side explorer
 nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
-"" open small side explorer
-nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
-"" Preview markdown
-nnoremap <leader>pm :PreviewMarkdown<CR>
 "" ripgrep PS Project Search
 nnoremap <leader>ps :Rg<CR>
 let g:rg_command = 'rg --vimgrep -S'
@@ -122,8 +118,14 @@ nnoremap <leader>sw :set wrap!<cr>
 nnoremap <leader>sp :set paste!<cr>
 " }}}
 
+nnoremap <leader>rz
+    \ :!$HOME/.vim_runtime/assistive-writing-apis/searchrhymezone_api.sh "<cword>"
+    \ <cr> :vs $HOME/.vim_runtime/assistive-writing-apis/rhymezone_wordlist.elp<cr>
+    \ <c-w><c-r>
+
 " Leader edit vimrc (basic.vim) ---- {{{
 nnoremap <leader>ev :vsplit ~/.vim_runtime/vimrcs/basic.vim<cr>
+nnoremap <leader>eV :e ~/.vim_runtime/vimrcs/basic.vim<cr>
 " }}}
 " Leader edit vimrc plugins (plugins.vim) ---- {{{
 nnoremap <leader>ep :vsplit ~/.vim_runtime/vimrcs/plugins.vim<cr>
@@ -137,7 +139,9 @@ nnoremap <leader>qq :quit<cr>
 " Leader disregard tab (delete tab) ---- {{{
 nnoremap <leader>ss :hsplit<cr>
 " }}}
-
+" search rhymezoneapi in visual mode --------------- {{{
+vnoremap <leader>rz :terminal ./searchrhymezone_api.sh "%V"
+" }}}
 " Leader quote text in Visual mode --------------- {{{
 vnoremap <leader>" :s/\%V\(.*\)\%V/"\1\"/<cr>
 vnoremap <leader>` :s/\%V\(.*\)\%V/`\1\`/<cr>
@@ -269,6 +273,11 @@ augroup json_file
     autocmd FileType json nnoremap <buffer> <localleader>j :%!jq '.'<cr>
 augroup END
 
+augroup elp_file
+    autocmd!
+    autocmd FileType elp highlight matchQuery term=bold gui=bold guifg=Magenta cterm=bold ctermfg=red guifg=#fabd2f Conceal Ignore /\*/
+
+augroup END
 " OTHER NOTES: ----- {{{
 " Below is some stuff I don't currently do.
 " I keep it incase I forget how to.

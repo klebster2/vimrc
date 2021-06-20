@@ -1,10 +1,9 @@
 #!/bin/bash
-set -e
+set -xe
 echo "Starting vimrc setup..."
 
-sudo apt-get update 
-sudo apt-get install build-essential cmake neovim curl python3-dev jq fzf \
-    ripgrep -y
+#sudo apt-get update 
+sudo apt-get install build-essential cmake neovim curl python3-dev jq -y
 
 printf "Checking for ~/.new_words..."
 if [ -d ~/.new_words ]; then
@@ -26,24 +25,28 @@ mkdir -p ~/.vim/undodir
 
 echo "curling vim plug"
 if [ ! -f "~/.vim/autoload/plug.vim" ]; then
-    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    curl -fLo ${HOME}/.local/share/nvim/site/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
-echo "neovim creating plug symlink for neovim"
-if [ ! -f "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" ]; then 
-    ln -s "~/.vim/autoload/plug.vim" \
-        "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim"
-fi
-
-
-if $(cat /etc/os-release | grep ID_LIKE | cut -d '=' -f2 | grep -q "debian"); then
-    curl -LO "https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb"
-    sudo dpkg -i "ripgrep_12.1.1_amd64.deb"
-    rm "ripgrep_12.1.1_amd64.deb"
+if (cat /etc/os-release | grep ID_LIKE | cut -d '=' -f2 | grep -q "debian"); then
+    if (dpkg --print-architecture | grep -q arm) && [ ! -e ripgrep-13.0.0-arm-unknown-linux-gnueabihf ]; then
+        mkdir ripgrep-13.0.0-arm-unknown-linux-gnueabihf
+        curl -LO "https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep-13.0.0-arm-unknown-linux-gnueabihf.tar.gz"
+        tar -xf "ripgrep-13.0.0-arm-unknown-linux-gnueabihf.tar.gz"
+    elif (dpkg --print-architecture | grep -q amd); then
+        sudo apt-get install fzf -y
+        curl -LO "https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb"
+        sudo dpkg -i "ripgrep_12.1.1_amd64.deb"
+        rm "ripgrep_12.1.1_amd64.deb"
+    fi
 else
     echo "OS not known. Did not install ripgrep."
 fi
+mkdir -p $HOME/.config/nvim/{ftdetect,syntax}
+
+ln -s $HOME/.vim_runtime/vimrcs/ftdetect/elp.vim $HOME/.config/nvim/ftdetect/elp.vim
+ln -s $HOME/.vim_runtime/vimrcs/syntax/elp.vim $HOME/.config/nvim/syntax/elp.vim
 
 echo "setting up vim"
 echo "set runtimepath+=~/.vim_runtime
