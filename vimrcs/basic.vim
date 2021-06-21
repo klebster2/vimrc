@@ -213,6 +213,9 @@ nnoremap <leader>ep :vsplit ~/.vim_runtime/vimrcs/plugins.vim<cr>
 " Leader source vimrc ---- {{{
 nnoremap <leader>sv :source ~/.vimrc<cr>
 " }}}
+" Leader source vimrc ---- {{{
+nnoremap <leader>sb :set scrollbind!<cr>
+" }}}
 " Leader disregard tab (delete tab) ---- {{{
 nnoremap <leader>qq :quit<cr>
 " }}}
@@ -468,6 +471,17 @@ augroup json_file
     autocmd FileType json nnoremap <buffer> <localleader>j :%!jq '.'<cr>
 augroup END
 
+highlight Errors   ctermfg=red guifg=#fb4934
+"highlight Correct  ctermfg=green guifg=#b8bb26
+"highlight TokenError ctermfg=red guifg=#fb4934
+"highlight ErrorsStat   ctermfg=red guifg=#83a598
+"highlight CorrectStat  ctermfg=green guifg=#83a598
+
+"highlight Header ctermfg=red guifg=#fabd2f
+highlight Sent ctermfg=red guifg=#fabd2f
+highlight Int ctermfg=red guifg=#d3869b
+"highlight ErrorsStat   ctermfg=red guifg=#fb4934
+"highlight CorrectStat  ctermfg=green guifg=#b8bb26
 " OTHER NOTES: ----- {{{
 " Below is some stuff I don't currently do.
 " I keep it incase I forget how to.
