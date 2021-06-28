@@ -45,7 +45,6 @@ command! -bang -nargs=* Rg
 
 inoremap <expr> <c-x><c-f> fzf#vim#complete#path('fd')
 inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')
-
 nnoremap <leader>f :Files<cr>
 nnoremap <leader>F :FZF .<cr>
 "inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'window': { 'width': 0.2, 'height': 0.9, 'xoffset': 1 }})

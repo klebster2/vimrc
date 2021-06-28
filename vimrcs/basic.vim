@@ -34,6 +34,7 @@ set list
 set cmdheight=1
 set shortmess+=c
 set background=dark
+colorscheme gruvbox
 set ruler
 set rulerformat=%55(%{strftime('%a\ %b\ %e\ %I:%M\ %p')}\ %5l,%-6(%c%V%)\ %P%)
 set statusline=%F
@@ -45,9 +46,11 @@ set ft=sh
 if executable('rg')
     let g:rg_derive_root='true'
 endif
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-file -oc --exclude-standard']
 " bash syn
-let b:is_bash = 1 | setfiletype sh
 colorscheme gruvbox
+let g:is_bash = 1 | setfiletype sh
+
 let g:mapleader=" "
 let g:maplocalleader=";"
 set foldlevelstart=1
@@ -60,7 +63,7 @@ let g:netrw_liststyle=3
 let g:netrw_list_hide=netrw_gitignore#Hide()
 " }}}
 
-" Leader remaps
+" Leader remaps ---- {{{
 " Leader Window Movement Remaps --------- {{{
 nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>j :wincmd j<CR>
@@ -91,18 +94,16 @@ nnoremap <leader>o :only<cr>
 nnoremap <leader>vx :Vex<cr>
 nnoremap <leader>sx :Sex<cr>
 " }}}
+" }}}
 
 " Leader Plugin Remaps --------- {{{
 "" undotree side explorer
 nnoremap <leader>u :UndotreeShow<CR>
 "" open small side explorer
 nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
-"" open small side explorer
-nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
-"" Preview markdown
-nnoremap <leader>pm :PreviewMarkdown<CR>
 "" ripgrep PS Project Search
 nnoremap <leader>ps :Rg<CR>
+let g:rg_command = 'rg --vimgrep -S'
 " pytest on entire file
 nnoremap <leader>ptf :Pytest<SPACE>file<CR>
 " pytest check last error msg
@@ -122,8 +123,14 @@ nnoremap <leader>sw :set wrap!<cr>
 nnoremap <leader>sp :set paste!<cr>
 " }}}
 
+nnoremap <leader>rz
+    \ :!$HOME/.vim_runtime/assistive-writing-apis/searchrhymezone_api.sh "<cword>"
+    \ <cr> :vs $HOME/.vim_runtime/assistive-writing-apis/rhymezone_wordlist.elp<cr>
+    \ <c-w><c-r>
+
 " Leader edit vimrc (basic.vim) ---- {{{
 nnoremap <leader>ev :vsplit ~/.vim_runtime/vimrcs/basic.vim<cr>
+nnoremap <leader>eV :e ~/.vim_runtime/vimrcs/basic.vim<cr>
 " }}}
 " Leader edit vimrc plugins (plugins.vim) ---- {{{
 nnoremap <leader>ep :vsplit ~/.vim_runtime/vimrcs/plugins.vim<cr>
@@ -131,13 +138,18 @@ nnoremap <leader>ep :vsplit ~/.vim_runtime/vimrcs/plugins.vim<cr>
 " Leader source vimrc ---- {{{
 nnoremap <leader>sv :source ~/.vimrc<cr>
 " }}}
+" Leader source vimrc ---- {{{
+nnoremap <leader>sb :set scrollbind!<cr>
+" }}}
 " Leader disregard tab (delete tab) ---- {{{
 nnoremap <leader>qq :quit<cr>
 " }}}
 " Leader disregard tab (delete tab) ---- {{{
 nnoremap <leader>ss :hsplit<cr>
 " }}}
-
+" search rhymezoneapi in visual mode --------------- {{{
+vnoremap <leader>rz :terminal ./searchrhymezone_api.sh "%V"
+" }}}
 " Leader quote text in Visual mode --------------- {{{
 vnoremap <leader>" :s/\%V\(.*\)\%V/"\1\"/<cr>
 vnoremap <leader>` :s/\%V\(.*\)\%V/`\1\`/<cr>
@@ -146,7 +158,6 @@ vnoremap <leader>' :s/\%V\(.*\)\%V/'\1\'/<cr>
 " Leader write with permissions ------------- {{{
 cnoremap w!! w !sudo tee > /dev/null %
 " }}}
-" modus operandi remapant
 "
 " * Normal-mode remaps ---------------- {{{
 " use zi to disable and enable folding on the fly
@@ -368,10 +379,10 @@ augroup END
 augroup sh_file
     autocmd!
     autocmd FileType sh nnoremap <buffer> <localleader>c I#<esc>
-    autocmd FileType sh nnoremap <buffer> <localleader>bb I#!/bin/bash<cr><esc>
-    " use bash by default
+    autocmd FileType sh nnoremap <buffer> <localleader>b I#!/bin/bash<cr><esc>
 augroup END
 " }}}
+" use bash by default
 " Markdown file settings ------------------ {{{
 augroup markdown_file
     autocmd!
@@ -384,6 +395,23 @@ augroup END
 augroup json_file
     autocmd!
     autocmd FileType json nnoremap <buffer> <localleader>j :%!jq '.'<cr>
+augroup END
+
+highlight Errors   ctermfg=red guifg=#fb4934
+"highlight Correct  ctermfg=green guifg=#b8bb26
+"highlight TokenError ctermfg=red guifg=#fb4934
+"highlight ErrorsStat   ctermfg=red guifg=#83a598
+"highlight CorrectStat  ctermfg=green guifg=#83a598
+
+"highlight Header ctermfg=red guifg=#fabd2f
+highlight Sent ctermfg=red guifg=#fabd2f
+highlight Int ctermfg=red guifg=#d3869b
+"highlight ErrorsStat   ctermfg=red guifg=#fb4934
+"highlight CorrectStat  ctermfg=green guifg=#b8bb26
+
+augroup elp_file
+    autocmd!
+    autocmd FileType elp highlight matchQuery term=bold gui=bold guifg=Magenta cterm=bold ctermfg=red guifg=#fabd2f Conceal Ignore /\*/
 augroup END
 
 " OTHER NOTES: ----- {{{
