@@ -1,4 +1,5 @@
 #!/bin/bash
+
 curl -s -o ~/.vim_runtime/rhymezone_wordlist \
     "https://api.rhymezone.com/words?max=600&nonorm=1&k=rz_wke&rel_wke=$1"
 
