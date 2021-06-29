@@ -1,3 +1,4 @@
+
 " Custom Completion ------ {{{
 function! Keyword32()
     let s:saved_iskeyword = &iskeyword
