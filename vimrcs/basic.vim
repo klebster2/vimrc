@@ -1,6 +1,7 @@
 " klebster1's vimrc file ----- {{{
 "  thanks for visiting
 " }}}
+
 " Quote from 'Learn Vimscript the Hard Way' -------- {{{
 " A trick to learning something is to force yourself to use it (in this case- remaps)
 " }}}
@@ -89,6 +90,9 @@ nnoremap <leader>o :only<cr>
 nnoremap <leader>vx :Vex<cr>
 nnoremap <leader>sx :Sex<cr>
 " }}}
+nnoremap <leader>tp :tabprev<cr>
+nnoremap <leader>tn :tabnext<cr>
+nnoremap <leader>tt :tabnew<cr>
 " }}}
 
 " Leader Plugin Remaps --------- {{{
@@ -118,10 +122,14 @@ nnoremap <leader>sw :set wrap!<cr>
 nnoremap <leader>sp :set paste!<cr>
 " }}}
 
+" elp remaps ---- {{{
 nnoremap <leader>rz
     \ :!$HOME/.vim_runtime/assistive-writing-apis/searchrhymezone_api.sh "<cword>"
     \ <cr> :vs $HOME/.vim_runtime/assistive-writing-apis/rhymezone_wordlist.elp<cr>
+    \ :vs $HOME/.vim_runtime/assistive-writing-apis/ngrams3.elp<cr>
+    \ :vs $HOME/.vim_runtime/assistive-writing-apis/ngrams2.elp<cr>
     \ <c-w><c-r>
+" }}}
 
 " Leader edit vimrc (basic.vim) ---- {{{
 nnoremap <leader>ev :vsplit ~/.vim_runtime/vimrcs/basic.vim<cr>
@@ -131,7 +139,7 @@ nnoremap <leader>eV :e ~/.vim_runtime/vimrcs/basic.vim<cr>
 nnoremap <leader>ep :vsplit ~/.vim_runtime/vimrcs/plugins.vim<cr>
 " }}}
 " Leader source vimrc ---- {{{
-nnoremap <leader>sv :source ~/.vimrc<cr>
+nnoremap <leader>sv :source ~/.vimrc<cr>:edit<cr>
 " }}}
 " Leader disregard tab (delete tab) ---- {{{
 nnoremap <leader>qq :quit<cr>
@@ -181,7 +189,6 @@ onoremap an@ :<c-u>execute "normal! ?^\\S\\+@\\S\\+$\r:nohlsearch\r0vg"<cr>
 
 " Remap esc --------------  {{{
 inoremap jk <esc>
-
 " }}}
 " Autocomplete tab functionality ---- {{{
 " InsertTabWrapper ------- {{{
@@ -207,16 +214,17 @@ inoremap <tab> <c-n>
 
 " }}}
 " Random commit message --- {{{
-nnoremap <buffer> <leader>q :r!curl -s 'http://whatthecommit.com/index.txt'<cr>
-
+nnoremap <buffer> <leader>wtc :r!curl -s 'http://whatthecommit.com/index.txt'<cr>
 " }}}
 " }}}
 " * Command mode mappings -------------- {{{
+"
 " expand current script path
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 " }}}
 
 " settings for all files ------------------------- {{{
+"
 "  trimwhitespace --- {{{
 fun! TrimWhitespace()
     let l:save = winsaveview()
@@ -224,6 +232,7 @@ fun! TrimWhitespace()
     call winrestview(l:save)
 endfun
 " }}}
+
 " c/c++ file settings ------------------------ {{{
 augroup c_file
     autocmd!
@@ -231,6 +240,7 @@ augroup c_file
     autocmd FileType c setl ofu=ccomplete#CompleteCpp
 augroup END
 " }}}
+
 " vimscript file settings ---------------------- {{{
 augroup vim_file
     autocmd!
@@ -240,6 +250,7 @@ augroup vim_file
     autocmd FileType vim nnoremap <leader>pi :PlugInstall<CR>
 augroup END
 " }}}
+
 " python File settings --------------------- {{{
 augroup python_file
     autocmd!
@@ -251,6 +262,8 @@ augroup python_file
     autocmd FileType python setlocal foldmethod=expr foldexpr=getline(v:lnum)=~'^\\s*#'
 augroup END
 " }}}
+
+" out of bash and sh, use bash by default
 " bash/sh File settings ----------- {{{
 augroup sh_file
     autocmd!
@@ -258,7 +271,8 @@ augroup sh_file
     autocmd FileType sh nnoremap <buffer> <localleader>b I#!/bin/bash<cr><esc>
 augroup END
 " }}}
-" use bash by default
+
+
 " Markdown file settings ------------------ {{{
 augroup markdown_file
     autocmd!
@@ -268,28 +282,36 @@ augroup markdown_file
     autocmd FileType markdown onoremap ah :<c-u>execute "normal! ?^[=-]\\+$\r:nohlsearch\rg_vk0"<cr>
 augroup END
 " }}}
+
+" json file settings  ------ {{{
 augroup json_file
     autocmd!
     autocmd FileType json nnoremap <buffer> <localleader>j :%!jq '.'<cr>
 augroup END
+" }}}
 
+" elp file settings ---- {{{
 augroup elp_file
     autocmd!
-    autocmd FileType elp highlight matchQuery term=bold gui=bold guifg=Magenta cterm=bold ctermfg=red guifg=#fabd2f Conceal Ignore /\*/
-
+    autocmd FileType elp highlight matchQuery term=bold gui=bold guifg=Magenta cterm=bold ctermfg=red guifg=#fabd2f
 augroup END
+" }}}
+
+" }}}
+
 " OTHER NOTES: ----- {{{
-" Below is some stuff I don't currently do.
-" I keep it incase I forget how to.
-"
+
 " autocmd BufWritePre,BufRead *.html setlocal nowrap
-"
+" zm - un/indent all nested folds
+" zM - un/indent all folds (non-nested)
+" zi - toggle folding functionality
 " 3== - re-indent 3 lines
+
 " =% - re-indent a block with () or {} (cursor on brace)
 " =iB - re-indent inner block with {}
 " gg=G - re-indent entire buffer
 " ]p - paste and adjust indent to current line
-"
+
 " vim[grep] /pattern/ {`{file}`} - search for pattern in multiple files
 " e.g. :vim[grep] /foo/ **/
 "
@@ -312,9 +334,6 @@ augroup END
 "za - toggle fold under the cursor
 "zo - open fold under the cursor
 "zc - close fold under the cursor
-"zr - reduce (open) all folds by one level
-"zm - fold more (close) all folds by one level
-"zi - toggle folding functionality
 "]c - jump to start of next change
 "[c - jump to start of previous change
 ":echo $MYVIMRC to echo your vimrc
@@ -334,8 +353,5 @@ augroup END
 "set shiftwidth?
 "save on typing multiple set commands:
 "set number numberwidth=6
-"
-"
-"
 ":help internal-variables
 " }}}
