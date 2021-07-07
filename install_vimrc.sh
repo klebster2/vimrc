@@ -24,7 +24,7 @@ echo "Making undodir..."
 mkdir -p "${HOME}/.vim/undodir"
 
 echo "curling vim plug"
-if [ ! -f "${HOME}/.vim/autoload/plug.vim" ]; then
+if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
     curl -fLo "${HOME}/.local/share/nvim/site/autoload/plug.vim" --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
