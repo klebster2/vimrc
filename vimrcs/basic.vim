@@ -92,6 +92,10 @@ endif
 nnoremap <leader>o :only<cr>
 " }}}
 
+" Leader Window vertical split open ---------- {{{
+nnoremap gF :vertical wincmd f<cr>
+" }}}
+
 " Leader Window Explorer --------- {{{
 nnoremap <leader>vx :Vex<cr>
 nnoremap <leader>sx :Sex<cr>

@@ -74,4 +74,4 @@ fun! CallCompleteApi()
     return ''
 endfun
 
-inoremap <buffer> <C-x><C-r> <C-r>=CallCompleteApi()<cr>
+inoremap <buffer> <C-x><C-x> <C-r>=CallCompleteApi()<cr>

@@ -1,8 +1,7 @@
 #!/bin/bash
-set -xe
 echo "Starting vimrc setup..."
 
-#sudo apt-get update 
+#sudo apt-get update
 sudo apt-get install build-essential cmake neovim curl python3-dev jq -y
 
 printf "Checking for ${HOME}/.new_words..."
@@ -26,34 +25,41 @@ mkdir -p "${HOME}/.vim/undodir"
 echo "curling vim plug"
 if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
     curl -fLo "${HOME}/.local/share/nvim/site/autoload/plug.vim" --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 fi
 
 if (cat /etc/os-release | grep ID_LIKE | cut -d '=' -f2 | grep -q "debian"); then
     if (dpkg --print-architecture | grep -q arm) && [ ! -e ripgrep-13.0.0-arm-unknown-linux-gnueabihf ]; then
+        # arm
         mkdir ripgrep-13.0.0-arm-unknown-linux-gnueabihf
         curl -LO "https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep-13.0.0-arm-unknown-linux-gnueabihf.tar.gz"
         tar -xf "ripgrep-13.0.0-arm-unknown-linux-gnueabihf.tar.gz"
     elif (dpkg --print-architecture | grep -q amd); then
-        sudo apt-get install fzf -y
+        # amd
         curl -LO "https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb"
         sudo dpkg -i "ripgrep_12.1.1_amd64.deb"
         rm "ripgrep_12.1.1_amd64.deb"
+    else
+        # try anyway
+        sudo apt-get install fzf -y
     fi
 else
     echo "OS not known. Did not install ripgrep."
 fi
 mkdir -p "${HOME}/.config/nvim/"{ftdetect,syntax}
 
-ln -s "${HOME}/.vim_runtime/vimrcs/ftdetect/elp.vim" "${HOME}/.config/nvim/ftdetect/elp.vim"
-ln -s "${HOME}/.vim_runtime/vimrcs/syntax/elp.vim" "${HOME}/.config/nvim/syntax/elp.vim"
+ln -fs "${HOME}/.vim_runtime/vimrcs/ftdetect/elp.vim" \
+    "${HOME}/.config/nvim/ftdetect/elp.vim"
+ln -fs "${HOME}/.vim_runtime/vimrcs/syntax/elp.vim" \
+    "${HOME}/.config/nvim/syntax/elp.vim"
 
-echo "setting up vim"
+echo "Setting up vim"
 echo "set runtimepath+=${HOME}/.vim_runtime
 source ${HOME}/.vim_runtime/vimrcs/plugins.vim
-source ${HOME}/.vim_runtime/vimrcs/customcomplete.vim" > "${HOME}/.vimrc"
+source ${HOME}/.vim_runtime/vimrcs/customcomplete.vim
+" > "${HOME}/.vimrc"
 
-echo "setting up neovim"
+echo "Setting up neovim"
 mkdir -p "${HOME}/.config/nvim"
 echo "set runtimepath^=${HOME}/.vim_runtime runtimepath+=${HOME}/.vim_runtime/after
 let &packpath=&runtimepath
