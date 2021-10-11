@@ -24,4 +24,5 @@ Plug 'airblade/vim-rooter'
 Plug 'christoomey/vim-tmux-navigator'
 " markdown
 Plug 'skanehira/preview-markdown.vim'
+Plug 'ycm-core/YouCompleteMe'
 call plug#end()

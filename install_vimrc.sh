@@ -2,7 +2,8 @@
 echo "Starting vimrc setup..."
 
 #sudo apt-get update
-sudo apt-get install build-essential cmake neovim curl python3-dev jq -y
+sudo apt-get install build-essential cmake neovim vim-nox curl python3-dev jq \
+   mono-complete golang nodejs default-jdk npm -y
 
 printf "Checking for ${HOME}/.new_words..."
 if [ -d "${HOME}/.new_words" ]; then
@@ -66,8 +67,13 @@ let &packpath=&runtimepath
 source ${HOME}/.vimrc" > "${HOME}/.config/nvim/init.vim"
 
 echo "Installing Plugins..."
-
+vim +PlugInstall +qall
 nvim +PlugInstall +qall
+
+# YCM
+pushd ${HOME}/.vim/plugged/YouCompleteMe
+./install.py --all
+popd
 
 echo "source ${HOME}/.vim_runtime/vimrcs/basic.vim" >> "${HOME}/.vimrc"
 
