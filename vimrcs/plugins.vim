@@ -24,5 +24,9 @@ Plug 'airblade/vim-rooter'
 Plug 'christoomey/vim-tmux-navigator'
 " markdown
 Plug 'skanehira/preview-markdown.vim'
-Plug 'ycm-core/YouCompleteMe'
+" deoplete reqs
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'neoclide/coc.nvuim', {'branch': 'release'}
 call plug#end()
+

@@ -124,6 +124,8 @@ nnoremap <leader>bd :set background=dark<CR>
 nnoremap <leader>gh :diffget //3<CR>
 nnoremap <leader>gu :diffget //2<CR>
 nnoremap <leader>gs :G<CR>
+nnoremap <leader>Gd :Gdiffsplit<CR>
+nnoremap <leader>gc :Git commit<CR>
 " }}}
 " Leader Set Toggle remaps ------------- {{{
 nnoremap <leader>sn :set number!<cr>
