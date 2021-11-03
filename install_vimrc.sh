@@ -1,42 +1,32 @@
 #!/bin/bash
-
-# HOW TO USE:
-# Run:
-# CUSTOM_INSTALL_PATH=/home/user ./install_vimrc.sh
-
-sudo curl -Lo "/usr/bin/nvim" https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-sudo chmod u+x "/usr/bin/nvim"
-
 echo "Starting vimrc setup..."
-[ -z "$CUSTOM_INSTALL_PATH" ] || CUSTOM_INSTALL_PATH="${HOME}"
 
-sudo apt-get update
-sudo apt-get install build-essential cmake neovim vim-nox curl python3-dev jq \
-   mono-complete golang nodejs default-jdk npm -y
+#sudo apt-get update
+sudo apt install build-essential cmake vim-nox python3-dev
+sudo apt-get install jq mono-complete golang nodejs default-jdk npm -y
 
-printf "Checking for .new_words..."
-
-# _check for new_words
+printf "Checking for ${HOME}/.new_words..."
 if [ -d "${HOME}/.new_words" ]; then
-    ln -sf "${1}/.new_words/new_words" "${1}/.vim_runtime/new_words"
-elif [ -d "${CUSTOM_INSTALL_PATH}/.new_words" ]; then
-    ln -sf "${CUSTOM_INSTALL_PATH}/.new_words/new_words" "${HOME}/.vim_runtime/new_words"
+    echo " Found ${HOME}/.new_words"
+    printf "Checking for ${HOME}/.vim_runtime/new_words symlink..."
+    if [ ! -f "${HOME}/.vim_runtime/new_words" ]; then
+        echo " Didn't find symbolic link... making symlink"
+        ln -s "${HOME}/.new_words/new_words" "${HOME}/.vim_runtime/new_words"
+    else
+        echo " Found symlink."
+    fi
 else
     echo " Didn't find ${HOME}/.new_words"
 fi
 
+
 echo "Making undodir..."
 mkdir -p "${HOME}/.vim/undodir"
 
-echo "Curling vim plug"
-if [ ! -f "${CUSTOM_INSTALL_PATH}/.local/share/nvim/site/autoload/plug.vim" ];
-    then
-    curl -fLo \
-        "${CUSTOM_INSTALL_PATH}/.local/share/nvim/site/autoload/plug.vim" \
-        --create-dirs \
+echo "curling vim plug"
+if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
+    curl -fLo "${HOME}/.local/share/nvim/site/autoload/plug.vim" --create-dirs \
         "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-
-    ln -sf "${CUSTOM_INSTALL_PATH}/.local/share/nvim" "${HOME}/.local/share/nvim"
 fi
 
 if (cat /etc/os-release | grep ID_LIKE | cut -d '=' -f2 | grep -q "debian"); then
@@ -64,7 +54,7 @@ ln -fs "${HOME}/.vim_runtime/vimrcs/ftdetect/elp.vim" \
 ln -fs "${HOME}/.vim_runtime/vimrcs/syntax/elp.vim" \
     "${HOME}/.config/nvim/syntax/elp.vim"
 
-echo "Setting up vimrc"
+echo "Setting up vim"
 echo "set runtimepath+=${HOME}/.vim_runtime
 source ${HOME}/.vim_runtime/vimrcs/plugins.vim
 source ${HOME}/.vim_runtime/vimrcs/customcomplete.vim
@@ -72,12 +62,21 @@ source ${HOME}/.vim_runtime/vimrcs/customcomplete.vim
 
 echo "Setting up neovim"
 mkdir -p "${HOME}/.config/nvim"
-echo "set runtimepath^=${HOME}/.vim_runtime runtimepath+=${HOME}/.vim_runtime/after
+echo "set runtimepath^=${HOME}/.vim_runtime runtimepath+=${HOME}/.vim_runtime/after  runtimepath+=${HOME}/.vim
 let &packpath=&runtimepath
 source ${HOME}/.vimrc" > "${HOME}/.config/nvim/init.vim"
 
 echo "Installing Plugins..."
+vim +PlugInstall +qall
 nvim +PlugInstall +qall
+
+# YCM
+pushd ${HOME}/.vim/plugged/YouCompleteMe
+git submodule update --init --recursive
+CXX="$(whereis c++ | cut -d ' ' -f 2)" ./install.py --clangd-completer
+#popd
+#EXTRA_CMAKE_ARGS=-DPATH_TO_LLVM_ROOT=/path/to/your/build/clang ./install.py
+popd
 
 echo "source ${HOME}/.vim_runtime/vimrcs/basic.vim" >> "${HOME}/.vimrc"
 

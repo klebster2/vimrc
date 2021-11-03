@@ -1,5 +1,5 @@
 
-" klebster1's vimrc file ----- {{{
+"klebster1's vimrc file ----- {{{
 "  thanks for visiting
 " }}}
 
@@ -16,9 +16,7 @@ set shiftwidth=4
 set tabstop=4
 set shiftround
 set expandtab
-"set number relativenumber
-set nu nornu
-" don't wrap lines
+set number norelativenumber
 set nowrap
 set smartcase
 set noswapfile
@@ -41,7 +39,7 @@ set ruler
 set rulerformat=%55(%{strftime('%a\ %b\ %e\ %I:%M\ %p')}\ %5l,%-6(%c%V%)\ %P%)
 set statusline=%F
 set backspace=indent,eol,start
-"highlight Normal guibg=NONE
+
 " shell highlighting for bash
 let b:is_bash = 1
 set ft=sh
