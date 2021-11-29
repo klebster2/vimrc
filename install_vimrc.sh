@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 echo "Starting vimrc setup..."
 
 #sudo apt-get update
@@ -67,7 +67,7 @@ let &packpath=&runtimepath
 source ${HOME}/.vimrc" > "${HOME}/.config/nvim/init.vim"
 
 echo "Installing Plugins..."
-vim +PlugInstall +qall
+#vim +PlugInstall +qall
 nvim +PlugInstall +qall
 
 # YCM =>
@@ -97,17 +97,17 @@ install_fasttext() {
     [ -d "$HOME/.vim_runtime/fastText" ] || \
         ln -s "$fasttext_destination/fastText" "$HOME/.vim_runtime/fastText"
     pushd "$fasttext_destination/fastText"
-    is_default_python_version_gt_37=python -V | cut -d ' ' -f2 | awk -F '.' '{print $1"."$2}' | python -c "import sys; print('True') if float(sys.stdin.readlines()[0]) >= 3.7 else print('False')"
-    if !$is_default_python_version_gt_37; then
-        python_version="python3.7"
-    else
-        python_version=python
-    fi
-    $python_version ./setup.py install
-    $python_version ./download_model.py en
-    $python_version ./reduce_model.py cc.en.300.bin 100
-    realpath cc.en.300.bin
-    realpath cc.en.100.bin
+    #is_default_python_version_gt_37=python -V | cut -d ' ' -f2 | awk -F '.' '{print $1"."$2}' | python -c "import sys; print('True') if float(sys.stdin.readlines()[0]) >= 3.7 else print('False')"
+    #if !$is_default_python_version_gt_37; then
+    #    python_version="python3.7"
+    #else
+    #    python_version=python
+    #fi
+    #$python_version ./setup.py install
+    #$python_version ./download_model.py en
+    #$python_version ./reduce_model.py cc.en.300.bin 100
+    #realpath cc.en.300.bin
+    #realpath cc.en.100.bin
     popd
 }
 read -p $'Do you want to enable fasttext custom completion? [Y/n]\n' \
