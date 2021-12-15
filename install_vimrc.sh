@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 echo "Starting vimrc setup..."
 
 #sudo apt-get update
@@ -78,41 +78,4 @@ popd
 # <=
 
 echo "source ${HOME}/.vim_runtime/vimrcs/basic.vim" >> "${HOME}/.vimrc"
-
-echo "Installed dependencies for vim configuration successfully."
-
-### INSTALL FASTTEXT
-
-install_fasttext() {
-    echo "Where do you want to install fasttext to?"
-    df -h
-    echo "Write the destination omitting the fastText directory name (created by git automatically)"
-    read -p $'\n' fasttext_destination
-    git clone "https://github.com/facebookresearch/fastText.git" "$fasttext_destination/fastText"
-
-    pushd "$fasttext_destination/fastText"
-    mkdir build && cd build && cmake ..
-    make && make install
-
-    [ -d "$HOME/.vim_runtime/fastText" ] || \
-        ln -s "$fasttext_destination/fastText" "$HOME/.vim_runtime/fastText"
-    pushd "$fasttext_destination/fastText"
-    is_default_python_version_gt_37=python -V | cut -d ' ' -f2 | awk -F '.' '{print $1"."$2}' | python -c "import sys; print('True') if float(sys.stdin.readlines()[0]) >= 3.7 else print('False')"
-    if !$is_default_python_version_gt_37; then
-        python_version="python3.7"
-    else
-        python_version=python
-    fi
-    $python_version ./setup.py install
-    $python_version ./download_model.py en
-    $python_version ./reduce_model.py cc.en.300.bin 100
-    realpath cc.en.300.bin
-    realpath cc.en.100.bin
-    popd
-}
-read -p $'Do you want to enable fasttext custom completion? [Y/n]\n' \
-    install_fasttext_confirm && [[ $install_fasttext_confirm == [yY] || \
-    $install_fasttext_confirm == [yY][eE][sS] ]] && \
-    echo "Preference to install fasttext indicated" && install_fasttext || exit 0
-
 
