@@ -8,6 +8,7 @@ Plug 'morhetz/gruvbox'
 Plug 'jremmen/vim-ripgrep'
 " github (vim friendly)
 Plug 'tpope/vim-fugitive'
+Plug 'vim-airline/vim-airline'
 Plug 'ctrlpvim/ctrlp.vim'
 " filepath/ var autocompleter
 Plug 'mbbill/undotree'
@@ -23,4 +24,6 @@ Plug 'airblade/vim-rooter'
 Plug 'christoomey/vim-tmux-navigator'
 " markdown
 Plug 'skanehira/preview-markdown.vim'
+Plug 'ycm-core/YouCompleteMe'
 call plug#end()
+

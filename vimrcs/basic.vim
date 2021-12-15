@@ -1,5 +1,5 @@
 
-" klebster1's vimrc file ----- {{{
+"klebster1's vimrc file ----- {{{
 "  thanks for visiting
 " }}}
 
@@ -16,9 +16,7 @@ set shiftwidth=4
 set tabstop=4
 set shiftround
 set expandtab
-"set number relativenumber
-set nu nornu
-" don't wrap lines
+set number norelativenumber
 set nowrap
 set smartcase
 set noswapfile
@@ -41,7 +39,10 @@ set ruler
 set rulerformat=%55(%{strftime('%a\ %b\ %e\ %I:%M\ %p')}\ %5l,%-6(%c%V%)\ %P%)
 set statusline=%F
 set backspace=indent,eol,start
-"highlight Normal guibg=NONE
+
+" shell highlighting for bash
+let b:is_bash = 1
+set ft=sh
 if executable('rg')
     let g:rg_derive_root='true'
 endif
@@ -89,6 +90,10 @@ endif
 nnoremap <leader>o :only<cr>
 " }}}
 
+" Leader Window vertical split open ---------- {{{
+nnoremap gF :vertical wincmd f<cr>
+" }}}
+
 " Leader Window Explorer --------- {{{
 nnoremap <leader>vx :Vex<cr>
 nnoremap <leader>sx :Sex<cr>
@@ -117,6 +122,8 @@ nnoremap <leader>bd :set background=dark<CR>
 nnoremap <leader>gh :diffget //3<CR>
 nnoremap <leader>gu :diffget //2<CR>
 nnoremap <leader>gs :G<CR>
+nnoremap <leader>Gd :Gdiffsplit<CR>
+nnoremap <leader>gc :Git commit<CR>
 " }}}
 " Leader Set Toggle remaps ------------- {{{
 nnoremap <leader>sn :set number!<cr>

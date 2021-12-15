@@ -16,7 +16,6 @@ endfunction
 inoremap <c-x><c-t> <C-O>:call Keyword32()<CR><c-x><c-t>
 set thesaurus+=~/.vim_runtime/thesaurus-no-names.txt
 " ---- }}}
-
 " Custom complete function ------------------- {{{
 fun! CallCompleteApi()
     " vim autosuggest using datamuse api and curl
@@ -40,28 +39,23 @@ fun! CallCompleteApi()
         let l:start -= 1
     endwhile
 
-    echom l:start
-    echom l:prev_start
-
     let partial = 'sp='.l:line[l:prev_start : col('.')-1].'*'
     let prev = 'lc='.l:line[l:start : l:prev_start - 2]
 
     let query = 'words?'.prev.'&'.partial
 
-    echom query
     silent execute(':!curl -s "https://api.datamuse.com/'.query.'" | jq "." >'.fileout)
     let l:data = json_decode(join(readfile(fileout)))
 
     " Record what matches − pass this to complete() later
     let l:res = []
 
-    " Find matches
+    " Find matches in the same time . up
     for m in l:data
         " Check if it matches what we're trying to complete; in this case we
         " want to match against the start of both the first and second list
         " entries (i.e. the name and email address)
         " for this dict.
-
         call add(l:res, {
             \ 'icase': 1,
             \ 'word': l:m['word'],
@@ -74,103 +68,63 @@ fun! CallCompleteApi()
     return ''
 endfun
 
-inoremap <buffer> <C-x><C-x> <C-r>=CallCompleteApi()<cr>
+" Custom completeq function ------------------- {{{
+fun! CallCompleteApiFastText()
+    " vim autosuggest using datamuse api and curl
+    " - assumed ubuntu / unix system is running and curl is installed
 
-
-" Custom complete function ------------------- {{{
-fun! CallCompleteApi2()
-    " vim autosuggest using cosine similarity matrix
-    " - assumed that ubuntu / unix system is running and python sklearn, numpy
-    "   are installed
-    let fileout = $HOME.'/.vim_runtime/iGotAGlue/found'
-    " a can be an arg, but for now, we want this function to be simple
-    let l:partial_start = col('.') - 1
-
-    """ GET PARTIAL
-    let l:line = getline('.')
-    while l:partial_start > 0 && l:line[l:partial_start - 1] =~ '\a'
-        let l:partial_start -= 1
-    endwhile
-    " append start of words to list
-    " a can be an arg, but for now, we want this function to be simple
-    let partial = l:line[l:partial_start : col('.')-1]
-    """
-    echom 'partial '.partial
-
-    """ MOVE TO ABOVE
-    let cursor_pos = getpos('.')
-    let l:start_origin = col('.')
-    normal! k$
-
-    """ GET RHYMING ABOVE
-    echohl None
-    let l:line = getline('.')
     " Locate the start of the word and store the text we want to match in l:base
-    let l:row = line('.')
-    " Add multiple l:start as multiple word arguments
-    let l:start = col('.')
-    echom 'row '.l:row
-    echom 'start '.l:start
+    let l:line = getline('.')
 
-    " append start of words to list
     " a can be an arg, but for now, we want this function to be simple
-    let l:start -= 1
-    while l:start > 0 && l:line[l:start] =~ '\a'
+    let l:start = col('.') - 1
+    while l:start > 0 && l:line[l:start - 1] =~ '\a'
         let l:start -= 1
-        echom l:start
     endwhile
+    " append start of words to list
 
-    echom 'start2 '.l:start
 
-    echom col('.')-1
+    let l:query_word = l:line[l:start : col('.')-2]
+    echom l:query_word
 
-    let l:word_on_row_above = l:line[l:start : col('.')]
-    echom l:word_on_row_above
+    let fileout = $HOME.'/.vim_runtime/assistive-writing-apis/fasttext_response.json'
+    "let l:script = $HOME.'/.vim_runtime/fasttext_neighbors.py'
+    "let l:model_file = $HOME.'/.vim_runtime/fastText/cc.en.100.bin'
 
-    echom 'partial '.partial
-    "word on line above
-    echom ":!python3 ./iGotAGlue/cli.py -p ".partial." ".l:word_on_row_above
+    let l:endpoint = '"http://0.0.0.0:8080/get_word_neighbors/"'
+    let l:content_type_header = '"Content-Type:application/json" '
 
-    if empty(partial)
-        silent execute(":!python3 ./iGotAGlue/cli.py ".l:word_on_row_above)
-    else
-        silent execute(":!python3 ./iGotAGlue/cli.py -p ".partial." ".l:word_on_row_above)
-        let l:start_origin=l:partial_start "override
-    endif
+    let l:data = "'{\"word\":\"".l:query_word."\",\"neighbors\":50}'"
+    echom ':!curl POST '.l:endpoint.' -H '.l:content_type_header.' --data '.l:data
+    silent execute(':!curl POST '.l:endpoint.' -H '.l:content_type_header.' --data '.l:data.' > '.fileout)
 
-    let l:data = json_decode(join(readfile(fileout)))
-
-    call setpos('.', cursor_pos)
     " Record what matches − pass this to complete() later
-
     let l:res = []
 
-    " Find matches
-    for m in l:data
-        if !(l:m['word'] =~ "^".partial.".*")
-            continue
-        endif
+    let l:data = json_decode(join(readfile(fileout)))
+    echom l:data
+
+    for m in l:data["neighbors_output"]
+    " Record what matches − pass this to complete() later
+    "        if !(m['neighbor'] =~ "^".l:query_word.".*")
+    "            continue
+    "        endif
+    "
         " Check if it matches what we're trying to complete; in this case we
         " want to match against the start of both the first and second list
         " entries (i.e. the name and email address)
-        " for this dict.
-
-        call add(l:res, {
-            \ 'icase': 1,
-            \ 'word': l:m['word'],
-            \ 'menu': l:m['sim'].':'.l:m['count']
-        \ })
+        " forq this dict.
+           call add(l:res, {
+               \ 'icase': 1,
+               \ 'word': l:m['neighbor'],
+               \ 'menu': l:m['score'],
+           \ })
         endfor
 
-    if empty($partial)
-        " Now call the complete() function
-        call complete(l:start_origin + 1, l:res)
-    else
-        call complete(l:start_origin + 1, l:res)
-        echom "partial nonempty"
-    endif
+    " Now call the complete() function
+    call complete(l:start + 1, l:res)
     return ''
 endfun
-" --- }}}
 
-inoremap <buffer> <C-x><C-r> <C-r>=CallCompleteApi2()<cr>
+inoremap <buffer> <C-x><C-d> <C-r>=CallCompleteApi()<cr>
+inoremap <buffer> <C-x><C-x> <C-r>=CallCompleteApiFastText()<cr>
