@@ -25,5 +25,7 @@ Plug 'christoomey/vim-tmux-navigator'
 " markdown
 Plug 'skanehira/preview-markdown.vim'
 Plug 'ycm-core/YouCompleteMe'
+" listchars
+Plug 'pdurbin/vim-tsv'
 call plug#end()
 

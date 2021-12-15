@@ -67,7 +67,7 @@ let &packpath=&runtimepath
 source ${HOME}/.vimrc" > "${HOME}/.config/nvim/init.vim"
 
 echo "Installing Plugins..."
-vim +PlugInstall +qall
+#vim +PlugInstall +qall
 nvim +PlugInstall +qall
 
 # YCM =>
@@ -79,3 +79,4 @@ popd
 
 echo "source ${HOME}/.vim_runtime/vimrcs/basic.vim" >> "${HOME}/.vimrc"
 
+echo "Installed dependencies for vim configuration successfully."
