@@ -1,4 +1,42 @@
 [
-    {
-    }
+  {
+    "word": "/dev/null",
+    "score": 13
+  },
+  {
+    "word": "/24",
+    "score": 8
+  },
+  {
+    "word": "/32",
+    "score": 7
+  },
+  {
+    "word": "/16",
+    "score": 6
+  },
+  {
+    "word": "/48",
+    "score": 5
+  },
+  {
+    "word": "/36",
+    "score": 4
+  },
+  {
+    "word": "/8",
+    "score": 4
+  },
+  {
+    "word": "/1",
+    "score": 3
+  },
+  {
+    "word": "/10",
+    "score": 3
+  },
+  {
+    "word": "/38",
+    "score": 3
+  }
 ]

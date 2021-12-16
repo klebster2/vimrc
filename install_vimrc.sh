@@ -2,8 +2,8 @@
 echo "Starting vimrc setup..."
 
 #sudo apt-get update
-sudo apt-get install build-essential cmake neovim vim-nox curl python3-dev jq \
-   mono-complete golang nodejs default-jdk npm -y
+sudo apt install build-essential cmake vim-nox python3-dev
+sudo apt-get install jq mono-complete golang nodejs default-jdk npm -y
 
 printf "Checking for ${HOME}/.new_words..."
 if [ -d "${HOME}/.new_words" ]; then
@@ -62,18 +62,20 @@ source ${HOME}/.vim_runtime/vimrcs/customcomplete.vim
 
 echo "Setting up neovim"
 mkdir -p "${HOME}/.config/nvim"
-echo "set runtimepath^=${HOME}/.vim_runtime runtimepath+=${HOME}/.vim_runtime/after
+echo "set runtimepath^=${HOME}/.vim_runtime runtimepath+=${HOME}/.vim_runtime/after  runtimepath+=${HOME}/.vim
 let &packpath=&runtimepath
 source ${HOME}/.vimrc" > "${HOME}/.config/nvim/init.vim"
 
 echo "Installing Plugins..."
-vim +PlugInstall +qall
+#vim +PlugInstall +qall
 nvim +PlugInstall +qall
 
-# YCM
+# YCM =>
 pushd ${HOME}/.vim/plugged/YouCompleteMe
-./install.py --all
+git submodule update --init --recursive
+CXX="$(whereis c++ | cut -d ' ' -f 2)" ./install.py --clangd-completer
 popd
+# <=
 
 echo "source ${HOME}/.vim_runtime/vimrcs/basic.vim" >> "${HOME}/.vimrc"
 

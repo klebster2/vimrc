@@ -1,5 +1,5 @@
 
-" klebster1's vimrc file ----- {{{
+"klebster1's vimrc file ----- {{{
 "  thanks for visiting
 " }}}
 
@@ -16,9 +16,7 @@ set shiftwidth=4
 set tabstop=4
 set shiftround
 set expandtab
-"set number relativenumber
-set nu nornu
-" don't wrap lines
+set number norelativenumber
 set nowrap
 set smartcase
 set noswapfile
@@ -41,7 +39,7 @@ set ruler
 set rulerformat=%55(%{strftime('%a\ %b\ %e\ %I:%M\ %p')}\ %5l,%-6(%c%V%)\ %P%)
 set statusline=%F
 set backspace=indent,eol,start
-"highlight Normal guibg=NONE
+
 " shell highlighting for bash
 let b:is_bash = 1
 set ft=sh
@@ -124,6 +122,8 @@ nnoremap <leader>bd :set background=dark<CR>
 nnoremap <leader>gh :diffget //3<CR>
 nnoremap <leader>gu :diffget //2<CR>
 nnoremap <leader>gs :G<CR>
+nnoremap <leader>Gd :Gdiffsplit<CR>
+nnoremap <leader>gc :Git commit<CR>
 " }}}
 " Leader Set Toggle remaps ------------- {{{
 nnoremap <leader>sn :set number!<cr>
@@ -137,11 +137,11 @@ nnoremap <leader>fi :Files<cr>
 
 " elp remaps ---- {{{
 nnoremap <leader>rz
-    \ :!$HOME/.vim_runtime/assistive-writing-apis/searchrhymezone_api.sh "<cword>"
-    \ <cr> :vs $HOME/.vim_runtime/assistive-writing-apis/rhymezone_wordlist.elp<cr>
-    \ :vs $HOME/.vim_runtime/assistive-writing-apis/ngrams3.elp<cr>
-    \ :vs $HOME/.vim_runtime/assistive-writing-apis/ngrams2.elp<cr>
-    \ <c-w><c-r>
+            \ :!$HOME/.vim_runtime/assistive-writing-apis/searchrhymezone_api.sh "<cword>"
+            \ <cr> :vs $HOME/.vim_runtime/assistive-writing-apis/rhymezone_wordlist.elp<cr>
+            \ :vs $HOME/.vim_runtime/assistive-writing-apis/ngrams3.elp<cr>
+            \ :vs $HOME/.vim_runtime/assistive-writing-apis/ngrams2.elp<cr>
+            \ <c-w><c-r>
 " }}}
 
 " Leader edit vimrc (basic.vim) ---- {{{
@@ -256,6 +256,7 @@ augroup c_file
     autocmd!
     autocmd FileType c nnoremap <buffer> <localleader>c I/*<esc>
     autocmd FileType c setl ofu=ccomplete#CompleteCpp
+    autocmd FileType c :iabbrev <buffer> nnl \n<left>
 augroup END
 " }}}
 
@@ -266,6 +267,7 @@ augroup vim_file
     autocmd FileType vim onoremap b /return<cr>
     autocmd FileType vim setlocal foldmethod=marker
     autocmd FileType vim nnoremap <leader>pi :PlugInstall<CR>
+    autocmd FileType vim inoremap <buffer> <localleader>nln \n<left>
 augroup END
 " }}}
 
@@ -277,8 +279,9 @@ augroup python_file
     autocmd FileType python nnoremap <buffer> pdb Iimport<space>pdb;<space>pdb.set_trace()<esc>
     autocmd FileType python :iabbrev <buffer> if: if:<left>
     autocmd FileType python :iabbrev <buffer> elif: elif:<left>
-    autocmd FileType python onoremap b /return<cr>
+    autocmd FileType python onoremap <buffer> b /return<cr>
     autocmd FileType python setlocal foldmethod=expr foldexpr=getline(v:lnum)=~'^\\s*#'
+    autocmd FileType python inoremap <buffer> <localleader>nln \n<left>
 augroup END
 " }}}
 
@@ -286,8 +289,12 @@ augroup END
 " bash/sh File settings ----------- {{{
 augroup sh_file
     autocmd!
+    " shell highlighting for bash... and get confused when we have a sh file
+    autocmd FileType sh let b:is_bash = 1
+    autocmd FileType sh set ft=sh
     autocmd FileType sh nnoremap <buffer> <localleader>c I#<esc>
     autocmd FileType sh nnoremap <buffer> <localleader>b I#!/bin/bash<cr><esc>
+    autocmd FileType sh inoremap <buffer> <localleader>nln \n<left>
 augroup END
 " }}}
 
@@ -296,9 +303,10 @@ augroup END
 augroup markdown_file
     autocmd!
     autocmd FileType markdown set wrap
-    "16 - more operator pending mappings
+    "c16 LVSTHW - more operator pending mappings
     autocmd FileType markdown onoremap ih :<c-u>execute "normal! ?^[=-]\\+$\r:nohlsearch\rkvg_"<cr>
     autocmd FileType markdown onoremap ah :<c-u>execute "normal! ?^[=-]\\+$\r:nohlsearch\rg_vk0"<cr>
+    autocmd FileType markdown inoremap <buffer> <localleader>nln \n<left>
 augroup END
 " }}}
 
@@ -306,6 +314,26 @@ augroup END
 augroup json_file
     autocmd!
     autocmd FileType json nnoremap <buffer> <localleader>j :%!jq '.'<cr>
+    autocmd FileType json :iabbrev <buffer> <localleader>nln \n<left>
+    autocmd FileType json <buffer> BufWritePre :normal gg=G
+augroup END
+" }}}
+
+" html file settings  ------ {{{
+augroup html_file
+    autocmd!
+    autocmd FileType *.html :iabbrev <buffer> <localleader>nln \n<left>
+    autocmd BufNewFile,BufRead *.html setlocal nowrap
+    autocmd BufWritePre *.html :normal gg=G
+augroup END
+" }}}
+
+" html file settings  ------ {{{
+augroup bash_eternal_history
+    autocmd!
+    autocmd BufNewFile,BufRead .bash_eternal_history set filetype=bash_eternal_history
+    autocmd BufWritePre *.html :normal gg=G
+    autocmd FileType bash_eternal_history cnoremap :q q!
 augroup END
 " }}}
 
