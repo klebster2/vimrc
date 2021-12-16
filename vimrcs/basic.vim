@@ -174,6 +174,7 @@ vnoremap <leader>' :s/\%V\(.*\)\%V/'\1\'/<cr>
 " Leader write with permissions ------------- {{{
 cnoremap w!! w !sudo tee > /dev/null %
 " }}}
+nnoremap <leader>dt :put =strftime('%d/%m/%y %H:%M:%S')<cr>
 "
 " * Normal-mode remaps ---------------- {{{
 " use zi to disable and enable folding on the fly
@@ -273,6 +274,7 @@ augroup python_file
     autocmd!
     autocmd FileType python inoremap <buffer> <localleader>m <C-r>=MyComplete("/.vim_runtime/dicts/custom_pycompletions")<cr>
     autocmd FileType python nnoremap <buffer> <localleader>c I#<esc>
+    autocmd FileType python nnoremap <buffer> pdb Iimport<space>pdb;<space>pdb.set_trace()<esc>
     autocmd FileType python :iabbrev <buffer> if: if:<left>
     autocmd FileType python :iabbrev <buffer> elif: elif:<left>
     autocmd FileType python onoremap b /return<cr>
