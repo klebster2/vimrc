@@ -160,6 +160,7 @@ nnoremap <leader>sb :set scrollbind!<cr>
 " Leader disregard tab (delete tab) ---- {{{
 nnoremap <leader>qq :quit<cr>
 " }}}
+command! Wq :wq
 " Leader disregard tab (delete tab) ---- {{{
 nnoremap <leader>ss :hsplit<cr>
 " }}}
@@ -185,6 +186,7 @@ nnoremap <c-O> <esc>O<esc>
 nnoremap H 0w
 nnoremap L $
 nnoremap s i<cr><esc>
+nnoremap <leader>snhls :set nohls<cr>
 " Check filetypes known to vim
 nnoremap <leader>ft :setfiletype <c-d>
 set nofoldenable "disable folding
@@ -203,6 +205,35 @@ onoremap in@ :<c-u>execute "normal! ?^.+@$\rvg_"<cr>
 onoremap an@ :<c-u>execute "normal! ?^\\S\\+@\\S\\+$\r:nohlsearch\r0vg"<cr>
 " }}}
 " * Insert mode ------------ {{{
+
+
+" ** coc ------------------ {{{
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" --------- }}}
 
 " Remap esc --------------  {{{
 inoremap jk <esc>
@@ -269,6 +300,7 @@ augroup vim_file
     autocmd FileType vim nnoremap <leader>pi :PlugInstall<CR>
     autocmd FileType vim inoremap <buffer> <localleader>nln \n<left>
 augroup END
+
 " }}}
 
 " python File settings --------------------- {{{
@@ -283,6 +315,7 @@ augroup python_file
     autocmd FileType python setlocal foldmethod=expr foldexpr=getline(v:lnum)=~'^\\s*#'
     autocmd FileType python inoremap <buffer> <localleader>nln \n<left>
 augroup END
+
 " }}}
 
 " out of bash and sh, use bash by default
@@ -315,7 +348,7 @@ augroup json_file
     autocmd!
     autocmd FileType json nnoremap <buffer> <localleader>j :%!jq '.'<cr>
     autocmd FileType json :iabbrev <buffer> <localleader>nln \n<left>
-    autocmd FileType json <buffer> BufWritePre :normal gg=G
+"    autocmd FileType json <buffer> BufWritePre :normal gg=G
 augroup END
 " }}}
 
@@ -345,6 +378,7 @@ augroup END
 " }}}
 
 " }}}
+
 highlight Errors   ctermfg=red guifg=#fb4934
 "highlight Correct  ctermfg=green guifg=#b8bb26
 "highlight TokenError ctermfg=red guifg=#fb4934
@@ -364,7 +398,6 @@ augroup END
 
 " OTHER NOTES: ----- {{{
 
-" autocmd BufWritePre,BufRead *.html setlocal nowrap
 " zm - un/indent all nested folds
 " zM - un/indent all folds (non-nested)
 " zi - toggle folding functionality

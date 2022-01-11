@@ -6,9 +6,11 @@ Plug 'rafi/awesome-vim-colorschemes'
 Plug 'morhetz/gruvbox'
 " ripgrep
 Plug 'jremmen/vim-ripgrep'
-" github (vim friendly)
+" Vim-friendly github Plugin
 Plug 'tpope/vim-fugitive'
+"
 Plug 'vim-airline/vim-airline'
+"
 Plug 'ctrlpvim/ctrlp.vim'
 " filepath/ var autocompleter
 Plug 'mbbill/undotree'
@@ -19,13 +21,16 @@ Plug 'vobornik/vim-mql4'
 " fzf
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+"
 Plug 'airblade/vim-rooter'
 " vim-tmux navigator
 Plug 'christoomey/vim-tmux-navigator'
 " markdown
 Plug 'skanehira/preview-markdown.vim'
-Plug 'ycm-core/YouCompleteMe'
+"Plug 'ycm-core/YouCompleteMe'
 " listchars
 Plug 'pdurbin/vim-tsv'
+" coc - use release branch (recommend)
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
