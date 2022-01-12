@@ -347,7 +347,6 @@ augroup END
 augroup json_file
     autocmd!
     autocmd FileType json nnoremap <buffer> <localleader>j :%!jq '.'<cr>
-    autocmd FileType json :iabbrev <buffer> <localleader>nln \n<left>
 "    autocmd FileType json <buffer> BufWritePre :normal gg=G
 augroup END
 " }}}
