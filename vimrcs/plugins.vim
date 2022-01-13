@@ -3,6 +3,7 @@
 call plug#begin('~/.vim/plugged')
 " colourschemes (incl. gruvbox)
 Plug 'rafi/awesome-vim-colorschemes'
+" colorscheme
 Plug 'morhetz/gruvbox'
 " ripgrep
 Plug 'jremmen/vim-ripgrep'

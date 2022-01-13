@@ -47,6 +47,7 @@ if executable('rg')
     let g:rg_derive_root='true'
 endif
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-file -oc --exclude-standard']
+let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-vimlsp', 'coc-tsserver', 'coc-snippets', 'coc-python', 'coc-vimlsp', 'coc-sh', 'coc-jedi']
 " bash syn
 colorscheme gruvbox
 let g:is_bash = 1 | setfiletype sh
@@ -379,22 +380,10 @@ augroup END
 
 " }}}
 
+" speech engineering stuffs
 highlight Errors   ctermfg=red guifg=#fb4934
-"highlight Correct  ctermfg=green guifg=#b8bb26
-"highlight TokenError ctermfg=red guifg=#fb4934
-"highlight ErrorsStat   ctermfg=red guifg=#83a598
-"highlight CorrectStat  ctermfg=green guifg=#83a598
-
-"highlight Header ctermfg=red guifg=#fabd2f
 highlight Sent ctermfg=red guifg=#fabd2f
 highlight Int ctermfg=red guifg=#d3869b
-"highlight ErrorsStat   ctermfg=red guifg=#fb4934
-"highlight CorrectStat  ctermfg=green guifg=#b8bb26
-
-augroup elp_file
-    autocmd!
-    autocmd FileType elp highlight matchQuery term=bold gui=bold guifg=Magenta cterm=bold ctermfg=red guifg=#fabd2f Conceal Ignore /\*/
-augroup END
 
 " OTHER NOTES: ----- {{{
 
