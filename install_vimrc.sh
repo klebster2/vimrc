@@ -29,6 +29,10 @@ if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
         "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 fi
 
+# install nodejs
+curl -sL install-node.vercel.app/lts | bash || \
+    curl -sL install-node.vercel.app/lts | sudo bash
+
 if (cat /etc/os-release | grep ID_LIKE | cut -d '=' -f2 | grep -q "debian"); then
     if (dpkg --print-architecture | grep -q arm) && [ ! -e ripgrep-13.0.0-arm-unknown-linux-gnueabihf ]; then
         # arm
@@ -49,11 +53,6 @@ else
 fi
 mkdir -p "${HOME}/.config/nvim/"{ftdetect,syntax}
 
-ln -fs "${HOME}/.vim_runtime/vimrcs/ftdetect/elp.vim" \
-    "${HOME}/.config/nvim/ftdetect/elp.vim"
-ln -fs "${HOME}/.vim_runtime/vimrcs/syntax/elp.vim" \
-    "${HOME}/.config/nvim/syntax/elp.vim"
-
 echo "Setting up vim"
 echo "set runtimepath+=${HOME}/.vim_runtime
 source ${HOME}/.vim_runtime/vimrcs/plugins.vim
@@ -71,7 +70,6 @@ echo "Installing Plugins..."
 nvim +PlugInstall +qall
 
 # COC =>
-
 # <=
 
 echo "source ${HOME}/.vim_runtime/vimrcs/basic.vim" >> "${HOME}/.vimrc"
