@@ -20,16 +20,18 @@ else
 fi
 
 
-echo "Making undodir..."
-mkdir -p "${HOME}/.vim/undodir"
+if [ ! -d "${HOME}/.vim/undodir" ]; then
+    echo "Making undodir..."
+    mkdir "${HOME}/.vim/undodir"
+fi
 
-echo "curling vim plug"
 if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
+    echo "Curling vim plug"
     curl -fLo "${HOME}/.local/share/nvim/site/autoload/plug.vim" --create-dirs \
         "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 fi
 
-# install nodejs
+printf "%s\n" "Installing nodejs"
 curl -sL install-node.vercel.app/lts | bash || \
     curl -sL install-node.vercel.app/lts | sudo bash
 
@@ -53,24 +55,32 @@ else
 fi
 mkdir -p "${HOME}/.config/nvim/"{ftdetect,syntax}
 
-echo "Setting up vim"
+echo "Setting up neovim"
+echo "Setting up conda env"
+
+conda create -n pynvim python=3.7
+conda activate
+pip install pynvim
+conda_env_python_path="$(which python)"
+
+echo "Setting adding paths to ${HOME}/.vimrc"
+
 echo "set runtimepath+=${HOME}/.vim_runtime
 source ${HOME}/.vim_runtime/vimrcs/plugins.vim
 source ${HOME}/.vim_runtime/vimrcs/customcomplete.vim
 source ${HOME}/.vim_runtime/vimrcs/coc.vim
+let g:python3_host_prog='${conda_env_python_path}'
 " > "${HOME}/.vimrc"
 
-echo "Setting up neovim"
 mkdir -p "${HOME}/.config/nvim/plug-config"
-echo "set runtimepath^=${HOME}/.vim_runtime runtimepath+=${HOME}/.vim_runtime/after  runtimepath+=${HOME}/.vim
+echo "set runtimepath^=${HOME}/.vim_runtime \
+runtimepath+=${HOME}/.vim_runtime/after \
+runtimepath+=${HOME}/.vim
 let &packpath=&runtimepath
 source ${HOME}/.vimrc" > "${HOME}/.config/nvim/init.vim"
 
 echo "Installing Plugins..."
 nvim +PlugInstall +qall
-
-# COC =>
-# <=
 
 echo "source ${HOME}/.vim_runtime/vimrcs/basic.vim" >> "${HOME}/.vimrc"
 
