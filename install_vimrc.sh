@@ -32,8 +32,7 @@ if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
 fi
 
 printf "%s\n" "Installing nodejs"
-curl -sL install-node.vercel.app/lts | bash || \
-    curl -sL install-node.vercel.app/lts | sudo bash
+curl -sL install-node.vercel.app/lts | sudo bash
 
 if (cat /etc/os-release | grep ID_LIKE | cut -d '=' -f2 | grep -q "debian"); then
     if (dpkg --print-architecture | grep -q arm) && [ ! -e ripgrep-13.0.0-arm-unknown-linux-gnueabihf ]; then

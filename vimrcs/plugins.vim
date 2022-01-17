@@ -33,5 +33,7 @@ Plug 'skanehira/preview-markdown.vim'
 Plug 'pdurbin/vim-tsv'
 " coc - use release branch (recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" documentation plugin
+Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
 call plug#end()
 
