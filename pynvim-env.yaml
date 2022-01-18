@@ -26,4 +26,3 @@ dependencies:
     - greenlet==1.1.2
     - msgpack==1.0.3
     - pynvim==0.4.3
-prefix: /home/kleber/miniconda3/envs/pynvim
