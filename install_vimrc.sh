@@ -21,20 +21,23 @@ fi
 
 
 if [ ! -d "${HOME}/.vim/undodir" ]; then
-    echo "Making undodir..."
+    echo "* Making undodir..."
     mkdir "${HOME}/.vim/undodir"
 fi
 
 if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
-    echo "Curling vim plug"
+    echo "* Curling vim plug"
     curl -fLo "${HOME}/.local/share/nvim/site/autoload/plug.vim" --create-dirs \
         "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 fi
 
-printf "%s\n" "Installing nodejs"
-curl -sL install-node.vercel.app/lts | sudo bash
+if [ ! -e "/usr/local/bin/node" ]; then
+    printf "* %s\n" "Installing nodejs"
+    curl -sL install-node.vercel.app/lts | sudo bash
+fi
 
 if (cat /etc/os-release | grep ID_LIKE | cut -d '=' -f2 | grep -q "debian"); then
+    printf
     if (dpkg --print-architecture | grep -q arm) && [ ! -e ripgrep-13.0.0-arm-unknown-linux-gnueabihf ]; then
         # arm
         mkdir ripgrep-13.0.0-arm-unknown-linux-gnueabihf
@@ -50,17 +53,26 @@ if (cat /etc/os-release | grep ID_LIKE | cut -d '=' -f2 | grep -q "debian"); the
         sudo apt-get install fzf -y
     fi
 else
-    echo "OS not known. Did not install ripgrep."
+    echo "** OS not known. Did not install ripgrep."
 fi
 mkdir -p "${HOME}/.config/nvim/"{ftdetect,syntax}
 
-echo "Setting up neovim"
-echo "Setting up conda env"
+echo "* Setting up neovim"
+echo "** Setting up miniconda3 env"
 
-conda create -n pynvim python=3.7
-conda activate
-pip install pynvim
-conda_env_python_path="$(which python)"
+#conda create -n pynvim python=3.7 pip > \
+#    >(tee -a conda_env_stdout.log) 2> >(tee -a conda_env_stderr.log >&2)
+
+grep "prefix:" pynvim-env.yaml ||
+    echo "prefix: $HOME/miniconda3/envs/pynvim" >> pynvim-env.yaml
+
+:>conda_env_stdout.log
+conda env create -f pynvim-env.yaml -n pynvim-install-vimrc \
+     >(tee -a conda_env_stdout.log) # 2> >(tee -a conda_env_stderr.log >&2)
+
+
+environment_location="$(cat conda_env_stdout.log  | grep "environment location" | cut -d : -f2-)"
+conda_env_python_path="$environment_location/bin/python3"
 
 echo "Setting adding paths to ${HOME}/.vimrc"
 
