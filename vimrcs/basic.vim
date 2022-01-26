@@ -125,6 +125,7 @@ nnoremap <leader>gh :diffget //3<CR>
 nnoremap <leader>gu :diffget //2<CR>
 nnoremap <leader>gs :G<CR>
 nnoremap <leader>Gd :Gdiffsplit<CR>
+nnoremap <leader>gd :Gdiff !~
 nnoremap <leader>gc :Git commit<CR>
 " }}}
 " Leader Set Toggle remaps ------------- {{{
@@ -314,7 +315,9 @@ augroup python_file
     autocmd FileType python :iabbrev <buffer> if: if:<left>
     autocmd FileType python :iabbrev <buffer> elif: elif:<left>
     autocmd FileType python onoremap <buffer> b /return<cr>
-    autocmd FileType python setlocal foldmethod=expr foldexpr=getline(v:lnum)=~'^\\s*#'
+"    autocmd FileType python setlocal foldmethod=expr foldexpr=getline(v:lnum)=~'^\\s*#'
+    autocmd FileType python setlocal foldenable
+    autocmd FileType python setlocal foldmethod=syntax
     autocmd FileType python inoremap <buffer> <localleader>nln \n<left>
 augroup END
 
@@ -362,11 +365,11 @@ augroup html_file
 augroup END
 " }}}
 
-" html file settings  ------ {{{
+" bash_eternal_history file settings --- {{{
 augroup bash_eternal_history
     autocmd!
-    autocmd BufNewFile,BufRead .bash_eternal_history set filetype=bash_eternal_history
-    autocmd BufWritePre *.html :normal gg=G
+    autocmd BufNewFile,BufRead *.bash_eternal_history set filetype=bash_eternal_history
+    autocmd BufWritePre *.bash_eternal_history :normal gg=G
     autocmd FileType bash_eternal_history cnoremap :q q!
 augroup END
 " }}}
@@ -377,11 +380,10 @@ augroup elp_file
     autocmd FileType elp highlight matchQuery term=bold gui=bold guifg=Magenta cterm=bold ctermfg=red guifg=#fabd2f
 augroup END
 " }}}
+"
 
-" }}}
-
-" speech engineering stuffs
-highlight Errors   ctermfg=red guifg=#fb4934
+" speech engineering stuff
+highlight Errors ctermfg=red guifg=#fb4934
 highlight Sent ctermfg=red guifg=#fabd2f
 highlight Int ctermfg=red guifg=#d3869b
 
