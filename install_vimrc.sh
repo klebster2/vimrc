@@ -37,7 +37,7 @@ if [ ! -e "/usr/local/bin/node" ]; then
 fi
 
 if (cat /etc/os-release | grep ID_LIKE | cut -d '=' -f2 | grep -q "debian"); then
-    printf
+    printf ""
     if (dpkg --print-architecture | grep -q arm) && [ ! -e ripgrep-13.0.0-arm-unknown-linux-gnueabihf ]; then
         # arm
         mkdir ripgrep-13.0.0-arm-unknown-linux-gnueabihf
