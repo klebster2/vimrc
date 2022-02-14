@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "Starting vimrc setup..."
 
-#sudo apt-get update
+sudo apt-get update
 sudo apt install build-essential cmake vim-nox python3-dev -y
 sudo apt-get install jq mono-complete golang nodejs default-jdk npm -y
 
@@ -36,6 +36,11 @@ if [ ! -e "/usr/local/bin/node" ]; then
     curl -sL install-node.vercel.app/lts | sudo bash
 fi
 
+mkdir -p ${HOME}/.local/bin
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+mv "./nvim.appimage" "${HOME}/.local/bin/nvim"
+chmod u+x "${HOME}/.local/bin/nvim"
+
 if (cat /etc/os-release | grep ID_LIKE | cut -d '=' -f2 | grep -q "debian"); then
     printf ""
     if (dpkg --print-architecture | grep -q arm) && [ ! -e ripgrep-13.0.0-arm-unknown-linux-gnueabihf ]; then
@@ -58,6 +63,11 @@ fi
 mkdir -p "${HOME}/.config/nvim/"{ftdetect,syntax}
 
 echo "* Setting up neovim"
+conda -V \
+    || curl -Lo Miniconda3-latest-Linux-x86_64.sh \
+    "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh" \
+    && chmod +x ./Miniconda3-latest-Linux-x86_64.sh \
+    && ./Miniconda3-latest-Linux-x86_64.sh
 echo "** Setting up miniconda3 env"
 
 #conda create -n pynvim python=3.7 pip > \
@@ -67,12 +77,13 @@ grep "prefix:" pynvim-env.yaml ||
     echo "prefix: $HOME/miniconda3/envs/pynvim" >> pynvim-env.yaml
 
 :>conda_env_stdout.log
-conda env create -f pynvim-env.yaml -n pynvim-install-vimrc \
+conda env create -f pynvim-env.yaml \
      >(tee -a conda_env_stdout.log) # 2> >(tee -a conda_env_stderr.log >&2)
 
 
-environment_location="$(cat conda_env_stdout.log  | grep "environment location" | cut -d : -f2-)"
-conda_env_python_path="$environment_location/bin/python3"
+environment_location="$(cat conda_env_stdout.log \
+    | grep "environment location" | cut -d : -f2-)"
+conda_env_python_path="$HOME/miniconda3/envs/pynvim/bin/python3"
 
 echo "Setting adding paths to ${HOME}/.vimrc"
 
