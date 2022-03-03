@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "Starting vimrc setup..."
 
-#sudo apt-get update
+sudo apt-get update -y
 sudo apt install build-essential cmake vim-nox python3-dev -y
 sudo apt-get install jq mono-complete golang nodejs default-jdk npm -y
 
@@ -60,6 +60,13 @@ mkdir -p "${HOME}/.config/nvim/"{ftdetect,syntax}
 echo "* Setting up neovim"
 echo "** Setting up miniconda3 env"
 
+miniconda_install="Miniconda3-latest-Linux-x86_64.sh"
+
+if ! (conda >/dev/null); then
+    curl -Lo "$miniconda_install" "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
+    chmod +x "$miniconda_install"
+    "$miniconda_install"
+fi
 #conda create -n pynvim python=3.7 pip > \
 #    >(tee -a conda_env_stdout.log) 2> >(tee -a conda_env_stderr.log >&2)
 
@@ -67,11 +74,27 @@ grep "prefix:" pynvim-env.yaml ||
     echo "prefix: $HOME/miniconda3/envs/pynvim" >> pynvim-env.yaml
 
 :>conda_env_stdout.log
+
+if [ -d "$HOME/miniconda3/envs/pynvim-install-vimrc" ]; then
+    path_to_env="$HOME/miniconda3/envs/pynvim-install-vimrc"
+    for _option in "$path_to_env ?"; do
+        echo "Do you want to remove $path_to_env?"
+        printf "rm -r ${_option} "
+        read -p "Change ${_option} (y/n/q)? " y_n_q
+        msg="option selected"
+        case "$y_n_q" in
+            y|Y|Yes|yes ) echo "'${y_n_q}' $msg'"; rm -r "$path_to_env" ;;
+            n|N|No|no ) echo "'${y_n_q}' $msg, skipping";;
+            q|Q|Quit|quit ) echo "'${y_n_q}' $msg, quitting"; break;;
+            * ) echo "invalid";;
+        esac
+    done
+fi
+
 conda env create -f pynvim-env.yaml -n pynvim-install-vimrc \
-     >(tee -a conda_env_stdout.log) # 2> >(tee -a conda_env_stderr.log >&2)
+    >(tee -a conda_env_stdout.log) # 2> >(tee -a conda_env_stderr.log >&2)
 
-
-environment_location="$(cat conda_env_stdout.log  | grep "environment location" | cut -d : -f2-)"
+environment_location="$HOME/miniconda3/envs/pynvim-install-vimrc"
 conda_env_python_path="$environment_location/bin/python3"
 
 echo "Setting adding paths to ${HOME}/.vimrc"

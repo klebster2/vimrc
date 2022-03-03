@@ -311,7 +311,11 @@ augroup python_file
     autocmd!
     autocmd FileType python inoremap <buffer> <localleader>m <C-r>=MyComplete("/.vim_runtime/dicts/custom_pycompletions")<cr>
     autocmd FileType python nnoremap <buffer> <localleader>c I#<esc>
-    autocmd FileType python nnoremap <buffer> pdb Iimport<space>pdb;<space>pdb.set_trace()<esc>
+    autocmd FileType python nnoremap <buffer> pdb Iimport<space>pdb;<return>pdb.set_trace()<esc>
+    " gg = give-give (me a)
+    " ggj: give-give (me a) json (import) (+ utils)
+    autocmd FileType python nnoremap <buffer> ggj Iimport<space>json<return>import<space>os<return>from<space>pathlib<space>import<space>Path<return><esc>
+    autocmd FileType python nnoremap <buffer> ggnm Iif __name__=="__main__":<return><esc>
     autocmd FileType python :iabbrev <buffer> if: if:<left>
     autocmd FileType python :iabbrev <buffer> elif: elif:<left>
     autocmd FileType python onoremap <buffer> b /return<cr>

@@ -35,5 +35,7 @@ Plug 'pdurbin/vim-tsv'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " documentation plugin
 Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
+" formatting
+Plug 'psf/black', { 'branch': 'main' }
+Plug 'fisadev/vim-isort'
 call plug#end()
-
