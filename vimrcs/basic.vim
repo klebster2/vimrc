@@ -49,6 +49,7 @@ endif
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-file -oc --exclude-standard']
 let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-vimlsp', 'coc-tsserver', 'coc-snippets', 'coc-python', 'coc-vimlsp', 'coc-sh', 'coc-jedi']
 let g:doge_python_settings = {'single_quotes': 0}
+let g:vim_isort_python_version = 'python3'
 " bash syn
 colorscheme gruvbox
 let g:is_bash = 1 | setfiletype sh

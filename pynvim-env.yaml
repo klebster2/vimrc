@@ -29,4 +29,3 @@ dependencies:
     - parso==0.8.3
     - pynvim==0.4.3
     - mypy==0.931
-prefix: /home/kleber/miniconda3/envs/pynvim
