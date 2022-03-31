@@ -391,6 +391,18 @@ highlight Errors ctermfg=red guifg=#fb4934
 highlight Sent ctermfg=red guifg=#fabd2f
 highlight Int ctermfg=red guifg=#d3869b
 
+let cona_default_env = $CONDA_DEFAULT_ENV
+if conda_default_env == 'base'
+    let env_name = 'neovim'
+else
+    let env_name = conda_default_env
+endif
+
+let bin_python = expand('~') . '/miniconda3/envs/' . env_name . '/bin/python'
+if filereadable(bin_python)
+    let g:python3_host_prog = bin_python
+endif
+
 " OTHER NOTES: ----- {{{
 
 " zm - un/indent all nested folds
