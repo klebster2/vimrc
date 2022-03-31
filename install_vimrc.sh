@@ -36,6 +36,29 @@ if [ ! -e "/usr/local/bin/node" ]; then
     curl -sL install-node.vercel.app/lts | sudo bash
 fi
 
+nvim -v >/dev/null
+
+if [ $? -ne 0 ]; then
+    curl -LO "https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
+    chgrp sudo nvim.appimage
+    chmod ugo+x nvim.appimage
+    for _option in "/usr/bin/nvim"; do
+        echo "Do you want to add neovim to /usr/bin/ ?"
+        decision="mv ./nvim.appimage ${_option} "
+        printf "$decision"
+        read -p "Change ${_option} (y/n/q)? " y_n_q
+        msg="option selected"
+        case "$y_n_q" in
+            y|Y|Yes|yes ) echo "'${y_n_q}' $msg'"; $decision > /dev/null 2>&1 || sudo $decision ;;
+            n|N|No|no ) echo "'${y_n_q}' $msg, skipping";;
+            q|Q|Quit|quit ) echo "'${y_n_q}' $msg, quitting"; break;;
+            * ) echo "invalid";;
+        esac
+    done
+else
+    printf "found nvim already installed at $(which nvim)"
+fi
+
 if (cat /etc/os-release | grep ID_LIKE | cut -d '=' -f2 | grep -q "debian"); then
     printf ""
     if (dpkg --print-architecture | grep -q arm) && [ ! -e ripgrep-13.0.0-arm-unknown-linux-gnueabihf ]; then
@@ -61,23 +84,25 @@ echo "* Setting up neovim"
 echo "** Setting up miniconda3 env"
 
 miniconda_install="Miniconda3-latest-Linux-x86_64.sh"
+conda 2>/dev/null
 
-if ! (conda >/dev/null); then
+if [ $? -ne 0 ]; then
     curl -Lo "$miniconda_install" "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
     chmod +x "$miniconda_install"
-    "$miniconda_install"
+    ./"$miniconda_install"
 fi
-#conda create -n pynvim python=3.7 pip > \
-#    >(tee -a conda_env_stdout.log) 2> >(tee -a conda_env_stderr.log >&2)
 
-grep "prefix:" pynvim-env.yaml ||
-    echo "prefix: $HOME/miniconda3/envs/pynvim" >> pynvim-env.yaml
+. $HOME/.bashrc
 
-:>conda_env_stdout.log
+miniconda_loc="$(find / -type d -iname "miniconda3" -maxdepth 4 2> /dev/null)"
 
-if [ -d "$HOME/miniconda3/envs/pynvim-install-vimrc" ]; then
-    path_to_env="$HOME/miniconda3/envs/pynvim-install-vimrc"
-    for _option in "$path_to_env ?"; do
+[ -z "$miniconda_loc" ] && echo "did not find miniconda3.. exiting!" && exit 1
+
+environment_location="$miniconda_loc/envs/pynvim"
+
+if [ -d "$environment_location" ]; then
+    path_to_env="$environment_location"
+    for _option in "$path_to_env"; do
         echo "Do you want to remove $path_to_env?"
         printf "rm -r ${_option} "
         read -p "Change ${_option} (y/n/q)? " y_n_q
@@ -91,10 +116,9 @@ if [ -d "$HOME/miniconda3/envs/pynvim-install-vimrc" ]; then
     done
 fi
 
-conda env create -f pynvim-env.yaml -n pynvim-install-vimrc \
+conda env create -f pynvim-env.yaml -n pynvim \
     >(tee -a conda_env_stdout.log) # 2> >(tee -a conda_env_stderr.log >&2)
 
-environment_location="$HOME/miniconda3/envs/pynvim-install-vimrc"
 conda_env_python_path="$environment_location/bin/python3"
 
 echo "Setting adding paths to ${HOME}/.vimrc"
