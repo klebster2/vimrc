@@ -48,7 +48,6 @@ if executable('rg')
 endif
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-file -oc --exclude-standard']
 let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-vimlsp', 'coc-tsserver', 'coc-snippets', 'coc-python', 'coc-vimlsp', 'coc-sh', 'coc-jedi']
-let g:doge_python_settings = {'single_quotes': 0}
 " bash syn
 colorscheme gruvbox
 let g:is_bash = 1 | setfiletype sh
@@ -57,6 +56,8 @@ let g:mapleader=" "
 let g:maplocalleader=";"
 set foldlevelstart=1
 "set foldcolumn=0
+" vim plug for debugging
+g:nvimgdb_use_cmake_to_find_executables = 0
 " netrw tree
 let g:netrw_banner=0
 let g:netrw_browse_split=4
@@ -290,7 +291,7 @@ augroup c_file
     autocmd!
     autocmd FileType c nnoremap <buffer> <localleader>c I/*<esc>
     autocmd FileType c setl ofu=ccomplete#CompleteCpp
-    autocmd FileType c :iabbrev <buffer> nnl \n<left>
+    autocmd FileType c nnoremap <buffer> <localleader>c I#include<space><stdio.h><return>#include<space><stdlib.h><return><return>int main()<return>{<return><space><space>return 0;<return>}<up><esc>
 augroup END
 " }}}
 
