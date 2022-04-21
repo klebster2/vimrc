@@ -1,4 +1,3 @@
-
 "klebster1's vimrc file ----- {{{
 "  thanks for visiting
 " }}}
@@ -9,16 +8,14 @@
 
 " Default set -------- {{{
 syntax on
-set autoindent
 filetype plugin indent on
-set noerrorbells
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=4 "
+set tabstop=4 "
 set shiftround
-set expandtab
-set number norelativenumber
-set nowrap
-set smartcase
+set expandtab "
+set number norelativenumber 2 "
+set nowrap "
+set smartcase 2
 set noswapfile
 set nobackup
 set undodir=~/.vim_runtime/undodir
@@ -55,9 +52,10 @@ let g:is_bash = 1 | setfiletype sh
 let g:mapleader=" "
 let g:maplocalleader=";"
 set foldlevelstart=1
+
 "set foldcolumn=0
 " vim plug for debugging
-g:nvimgdb_use_cmake_to_find_executables = 0
+"g:nvimgdb_use_cmake_to_find_executables = 0
 " netrw tree
 let g:netrw_banner=0
 let g:netrw_browse_split=4

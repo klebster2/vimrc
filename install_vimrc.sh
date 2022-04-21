@@ -5,19 +5,23 @@ sudo apt-get update
 sudo apt install build-essential cmake vim-nox python3-dev -y
 sudo apt-get install jq mono-complete golang nodejs default-jdk npm -y
 
-printf "Checking for ${HOME}/.new_words..."
-if [ -d "${HOME}/.new_words" ]; then
-    echo " Found ${HOME}/.new_words"
-    printf "Checking for ${HOME}/.vim_runtime/new_words symlink..."
-    if [ ! -f "${HOME}/.vim_runtime/new_words" ]; then
-        echo " Didn't find symbolic link... making symlink"
-        ln -s "${HOME}/.new_words/new_words" "${HOME}/.vim_runtime/new_words"
-    else
-        echo " Found symlink."
-    fi
-else
-    echo " Didn't find ${HOME}/.new_words"
-fi
+mkdir -p ${HOME}/.local/bin
+
+install_lua_ls() {
+    # clone project
+    lua_ls="$HOME/.local/lua-language-server"
+    gcc --version
+    ninja -V > /dev/null | apt-get install ninja-build
+
+    git clone "https://github.com/sumneko/lua-language-server" "$lua_ls"
+    pushd "$lua_ls"
+    git submodule update --init --recursive
+    sudo apt-get install ninja-build
+    pushd 3rd/luamake
+    ./compile/install.sh
+    cd ../..
+    ./3rd/luamake/luamake rebuild
+)
 
 
 if [ ! -d "${HOME}/.vim/undodir" ]; then
@@ -36,30 +40,12 @@ if [ ! -e "/usr/local/bin/node" ]; then
     curl -sL install-node.vercel.app/lts | sudo bash
 fi
 
-mkdir -p ${HOME}/.local/bin
 curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+
 mv "./nvim.appimage" "${HOME}/.local/bin/nvim"
+
 chmod u+x "${HOME}/.local/bin/nvim"
 
-if (cat /etc/os-release | grep ID_LIKE | cut -d '=' -f2 | grep -q "debian"); then
-    printf ""
-    if (dpkg --print-architecture | grep -q arm) && [ ! -e ripgrep-13.0.0-arm-unknown-linux-gnueabihf ]; then
-        # arm
-        mkdir ripgrep-13.0.0-arm-unknown-linux-gnueabihf
-        curl -LO "https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep-13.0.0-arm-unknown-linux-gnueabihf.tar.gz"
-        tar -xf "ripgrep-13.0.0-arm-unknown-linux-gnueabihf.tar.gz"
-    elif (dpkg --print-architecture | grep -q amd); then
-        # amd
-        curl -LO "https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb"
-        sudo dpkg -i "ripgrep_12.1.1_amd64.deb"
-        rm "ripgrep_12.1.1_amd64.deb"
-    else
-        # try anyway
-        sudo apt-get install fzf -y
-    fi
-else
-    echo "** OS not known. Did not install ripgrep."
-fi
 mkdir -p "${HOME}/.config/nvim/"{ftdetect,syntax}
 
 echo "* Setting up neovim"
@@ -93,6 +79,8 @@ source ${HOME}/.vim_runtime/vimrcs/customcomplete.vim
 source ${HOME}/.vim_runtime/vimrcs/coc.vim
 let g:python3_host_prog='${conda_env_python_path}'
 " > "${HOME}/.vimrc"
+
+ln -s "$HOME/.vim_runtime/nvim" "$HOME/.config" # CONFIG CREATION
 
 mkdir -p "${HOME}/.config/nvim/plug-config"
 echo "set runtimepath^=${HOME}/.vim_runtime \
