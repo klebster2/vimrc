@@ -28,4 +28,4 @@ dependencies:
     - msgpack==1.0.3
     - parso==0.8.3
     - pynvim==0.4.3
-prefix: /home/kleber/miniconda3/envs/pynvim
+    - mypy==0.931

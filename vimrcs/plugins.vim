@@ -33,4 +33,9 @@ Plug 'pdurbin/vim-tsv'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " debuggers for c/c++, python
 Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
+" documentation plugin
+Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
+" formatting
+Plug 'psf/black', { 'branch': 'main' }
+Plug 'fisadev/vim-isort'
 call plug#end()
