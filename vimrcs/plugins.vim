@@ -5,16 +5,11 @@ call plug#begin('~/.vim/plugged')
 Plug 'rafi/awesome-vim-colorschemes'
 " colorscheme
 Plug 'morhetz/gruvbox'
-" ripgrep
+" ripgrep"" 
 Plug 'jremmen/vim-ripgrep'
-" Github Plugin
+" Github Plugin""
 Plug 'tpope/vim-fugitive'
-"
-Plug 'vim-airline/vim-airline'
-"
-Plug 'ctrlpvim/ctrlp.vim'
 " filepath/ var autocompleter
-Plug 'mbbill/undotree'
 " pytest
 Plug 'alfredodeza/pytest.vim'
 " mql4

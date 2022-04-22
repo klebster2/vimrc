@@ -21,7 +21,9 @@ require('packer').startup(function()
     use 'hrsh7th/nvim-compe'
     use 'hrsh7th/vim-vsnip'
     use 'nvim-lua/plenary.nvim'
-
+    use 'tpope/vim-fugitive'
+    use 'jremmen/vim-ripgrep'
+    use 'mbbill/undotree'
 end)
 
 

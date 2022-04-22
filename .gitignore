@@ -1,3 +1,5 @@
 undodir
 new_words
 .netrwhist
+nvim/lua-language-server/
+*.log

@@ -9,30 +9,11 @@
 " Default set -------- {{{
 syntax on
 filetype plugin indent on
-set shiftwidth=4
-set tabstop=4
-set shiftround
-set expandtab
-set number norelativenumber
-set nowrap
-set smartcase
-set noswapfile
-set nobackup
-set undodir=~/.vim_runtime/undodir
-set undofile
-set incsearch
-set termguicolors
-set colorcolumn=80
-set signcolumn=yes
 set path+=**
 set wildmenu
 set wildmode=longest:list,full
-set list
-set cmdheight=1
-set shortmess+=c
 set background=dark
 colorscheme gruvbox
-set ruler
 set rulerformat=%55(%{strftime('%a\ %b\ %e\ %I:%M\ %p')}\ %5l,%-6(%c%V%)\ %P%)
 set statusline=%F
 set backspace=indent,eol,start
@@ -64,14 +45,6 @@ let g:netrw_liststyle=3
 let g:netrw_list_hide=netrw_gitignore#Hide()
 " }}}
 
-" Leader remaps ---- {{{
-" Leader Window Movement Remaps --------- {{{
-nnoremap <leader>h :wincmd h<CR>
-nnoremap <leader>j :wincmd j<CR>
-nnoremap <leader>k :wincmd k<CR>
-nnoremap <leader>l :wincmd l<CR>
-" }}}
-
 " Leader Window reize remaps --------- {{{
 " simplify resizing splits
 if has('unix')
@@ -96,8 +69,6 @@ nnoremap gF :vertical wincmd f<cr>
 " }}}
 
 " Leader Window Explorer --------- {{{
-nnoremap <leader>vx :Vex<cr>
-nnoremap <leader>sx :Sex<cr>
 " }}}
 nnoremap <leader>tp :tabprev<cr>
 nnoremap <leader>tn :tabnext<cr>
@@ -105,45 +76,13 @@ nnoremap <leader>tt :tabnew<cr>
 " }}}
 
 " Leader Plugin Remaps --------- {{{
-"" undotree side explorer
-nnoremap <leader>u :UndotreeShow<CR>
 "" open small side explorer
 nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 "" ripgrep PS Project Search
-nnoremap <leader>ps :Rg<CR>
-let g:rg_command = 'rg --vimgrep -S'
-" pytest on entire file
-nnoremap <leader>ptf :Pytest<SPACE>file<CR>
-" pytest check last error msg
-nnoremap <leader>ptl :Pytest<SPACE>last<CR>
-" colorschemes:
-nnoremap <leader>gb :colorscheme gruvbox<CR>
-nnoremap <leader>bd :set background=dark<CR>
-" vim-fugitive:
-nnoremap <leader>gh :diffget //3<CR>
-nnoremap <leader>gu :diffget //2<CR>
-nnoremap <leader>gs :G<CR>
-nnoremap <leader>Gd :Gdiffsplit<CR>
-nnoremap <leader>gd :Gdiff !~
-nnoremap <leader>gc :Git commit<CR>
 " }}}
 " Leader Set Toggle remaps ------------- {{{
-nnoremap <leader>sn :set number!<cr>
-nnoremap <leader>srn :set relativenumber!<cr>
-nnoremap <leader>sw :set wrap!<cr>
-nnoremap <leader>sp :set paste!<cr>
 " FZF ------------------- {{{
 nnoremap <leader>fi :Files<cr>
-" }}}
-" }}}
-
-" elp remaps ---- {{{
-nnoremap <leader>rz
-            \ :!$HOME/.vim_runtime/assistive-writing-apis/searchrhymezone_api.sh "<cword>"
-            \ <cr> :vs $HOME/.vim_runtime/assistive-writing-apis/rhymezone_wordlist.elp<cr>
-            \ :vs $HOME/.vim_runtime/assistive-writing-apis/ngrams3.elp<cr>
-            \ :vs $HOME/.vim_runtime/assistive-writing-apis/ngrams2.elp<cr>
-            \ <c-w><c-r>
 " }}}
 
 " Leader edit vimrc (basic.vim) ---- {{{
@@ -164,7 +103,6 @@ nnoremap <leader>qq :quit<cr>
 " }}}
 command! Wq :wq
 " Leader disregard tab (delete tab) ---- {{{
-nnoremap <leader>ss :hsplit<cr>
 " }}}
 " search rhymezoneapi in visual mode --------------- {{{
 vnoremap <leader>rz :terminal ./searchrhymezone_api.sh "%V"
