@@ -1,21 +1,22 @@
 vim.lsp.set_log_level("debug")
 
 USER = vim.fn.expand('$USER')
-local sumneko_root_path = ""
-local sumneko_binary_path = ""
 
-if vim.fn.has('mac')  == 1 then
-  sumneko_root_path = ""
-  sumneko_binary_path = ""
-elseif vim.fn.has('unix') == 1 then
-  sumneko_root_path = "/home/" .. USER .. "/.config/nvim/language-servers/lua-language-server/"
-  sumneko_binary_path = "/home/" .. USER .. "/.config/nvim/language-servers/lua-language-server/bin/lua-language-server"
+if vim.fn.has("mac") == 1 then
+  local system_name = "macOS"
+elseif vim.fn.has("unix") == 1 then
+  local system_name = "Linux"
+elseif vim.fn.has("win32") == 1 then
+  local system_name = "Windows"
 else
-  print("Unsupported system for sumneko")
+  print("Unsupported system for sumenko")
 end
+
+local sumenko_root_path = "/home/" .. USER .. "/.config/nvim/main.lua"
+local sumenko_binary = "/home/" .. USER .. "/.config/nvim/bin/lua-language-server"
  
 require('lspconfig').sumneko_lua.setup {
-  cmd = {sumneko_binary, "-E", sumneko_root_path .. "main.lua"},
+  cmd = {sumenko_binary, "-E", sumenko_root_path},
   settings = {
   lua = {
 	runtime = {
@@ -34,11 +35,7 @@ require('lspconfig').sumneko_lua.setup {
             [vim.fn.expand("$VIMRUNTIME/lua")] = true,
             [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
         },
-	},
-	-- do not send telemetry data containing a randomized but unique identifier
-	telemetry = {
-	enable = false,
-	  },
-	},
-  }
+	}
+}
+}
 }
