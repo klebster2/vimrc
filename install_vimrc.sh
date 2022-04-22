@@ -12,9 +12,7 @@ install_lua_ls() {
 
     wget $latest_release_url -O `basename $latest_release_url` 
 
-    tar -xvzf `basename $latest_release_url`
-#    echo "uname -p != x86_64"
-
+    tar -xvzf `basename $latest_release_url` -C ./lua-language-server
 }
 
 main() {
