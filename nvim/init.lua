@@ -6,6 +6,7 @@ set runtimepath^=${HOME}/.vim_runtime runtimepath+=${HOME}/.vim_runtime/after ru
 let &packpath=&runtimepath
 source /home/kleber/.vim_runtime/vimrcs/customcomplete.vim
 "source ${HOME}/.vimrc
+source ${HOME}/.vim_runtime/vimrcs/customcomplete.vim
 ]],
 true)
 
