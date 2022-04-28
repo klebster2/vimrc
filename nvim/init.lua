@@ -3,6 +3,7 @@ local result = vim.api.nvim_exec(
 set runtimepath^=${HOME}/.vim_runtime runtimepath+=${HOME}/.vim_runtime/after runtimepath+=${HOME}/.vim
 let &packpath=&runtimepath
 "source ${HOME}/.vimrc
+source ${HOME}/.vim_runtime/vimrcs/customcomplete.vim
 ]],
 true)
 
