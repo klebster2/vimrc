@@ -1,4 +1,5 @@
 #!/bin/bash
+
 install_lua_ls() {
     # clone project
     lua_ls="$HOME/.local/bin/lua-language-server"
@@ -10,10 +11,22 @@ install_lua_ls() {
         | head -n1)
     echo "latest release of sumneko/lua-language-server: $latest_release_url"
     wget $latest_release_url -O `basename $latest_release_url` 
-    set -x
     mkdir -p "$HOME/.vim_runtime/nvim/lua-language-server"
-    tar -xvzf `basename $latest_release_url` -C "$HOME/.vim_runtime/nvim/lua-language-server"
-    set +x
+    tar -xvzf `basename $latest_release_url` -C "$HOME/.vim_runtime/nvim/lua-language-server" >/dev/null
+    echo "downloaded sumneko/lua-language-server $latest_release_url to $HOME/.vim_runtime/nvim/lua-language-server"
+}
+
+install_grammarly() {
+    echo "Install grammarly ls?"
+    read -p "(y/n)?" y_n
+    msg="option selected"
+    case "$y_n" in
+        y|Y|Yes|yes ) echo "'${y_n}' $msg -> removing symlink'";;
+        n|N|No|no ) echo "'${y_n}', $msg -> skipping";;
+        * ) echo "";
+    esac
+
+    npm i -g @emacs-grammarly/unofficial-grammarly-language-server
 }
 
 main() {
@@ -26,7 +39,7 @@ main() {
         mkdir "${HOME}/.vim/undodir"
     fi
 
-    nvim -v >/dev/null
+    nvim -v 2>/dev/null # TODO CONSIDER CHANGING TO USER INPUT RATHER THAN AUTOMAGIC
 
     if [ $? -ne 0 ]; then
         curl -LO "https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
@@ -34,21 +47,24 @@ main() {
         chmod ugo+x nvim.appimage
         for _option in "/usr/bin/nvim"; do
             echo "Do you want to add neovim to /usr/bin/ ?"
-            decision="mv ./nvim.appimage ${_option} "
+            decision="mv -v ./nvim.appimage ${_option} "
             printf "$decision"
             read -p "Change ${_option} (y/n/q)? " y_n_q
             msg="option selected"
             case "$y_n_q" in
-                y|Y|Yes|yes ) echo "'${y_n_q}' $msg'"; $decision > /dev/null 2>&1 || sudo $decision ;;
-                n|N|No|no ) echo "'${y_n_q}' $msg, skipping";;
-                q|Q|Quit|quit ) echo "'${y_n_q}' $msg, quitting"; break;;
-                * ) echo "invalid";;
+            y|Y|Yes|yes ) echo "'${y_n_q}' $msg'"; $decision || sudo $decision ;;
+            n|N|No|no ) echo "'${y_n_q}' $msg, skipping";;
+            q|Q|Quit|quit ) echo "'${y_n_q}' $msg, quitting"; break;;
+            * ) echo "invalid";;
             esac
         done
     else
         printf "found nvim already installed at $(which nvim)\n\n"
     fi
 
+    printf "----------\n\n"
+
+    # TODO CHECK FOR PYTHON3
     if [ -d "$environment_location" ]; then
         path_to_env="$environment_location"
         for _option in "$path_to_env"; do
@@ -64,6 +80,8 @@ main() {
             esac
         done
     fi
+
+    printf "----------\n\n"
 
     install_lua_ls
 
@@ -81,13 +99,29 @@ main() {
 
     if [ ! -L "$HOME/.config/nvim" ]; then
         echo "Adding symlink as $HOME/.config/nvim"
-        ln -s "$HOME/.vim_runtime/nvim" "$HOME/.config" # CONFIG CREATION
+        ln -s "$HOME/.vim_runtime/nvim" "$HOME/.config" 2> /dev/null # CONFIG CREATION
+        if [ $? -ne 0 ]; then
+	    echo "Path already found: $HOME/.config/nvim"
+	    read -p "Overwrite? (y/n/q)?" y_n_q
+            msg="option selected"
+            case "$y_n_q" in
+                y|Y|Yes|yes ) echo "'${y_n_q}' $msg -> removing symlink'"; rm -r "$HOME/.config/nvim"; ln -s "$HOME/.vim_runtime/nvim" "$HOME/.config" 2> /dev/null ;;
+                n|N|No|no ) echo "'${y_n_q}', $msg -> skipping";;
+                * ) echo "invalid";;
+            esac
+	fi
     fi
 
-    echo "Installing Plugins..."
-    nvim +PackerInstall +qall
-
+    # TODO Line below is unused
     echo "source ${HOME}/.vim_runtime/vimrcs/basic.vim" >> "${HOME}/.vimrc"
+
+    install_grammarly
+
+    echo "Installing Plugins via PackerSync..."
+    nvim +PackerSync +qall
+    echo "Installing Language servers via LspInstall..."
+    nvim --headless +"LspInstall awk_ls bashls dockerls grammarly"  +qall
+
 
     echo "Installed dependencies for vim configuration successfully."
 }

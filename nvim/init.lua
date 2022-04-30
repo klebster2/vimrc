@@ -4,9 +4,8 @@ vim.api.nvim_exec(
 [[
 set runtimepath^=${HOME}/.vim_runtime runtimepath+=${HOME}/.vim_runtime/after runtimepath+=${HOME}/.vim
 let &packpath=&runtimepath
-source /home/kleber/.vim_runtime/vimrcs/customcomplete.vim
+source /home/kleber/.vim_runtime/vimrcs/customcompleters/fasttext.vim
 "source ${HOME}/.vimrc
-source ${HOME}/.vim_runtime/vimrcs/customcomplete.vim
 ]],
 true)
 
