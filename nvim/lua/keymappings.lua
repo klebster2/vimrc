@@ -51,3 +51,6 @@ keymap('n', '<leader>Gd', ':Gdiffsplit<CR>', opts)
 keymap('n', '<leader>gd', ':Gdiff !~', opts)
 keymap('n', '<leader>gc', ':Git commit<CR>', opts)
 
+-- vim-for-poets:
+keymap('i', '<C-x><C-x>', '<C-r>=RhymeWord()<cr>', opts)
+

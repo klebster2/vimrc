@@ -18,4 +18,4 @@ vim.wo.relativenumber = false
 vim.wo.wrap = false
 
 -- option
-vim.o.completeopt = "menuone,noselect"
+vim.o.completeopt = "menuone,noselect,noinsert"
