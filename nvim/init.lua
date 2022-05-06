@@ -4,7 +4,7 @@ vim.api.nvim_exec(
 [[
 set runtimepath^=${HOME}/.vim_runtime runtimepath+=${HOME}/.vim_runtime/after runtimepath+=${HOME}/.vim
 let &packpath=&runtimepath
-"source /home/kleber/.vim_runtime/vimrcs/customcompleters/fasttext.vim
+source /home/kleber/.vim_runtime/vimrcs/customcompleters/vim-for-poets.vim
 "source ${HOME}/.vimrc
 ]],
 true)
@@ -20,7 +20,8 @@ require("lsp.lua-ls")
 vim.api.nvim_exec(
 [[
 colorscheme gruvbox
-source vimrcs/nvim-tree-opts.vim
 ]],
 true)
+
+--require("vim-for-poets")
 
