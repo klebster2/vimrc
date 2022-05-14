@@ -20,10 +20,11 @@ fun! GetWordUnderCursor(...)
     let l:query_word = l:line[l:start : col('.')-2]
     return [l:start, l:query_word]
 endfun
+" rhyme
 
-" Custom VimPoet functions 'RhymeWord' ------------------- {{{
+" Custom VimPoet function 'RhymeWord' ------------------- {{{
 fun! RhymeWord(...)
-    " a:1 path to dict
+    " a:1 path to dictionary
     " a:2 is the separator between word (lhs) and pronunciation (rhs)
     let l:start_query_word = GetWordUnderCursor()
     let l:word_start = l:start_query_word[0]
@@ -61,113 +62,78 @@ fun! RhymeWord(...)
             endif
         endfor
     endfor
-    " Now call the complete() function
+    " Now call the complete()
     call complete(l:word_start + 1, l:res)
     return ''
 endfun
 " }}}
-inoremap <C-x><C-r> <C-r>=RhymeWord("/home/kleber/k2Britfone/britfone.main.3.1.1.csv", ', ')<cr>
 
 " Custom VimPoet functionary 'DefineWord' ------------------- {{{
-" help
 fun! DefineWord(...)
-    " a:1 path to wikidict directories e.g. "/home/user/wiktionary-dictionary/"
+    " a:1 is the fullpath to wikidict directories e.g. "/home/user/wiktionary-dictionary/"
     let l:start_query_word = GetWordUnderCursor()
     let l:word_start = l:start_query_word[0]
     let l:query_word = l:start_query_word[1]
-    echom a:1
-    let l:search_glob = a:1.l:query_word[0]."/*.json"
+    let l:search_glob = a:1.l:query_word[0:1]."/".l:query_word."*.json"
     echom l:search_glob
+    " globular
 
-    " Record what matches − we can pass this to complete() later
+    " Record what match − we can passing this to complete() later
     let l:res = []
-    " todo add morpho lookback of ~3? for english
-    for l:word_json in split(glob(l:search_glob))
+    let l:filelistlen = split(glob(l:search_glob))
+    for l:word_json in l:filelistlen
         if match(l:word_json, "\/.*".query_word.".*\.json") >= 0
             let l:local_res = ""
 
-            let l:word_found = substitute(l:word_json, '/.*/\(.*\).json', '\1', '')
+            let l:word_found = substitute(l:word_json, '/.*/\(.*\)\.\d*\.json', '\1', '')
             let l:word_data = json_decode(join(readfile(l:word_json, '')))
 
-            let l:word_data['etymology_text']
+
+            let l:pos = l:word_data['pos'] is v:null ? '' : l:word_data['pos']
+            while strlen(l:pos) < 11 " just a heuristic (most pos won't be larger than this afaik)
+                let l:pos = l:pos.' '
+            endwhile
+
+            if l:word_data['etymology_text'] is v:null
+                let l:etymology_text_word = ''
+            else
+                let l:etymology_text_formatted = ''
+                let l:etymology_text_word = substitute(l:word_data['etymology_text'], '\m\%u200e', '', '')
+            endif
+
+            let l:menu = l:etymology_text_word is v:null ? l:pos.'  ' : l:pos.'  '.l:etymology_text_word
 
             call add(l:res, {
             \ 'icase': 1,
-            \ 'word': l:word_found,
-            \ 'abbr': l:word_found,
-            \ 'menu': l:word_data['pos'] is v:null ? '' : l:word_data['pos'],
+            \ 'word': substitute(l:word_found, '_', ' ', 'g'),
+            \ 'abbr': substitute(l:word_found, '_', ' ', 'g'),
+            \ 'menu': l:menu,
             \ 'info': l:word_data['etymology_text'] is v:null ? '' : l:word_data['etymology_text'],
             \ })
         endif
     endfor
-    " Now call the complete() functional
+    " Now call the complete() function
     call complete(l:word_start + 1, l:res)
     return ''
 endfun
 " }}}
-" dealbreaker
+" minute
+inoremap <C-x><C-r> <C-r>=RhymeWord("/home/kleber/k2Britfone/britfone.main.3.1.1.csv", ', ')<cr>
 
 " Map <C-x><C-m> for our custom completion
-inoremap <C-x><C-m> <C-r>=MyComplete()<CR>
+inoremap <C-x><C-x><C-d> <C-r>=DefineWord("/home/kleber/wiktionary-dictionary/en/")<CR>
 
-" Make subsequent <C-m> presses after <C-x><C-m> go to the next entry (just like
-" other <C-x>* mappings)
+" Make subsequent <C-m> presses after <C-x><C-m> go to the next entry (just like otherwise <C-x>* mappings)
 inoremap <expr> <C-m> pumvisible() ?  "\<C-n>" : "\<C-m>"
 
 " Complete function for addresses; we match the name & address
-fun! MyComplete()
-    " The data. In this example it's static, but you could read it from a file,
-    " get it from a command, etc.
-    let l:data = [
-        \ ["Elmo the Elk", "daring@brave.com", "HELP ME"],
-        \ ["Eek the Cat", "doesnthurt@help.com", "HEY FRIENDS"]
-    \ ]
-
-    " Locate the start of the word and store the text we want to match in l:base
-    let l:line = getline('.')
-    let l:start = col('.') - 1
-    while l:start > 0 && l:line[l:start - 1] =~ '\a'
-        let l:start -= 1
-    endwhile
-    let l:base = l:line[l:start : col('.')-1]
-
-    " Record what matches − we pass this to complete() later
-    let l:res = []
-
-    " Find matches
-    for m in l:data
-        " Check if it matches what we're trying to complete; in this case we
-        " want to match against the start of both the first and second list
-        " entries (i.e. the name and email address)
-        if l:m[0] !~? '^' . l:base && l:m[1] !~? '^' . l:base
-            " Doesn't match
-            continue
-        endif
-
-        " It matches! See :help complete() for the full docs on the key names
-        " for this dict.
-        call add(l:res, {
-            \ 'icase': 1,
-            \ 'word': l:m[0] . ' <' . l:m[1] . '>, ',
-            \ 'abbr': l:m[0],
-            \ 'menu': l:m[1],
-            \ 'info': len(l:m) > 2 ? join(l:m[2:], "\n") : '',
-        \ })
-    endfor
-
-    " Now call the complete() function
-    call complete(l:start + 1, l:res)
-    return ''
-endfun
 " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
 inoremap <c-c> <ESC>
 
 " When the <Enter> key is pressed while the popup menu is visible, it only
-" hides the menu. Use this mapping to close the menu and also start a new
-" line.
-inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+" hides the menu. Use this mapping to close the menu and also start a new line.
+inoremap <expr> <CR> (pumvisible() ? "\<C-y>\<CR>" : "\<CR>")
 
 " Use <TAB> to select the popup menu:
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-

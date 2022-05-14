@@ -21,12 +21,18 @@ install_grammarly() {
     read -p "(y/n)?" y_n
     msg="option selected"
     case "$y_n" in
-        y|Y|Yes|yes ) echo "'${y_n}' $msg -> removing symlink'";;
+        y|Y|Yes|yes ) echo "'${y_n}' $msg -> installing grammarly'"; npm i -g @emacs-grammarly/unofficial-grammarly-language-server;;
         n|N|No|no ) echo "'${y_n}', $msg -> skipping";;
         * ) echo "";
     esac
+}
 
-    npm i -g @emacs-grammarly/unofficial-grammarly-language-server
+install_fonts() {
+    mkdir -p ~/.local/share/fonts
+    pushd ~/.local/share/fonts && \
+        curl -fLo "Droid Sans Mono for Powerline Nerd Font Complete.otf" \
+        "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf"
+    popd
 }
 
 main() {
@@ -116,6 +122,7 @@ main() {
     echo "source ${HOME}/.vim_runtime/vimrcs/basic.vim" >> "${HOME}/.vimrc"
 
     install_grammarly
+    install_fonts
 
     echo "Installing Plugins via PackerSync..."
     nvim +PackerSync +qall

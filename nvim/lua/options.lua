@@ -19,3 +19,15 @@ vim.wo.wrap = false
 
 -- option
 vim.o.completeopt = "menuone,noselect,noinsert"
+
+vim.cmd([[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+  augroup end
+  autocmd BufEnter * call ncm2#enable_for_buffer()
+  inoremap <c-c> <ESC>
+  inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+  inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+]])

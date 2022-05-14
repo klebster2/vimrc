@@ -150,7 +150,6 @@ class RapperPlugin(object):
         """
         Assonance AKA Consonance, which is similar to alliteration.
         We can implement this using cosine similarity
-
         https://en.wikipedia.org/wiki/Assonance
         https://en.wikipedia.org/wiki/Literary_consonance
         """
@@ -193,4 +192,3 @@ class RapperPlugin(object):
             self.nvim.eval("col('.')"),
             rhymes
         )
-
