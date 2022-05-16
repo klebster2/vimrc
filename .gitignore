@@ -3,3 +3,5 @@ new_words
 .netrwhist
 nvim/lua-language-server/
 *.log
+nvim/plugin/*
+lua-language-server-*.tar.gz

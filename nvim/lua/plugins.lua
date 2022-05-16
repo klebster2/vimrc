@@ -29,8 +29,8 @@ require('packer').startup(function()
     -- make local undo history sane
     use 'mbbill/undotree'
     -- nvim completion manager 2
-    use 'ncm2/ncm2'
-    use 'roxma/nvim-yarp'
+    -- use 'ncm2/ncm2'
+    -- use 'roxma/nvim-yarp'
     -- use { 'klebster2/vim-for-poets', run = ':UpdateRemotePlugins' }
     -- use
     use { 'fgrsnau/ncm2-aspell' }

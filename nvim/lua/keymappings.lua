@@ -53,4 +53,3 @@ keymap('n', '<leader>gc', ':Git commit<CR>', opts)
 
 -- vim-for-poets:
 keymap('i', '<C-x><C-x>', '<C-r>=RhymeWord()<cr>', opts)
-

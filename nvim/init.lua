@@ -1,13 +1,4 @@
-vim.lsp.set_log_level("debug")
-
-vim.api.nvim_exec(
-[[
-set runtimepath^=${HOME}/.vim_runtime runtimepath+=${HOME}/.vim_runtime/after runtimepath+=${HOME}/.vim
-let &packpath=&runtimepath
-source /home/kleber/.vim_runtime/vimrcs/customcompleters/vim-for-poets.vim
-"source ${HOME}/.vimrc
-]],
-true)
+--vim.lsp.set_log_level("debug")
 
 require("options")
 require("plugins")
@@ -22,6 +13,3 @@ vim.api.nvim_exec(
 colorscheme gruvbox
 ]],
 true)
-
---require("vim-for-poets")
-
