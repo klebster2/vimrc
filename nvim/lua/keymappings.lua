@@ -32,15 +32,17 @@ keymap('n', '<leader>srn', ':set relativenumber!<cr>', opts)
 keymap('n', '<leader>sw', ':set wrap!<cr>', opts)
 -- paste behaviour
 keymap('n', '<leader>sp', ':set paste!<cr>', opts)
--- easy source
+-- nvim init opts
+---- easy source
 keymap('n', '<leader>sv', ':source ~/.config/nvim/init.lua<cr>:edit<cr>', opts)
+---- easy edit
+keymap('n', '<leader>ev', ':vertical split ~/.config/nvim/init.lua<cr>:edit<cr>', opts)
 -- scrollbind for scrolling multiple files
 keymap('n', '<leader>sb', ':set scrollbind!<cr>', opts)
 vim.api.nvim_command("command! Wq :wq")
 
 -- Plugin Remaps --
 -- undotree side explorer
-
 keymap('n', '<leader>u', ':UndotreeShow<CR><C-w>j:q<CR>', opts)
 
 -- vim-fugitive:

@@ -17,8 +17,11 @@ vim.wo.number = true
 vim.wo.relativenumber = false
 vim.wo.wrap = false
 
--- option
-vim.o.completeopt = "menuone,noselect,noinsert"
+-- options
+-- complete option
+vim.o.completeopt = "menuone,noselect"
+-- undodir
+vim.opt.undodir = '~/.config/nvim/.undo/'
 
 vim.cmd([[
   augroup packer_user_config
@@ -31,3 +34,4 @@ vim.cmd([[
   inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
   inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 ]])
+

@@ -14,10 +14,15 @@ local use = require('packer').use
 require('packer').startup(function()
     -- Packer can manage itself as an optional plugin
     use 'wbthomason/packer.nvim'
+    -- The gruvbox colorscheme
     use 'morhetz/gruvbox'
+    -- tree view
     use { 'kyazdani42/nvim-tree.lua' }
+    -- lsp configuration for linting, etc.
     use { 'neovim/nvim-lspconfig', 'williamboman/nvim-lsp-installer' }
+    --- nvim-compe for completion
     use 'hrsh7th/nvim-compe'
+    use { 'tzachar/compe-tabnine', run='./install.sh', requires='hrsh7th/nvim-compe'}
     use 'hrsh7th/vim-vsnip'
     use 'nvim-lua/plenary.nvim'
     -- github
