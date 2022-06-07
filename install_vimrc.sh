@@ -14,6 +14,7 @@ install_lua_ls() {
     mkdir -p "$HOME/.vim_runtime/nvim/lua-language-server"
     tar -xvzf `basename $latest_release_url` -C "$HOME/.vim_runtime/nvim/lua-language-server" > /dev/null 2>&1
     echo "* Downloaded sumneko/lua-language-server $latest_release_url to $HOME/.vim_runtime/nvim/lua-language-server"
+    rm `basename $latest_release_url`
 }
 
 install_grammarly() {
@@ -194,6 +195,7 @@ main() {
     nvim +PackerSync +qall
     echo "Installing Language servers via LspInstall..."
     nvim --headless +"LspInstall awk_ls bashls dockerls grammarly"  +qall
+    echo
 
     echo "Installed dependencies for vim configuration successfully."
 }
