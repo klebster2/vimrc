@@ -7,27 +7,21 @@
 " }}}
 
 " Default set -------- {{{
-syntax on
 filetype plugin indent on
 set path+=**
 set wildmenu
 set wildmode=longest:list,full
-set background=dark
-colorscheme gruvbox
 set rulerformat=%55(%{strftime('%a\ %b\ %e\ %I:%M\ %p')}\ %5l,%-6(%c%V%)\ %P%)
 set statusline=%F
 set backspace=indent,eol,start
 
 " shell highlighting for bash
-let b:is_bash = 1
 set ft=sh
 if executable('rg')
     let g:rg_derive_root='true'
 endif
-let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-file -oc --exclude-standard']
-let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-vimlsp', 'coc-tsserver', 'coc-snippets', 'coc-python', 'coc-vimlsp', 'coc-sh', 'coc-jedi']
+
 " bash syn
-colorscheme gruvbox
 let g:is_bash = 1 | setfiletype sh
 
 let g:mapleader=" "
@@ -145,35 +139,6 @@ onoremap in@ :<c-u>execute "normal! ?^.+@$\rvg_"<cr>
 onoremap an@ :<c-u>execute "normal! ?^\\S\\+@\\S\\+$\r:nohlsearch\r0vg"<cr>
 " }}}
 " * Insert mode ------------ {{{
-
-
-" ** coc ------------------ {{{
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
-
-" Make <CR> auto-select the first completion item and notify coc.nvim to
-" format on enter, <cr> could be remapped by other vim plugin
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-" --------- }}}
 
 " Remap esc --------------  {{{
 inoremap jk <esc>
@@ -328,17 +293,17 @@ highlight Errors ctermfg=red guifg=#fb4934
 highlight Sent ctermfg=red guifg=#fabd2f
 highlight Int ctermfg=red guifg=#d3869b
 
-let cona_default_env = $CONDA_DEFAULT_ENV
-if conda_default_env == 'base'
-    let env_name = 'neovim'
-else
-    let env_name = conda_default_env
-endif
+let conda_default_env = $CONDA_DEFAULT_ENV
+"if conda_default_env == 'base'
+"    let env_name = 'neovim'
+"else
+"    let env_name = conda_default_env
+"endif
 
-let bin_python = expand('~') . '/miniconda3/envs/' . env_name . '/bin/python'
-if filereadable(bin_python)
-    let g:python3_host_prog = bin_python
-endif
+"let bin_python = expand('~') . '/miniconda3/envs/' . env_name . '/bin/python'
+"if filereadable(bin_python)
+"    let g:python3_host_prog = bin_python
+"endif
 
 " OTHER NOTES: ----- {{{
 
