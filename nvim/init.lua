@@ -11,6 +11,7 @@ require("lsp.lua-ls")
 
 vim.api.nvim_exec(
 [[
+set background=dark
 colorscheme gruvbox
 ]],
 true)

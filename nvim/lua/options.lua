@@ -17,11 +17,17 @@ vim.wo.number = true
 vim.wo.relativenumber = false
 vim.wo.wrap = false
 
+-- other global?
+vim.g.syntax_on = true
+
 -- options
 -- complete option
 vim.o.completeopt = "menuone,noselect"
 -- undodir
 vim.opt.undodir = '~/.config/nvim/.undo/'
+
+-- vim.opt_global.buffer.is_bash = 1
+vim.opt_local.errorbells = false
 
 vim.cmd([[
   augroup packer_user_config
@@ -33,5 +39,8 @@ vim.cmd([[
   inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
   inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
   inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+  set noswapfile
+  source $HOME/.vim_runtime/vimrcs/basic.vim
 ]])
 

@@ -3,7 +3,6 @@ local execute = vim.api.nvim_command
 local fn = vim.fn
 
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
---git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 
 if fn.empty(fn.glob(install_path)) > 0 then
     execute('!git clone --depth 1 https://github.com/wbthomason/packer.nvim '..install_path)
@@ -39,4 +38,5 @@ require('packer').startup(function()
     -- use { 'klebster2/vim-for-poets', run = ':UpdateRemotePlugins' }
     -- use
     use { 'fgrsnau/ncm2-aspell' }
+    use { 'gelguy/wilder.nvim', config = function() end, }
 end)
