@@ -39,7 +39,8 @@ install_fonts() {
 
 install_packer() {
     local _dest="$1"
-    echo "making packer path..."
+    echo
+    echo "making packer path... in $(dirname "$_dest")"
     mkdir -pv "$(dirname "$_dest")"
     git clone --depth 1 "https://github.com/wbthomason/packer.nvim" "$_dest"
         
@@ -86,6 +87,7 @@ symlink_vim_runtime_nvim_to_nvim_loc() {
 
 check_make_undo_tree() {
     local _undotree_path="$1"
+    echo
     echo "* Checking whether ${_undotree_path} exists"
     if [ ! -d "$_undotree_path" ]; then
         echo "** No undo dir found..."
@@ -132,6 +134,7 @@ check_conda_is_installed() {
 }
 
 create_pynvim_conda_env() {
+    echo
     echo "* Checking for conda environment location"
     if [ -d "$environment_location" ]; then
         human_readable_message="Do you want to remove $path_to_env before reinstalling?"
