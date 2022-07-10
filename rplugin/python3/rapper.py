@@ -110,9 +110,13 @@ class RapperPlugin(object):
     def __init__(self, nvim):
         self.nvim = nvim
 
-    @pynvim.command('LoadDict', sync=False)
+    @pynvim.function('LoadBritishDicts', sync=False)
     def _load_dict(self):
-        with open("/home/kleber/beep/beep/beep-1.0", 'r') as f:
+        """
+        Load British Dictionary Assets
+        Should check for pre-loaded/ downloaded dict?
+        """
+        with open(Path(Path.home(), "beep/beep/beep-1.0"), 'r') as f:
             self._britfone = defaultdict(list)
             self._britfone_rev = defaultdict(list)
 
@@ -127,6 +131,14 @@ class RapperPlugin(object):
 
                 self._britfone[phones].append(word)
                 self._britfone_rev[word].append(phones)
+
+    @pynvim.function('LoadAmericanDicts', sync=False)
+
+        """
+        Load General American Dictionary Assets
+        e.g. CMU
+        note that these dictionaries may differ wrt caught-cot merger
+        """
 
     def _phones_for_word(self, word):
         return self._britfone.get(word)
