@@ -1,13 +1,3 @@
-local execute = vim.api.nvim_command
-
-local fn = vim.fn
-
-local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-
-if fn.empty(fn.glob(install_path)) > 0 then
-    execute('!git clone --depth 1 https://github.com/wbthomason/packer.nvim '..install_path)
-    execute 'packeradd packer.nvim'
-end
 local use = require('packer').use
 
 require('packer').startup(function()
@@ -15,8 +5,13 @@ require('packer').startup(function()
     use 'wbthomason/packer.nvim'
     -- The gruvbox colorscheme
     use 'morhetz/gruvbox'
-    -- tree view
-    use { 'kyazdani42/nvim-tree.lua' }
+    use {
+        'kyazdani42/nvim-tree.lua',
+        requires = {
+            'kyazdani42/nvim-web-devicons', -- optional, for file icons
+        }, -- Windows terminal needs a nerd font so install Consolas NF on your terminal OS
+        tag = 'nightly' -- optional, updated every week. (see issue #1193)
+    }    -- tree view
     -- lsp configuration for linting, etc.
     use { 'neovim/nvim-lspconfig', 'williamboman/nvim-lsp-installer' }
     --- nvim-compe for completion
@@ -28,6 +23,7 @@ require('packer').startup(function()
     use 'tpope/vim-fugitive'
     -- search
     use 'jremmen/vim-ripgrep'
+    -- Quick file finding
     use 'junegunn/fzf.vim'
     use { 'junegunn/fzf', run = 'fzf#install()' }
     -- make local undo history sane
