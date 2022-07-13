@@ -10,21 +10,19 @@ vim.g.maplocalleader = ";"
 ------ UndoTree
 keymap('n', '<leader>u', ':UndotreeToggle<cr>', opts)
 
--- vim-fugitive:
+-- vim-fugitive --
 keymap('n', '<leader>gh', ':diffget //3<cr>', opts)
 keymap('n', '<leader>gu', ':diffget //2<cr>', opts)
 keymap('n', '<leader>gs', ':G<cr>', opts)
 keymap('n', '<leader>Gd', ':Gdiffsplit<cr>', opts)
 keymap('n', '<leader>gd', ':Gdiff !~', opts)
 keymap('n', '<leader>gc', ':Git commit<cr>', opts)
-
--- FZF --
-keymap('n', '<leader>Fi', ':Files<cr>', opts)
-keymap('n', '<leader>rg', ':fzf_ripgrep_custom<cr>', opts)
-
+-- FZFLua --
+keymap('n', '<leader>Fi', ':FzfLua files<cr>', opts)
+keymap('n', '<leader>rg', ':FzfLua live_grep<cr>', opts)
 -- Open small side explorer
-keymap('n', '<leader>vs :vertical split .<cr>', ':vertical resize 40<cr>', opts)
+keymap('n', '<leader>vs :vsplit .<cr>', ':vertical resize 40<cr>', opts)
 
--- vim-for-poets:
+-- vim-for-poets: TODO
 -- keymap('i', '<C-x><C-x>', '<C-r>=RhymeWord()<cr>', opts)
 -- keymap('n', '<leader>fi', "require(\"fzf-lua\").fzf_live(\"rg --column --colors 'match:bg:yellow' --color=always --smart-case\", { winopts = { height=0.33, width=0.66 }})", opts)

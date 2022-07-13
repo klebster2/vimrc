@@ -41,6 +41,8 @@ vim.api.nvim_create_autocmd("FileType", {pattern = { "lua" },
                 keymap('n', "<localleader>c", "I-- <esc>", opts)
                 keymap('n', "<localleader>C", "O--[[<esc>jo--]]<esc>k0", opts)
                 keymap('n', "<localleader>fu", "Ifunction()<cr>end<esc>ko", opts)
+                vim.bo.shiftwidth = 2
+                vim.bo.tabstop = 2
         end)
     end,
 })

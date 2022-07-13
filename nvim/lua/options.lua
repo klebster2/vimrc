@@ -7,11 +7,13 @@ vim.go.shiftround = true
 vim.go.foldlevelstart = 1
 
 -- buffer
-vim.bo.autoindent = true
-vim.bo.expandtab = true
-vim.bo.shiftwidth = 4
-vim.bo.softtabstop = 4
-vim.bo.tabstop = 4
+vim.opt.autoindent = true
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 4
+vim.opt.softtabstop = 4
+vim.opt.tabstop = 4
+vim.opt.wildmenu = true
+vim.opt.wildmode = {'list', 'longest'}
 
 -- local to window
 vim.wo.number = true
@@ -24,9 +26,6 @@ vim.g.syntax_on = true
 -- options
 -- complete option
 vim.o.completeopt = "menuone,noselect"
--- backspace
--- vim.o.
-
 -- color options
 vim.o.termguicolors = true
 vim.o.background = "dark"
