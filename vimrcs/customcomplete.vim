@@ -1,2 +1,0 @@
-source ./customcompleters/fasttext.vim
-

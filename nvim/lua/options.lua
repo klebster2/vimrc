@@ -4,42 +4,46 @@ vim.go.smartcase = true
 vim.go.swapfile = false
 vim.go.backup = false
 vim.go.shiftround = true
+vim.go.foldlevelstart = 1
 
 -- buffer
-vim.bo.autoindent = true
-vim.bo.expandtab = true
-vim.bo.shiftwidth = 4
-vim.bo.softtabstop = 4
-vim.bo.tabstop = 4
+vim.opt.autoindent = true
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 4
+vim.opt.softtabstop = 4
+vim.opt.tabstop = 4
+vim.opt.wildmenu = true
+vim.opt.wildmode = {'list', 'longest'}
 
 -- local to window
 vim.wo.number = true
 vim.wo.relativenumber = false
 vim.wo.wrap = false
 
--- other global?
+-- other
 vim.g.syntax_on = true
 
 -- options
 -- complete option
 vim.o.completeopt = "menuone,noselect"
+-- color options
+vim.o.termguicolors = true
+vim.o.background = "dark"
+
 -- undodir
-
--- vim.opt_global.buffer.is_bash = 1
-
+-- vim.opt.undodir = os.getenv( "HOME" ) .. '/undodir'
+-- guard for distributions lacking the 'persistent_undo' feature.
 vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-  augroup end
-  "autocmd BufEnter * call ncm2#enable_for_buffer()
-  inoremap <c-c> <ESC>
-  inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-  inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-  let undodir = $HOME.'/.config/nvim/.undo/'
-
-  set noswapfile
-"  source $HOME/.vim_runtime/vimrcs/basic.vim
+if has('persistent_undo')
+    " define a path to store persistent undo files.
+    let target_path = expand('~/.config/vim-persisted-undo/')
+    " create dir and any parent dirs if loc doesn't exist
+    if !isdirectory(target_path)
+        call system('mkdir -p ' . target_path)
+    endif
+    " point Vim to the defined undo directory.
+    let &undodir = target_path
+    " finally, enable undo persistence.
+    set undofile
+endif
 ]])
-
