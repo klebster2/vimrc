@@ -1,27 +1,34 @@
+-- packer options                 -- ./nvim/lua/options.lua
 require("options")
+
+-- packer startup                 -- ./nvim/lua/keymappings.lua
 require("keymappings")
 
-require("plugins")
-require("plugins.packer-startup")
-require("plugins.keymappings")
+-- packer install                 -- ./nvim/lua/packer-install.lua
+require("packer-install")
+-- packer plugins install         -- ./nvim/lua/packer-startup.lua
+require("packer-startup")
 
-require("autocmds")
+-- plugin configurations          -- ./nvim/lua/plugins/ 
+require("plugins.fzf-cfg")        -- ./nvim/lua/plugins/fzf-cfg.lua
+require("plugins.nvim-compe-cfg") -- ./nvim/lua/plugins/nvim-compe-cfg.lua
+require("plugins.nvim-tree-cfg")  -- ./nvim/lua/plugins/nvim-tree-cfg.lua
+require("plugins.keymappings")    -- ./nvim/lua/plugins/keymappings.lua    -- keymappings for all plugins
 
-require("nvim-compe-cfg")
-require("nvim-tree-cfg")
+require("autocmds")               -- ./nvim/lua/autocmds.lua
 
-require("lsp")
-require("lsp.lua-ls")
-require("lsp.keymappings")
+require("lsp")                    -- ./nvim/lua/lsp
+require("lsp.lua-ls")             -- ./nvim/lua/lsp/lua-ls.lua
+require("lsp.keymappings")        -- ./nvim/lua/lsp/keymappings.lua
 
 vim.api.nvim_exec(
 [[
-set background=dark
-colorscheme gruvbox
-let g:webdevicons_enable = 1
-let g:webdevicons_enable_nerdtree = 1
-let g:webdevicons_enable_unite = 1
-let g:WebDevIconsOS = 'Windows'
+"augroup packer_user_config
+"  autocmd!
+"  autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+"augroup end
 
+"source $HOME/.vim_runtime/vimrcs/basic.vim
 ]],
+
 true)

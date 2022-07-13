@@ -4,6 +4,7 @@ vim.go.smartcase = true
 vim.go.swapfile = false
 vim.go.backup = false
 vim.go.shiftround = true
+vim.go.foldlevelstart = 1
 
 -- buffer
 vim.bo.autoindent = true
@@ -17,30 +18,19 @@ vim.wo.number = true
 vim.wo.relativenumber = false
 vim.wo.wrap = false
 
--- other global?
+-- other
 vim.g.syntax_on = true
 
 -- options
 -- complete option
 vim.o.completeopt = "menuone,noselect"
+
+-- color options
+vim.o.termguicolors = true
+vim.o.background = "dark"
+
 -- undodir
-vim.opt.undodir = '~/.config/nvim/.undo/'
+vim.opt.undodir = '$HOME/.config/nvim/.undo/'
 
--- vim.opt_global.buffer.is_bash = 1
+--vim.opt_global.buffer.is_bash = 1
 vim.opt_local.errorbells = false
-
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-  augroup end
-  "autocmd BufEnter * call ncm2#enable_for_buffer()
-  inoremap <c-c> <ESC>
-  inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-  inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-  set noswapfile
-  source $HOME/.vim_runtime/vimrcs/basic.vim
-]])
-

@@ -23,13 +23,14 @@ require('packer').startup(function()
     use 'tpope/vim-fugitive'
     -- search
     use 'jremmen/vim-ripgrep'
-    -- Quick file finding
-    use 'junegunn/fzf.vim'
-    use { 'junegunn/fzf', run = 'fzf#install()' }
+    -- Quick file finding - updated for lua
+    use 'ibhagwan/fzf-lua'
     -- make local undo history sane
     use 'mbbill/undotree'
-    -- nvim completion manager 2
-    -- use 'ncm2/ncm2'
+    -- for lua development
+    use 'wsdjeg/vim-lua'
+    -- TODO: add ncm2
+    -- nvim completion manager 2 use 'ncm2/ncm2'
     -- use 'roxma/nvim-yarp'
     -- use { 'klebster2/vim-for-poets', run = ':UpdateRemotePlugins' }
     -- use

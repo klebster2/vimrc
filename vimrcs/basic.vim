@@ -15,58 +15,12 @@ set rulerformat=%55(%{strftime('%a\ %b\ %e\ %I:%M\ %p')}\ %5l,%-6(%c%V%)\ %P%)
 set statusline=%F
 set backspace=indent,eol,start
 
-" shell highlighting for bash
-set ft=sh
-if executable('rg')
-    let g:rg_derive_root='true'
-endif
-
 " bash syn
 let g:is_bash = 1 | setfiletype sh
-
-let g:mapleader=" "
-let g:maplocalleader=";"
 set foldlevelstart=1
-
-"set foldcolumn=0
-" vim plug for debugging
-"g:nvimgdb_use_cmake_to_find_executables = 0
-" netrw tree
-let g:netrw_banner=0
-let g:netrw_browse_split=4
-let g:netrw_altv=1
-let g:netrw_liststyle=3
-let g:netrw_list_hide=netrw_gitignore#Hide()
-" }}}
-
-" Leader Window reize remaps --------- {{{
-" simplify resizing splits
-if has('unix')
-    nnoremap j <C-w>-5
-    nnoremap k <C-w>+5
-    nnoremap h <C-w><5
-    nnoremap l <C-w>>5
-else
-    nnoremap <M-j> <C-w>-
-    nnoremap <M-k> <C-w>+
-    nnoremap <M-h> <C-w><
-    nnoremap <M-l> <C-w>>
-endif
-" }}}
-
-" Leader Window closing remaps ---------- {{{
-nnoremap <leader>o :only<cr>
-" }}}
 
 " Leader Window vertical split open ---------- {{{
 nnoremap gF :vertical wincmd f<cr>
-" }}}
-
-" Leader Window Explorer --------- {{{
-" }}}
-nnoremap <leader>tp :tabprev<cr>
-nnoremap <leader>tn :tabnext<cr>
-nnoremap <leader>tt :tabnew<cr>
 " }}}
 
 " Leader Plugin Remaps --------- {{{
@@ -79,102 +33,20 @@ nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 nnoremap <leader>fi :Files<cr>
 " }}}
 
-" Leader edit vimrc (basic.vim) ---- {{{
-nnoremap <leader>ev :vsplit ~/.vim_runtime/vimrcs/basic.vim<cr>
-nnoremap <leader>eV :e ~/.vim_runtime/vimrcs/basic.vim<cr>
-" }}}
-" Leader edit vimrc plugins (plugins.vim) ---- {{{
-nnoremap <leader>ep :vsplit ~/.vim_runtime/vimrcs/plugins.vim<cr>
-" }}}
 " Leader source vimrc ---- {{{
-nnoremap <leader>sv :source ~/.vimrc<cr>:edit<cr>
-" }}}
-" Leader source vimrc ---- {{{
-nnoremap <leader>sb :set scrollbind!<cr>
-" }}}
-" Leader disregard tab (delete tab) ---- {{{
-nnoremap <leader>qq :quit<cr>
-" }}}
-command! Wq :wq
-" Leader disregard tab (delete tab) ---- {{{
+" nnoremap <leader>sv :source ~/.vimrc<cr>:edit<cr>
 " }}}
 " search rhymezoneapi in visual mode --------------- {{{
 vnoremap <leader>rz :terminal ./searchrhymezone_api.sh "%V"
 " }}}
-" Leader quote text in Visual mode --------------- {{{
-vnoremap <leader>" :s/\%V\(.*\)\%V/"\1\"/<cr>
-vnoremap <leader>` :s/\%V\(.*\)\%V/`\1\`/<cr>
-vnoremap <leader>' :s/\%V\(.*\)\%V/'\1\'/<cr>
-" }}}
-" Leader write with permissions ------------- {{{
-cnoremap w!! w !sudo tee > /dev/null %
-" }}}
-nnoremap <leader>dt :put =strftime('%d/%m/%y %H:%M:%S')<cr>
-"
-" * Normal-mode remaps ---------------- {{{
-" use zi to disable and enable folding on the fly
-" create new + empty line below cursor in normal mode
-nnoremap <c-o> <esc>o<esc>
-nnoremap <c-O> <esc>O<esc>
-" hard H and L remaps
 nnoremap H 0w
 nnoremap L $
-nnoremap s i<cr><esc>
-nnoremap <leader>snhls :set nohls<cr>
-" Check filetypes known to vim
-nnoremap <leader>ft :setfiletype <c-d>
 set nofoldenable "disable folding
-" }}}
-" * Operator pending mappings -------------- {{{
-" in next parenthesis
-onoremap in( :<c-u>normal! f(vi(<cr>
-" in last parenthesis
-onoremap il( :<c-u>normal! F)vi(<cr>
-" and next parenthesis
-onoremap an( :<c-u>normal! f(va(<cr>
-" and last parentthesis
-onoremap al( :<c-u>normal! F)va(<cr>
-" more operator pending mappings (change inside next email address)
-onoremap in@ :<c-u>execute "normal! ?^.+@$\rvg_"<cr>
-onoremap an@ :<c-u>execute "normal! ?^\\S\\+@\\S\\+$\r:nohlsearch\r0vg"<cr>
 " }}}
 " * Insert mode ------------ {{{
 
-" Remap esc --------------  {{{
-inoremap jk <esc>
-" }}}
-" Autocomplete tab functionality ---- {{{
-" InsertTabWrapper ------- {{{
-function! InsertTabWrapper()
-    let col = col('.') - 1
-    if !col
-        return "\<tab>"
-    endif
-    let char = getline('.')[col - 1]
-    if char =~ '\k'
-        " There's an identifier before the cursor, so complete the identifier.
-        return "\<c-p>"
-    else
-        return "\<tab>"
-    endif
-endfunction
 " }}}
 
-" Tab Remaps ---------- {{{
-inoremap <expr> <s-tab> InsertTabWrapper()
-inoremap <tab> <c-n>
-" }}}
-
-" }}}
-
-" Random commit message --- {{{
-nnoremap <buffer> <leader>wtc :r!curl -s 'http://whatthecommit.com/index.txt'<cr>
-" }}}
-" }}}
-" * Command mode mappings -------------- {{{
-"
-" expand current script path
-cnoremap %% <C-R>=expand('%:h').'/'<cr>
 " }}}
 
 " settings for all files ------------------------- {{{

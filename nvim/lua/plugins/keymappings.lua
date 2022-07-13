@@ -20,7 +20,7 @@ keymap('n', '<leader>gc', ':Git commit<cr>', opts)
 
 -- vim-for-poets:
 -- keymap('i', '<C-x><C-x>', '<C-r>=RhymeWord()<cr>', opts)
-
-
+-- keymap('n', '<leader>fi', "require(\"fzf-lua\").fzf_live(\"rg --column --colors 'match:bg:yellow' --color=always --smart-case\", { winopts = { height=0.33, width=0.66 }})", opts)
 -- FZF --
 keymap('n', '<leader>Fi', ':Files<cr>', opts)
+keymap('n', '<leader>rg', ':fzf_ripgrep_custom<cr>', opts)
