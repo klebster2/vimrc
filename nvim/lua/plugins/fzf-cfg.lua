@@ -1,8 +1,8 @@
--- require('fzf-lua').setup{
---   winopts = {
---     hl = { border = "FloatBorder", normal = "IncSearch", }
---   }
--- }
+ require('fzf-lua').setup{
+  winopts = {
+    hl = { border = "FloatBorder", normal = "IncSearch", }
+  }
+}
 -- --vim.api.nvim_set_hl(0, "FzfLuaBorder", { link = "FloatBorder" })
 -- -- https://github.com/ibhagwan/fzf-lua/wiki/Advanced#example-1-live-ripgrep
 -- require('fzf-lua').fzf_live(

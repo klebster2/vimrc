@@ -36,4 +36,6 @@ require('packer').startup(function()
     -- use
     use { 'fgrsnau/ncm2-aspell' }
     use { 'gelguy/wilder.nvim', config = function() end, }
+    use { 'psf/black', branch= 'main' }
+    use 'fisadev/vim-isort'
 end)
