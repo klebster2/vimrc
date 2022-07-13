@@ -26,7 +26,7 @@ require('packer').startup(function()
     -- Quick file finding - updated for lua
     use 'ibhagwan/fzf-lua'
     -- make local undo history sane
-    use 'mbbill/undotree'
+    use { 'mbbill/undotree', run='vim -u NONE -c "helptags undotree/doc" -c q' }
     -- for lua development
     use 'wsdjeg/vim-lua'
     -- TODO: add ncm2

@@ -61,6 +61,7 @@ keymap('n', '<leader>tt', ':tabnew<cr>', opts)
 ------ What the commit?
 -------- Random commit message
 keymap('n', '<leader>wtc', ":r!curl -s 'http://whatthecommit.com/index.txt'<cr>", opts)
+
 ------ Insert datetime
 keymap('n', '<leader>dt', ":put =strftime('%d/%m/%y %H:%M:%S')<cr>", opts)
 
@@ -72,14 +73,15 @@ keymap('n', 'H', '0w', opts)
 keymap('n', 'L', '$', opts)
 --keymap('n', 's', 'i<cr><esc>', opts)
 
----- Visual mode remaps
+------ Visual mode remaps
 ------ Indentation
 keymap('v', '<', '<gv', opts)
 keymap('v', '>', '>gv', opts)
 
----- Rhymezone API:
-keymap('v', '<leader>zz', "!curl -s 'https://api.rhymezone.com/words?max=600&nonorm=1&k=rz_wke&rel_wke=%V' | jq '.[].word' | sed -r 's/\\\"([a-z]+):(.+):(.+)(.*):(.*)\"/\5\t\2\t\3\t\4/g' | sed 's/\\//g'", opts)
--- hello
+------ Rhymezone API:
+-- TODO: fix
+-- keymap('v', '<leader>zz', "!curl -s 'https://api.rhymezone.com/words?max=600&nonorm=1&k=rz_wke&rel_wke=%V' | jq '.[].word' | sed -r 's/\\\"([a-z]+):(.+):(.+)(.*):(.*)\"/\5\t\2\t\3\t\4/g' | sed 's/\\//g'", opts)
+
 ------ Quote text in Visual mode
 -------- TODO: use https://github.com/tpope/vim-surround
 
@@ -103,7 +105,7 @@ keymap('c', "<C-j>", 'pumvisible() ? "\\<C-n>" : "\\<C-j>"', { expr = true, nore
 keymap('c', "<C-k>", 'pumvisible() ? "\\<C-p>" : "\\<C-k>"', { expr = true, noremap = true } )
 ---- " Leader write with permissions ------------- {{{
 keymap('c', 'w!!', 'w !sudo tee > /dev/null %', opts)
-
+keymap('c', 'Vs', 'vs', opts)
 
 ------ Operator mappings
 -------- in next parenthesis

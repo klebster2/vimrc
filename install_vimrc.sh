@@ -177,6 +177,8 @@ main() {
 
     echo "* Symlink ~/.vim_runtime/nvim to ~/.config/nvim"
     symlink_vim_runtime_nvim_to_nvim_loc "${nvim_loc}"
+
+    # undotree
     check_make_undo_tree "${nvim_loc}/.undotree" 
 
     [ -d "${packer_path}/start/packer.nvim" ] || \

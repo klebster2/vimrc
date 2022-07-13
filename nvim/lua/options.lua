@@ -32,11 +32,19 @@ vim.o.termguicolors = true
 vim.o.background = "dark"
 
 -- undodir
-vim.opt.undodir = '$HOME/.config/nvim/.undo/'
-
---vim.opt_global.buffer.is_bash = 1
-vim.opt_local.errorbells = false
-
-
--- ruler
-vim.cmd([[set rulerformat=%55(%{strftime('%a\ %b\ %e\ %I:%M\ %p')}\ %5l,%-6(%c%V%)\ %P%)]])
+-- vim.opt.undodir = os.getenv( "HOME" ) .. '/undodir'
+-- guard for distributions lacking the 'persistent_undo' feature.
+vim.cmd([[
+if has('persistent_undo')
+    " define a path to store persistent undo files.
+    let target_path = expand('~/.config/vim-persisted-undo/')
+    " create dir and any parent dirs if loc doesn't exist
+    if !isdirectory(target_path)
+        call system('mkdir -p ' . target_path)
+    endif
+    " point Vim to the defined undo directory.
+    let &undodir = target_path
+    " finally, enable undo persistence.
+    set undofile
+endif
+]])

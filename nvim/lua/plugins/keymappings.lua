@@ -7,8 +7,8 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = ";"
 
 -- Global Plugin Remaps --
--- undotree side explorer
-keymap('n', '<leader>u', ':UndotreeShow<cr><C-w>j:q<cr>', opts)
+------ UndoTree
+keymap('n', '<leader>u', ':UndotreeToggle<cr>', opts)
 
 -- vim-fugitive:
 keymap('n', '<leader>gh', ':diffget //3<cr>', opts)
