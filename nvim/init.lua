@@ -11,7 +11,7 @@ require("plugins.fzf-cfg")        -- $HOME/.config/nvim/lua/plugins/fzf-cfg.lua
 require("plugins.nvim-compe-cfg") -- $HOME/.config/nvim/lua/plugins/nvim-compe-cfg.lua
 require("plugins.nvim-tree-cfg")  -- $HOME/.config/nvim/lua/plugins/nvim-tree-cfg.lua
 require("plugins.keymappings")    -- $HOME/.config/nvim/lua/plugins/keymappings.lua    -- keymappings for all plugins
-require("plugins.options")        -- $HOME/.config/nvim/lua/plugins/keymappings.lua    -- keymappings for all plugins
+require("plugins.options")        -- $HOME/.config/nvim/lua/plugins/options.lua    -- keymappings for all plugins
 vim.api.nvim_exec([[source $HOME/.vim_runtime/vimrcs/autocmds.vim]], true)
 -- require("autocmds")               -- $HOME/.config/nvim/lua/autocmds.lua -- TODO
 require("lsp")                    -- $HOME/.config/nvim/lua/lsp

@@ -34,8 +34,13 @@ require('packer').startup(function()
     -- use 'roxma/nvim-yarp'
     -- use { 'klebster2/vim-for-poets', run = ':UpdateRemotePlugins' }
     -- use
+    -- TODO - configure the below
     use { 'fgrsnau/ncm2-aspell' }
     use { 'gelguy/wilder.nvim', config = function() end, }
+    -- python black
     use { 'psf/black', branch= 'main' }
+    -- python import sort
     use 'fisadev/vim-isort'
+    -- luavim statusline
+    use 'beauwilliams/statusline.lua'
 end)

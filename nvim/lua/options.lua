@@ -24,6 +24,8 @@ vim.g.syntax_on = true
 -- options
 -- complete option
 vim.o.completeopt = "menuone,noselect"
+-- backspace
+-- vim.o.
 
 -- color options
 vim.o.termguicolors = true
@@ -34,3 +36,7 @@ vim.opt.undodir = '$HOME/.config/nvim/.undo/'
 
 --vim.opt_global.buffer.is_bash = 1
 vim.opt_local.errorbells = false
+
+
+-- ruler
+vim.cmd([[set rulerformat=%55(%{strftime('%a\ %b\ %e\ %I:%M\ %p')}\ %5l,%-6(%c%V%)\ %P%)]])
