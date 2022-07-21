@@ -1,5 +1,5 @@
 " Default set -------- {{{
-filetype plugin indent on
+" filetype plugin indent on
 set path+=**
 set backspace=indent,eol,start
 

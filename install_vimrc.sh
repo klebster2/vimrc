@@ -17,16 +17,16 @@ install_lua_ls() {
     rm `basename $latest_release_url`
 }
 
-install_grammarly() {
-    echo "Install grammarly ls?"
-    read -p "(y/n)?" y_n
-    msg="option selected"
-    case "$y_n" in
-        y|Y|Yes|yes ) echo "'${y_n}' $msg -> installing grammarly'"; npm i -g @emacs-grammarly/unofficial-grammarly-language-server;;
-        n|N|No|no ) echo "'${y_n}', $msg -> skipping";;
-        * ) echo "";
-    esac
-}
+#install_grammarly() {
+#    echo "Install grammarly ls?"
+#    read -p "(y/n)?" y_n
+#    msg="option selected"
+#    case "$y_n" in
+#        y|Y|Yes|yes ) echo "'${y_n}' $msg -> installing grammarly'"; npm i -g @emacs-grammarly/unofficial-grammarly-language-server;;
+#        n|N|No|no ) echo "'${y_n}', $msg -> skipping";;
+#        * ) echo "";
+#    esac
+#}
 
 install_fonts() {
     mkdir -pv "$HOME/.local/share/fonts"
@@ -192,12 +192,18 @@ main() {
     let g:python3_host_prog='${CONDA_PYNVIM_ENV_PYTHON_PATH}'
     " > "${HOME}/.vimrc"
 
-    [ -d "${HOME}/.local/share/nvim/lsp_servers/grammarly" ] || install_grammarly
+    #[ -d "${HOME}/.local/share/nvim/lsp_servers/grammarly" ] || install_grammarly
 
     install_fonts # TODO configure correctly
 
     echo "Installing Plugins via PackerSync..."
     nvim +PackerSync +qall
+
+    echo "Fixing grammarly ls"
+    grammarly_ls_init_file="${HOME}/.local/share/nvim/site/pack/packer/start/nvim-lsp-installer/lua/nvim-lsp-installer/servers/grammarly/init.lua"
+    sed -i 's|https://github.com/znck/grammarly|https://github.com/emacs-grammarly/unofficial-grammarly-language-server|' $grammarly_ls_init_file
+    sed -i 's|grammarly-languageserver|@emacs-grammarly/unofficial-grammarly-language-server|' $grammarly_ls_init_file
+
     echo "Installing Language servers via LspInstall..."
     nvim --headless +"LspInstall awk_ls bashls dockerls grammarly"  +qall
     echo

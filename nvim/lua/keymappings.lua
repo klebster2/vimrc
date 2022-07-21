@@ -48,8 +48,6 @@ keymap('n', '<leader>nhl', ':set no hlsearch<cr>', opts)
 keymap('n', '<leader>sv', ':source $HOME/.config/nvim/init.lua<cr>', opts)
 -------- easy vimrc (init.lua) edit
 keymap('n', '<leader>ev', ':vertical split $HOME/.config/nvim/init.lua<cr>:edit<cr>', opts)
--------- leader easy edit packer plugin
-keymap('n', '<leader>ep', ':vertical split $HOME/.config/nvim/lua/plugins <cr>:edit<cr>', opts)
 -------- scrollbind for scrolling multiple files
 keymap('n', '<leader>sb', ':set scrollbind!<cr>', opts)
 
@@ -92,9 +90,9 @@ keymap('i', 'jk', '<ESC>', opts)
 keymap('i', 'kj', '<ESC>', opts)
 ------ sane escape from insert mode
 keymap('i', '<c-c>', '<ESC>', opts)
---inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-keymap('i', '<expr> <Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', opts)
-keymap('i', '<expr> <S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<S-Tab>"', opts)
+-- inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+-- keymap('i', '<expr> <Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', opts)
+-- keymap('i', '<expr> <S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<S-Tab>"', opts)
 
 ------ Command Mode
 -------- expand current script path     
@@ -121,10 +119,14 @@ keymap('o', 'in@', ':<c-u>execute "normal! ?^.+@$\rvg_"<cr>', opts)
 keymap('o', 'an@', ':<c-u>execute "normal! ?^\\S\\+@\\S\\+$\r:nohlsearch\r0vg"<cr>', opts)
 
 ------ Command remaps
--------- forgive :Wq
+-------- forgive :Wq (Write and quit)
 vim.api.nvim_command("command! Wq :wq")
 -------- and Q
 vim.api.nvim_command("command! Q :q")
+
+------ Spell
+keymap('n', '<leader>ss', ':set spell!<cr>', opts)
+
 -- TODO
 -- -------- use cht.sh to search for command help
 -- keymap('n', '<leader>cht', ":terminal<CR> cht.sh", opts)

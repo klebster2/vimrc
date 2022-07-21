@@ -6,17 +6,32 @@ require('packer').startup(function()
     -- The gruvbox colorscheme
     use 'morhetz/gruvbox'
     use {
-        'kyazdani42/nvim-tree.lua',
-        requires = {
-            'kyazdani42/nvim-web-devicons', -- optional, for file icons
-        }, -- Windows terminal needs a nerd font so install Consolas NF on your terminal OS
-        tag = 'nightly' -- optional, updated every week. (see issue #1193)
+      'kyazdani42/nvim-tree.lua',
+      requires = {
+        'kyazdani42/nvim-web-devicons', -- optional, for file icons
+      }, -- Windows terminal needs a nerd font so install Consolas NF on your terminal OS
+      tag = 'nightly' -- optional, updated every week. (see issue #1193)
     }    -- tree view
+    use { 'ray-x/lsp_signature.nvim' }
     -- lsp configuration for linting, etc.
     use { 'neovim/nvim-lspconfig', 'williamboman/nvim-lsp-installer' }
     --- nvim-compe for completion
-    use 'hrsh7th/nvim-compe'
-    use { 'tzachar/compe-tabnine', run='./install.sh', requires='hrsh7th/nvim-compe'}
+    use {
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline',
+      'hrsh7th/nvim-cmp'
+    }
+    -- text editor-like plugins
+    use {
+      'uga-rosa/cmp-dictionary',
+      'f3fora/cmp-spell',
+      'rudism/telescope-dict.nvim',
+      'rhysd/vim-grammarous',
+      'vigoux/LanguageTool',
+    }
+    --use { 'tzachar/compe-tabnine', run='./install.sh', requires='hrsh7th/nvim-compe'}
     use 'hrsh7th/vim-vsnip'
     use 'nvim-lua/plenary.nvim'
     -- github
@@ -35,7 +50,7 @@ require('packer').startup(function()
     -- use { 'klebster2/vim-for-poets', run = ':UpdateRemotePlugins' }
     -- use
     -- TODO - configure the below
-    use { 'fgrsnau/ncm2-aspell' }
+    -- use { 'fgrsnau/ncm2-aspell' }
     use { 'gelguy/wilder.nvim', config = function() end, }
     -- python black
     use { 'psf/black', branch= 'main' }

@@ -30,9 +30,15 @@ vim.o.completeopt = "menuone,noselect"
 vim.o.termguicolors = true
 vim.o.background = "dark"
 
+-- spelling
+vim.opt.spell = false
+vim.opt.spelllang = { 'en_gb' }
+
 -- undodir
 -- vim.opt.undodir = os.getenv( "HOME" ) .. '/undodir'
 -- guard for distributions lacking the 'persistent_undo' feature.
+--if vim.has():
+
 vim.cmd([[
 if has('persistent_undo')
     " define a path to store persistent undo files.

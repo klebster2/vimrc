@@ -14,3 +14,5 @@ Then run the installer
 ``` bash
 ./install_vimrc.sh
 ```
+
+
