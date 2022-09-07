@@ -1,5 +1,7 @@
 # klebster2's vimrc
 
+Hello friend.
+
 Ubuntu Setup
 ============
 
@@ -14,5 +16,3 @@ Then run the installer
 ``` bash
 ./install_vimrc.sh
 ```
-
-

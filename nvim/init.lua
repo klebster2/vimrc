@@ -24,4 +24,6 @@ require("lsp")                    -- $HOME/.config/nvim/lua/lsp
 require("lsp.lua-ls")             -- $HOME/.config/nvim/lua/lsp/lua-ls.lua
 require("lsp.keymappings")        -- $HOME/.config/nvim/lua/lsp/keymappings.lua
 
+require("custom_functions")       -- $HOME/.config/nvim/lua/custom_functions.lua
+
 vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/basic.vim ]], true)

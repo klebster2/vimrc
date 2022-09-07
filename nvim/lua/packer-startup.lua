@@ -31,6 +31,7 @@ require('packer').startup(function()
       'rhysd/vim-grammarous',
       'vigoux/LanguageTool',
     }
+    use 'svermeulen/vimpeccable'
     --use { 'tzachar/compe-tabnine', run='./install.sh', requires='hrsh7th/nvim-compe'}
     use 'hrsh7th/vim-vsnip'
     use 'nvim-lua/plenary.nvim'
@@ -58,4 +59,8 @@ require('packer').startup(function()
     use 'fisadev/vim-isort'
     -- luavim statusline
     use 'beauwilliams/statusline.lua'
+    -- spotify for vim
+    use 'StefanRolink/vimify'
 end)
+
+

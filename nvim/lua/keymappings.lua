@@ -48,6 +48,8 @@ keymap('n', '<leader>nhl', ':set no hlsearch<cr>', opts)
 keymap('n', '<leader>sv', ':source $HOME/.config/nvim/init.lua<cr>', opts)
 -------- easy vimrc (init.lua) edit
 keymap('n', '<leader>ev', ':vertical split $HOME/.config/nvim/init.lua<cr>:edit<cr>', opts)
+-------- easy plugin edit
+keymap('n', '<leader>ep', ':vs $HOME/.config/nvim/lua/packer-startup.lua<cr>', opts)
 -------- scrollbind for scrolling multiple files
 keymap('n', '<leader>sb', ':set scrollbind!<cr>', opts)
 
@@ -75,7 +77,10 @@ keymap('n', 'L', '$', opts)
 ------ Indentation
 keymap('v', '<', '<gv', opts)
 keymap('v', '>', '>gv', opts)
-
+-- base64 encoding
+keymap('v', '<leader>e64', 'c<c-r>=system(\'base64 \', @")<cr><esc>', opts)
+-- base64 decoding
+keymap('v', '<leader>d64', 'c<c-r>=system(\'base64 --decode\', @")<cr><esc>', opts)
 ------ Rhymezone API:
 -- TODO: fix
 -- keymap('v', '<leader>zz', "!curl -s 'https://api.rhymezone.com/words?max=600&nonorm=1&k=rz_wke&rel_wke=%V' | jq '.[].word' | sed -r 's/\\\"([a-z]+):(.+):(.+)(.*):(.*)\"/\5\t\2\t\3\t\4/g' | sed 's/\\//g'", opts)

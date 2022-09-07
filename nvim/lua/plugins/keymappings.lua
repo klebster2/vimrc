@@ -31,7 +31,7 @@ keymap('n', '<leader>pi', ':PackerSync<cr>', opts)
 -- vim-for-poets: TODO
 
 -------- leader easy edit packer plugin
-keymap('n', '<leader>ep', ':NvimTreeOpen $HOME/.config/nvim/lua/plugins<cr>', opts)
+keymap('n', '<leader>eV', ':NvimTreeOpen $HOME/.config/nvim/lua/<cr>', opts)
 
 keymap('n', '<leader>idi', ':FzfLua live_grep cwd=~/.vim_runtime/dicts<cr>:sleep 1000m<cr>i\\b\\b<left><left>', opts)
 

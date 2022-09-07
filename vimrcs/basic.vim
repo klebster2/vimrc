@@ -14,6 +14,8 @@ highlight Int ctermfg=red guifg=#d3869b
 
 let conda_default_env = $CONDA_DEFAULT_ENV
 
+let g:spotify_token='NmEyM2IyZDcwOGM3NDA5Y2EwMTg3ODAxODNiNzk2MDY6YjZhNjJkN2U2MzBiNDE1MGEwMGVkMjkwY2I4ZTZmZTE='
+
 " TODO
 "let bin_python = expand('~') . '/miniconda3/envs/' . env_name . '/bin/python'
 "if filereadable(bin_python)
