@@ -6,14 +6,12 @@ require("options")                -- $HOME/.config/nvim/lua/options.lua
 require("keymappings")            -- $HOME/.config/nvim/lua/keymappings.lua
 
 -- packer and plugin installation
----- packer git clone
 require("packer-install")         -- $HOME/.config/nvim/lua/packer-install.lua
----- packer package usage
+---- packer packages
 require("packer-startup")         -- $HOME/.config/nvim/lua/packer-startup.lua
 
 -- plugin configurations          -- $HOME/.config/nvim/lua/plugins/ 
 require("plugins.fzf-cfg")        -- $HOME/.config/nvim/lua/plugins/fzf-cfg.lua
-require("plugins.nvim-cmp-cfg")   -- $HOME/.config/nvim/lua/plugins/nvim-compe-cfg.lua
 require("plugins.nvim-tree-cfg")  -- $HOME/.config/nvim/lua/plugins/nvim-tree-cfg.lua
 require("plugins.keymappings")    -- $HOME/.config/nvim/lua/plugins/keymappings.lua    -- keymappings for all plugins
 require("plugins.options")        -- $HOME/.config/nvim/lua/plugins/options.lua    -- keymappings for all plugins
@@ -23,7 +21,12 @@ require("autocmds")               -- $HOME/.config/nvim/lua/autocmds.lua
 require("lsp")                    -- $HOME/.config/nvim/lua/lsp
 require("lsp.lua-ls")             -- $HOME/.config/nvim/lua/lsp/lua-ls.lua
 require("lsp.keymappings")        -- $HOME/.config/nvim/lua/lsp/keymappings.lua
+-- TODO: fix lsp configuration(s) belows..
+require("plugins.nvim-cmp-cfg")   -- $HOME/.config/nvim/lua/plugins/nvim-cmp-cfg.lua
 
 require("custom_functions")       -- $HOME/.config/nvim/lua/custom_functions.lua
 
-vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/basic.vim ]], true)
+vim.api.nvim_exec([[
+   source $HOME/.vim_runtime/vimrcs/basic.vim
+   set completeopt=menu,menuone,noselect
+]], true)
