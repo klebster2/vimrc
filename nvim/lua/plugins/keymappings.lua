@@ -33,7 +33,7 @@ keymap('n', '<leader>pi', ':PackerSync<cr>', opts)
 -------- leader easy edit packer plugin
 keymap('n', '<leader>eV', ':NvimTreeOpen $HOME/.config/nvim/lua/<cr>', opts)
 
-keymap('n', '<leader>idi', ':FzfLua live_grep cwd=~/.vim_runtime/dicts<cr>:sleep 1000m<cr>i\\b\\b<left><left>', opts)
+keymap('n', '<leader>idi', ':FzfLua live_grep cwd=~/.vim_runtime/dicts<cr>:sleep 100m<cr>i\\b\\b<left><left>', opts)
 
 -- keymap('i', '<C-x><C-x>', '<C-r>=RhymeWord()<cr>', opts)
 -- keymap('n', '<leader>fi', "require(\"fzf-lua\").fzf_live(\"rg --column --colors 'match:bg:yellow' --color=always --smart-case\", { winopts = { height=0.33, width=0.66 }})", opts)

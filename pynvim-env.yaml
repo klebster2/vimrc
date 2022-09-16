@@ -13,6 +13,7 @@ dependencies:
   - zlib=1.2.11
   - pip:
     - greenlet==1.1.2
+    - isort=5.10.1
     - jedi==0.18.1
     - msgpack==1.0.3
     - parso==0.8.3

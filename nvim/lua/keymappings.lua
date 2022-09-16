@@ -131,7 +131,8 @@ vim.api.nvim_command("command! Q :q")
 
 ------ Spell
 keymap('n', '<leader>ss', ':set spell!<cr>', opts)
-
+keymap('n', '<leader>fb', ':FzfLua grep cwd=~/Britfone<cr>', opts)
 -- TODO
 -- -------- use cht.sh to search for command help
+
 -- keymap('n', '<leader>cht', ":terminal<CR> cht.sh", opts)

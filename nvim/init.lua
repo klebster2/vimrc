@@ -28,5 +28,7 @@ require("custom_functions")       -- $HOME/.config/nvim/lua/custom_functions.lua
 
 vim.api.nvim_exec([[
    source $HOME/.vim_runtime/vimrcs/basic.vim
+   source $HOME/.vim_runtime/vimrcs/customcompleters/fasttext.vim 
+   source $HOME/.vim_runtime/vimrcs/customcompleters/gpt.vim 
    set completeopt=menu,menuone,noselect
 ]], true)

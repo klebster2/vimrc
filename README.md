@@ -1,7 +1,5 @@
 # klebster2's vimrc
 
-Hello friend.
-
 Ubuntu Setup
 ============
 

@@ -126,7 +126,7 @@ create_pynvim_conda_env() {
     echo
     echo "* Checking for conda environment location"
     if [ -d "$environment_location" ]; then
-        human_readable_message="Do you want to remove $path_to_env before reinstalling?"
+        human_readable_message="Do you want to remove ${environment_location} before reinstalling?"
         _command="rm -r \"${environment_location}\""
         need_sudo="$(check_sudo_needed "$(dirname "${environment_location}")")"
         $need_sudo && _command="sudo ${_command}"
