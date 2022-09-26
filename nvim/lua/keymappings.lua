@@ -3,6 +3,7 @@ local opts = { noremap = true, silent = true }
 
 vim.api.nvim_set_keymap('n', '<Space>', '<NOP>', { noremap = true, silent = true })
 
+-- Define leader keys
 vim.g.mapleader = " "
 vim.g.maplocalleader = ";"
 
@@ -10,17 +11,17 @@ vim.g.maplocalleader = ";"
 ---- Normal mode remaps
 ---- try to simplify resizing splits
 if vim.fn.has('unix') then
-    -- use ctrl
-    keymap('n', 'j', '<C-w>-5', opts)
-    keymap('n', 'k', '<C-w>+5', opts)
-    keymap('n', 'h', '<C-w><5', opts)
-    keymap('n', 'l', '<C-w>>5', opts)
+  -- use ctrl
+  keymap('n', 'j', '<C-w>-5', opts)
+  keymap('n', 'k', '<C-w>+5', opts)
+  keymap('n', 'h', '<C-w><5', opts)
+  keymap('n', 'l', '<C-w>>5', opts)
 else
-    -- use alt key
-    keymap('n', '<M-j>', '<C-w>-', opts)
-    keymap('n', '<M-k>', '<C-w>+', opts)
-    keymap('n', '<M-h>', '<C-w><', opts)
-    keymap('n', '<M-l>', '<C-w>>', opts)
+  -- use alt key
+  keymap('n', '<M-j>', '<C-w>-', opts)
+  keymap('n', '<M-k>', '<C-w>+', opts)
+  keymap('n', '<M-h>', '<C-w><', opts)
+  keymap('n', '<M-l>', '<C-w>>', opts)
 end
 ---- Move between windows
 keymap('n', '<leader>h', ':wincmd h<CR>', opts)
@@ -48,7 +49,7 @@ keymap('n', '<leader>nhl', ':set no hlsearch<cr>', opts)
 keymap('n', '<leader>sv', ':source $HOME/.config/nvim/init.lua<cr>', opts)
 -------- easy vimrc (init.lua) edit
 keymap('n', '<leader>ev', ':vertical split $HOME/.config/nvim/init.lua<cr>:edit<cr>', opts)
--------- easy plugin edit
+-------- edit packer
 keymap('n', '<leader>ep', ':vs $HOME/.config/nvim/lua/packer-startup.lua<cr>', opts)
 -------- scrollbind for scrolling multiple files
 keymap('n', '<leader>sb', ':set scrollbind!<cr>', opts)
@@ -66,8 +67,8 @@ keymap('n', '<leader>wtc', ":r!curl -s 'http://whatthecommit.com/index.txt'<cr>"
 keymap('n', '<leader>dt', ":put =strftime('%d/%m/%y %H:%M:%S')<cr>", opts)
 
 -------- enable creation of newlines in normal mode
-keymap('n', '<c-o>', '<esc>o<esc>', opts)
-keymap('n', '<c-O>', '<esc>O<esc>', opts)
+-- keymap('n', '<c-o>', '<esc>o<esc>', opts)
+-- keymap('n', '<c-O>', '<esc>O<esc>', opts)
 -------- hard H and L remaps
 keymap('n', 'H', '0w', opts)
 keymap('n', 'L', '$', opts)

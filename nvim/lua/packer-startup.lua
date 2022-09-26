@@ -22,6 +22,7 @@ require('packer').startup(function()
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-cmdline',
       'hrsh7th/vim-vsnip',
+      'onsails/lspkind-nvim',
       'L3MON4D3/LuaSnip',
       'saadparwaiz1/cmp_luasnip',
     }
@@ -30,7 +31,7 @@ require('packer').startup(function()
       'f3fora/cmp-spell', -- see $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp-cfg.lua
       'rudism/telescope-dict.nvim',
       'rhysd/vim-grammarous',
-      'vigoux/LanguageTool',
+      -- 'vigoux/LanguageTool',
     }
     use 'svermeulen/vimpeccable'
     -- TODO configure tabnine
@@ -54,4 +55,16 @@ require('packer').startup(function()
     use 'beauwilliams/statusline.lua' -- luavim statusline
     -- TODO fix
     use 'StefanRolink/vimify' -- spotify for vim
+    use { "anuvyklack/windows.nvim",
+      requires = {
+          "anuvyklack/middleclass",
+          "anuvyklack/animation.nvim"
+      },
+      config = function()
+          vim.o.winwidth = 10
+          vim.o.winminwidth = 10
+          vim.o.equalalways = false
+          require('windows').setup()
+      end
+    }
 end)

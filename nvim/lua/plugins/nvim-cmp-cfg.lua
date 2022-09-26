@@ -1,13 +1,15 @@
 -- Setup nvim-cmp.
 local cmp = require("cmp")
-if not cmp then
-    return
-end
-
+if not cmp then return end
 local luasnip = require("luasnip")
-local lspconfig = require("lspconfig")
-
 if not luasnip then return end
+local lspconfig = require("lspconfig")
+if not lspconfig then return end
+local lspkind = require("lspkind")
+if not lspkind then return end
+local cmp_nvim_lsp = require("cmp_nvim_lsp")
+if not cmp_nvim_lsp then return end
+
 local lsp_symbols = {
     Text = "   (Text) ",
     Method = "   (Method)",
@@ -36,17 +38,8 @@ local lsp_symbols = {
     TypeParameter = "   (TypeParameter)",
 }
 
--- local has_words_before = function()
---   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
---   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
--- end
-
--- local feedkey = function(key, mode)
---   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
--- end
-
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
 local servers = {"rust_analyzer", "pyright", "tsserver", "vimls"}
@@ -55,43 +48,16 @@ for _, lsp in ipairs(servers) do
         capabilities = capabilities
     }
 end
--- luasnip setup
-local luasnip = require "luasnip"
--- nvim-cmp setup
-local cmp = require "cmp"
-
--- Set configuration for specific filetype.
-cmp.setup.filetype('gitcommit', {
-  sources = cmp.config.sources({
-    { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
-  }, {
-    { name = 'buffer' },
-  })
-})
-
--- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline('/', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = 'buffer' }
-  }
-})
-
--- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(':', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = 'path' }
-  }, {
-    { name = 'cmdline' }
-  })
-})
 
 cmp.setup {
     snippet = {
         expand = function(args)
             luasnip.lsp_expand(args.body)
         end
+    },
+    window = {
+      -- border = { }
+      documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert(
         {
@@ -128,22 +94,65 @@ cmp.setup {
             )
         }
     ),
-    formatting = {
-        format = function(entry, item)
-            item.kind = lsp_symbols[item.kind]
-            item.menu = ({
-                buffer = "[Buffer]",
-                nvim_lsp = "[LSP]",
-                luasnip = "[Snippet]",
-                spell = "[Spell]",
-            })[entry.source.name]
-
-            return item
-        end,
-    },
     sources = {
-        {name = "nvim_lsp"},
-        {name = "luasnip"},
-        {name = 'spell'},  -- See https://github.com/f3fora/cmp-spell
-  }
+      { name = "nvim_lsp" },
+      { name = "vsnip" },
+      { name = "luasnip" },
+      { name = "calc" },
+      { name = "path" },
+      { name = "spell" },  -- See https://github.com/f3fora/cmp-spell
+      { name = "buffer" },
+    },
+    formatting = {
+      fields = {
+        cmp.ItemField.Abbr,
+        cmp.ItemField.Kind,
+        cmp.ItemField.Menu,
+      },
+      format = function(entry, item)
+          item.kind = string.format(
+            "%s %s",
+            lspkind.presets.default[item.kind],
+            lsp_symbols[item.kind]
+          )
+          item.menu = ({
+            nvim_lsp = "ﲳ",
+            nvim_lua = "",
+            treesitter = "",
+            path = "ﱮ",
+            buffer = "﬘",
+            zsh = "",
+            vsnip = "",
+            spell = "暈",
+          })[entry.source.name]
+          return item
+      end,
+    },
 }
+
+-- if require("cmp_git") then
+--   cmp.setup.filetype('gitcommit', {
+--     sources = cmp.config.sources({
+--       { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you've installed it.
+--     }, {
+--       { name = 'buffer' },
+--     })
+--   })
+-- end
+
+-- Set configuration for specific filetype.
+cmp.setup.cmdline('/', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+  })
+})
