@@ -17,17 +17,6 @@ install_lua_ls() {
     rm `basename $latest_release_url`
 }
 
-#install_grammarly() {
-#    echo "Install grammarly ls?"
-#    read -p "(y/n)?" y_n
-#    msg="option selected"
-#    case "$y_n" in
-#        y|Y|Yes|yes ) echo "'${y_n}' $msg -> installing grammarly'"; npm i -g @emacs-grammarly/unofficial-grammarly-language-server;;
-#        n|N|No|no ) echo "'${y_n}', $msg -> skipping";;
-#        * ) echo "";
-#    esac
-#}
-
 install_fonts() {
     mkdir -pv "$HOME/.local/share/fonts"
     pushd "$HOME/.local/share/fonts" && \
@@ -191,8 +180,6 @@ main() {
     echo "set runtimepath+=${HOME}/.vim_runtime
     let g:python3_host_prog='${CONDA_PYNVIM_ENV_PYTHON_PATH}'
     " > "${HOME}/.vimrc"
-
-    #[ -d "${HOME}/.local/share/nvim/lsp_servers/grammarly" ] || install_grammarly
 
     install_fonts # TODO configure correctly
 
