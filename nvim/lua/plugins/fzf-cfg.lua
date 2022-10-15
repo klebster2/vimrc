@@ -1,4 +1,4 @@
- require('fzf-lua').setup{
+require('fzf-lua').setup{
   winopts = {
     hl = { border = "FloatBorder", normal = "IncSearch", }
   }

@@ -25,7 +25,8 @@ vim.g.syntax_on = true
 
 -- options
 -- complete option
-vim.o.completeopt = "menuone,noselect"
+vim.o.completeopt = "menu,menuone,noselect"
+
 -- color options
 vim.o.termguicolors = true
 vim.o.background = "dark"
