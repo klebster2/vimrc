@@ -60,6 +60,9 @@ end
 if system_name ~= "" then
     require('lspconfig').sumneko_lua.setup {
         cmd = {sumenko_binary, "-E", sumenko_root_path},
+        window = {
+          border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+        },
         settings = {
             Lua = {
                 runtime = {

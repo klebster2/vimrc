@@ -58,7 +58,7 @@ keymap('n', '<leader>sb', ':set scrollbind!<cr>', opts)
 keymap('n', '<leader>tp', ':tabprev<cr>', opts)
 keymap('n', '<leader>tn', ':tabnext<cr>', opts)
 keymap('n', '<leader>tt', ':tabnew<cr>', opts)
-
+-- 
 ------ What the commit?
 -------- Random commit message
 keymap('n', '<leader>wtc', ":r!curl -s 'http://whatthecommit.com/index.txt'<cr>", opts)
@@ -132,8 +132,9 @@ vim.api.nvim_command("command! Q :q")
 
 ------ Spell
 keymap('n', '<leader>ss', ':set spell!<cr>', opts)
-keymap('n', '<leader>fb', ':FzfLua grep cwd=~/Britfone<cr>', opts)
--- TODO
--- -------- use cht.sh to search for command help
+------ Lib specific command (needs FzfLua)
+-- keymap('n', '<leader>fb', ':FzfLua grep cwd=~/Britfone<cr>', opts)  -- Britfone
 
+-- TODO -> FIX cht
+-- -------- use cht.sh to search for command help
 -- keymap('n', '<leader>cht', ":terminal<CR> cht.sh", opts)

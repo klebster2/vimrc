@@ -21,16 +21,19 @@ require('packer').startup(function()
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-cmdline',
-      'hrsh7th/vim-vsnip',
       'onsails/lspkind-nvim',
+    }
+    use { -- luasnip - see $HOME/.vim_runtime/nvim/snippets
       'L3MON4D3/LuaSnip',
       'saadparwaiz1/cmp_luasnip',
+      'rafamadriz/friendly-snippets',
     }
     use { -- cmp text editor-like plugins
       'uga-rosa/cmp-dictionary',
       'f3fora/cmp-spell', -- see $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp-cfg.lua
       'rudism/telescope-dict.nvim',
       'rhysd/vim-grammarous',
+      'preservim/vim-wordy',
       -- 'vigoux/LanguageTool',
     }
     use 'svermeulen/vimpeccable'
@@ -44,18 +47,20 @@ require('packer').startup(function()
     use { 'mbbill/undotree', run='vim -u NONE -c "helptags undotree/doc" -c q' }
     -- for lua development
     use 'wsdjeg/vim-lua'
-    -- TODO: add ncm2
-    -- nvim completion manager 2 use 'ncm2/ncm2' -- use 'roxma/nvim-yarp'
+    -- TODO: add ncm2? -- nvim completion manager 2 use 'ncm2/ncm2' -- use 'roxma/nvim-yarp'
     -- use { 'klebster2/vim-for-poets', run = ':UpdateRemotePlugins' }
     -- TODO - configure the below
-    -- use { 'fgrsnau/ncm2-aspell' }
+    use { 'tpope/vim-surround', run='vim -u NONE -c "helptags surround/doc" -c q'}
     use { 'gelguy/wilder.nvim', config = function() end, }
+    -- python stuffs
     use { 'psf/black', branch= 'main' } -- python black
-    use 'fisadev/vim-isort' -- python import sort
-    use 'beauwilliams/statusline.lua' -- luavim statusline
+    use 'fisadev/vim-isort' -- python
+    use { 'preservim/tagbar' } -- view python objects
+    -- status bar
+    use 'vim-airline/vim-airline'
     -- TODO fix
-    use 'StefanRolink/vimify' -- spotify for vim
-    use { "anuvyklack/windows.nvim",
+    -- use 'StefanRolink/vimify' -- spotify for vim
+    use { "anuvyklack/windows.nvim", -- pretty window rescaling (nice to have)
       requires = {
           "anuvyklack/middleclass",
           "anuvyklack/animation.nvim"

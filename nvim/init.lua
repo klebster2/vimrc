@@ -1,5 +1,7 @@
 -- Learn Vimscript the Hard Way:
--- -> "A trick to learning something is to force yourself to use it [in other words, remap] <-"
+--> "A trick to learning something is to force yourself to use it
+-- [in other words, remap, and unmap]" <--
+
 -- require('klebster')               -- $HOME/.config/nvim/lua/klebster/
 -- basic options                  -- $HOME/.config/nvim/lua/
 require("options")                -- $HOME/.config/nvim/lua/options.lua
@@ -25,14 +27,15 @@ require("lsp.keymappings")        -- $HOME/.config/nvim/lua/lsp/keymappings.lua
 -- TODO: fix lsp configuration(s) belows..
 require("plugins.nvim-cmp-cfg")   -- $HOME/.config/nvim/lua/plugins/nvim-cmp-cfg.lua  -- default cmp configuration
 require("custom_functions")       -- $HOME/.config/nvim/lua/custom_functions.lua
+require("luasnip-config")         -- $HOME/.config/nvim/lua/luasnip-config.lua
+-- Also see ->                    -- $HOME/.config/nvim/snippets/
+
+vim.opt.runtimepath = vim.opt.runtimepath + '~/.config/nvim/snippets'
+--require("luasnip/loaders/from_vscode").lazy_load({paths='~/.vim_runtime/nvim/snippets'})
 
 vim.api.nvim_exec([[
    source $HOME/.vim_runtime/vimrcs/basic.vim
    source $HOME/.vim_runtime/vimrcs/customcompleters/fasttext.vim
-   source $HOME/.vim_runtime/vimrcs/customcompleters/gpt.vim
    set completeopt=menu,menuone,noselect
 ]], true)
 
--- lua local lreq = require 'requests'; print(lreq.get('https://api.datamuse.com/words?ml=duck&sp=b*&max=10'))
--- hell
--- 

@@ -1,41 +1,45 @@
 -- Setup nvim-cmp.
 local cmp = require("cmp")
 if not cmp then return end
+
 local luasnip = require("luasnip")
 if not luasnip then return end
+
 local lspconfig = require("lspconfig")
 if not lspconfig then return end
+
 local lspkind = require("lspkind")
 if not lspkind then return end
+
 local cmp_nvim_lsp = require("cmp_nvim_lsp")
 if not cmp_nvim_lsp then return end
 
 local lsp_symbols = {
-    Text = "   (Text) ",
-    Method = "   (Method)",
-    Function = "   (Function)",
-    Constructor = "   (Constructor)",
-    Field = " ﴲ  (Field)",
-    Variable = "[] (Variable)",
-    Class = "   (Class)",
-    Interface = " ﰮ  (Interface)",
-    Module = "   (Module)",
-    Property = " 襁 (Property)",
-    Unit = "   (Unit)",
-    Value = "   (Value)",
-    Enum = " 練 (Enum)",
-    Keyword = "   (Keyword)",
-    Snippet = "   (Snippet)",
-    Color = "   (Color)",
-    File = "   (File)",
-    Reference = "   (Reference)",
-    Folder = "   (Folder)",
-    EnumMember = "   (EnumMember)",
-    Constant = " ﲀ  (Constant)",
-    Struct = " ﳤ  (Struct)",
-    Event = "   (Event)",
-    Operator = "   (Operator)",
-    TypeParameter = "   (TypeParameter)",
+    Text = "   Text ",
+    Method = "   Method",
+    Function = "   Function",
+    Constructor = "   Constructor",
+    Field = " ﴲ  Field",
+    Variable = "[] Variable",
+    Class = "   Class",
+    Interface = " ﰮ  Interface",
+    Module = "   Module",
+    Property = " 襁 Property",
+    Unit = "   Unit",
+    Value = "   Value",
+    Enum = " 練 Enum",
+    Keyword = "   Keyword",
+    Snippet = "   Snippet",
+    Color = "   Color",
+    File = "   File",
+    Reference = "   Reference",
+    Folder = "   Folder",
+    EnumMember = "   EnumMember",
+    Constant = " ﲀ  Constant",
+    Struct = " ﳤ  Struct",
+    Event = "   Event",
+    Operator = "   Operator",
+    TypeParameter = "   TypeParameter",
 }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -56,8 +60,11 @@ cmp.setup {
         end
     },
     window = {
-      -- border = { }
-      documentation = cmp.config.window.bordered(),
+      border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+    },
+    experimental = {
+      ghost_text = true,
+      native_menu = false,
     },
     mapping = cmp.mapping.preset.insert(
         {
@@ -95,13 +102,13 @@ cmp.setup {
         }
     ),
     sources = {
-      { name = "nvim_lsp" },
-      { name = "vsnip" },
       { name = "luasnip" },
+      { name = "nvim_lsp", max_item_count = 6 },
+      { name = "vsnip" },  -- See https://github.com/L3MON4D3/LuaSnip
       { name = "calc" },
       { name = "path" },
       { name = "spell" },  -- See https://github.com/f3fora/cmp-spell
-      { name = "buffer" },
+      { name = "buffer", max_item_count = 6 },
     },
     formatting = {
       fields = {
@@ -118,11 +125,11 @@ cmp.setup {
           item.menu = ({
             nvim_lsp = "ﲳ",
             nvim_lua = "",
+            luasnip = "",
             treesitter = "",
             path = "ﱮ",
             buffer = "﬘",
-            zsh = "",
-            vsnip = "",
+            -- zsh = "",
             spell = "暈",
           })[entry.source.name]
           return item
