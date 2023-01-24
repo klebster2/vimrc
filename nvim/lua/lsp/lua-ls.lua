@@ -45,7 +45,6 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
   -- jump to help for that opt the cursor is over
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-  -- ???
   -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
   -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
   -- vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
@@ -61,6 +60,9 @@ end
 if system_name ~= "" then
     require('lspconfig').sumneko_lua.setup {
         cmd = {sumenko_binary, "-E", sumenko_root_path},
+        window = {
+          border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+        },
         settings = {
             Lua = {
                 runtime = {
@@ -99,5 +101,6 @@ if system_name ~= "" then
 else
     print("System name is " .. system_name .. " failiure.")
 end
+
 -- root_dir = util.find_git_ancestor,
 -- single_file_support= true,

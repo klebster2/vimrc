@@ -17,7 +17,7 @@ vim.opt.wildmode = {'list', 'longest'}
 
 -- local to window
 vim.wo.number = true
-vim.wo.relativenumber = false
+vim.wo.relativenumber = true
 vim.wo.wrap = false
 
 -- other
@@ -35,11 +35,7 @@ vim.o.background = "dark"
 vim.opt.spell = false
 vim.opt.spelllang = { 'en_gb' }
 
--- undodir
--- vim.opt.undodir = os.getenv( "HOME" ) .. '/undodir'
 -- guard for distributions lacking the 'persistent_undo' feature.
---if vim.has():
-
 vim.cmd([[
 if has('persistent_undo')
     " define a path to store persistent undo files.
