@@ -18,8 +18,8 @@ local grammarly_binary = "/home/" .. USER .. "/.local/share/nvim/lsp_servers/gra
 
 -- ~/.local/share/nvim/lsp_servers/
 
--- See ./nvim/lua/plugins/nvim-compe-cfg.lua
-local capabilities = require('cmp_nvim_lsp').update_capabilities(
+-- See ./nvim/lua/plugins/nvim-cmp-cfg.lua
+local capabilities = require('cmp_nvim_lsp').default_capabilities(
   vim.lsp.protocol.make_client_capabilities()
 )
 

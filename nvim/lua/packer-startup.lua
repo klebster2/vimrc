@@ -21,10 +21,10 @@ require('packer').startup(function()
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-cmdline',
-      'hrsh7th/vim-vsnip',
       'L3MON4D3/LuaSnip',
       'saadparwaiz1/cmp_luasnip',
     }
+    use 'rafamadriz/friendly-snippets'
     use { -- cmp text editor-like plugins
       'uga-rosa/cmp-dictionary',
       'f3fora/cmp-spell', -- see $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp-cfg.lua
@@ -50,8 +50,10 @@ require('packer').startup(function()
     -- use { 'fgrsnau/ncm2-aspell' }
     use { 'gelguy/wilder.nvim', config = function() end, }
     use { 'psf/black', branch= 'main' } -- python black
-    use 'fisadev/vim-isort' -- python import sort
+    -- use 'fisadev/vim-isort' -- python import sort
     use 'beauwilliams/statusline.lua' -- luavim statusline
     -- TODO fix
-    use 'StefanRolink/vimify' -- spotify for vim
+    -- use 'StefanRolink/vimify' -- spotify for vim
+    -- RAINBOW-CSV (different csv columns have various (rainbow) colours
+    use 'mechatroner/rainbow_csv'
 end)

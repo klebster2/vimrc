@@ -26,6 +26,8 @@ require("plugins.nvim-cmp-cfg")   -- $HOME/.config/nvim/lua/plugins/nvim-cmp-cfg
 
 require("custom_functions")       -- $HOME/.config/nvim/lua/custom_functions.lua
 
+--require("luasnip.loaders.from_vscode").lazy_load({ paths = { "/home/" .. USER .. "/.config/nvim/snippets/" } })
+
 vim.api.nvim_exec([[
    source $HOME/.vim_runtime/vimrcs/basic.vim
    source $HOME/.vim_runtime/vimrcs/customcompleters/fasttext.vim 

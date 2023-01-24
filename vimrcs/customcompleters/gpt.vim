@@ -24,7 +24,7 @@ fun! CallCompleteApiGpt(...)
     " openai - oasT openai set Temperature:
     let l:imports="'import openai, os;"
     let l:keypath='openai.api_key_path = "/home/kleber/.local/openai.api_key";'
-    let l:completion='result=openai.Completion.create(model="text-davinci-edit-001", prompt="'.l:visual_selection_text.'", max_tokens='.string(a:1).', temperature='.string(a:2).");"
+    let l:completion='result=openai.Edit.create(model="text-davinci-edit-001", input="'.l:visual_selection_text.'"'.", instruction='Make this more poetic'");"
     " result=openai.Completion.create(model="text-davinci-002", prompt=" -- hello, friend", max_tokens=200, temperature=0.8);
     let l:json='import json;open("'.l:gpt3_fileout.'", "w").write('."json.dumps(result))'"
     echom l:imports.l:keypath.l:completion.l:json
