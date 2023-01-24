@@ -14,3 +14,12 @@ Then run the installer
 ``` bash
 ./install_vimrc.sh
 ```
+
+# Useful commands and notes
+
+To exit insert mode, use jk. By using them together quickly, you will exit insert mode.
+
+
+### complete menu
+To exit the complete menu use `<CTRL+y>`, also see the settings in ./nvim/lua/luasnip-config.lua
+

@@ -75,6 +75,8 @@ cmp.setup {
                 behavior = cmp.ConfirmBehavior.Replace,
                 select = true
             },
+            ['<C-e>'] = cmp.mapping.abort(),  -- Also using <C-y>
+            ['<Space>'] = cmp.mapping.abort(),
             ["<Tab>"] = cmp.mapping(
                 function(fallback)
                     if cmp.visible() then

@@ -24,7 +24,7 @@ require('packer').startup(function()
       'onsails/lspkind-nvim',
     }
     use { -- luasnip - see $HOME/.vim_runtime/nvim/snippets
-      'L3MON4D3/LuaSnip',
+      'L3MON4D3/LuaSnip', -- snippets for completion
       'saadparwaiz1/cmp_luasnip',
       'rafamadriz/friendly-snippets',
     }
@@ -55,7 +55,10 @@ require('packer').startup(function()
     use { 'gelguy/wilder.nvim', config = function() end, }
     -- python stuffs
     use { 'psf/black', branch= 'main' } -- python black
-    use 'fisadev/vim-isort' -- python
+    -- fix bug when user hasn't installed isort
+    if vim.fn.executable('isort') == 1 then
+      use 'fisadev/vim-isort' -- python
+    end
     use { 'preservim/tagbar' } -- view python objects
     -- status bar
     use 'vim-airline/vim-airline'
