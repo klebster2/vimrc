@@ -4,18 +4,9 @@ channels:
 dependencies:
   - pip=21.2.2
   - python=3.7.11
-  - readline=8.1.2
-  - setuptools=58.0.4
-  - sqlite=3.37.0
-  - tk=8.6.11
-  - wheel=0.37.1
-  - xz=5.2.5
-  - zlib=1.2.11
   - pip:
-    - greenlet==1.1.2
-    - isort=5.10.1
+    - isort==5.10.1
     - jedi==0.18.1
     - msgpack==1.0.3
-    - parso==0.8.3
-    - pynvim==0.4.3
     - mypy==0.931
+    - pynvim==0.4.3

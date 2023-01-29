@@ -13,6 +13,7 @@ vim.api.nvim_create_autocmd("FileType", {pattern = {"python"},
         keymap('n', "<localleader>pl", "A # pylint: disable=", opts)
         keymap('n', "<localleader>c", "I#<esc>", opts)
         keymap('n', "<localleader>I", "<esc>:Isort", opts)
+        keymap('n', "<localleader>ff", "<esc>:Black<return><esc>:Isort<return>", opts)
         vim.opt_local.foldenable = true
         vim.opt_local.foldmethod = "syntax"
         vim.bo.shiftwidth = 4

@@ -1,18 +1,17 @@
-require'nvim-tree'.setup { -- BEGIN_DEFAULT_OPTS
+
+require('nvim-tree').setup { -- BEGIN_DEFAULT_OPTS
   auto_reload_on_write = true,
-  disable_netrw = false,
+  disable_netrw = true,
   hijack_cursor = false,
   hijack_netrw = true,
   hijack_unnamed_buffer_when_opening = false,
   ignore_buffer_on_setup = false,
   open_on_setup = false,
   open_on_setup_file = false,
-  open_on_tab = false,
   sort_by = "name",
   update_cwd = false,
   view = {
     width = 30,
-    height = 30,
     side = "left",
     preserve_window_proportions = false,
     number = false,

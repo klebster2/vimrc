@@ -17,9 +17,8 @@ Then run the installer
 
 # Useful commands and notes
 
-To exit insert mode, use jk. By using them together quickly, you will exit insert mode.
+To exit insert mode, use jk by using them together quickly.
 
 
 ### complete menu
 To exit the complete menu use `<CTRL+y>`, also see the settings in ./nvim/lua/luasnip-config.lua
-

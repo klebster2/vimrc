@@ -131,7 +131,7 @@ cmp.setup {
             treesitter = "",
             path = "ﱮ",
             buffer = "﬘",
-            -- zsh = "",
+            bash = "",
             spell = "暈",
           })[entry.source.name]
           return item

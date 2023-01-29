@@ -14,6 +14,8 @@ vim.opt.softtabstop = 4
 vim.opt.tabstop = 4
 vim.opt.wildmenu = true
 vim.opt.wildmode = {'list', 'longest'}
+vim.opt.mouse = nil
+vim.opt.runtimepath = vim.opt.runtimepath + '~/.config/nvim/snippets'
 
 -- local to window
 vim.wo.number = true
