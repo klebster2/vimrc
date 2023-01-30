@@ -11,7 +11,7 @@ require("keymappings")            -- $HOME/.config/nvim/lua/keymappings.lua
 -- packer and plugin installation
 require("packer-install")         -- $HOME/.config/nvim/lua/packer-install.lua
 
----- packer packages
+-- packer packages
 require("packer-startup")         -- $HOME/.config/nvim/lua/packer-startup.lua
 
 -- plugin configurations          -- $HOME/.config/nvim/lua/plugins/ 
@@ -27,11 +27,13 @@ require("lsp")                    -- $HOME/.config/nvim/lua/lsp
 require("lsp.lua-ls")             -- $HOME/.config/nvim/lua/lsp/lua-ls.lua
 require("lsp.keymappings")        -- $HOME/.config/nvim/lua/lsp/keymappings.lua
 
--- TODO: fix lsp configuration(s) belows..
-require("plugins.nvim-cmp-cfg")   -- $HOME/.config/nvim/lua/plugins/nvim-cmp-cfg.lua  -- default cmp configuration
+-- default cmp configuration
+require("plugins.nvim-cmp-cfg")   -- $HOME/.config/nvim/lua/plugins/nvim-cmp-cfg.lua
+require("luasnip-config")         -- $HOME/.config/nvim/lua/luasnip-config.lua
+
+require("miniconda-python-loc")   -- $HOME/.config/nvim/lua/miniconda-python-loc.lua
 
 require("custom_functions")       -- $HOME/.config/nvim/lua/custom_functions.lua
-require("luasnip-config")         -- $HOME/.config/nvim/lua/luasnip-config.lua
 
 -- Also see ->                    -- $HOME/.config/nvim/snippets/
 

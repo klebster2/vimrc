@@ -2,6 +2,9 @@
 
 install_lua_ls() {
     conda install -c conda-forge ninja
+    #IF FRESH START:
+    #rm -r $HOME/.vim_runtime/nvim/lua-language-server
+
     git clone --depth=1 \
         "https://github.com/sumneko/lua-language-server" \
         "$HOME/.vim_runtime/nvim/lua-language-server"
