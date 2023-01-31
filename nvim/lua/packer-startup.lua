@@ -13,7 +13,7 @@ require('packer').startup(function()
     use { 'ray-x/lsp_signature.nvim' }
     use { -- lsp configuration for linting, etc.
       'neovim/nvim-lspconfig',
-      'williamboman/nvim-lsp-installer'
+      'williamboman/nvim-lsp-installer', run=require("nvim-lsp-installer").setup{}
     }
     use { -- cmp for completion
       'hrsh7th/nvim-cmp',
