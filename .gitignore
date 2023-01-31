@@ -5,3 +5,4 @@ nvim/lua-language-server/
 *.log
 nvim/plugin/*
 lua-language-server-*.tar.gz
+nvim/lua/miniconda-python-loc.lua

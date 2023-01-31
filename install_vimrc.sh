@@ -1,24 +1,27 @@
 #!/bin/bash
 
 install_lua_ls() {
-    # clone project
-    lua_ls="$HOME/.local/bin/lua-language-server"
-    base_url_path="/sumneko/lua-language-server/releases";
-    latest_release_url=$(curl "https://github.com$base_url_path" 2> /dev/null \
-        | grep -Po "href=(\"$base_url_path/download[A-Za-z0-9\/\.\-]+\")" \
-        | sed -re 's|href="|https://github.com|g;s/"//g' \
-        | grep ".*linux-$(uname -p | sed 's/86_//g').*" \
-        | head -n1)
-    echo "* Latest release of sumneko/lua-language-server: $latest_release_url"
-    wget $latest_release_url -O `basename $latest_release_url` > /dev/null 2>&1
-    mkdir -p "$HOME/.vim_runtime/nvim/lua-language-server"
-    tar -xvzf `basename $latest_release_url` -C "$HOME/.vim_runtime/nvim/lua-language-server" > /dev/null 2>&1
-    echo "* Downloaded sumneko/lua-language-server $latest_release_url to $HOME/.vim_runtime/nvim/lua-language-server"
-    rm `basename $latest_release_url`
+    conda install -c conda-forge ninja
+    #IF FRESH START:
+    #rm -r $HOME/.vim_runtime/nvim/lua-language-server
+
+    git clone --depth=1 \
+        "https://github.com/sumneko/lua-language-server" \
+        "$HOME/.vim_runtime/nvim/lua-language-server"
+    pushd "$HOME/.vim_runtime/nvim/lua-language-server"
+
+    git submodule update --depth 1 --init --recursive
+    pushd 3rd/luamake; ./compile/install.sh
+    pushd ../..; ./3rd/luamake/luamake rebuild
+
+    popd
+    popd
+    popd
 }
 
 install_fonts() {
     mkdir -pv "$HOME/.local/share/fonts"
+    echo "Using https://github.com/ryanoasis/nerd-fonts"
     pushd "$HOME/.local/share/fonts" && \
         curl -fLo "Droid Sans Mono for Powerline Nerd Font Complete.otf" \
         "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf" \
@@ -66,7 +69,6 @@ symlink_vim_runtime_nvim_to_nvim_loc() {
         echo "Adding symlink as "${_nvim_loc}"..."
         ln -s "$HOME/.vim_runtime/nvim" "${_nvim_loc_parent}"  2> /dev/null
         if [ $? -ne 0 ]; then
-            # Nuke "$_nvim_loc"
             cmd="rm -r \"${_nvim_loc}\" && ln -s \"$HOME/.vim_runtime/nvim\" \"${_nvim_loc_parent}\" 2> /dev/null" 
             check_decision "Overwrite ${_nvim_loc}" "$cmd"
         fi
@@ -97,7 +99,7 @@ install_nvim_appimage() {
     human_readable_message="Do you want to add neovim to /usr/bin/ ?"
     need_sudo="$(check_sudo_needed "$(dirname "/usr/bin")")"
     echo "* sudo needed to create tmpdir in $(dirname "$output_path") $need_sudo"
-    _command="mv -v ./nvim.appimage \"${_appimage_target_directory}\""
+    _command="mv -v ./nvim.appimage /usr/bin/nvim"
     $need_sudo && _command="sudo ${_command}"
     check_decision "$human_readable_message" "$_command"
 }
@@ -112,9 +114,15 @@ mkdir_p_verbose() {
 
 prompt_to_install_conda() {
     os2kernel="$(uname -a | sed -r 's|.* (.*) .*?\/(.*)$|\2-\1|g')"
-    installer_name="Miniconda3-latest-${os2kernel}.sh"
-    url_conda_target="https://repo.continuum.io/miniconda/${installer}"
-    cmd="curl -Lo ${installer} \"${url_conda_target}\" && bash ${installer} || exit 1"
+    IFS=', ' read -r -a array <<< "$(curl "https://repo.anaconda.com/miniconda/" \
+        | awk -F'</*td>' '$2{print $2}' \
+        | xargs -n5 | grep "${os2kernel}" | grep "py310" \
+        | sed -re 's/href=(.*?)>.*<\/a>/\1/g;s/<a//g')"
+    echo "Found conda installer: ${array[@]}"
+    url_conda_target="https://repo.continuum.io/miniconda/${array[0]}"
+    curl -Lo "${array[0]}" "${url_conda_target}"
+    sudo chmod +x "${array[0]}"
+    bash "${array[0]}" || exit 1
     check_decision "Install miniconda?" "${cmd}"
 }
 
@@ -128,9 +136,7 @@ create_pynvim_conda_env() {
     if [ -d "$environment_location" ]; then
         human_readable_message="Do you want to remove ${environment_location} before reinstalling?"
         _command="rm -r \"${environment_location}\""
-        need_sudo="$(check_sudo_needed "$(dirname "${environment_location}")")"
-        $need_sudo && _command="sudo ${_command}"
-        check_decision "${human_readable_message}" "${_command}"
+        sudo ${_command}
     fi
 
     conda env create -f pynvim-env.yaml -n pynvim
@@ -138,6 +144,7 @@ create_pynvim_conda_env() {
         echo "* Assuming pynvim conda env already exists..."
         environment_location=$(conda env create -f pynvim-env.yaml -n pynvim 2>&1 | grep -v "^$" | sed 's/.*exists: //g')
         [ ! -z "$environment_location" ] && echo "* Found $environment_location" || echo "No conda environment location found"
+        conda env update --file pynvim-env.yaml --prune
     fi
     export CONDA_PYNVIM_ENV_PYTHON_PATH="$environment_location/bin/python3"
 
@@ -153,12 +160,16 @@ main() {
         printf "* Found nvim already installed at $(which nvim)\n" || \
         install_nvim_appimage "${appimage_target_directory}"
 
-    check_conda_is_installed && \
-        create_pynvim_conda_env || \
-        ( prompt_to_install_conda && create_pynvim_conda_env )
+    if !(check_conda_is_installed); then
+        prompt_to_install_conda 
+    fi
+    create_pynvim_conda_env
+    . $HOME/.bashrc
+    conda activate pynvim
 
     nvim_loc="${HOME}/.config/nvim"
     nvim_loc_parent="$(dirname "${nvim_loc}")"
+
     packer_path="$HOME/.local/share/nvim/site/pack/packer"
 
     mkdir_p_verbose "${nvim_loc_parent}"
@@ -167,7 +178,6 @@ main() {
     echo "* Symlink ~/.vim_runtime/nvim to ~/.config/nvim"
     symlink_vim_runtime_nvim_to_nvim_loc "${nvim_loc}"
 
-    # undotree
     check_make_undo_tree "${nvim_loc}/.undotree" 
 
     [ -d "${packer_path}/start/packer.nvim" ] || \
@@ -186,14 +196,17 @@ main() {
     echo "Installing Plugins via PackerSync..."
     nvim +PackerSync +qall
 
-    echo "Fixing grammarly ls"
-    grammarly_ls_init_file="${HOME}/.local/share/nvim/site/pack/packer/start/nvim-lsp-installer/lua/nvim-lsp-installer/servers/grammarly/init.lua"
-    sed -i 's|https://github.com/znck/grammarly|https://github.com/emacs-grammarly/unofficial-grammarly-language-server|' $grammarly_ls_init_file
-    sed -i 's|grammarly-languageserver|@emacs-grammarly/unofficial-grammarly-language-server|' $grammarly_ls_init_file
-
     echo "Installing Language servers via LspInstall..."
-    nvim --headless +"LspInstall awk_ls bashls dockerls grammarly"  +qall
+    nvim --headless +"LspInstall awk_ls bashls dockerls pyright" +qall  #grammarly
     echo
+
+    # FIXME (or forget)
+    #echo "Trying to fix grammarly ls"
+    #grammarly_ls_init_file="${HOME}/.local/share/nvim/site/pack/packer/start/nvim-lsp-installer/lua/nvim-lsp-installer/servers/grammarly/init.lua"
+
+    #sed -i 's|https://github.com/znck/grammarly|https://github.com/emacs-grammarly/unofficial-grammarly-language-server|' $grammarly_ls_init_file
+    #sed -i 's|grammarly-languageserver|@emacs-grammarly/unofficial-grammarly-language-server|' $grammarly_ls_init_file
+
 
     echo "Installed dependencies for vim configuration successfully."
 }

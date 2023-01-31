@@ -13,7 +13,7 @@ require('packer').startup(function()
     use { 'ray-x/lsp_signature.nvim' }
     use { -- lsp configuration for linting, etc.
       'neovim/nvim-lspconfig',
-      'williamboman/nvim-lsp-installer'
+      'williamboman/nvim-lsp-installer', run=require("nvim-lsp-installer").setup{}
     }
     use { -- cmp for completion
       'hrsh7th/nvim-cmp',
@@ -21,37 +21,55 @@ require('packer').startup(function()
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-cmdline',
-      'hrsh7th/vim-vsnip',
-      'L3MON4D3/LuaSnip',
-      'saadparwaiz1/cmp_luasnip',
+      'onsails/lspkind-nvim',
+    }
+    use { -- luasnip - see $HOME/.vim_runtime/nvim/snippets
+      'L3MON4D3/LuaSnip', -- snippets for completion see https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip
+      'saadparwaiz1/cmp_luasnip', --
+      'rafamadriz/friendly-snippets',
     }
     use { -- cmp text editor-like plugins
       'uga-rosa/cmp-dictionary',
       'f3fora/cmp-spell', -- see $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp-cfg.lua
       'rudism/telescope-dict.nvim',
       'rhysd/vim-grammarous',
-      'vigoux/LanguageTool',
+      'preservim/vim-wordy',
     }
     use 'svermeulen/vimpeccable'
-    -- TODO configure tabnine
-    -- use { 'tzachar/compe-tabnine', run='./install.sh', requires='hrsh7th/nvim-compe'}
     use 'nvim-lua/plenary.nvim'
     use 'tpope/vim-fugitive' -- github help
     use 'jremmen/vim-ripgrep' -- search
     use 'ibhagwan/fzf-lua' -- Quick file finding - updated for lua
-    -- Undotree - make local undo history sane
-    use { 'mbbill/undotree', run='vim -u NONE -c "helptags undotree/doc" -c q' }
-    -- for lua development
+    use {
+      'mbbill/undotree',
+      run='vim -u NONE -c "helptags undotree/doc" -c q'
+    }
     use 'wsdjeg/vim-lua'
-    -- TODO: add ncm2
-    -- nvim completion manager 2 use 'ncm2/ncm2' -- use 'roxma/nvim-yarp'
-    -- use { 'klebster2/vim-for-poets', run = ':UpdateRemotePlugins' }
-    -- TODO - configure the below
-    -- use { 'fgrsnau/ncm2-aspell' }
+    use {  --
+      'tpope/vim-surround',
+      run='vim -u NONE -c "helptags surround/doc" -c q'
+    }
     use { 'gelguy/wilder.nvim', config = function() end, }
+    -- python stuffs
     use { 'psf/black', branch= 'main' } -- python black
-    use 'fisadev/vim-isort' -- python import sort
-    use 'beauwilliams/statusline.lua' -- luavim statusline
+    if vim.fn.executable('isort') == 1 then -- fixes when Isort isn't installed
+      use 'fisadev/vim-isort' -- python
+    end
+    use { 'preservim/tagbar' } -- view python objects
+    -- status bar
+    use 'vim-airline/vim-airline'
     -- TODO fix
-    use 'StefanRolink/vimify' -- spotify for vim
+    -- use 'StefanRolink/vimify' -- spotify for vim
+    use { "anuvyklack/windows.nvim", -- pretty window rescaling (nice to have)
+      requires = {
+          "anuvyklack/middleclass",
+          "anuvyklack/animation.nvim"
+      },
+      config = function()
+          vim.o.winwidth = 10
+          vim.o.winminwidth = 10
+          vim.o.equalalways = false
+          require('windows').setup()
+      end
+    }
 end)
