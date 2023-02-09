@@ -137,4 +137,4 @@ keymap('n', '<leader>ss', ':set spell!<cr>', opts)
 
 -- TODO -> FIX cht
 -- -------- use cht.sh to search for command help
--- keymap('n', '<leader>cht', ":terminal<CR> cht.sh", opts)
+keymap('n', '<leader>cht', "<command>cht.sh ", opts)

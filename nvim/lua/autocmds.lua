@@ -9,7 +9,7 @@ vim.api.nvim_create_autocmd("FileType", {pattern = {"python"},
         keymap('n', "<localleader>os", "Iimport<space>os<return><esc>", opts)
         keymap('n', "<localleader>tq", "Iimport<space>tqdm<return><esc>", opts)
         keymap('n', "<localleader>ap", "Iimport<space>argparser<return><esc>", opts)
-        keymap('n', "<localleader>main", "Iif __name__==\"__main__\":<return>pass<esc>", opts)
+        -- if __name__ == "__main__": <- use `main' in snippets
         keymap('n', "<localleader>pl", "A # pylint: disable=", opts)
         keymap('n', "<localleader>c", "I#<esc>", opts)
         keymap('n', "<localleader>I", "<esc>:Isort", opts)

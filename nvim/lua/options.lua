@@ -7,7 +7,11 @@ vim.go.shiftround = true
 vim.go.foldlevelstart = 1
 
 -- buffer
+---- indentation
 vim.opt.autoindent = true
+vim.opt.smartindent = true
+vim.opt.cindent = true
+
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
