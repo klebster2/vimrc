@@ -88,7 +88,7 @@ require('nvim-tree').setup { -- BEGIN_DEFAULT_OPTS
   filters = {
     dotfiles = true,
     custom = {},
-    exclude = {"~/."},
+    exclude = {"~/.", ".git"},
   },
   git = {
     enable = true,
@@ -138,5 +138,4 @@ require('nvim-tree').setup { -- BEGIN_DEFAULT_OPTS
 --  NvimTreeResize
 --  NvimTreeCollapse
 --  NvimTreeCollapseKeepBuffers
-
 --  a list of groups can be found at `:help nvim_tree_highlight`

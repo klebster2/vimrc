@@ -148,6 +148,7 @@ create_pynvim_conda_env() {
         environment_location=$(conda env create -f pynvim-env.yaml -n pynvim 2>&1 | grep -v "^$" | sed 's/.*exists: //g')
         [ ! -z "$environment_location" ] && echo "* Found $environment_location" || echo "No conda environment location found"
         conda env update --file pynvim-env.yaml --prune
+        # TODO: remove lines 214-215, get pynvim loc in one shot.
     fi
     export CONDA_PYNVIM_ENV_PYTHON_PATH="$environment_location/bin/python3"
 
@@ -226,6 +227,12 @@ main() {
     #sed -i 's|https://github.com/znck/grammarly|https://github.com/emacs-grammarly/unofficial-grammarly-language-server|' $grammarly_ls_init_file
     #sed -i 's|grammarly-languageserver|@emacs-grammarly/unofficial-grammarly-language-server|' $grammarly_ls_init_file
 
+    pynvim_loc="$(conda env list | grep "pynvim" | head -n1 | sed -r 's/pynvim *(\/.*)/\1/g')"
+
+    echo "vim.api.nvim_exec([[" >> ./nvim/lua/miniconda-python-loc.lua
+    printf "  g:python3_host_prog=%s/bin/python3\n" "$pynvim_loc" \
+        >> ./nvim/lua/miniconda-python-loc.lua
+    echo "]], true)" >> ./nvim/lua/miniconda-python-loc.lua
 
     echo "Installed dependencies for vim configuration successfully."
 }

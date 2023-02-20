@@ -6,3 +6,4 @@ nvim/lua-language-server/
 nvim/plugin/*
 lua-language-server-*.tar.gz
 nvim/lua/miniconda-python-loc.lua
+__pycache__
