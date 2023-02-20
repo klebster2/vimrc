@@ -69,7 +69,6 @@ local function cs(trigger, nodes, opts) --{{{
 end --}}}
 
 -- Start Refactoring --
-
 cs("CMD", { -- [CMD] multiline vim.cmd{{{
 	t({ "vim.cmd[[", "  " }),
 	i(1, ""),

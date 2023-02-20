@@ -207,7 +207,7 @@ cmp.setup {
           item.menu = ({
             nvim_lsp = "ﲳ",
             nvim_lua = "",
-            luasnip = "",
+            luasnip = "",
             treesitter = "",
             path = "ﱮ",
             buffer = "﬘",
