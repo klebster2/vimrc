@@ -1,23 +1,26 @@
 #!/bin/bash
 
 install_lua_ls() {
-    conda install -c conda-forge ninja
     #IF FRESH START:
     #rm -r $HOME/.vim_runtime/nvim/lua-language-server
+    if [ -d "$HOME/.vim_runtime/nvim/lua-language-server" ]; then
+        conda install -c conda-forge ninja
+        git clone --depth=1 \
+            "https://github.com/sumneko/lua-language-server" \
+            "$HOME/.vim_runtime/nvim/lua-language-server"
+        pushd "$HOME/.vim_runtime/nvim/lua-language-server"
 
-    git clone --depth=1 \
-        "https://github.com/sumneko/lua-language-server" \
-        "$HOME/.vim_runtime/nvim/lua-language-server"
-    pushd "$HOME/.vim_runtime/nvim/lua-language-server"
+        git submodule update --depth 1 --init --recursive
+        pushd 3rd/luamake; ./compile/install.sh
+        pushd ../..; ./3rd/luamake/luamake rebuild
 
-    git submodule update --depth 1 --init --recursive
-    pushd 3rd/luamake; ./compile/install.sh
-    pushd ../..; ./3rd/luamake/luamake rebuild
-
-    popd
-    popd
-    popd
-}
+        popd
+        popd
+        popd
+    else
+        echo "Found lua-language-server installed in $HOME/.vim_runtime/nvim/"
+    fi
+    }
 
 install_fonts() {
     mkdir -pv "$HOME/.local/share/fonts"
@@ -148,6 +151,22 @@ create_pynvim_conda_env() {
     fi
     export CONDA_PYNVIM_ENV_PYTHON_PATH="$environment_location/bin/python3"
 
+}
+
+fasttext() {
+    ./fasttext skipgram -input <(
+        while IFS= read line; do 
+            if [[ "$p2_line" != "$p_line" ]] && [[ "$p_line" != "$line" ]] ; then 
+                echo "$p2_line $p_line $line"; 
+            fi;
+            p2_line="$p_line"; p_line="$line"; 
+        done< <(cat "$file" | tail -n+2 | grep -Pv "Repeat [1-9]+|Chorus|[1-9]+x|:" \
+            | grep -Pv "\[.*?\]" | tr '\\\n' '\n' | sed 's/^n//g' \
+            | rev | cut -d ' ' -f1,2,3 | rev \
+            | tr '[:upper:]' '[:lower:]' | sed 's/ /_/g' | sed 's/[,\?\!)(]//g' ) \
+    ) -output model
+    # or maybe even    : ./fasttext supervised -input train.txt -output model -autotune-validation valid.txt -autotune-modelsize 2M
+    # or using the args:                                                      -autotune-validation cooking.valid -autotune-duration 600
 }
 
 
