@@ -12,9 +12,6 @@ else
     print("Unsupported system for sumenko")
 end
 
-local sumenko_root_path = "/home/" .. USER .. "/.config/nvim/lua-language-server/main.lua"
-local sumenko_binary = "/home/" .. USER .. "/.config/nvim/lua-language-server/bin/lua-language-server"
-
 -- Setup nvim-cmp.
 local cmp = require("cmp")
 if not cmp then return end
@@ -27,6 +24,7 @@ if not lspconfig then return end
 
 local lspkind = require("lspkind")
 if not lspkind then return end
+lspkind.init()
 
 local cmp_nvim_lsp = require("cmp_nvim_lsp")
 if not cmp_nvim_lsp then return end
@@ -63,41 +61,13 @@ local on_attach = function(client, bufnr)
 end
 
 if system_name ~= "" then
-    lspconfig.sumneko_lua.setup {
-        cmd = {sumenko_binary, "-E", sumenko_root_path},
-        window = {
-          border = border,
-        },
-        settings = {
-            Lua = {
-                runtime = {
-                    -- tell the language server which version of lua you're using (most likely luajit in the case of neovim)
-                    version = "luaJIT",
-                    -- setup your lua path
-                    path = vim.split(package.path, ';'),
-                },
-                diagnostics = {
-                    -- get the language server to recognize the `vim` global
-                    globals = { "vim" },
-                },
-                workspace = {
-                    -- make the server aware of neovim runtime files
-                    library = {
-                        [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-                        [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
-                    },
-                },
-            }
-        },
-        capabilities = capabilities,
-        on_attach = on_attach,
-    }
     lspconfig.pyright.setup{
         on_attach = on_attach,
         flags = lsp_flags,
     }
 else
     print("System failiure ( may be due to " .. system_name .. " incompatibility) .")
+    return
 end
 
 local lsp_symbols = {

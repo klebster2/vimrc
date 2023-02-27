@@ -45,5 +45,6 @@ require("custom_functions")       -- $HOME/.config/nvim/lua/custom_functions.lua
 
 vim.api.nvim_exec([[
    source $HOME/.vim_runtime/vimrcs/basic.vim
+   source $HOME/.vim_runtime/vimrcs/customcompleters/datamuse.vim
    source $HOME/.vim_runtime/vimrcs/customcompleters/fasttext.vim
 ]], true)

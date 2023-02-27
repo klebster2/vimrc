@@ -13,19 +13,19 @@ require('packer').startup(function()
     use { 'ray-x/lsp_signature.nvim' }
     use { -- lsp configuration for linting, etc.
       'neovim/nvim-lspconfig',
-      'williamboman/nvim-lsp-installer', run=require("nvim-lsp-installer").setup{}
     }
     use { -- cmp for completion
       'hrsh7th/nvim-cmp',
-      'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path',
+      'hrsh7th/cmp-nvim-lua',
+      'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-cmdline',
+      'saadparwaiz1/cmp_luasnip',
       'onsails/lspkind-nvim',
     }
     use { -- luasnip - see $HOME/.vim_runtime/nvim/snippets
       'L3MON4D3/LuaSnip', -- snippets for completion see https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip
-      'saadparwaiz1/cmp_luasnip', --
       'rafamadriz/friendly-snippets',
     }
     use { -- cmp text editor-like plugins
