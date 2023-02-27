@@ -36,10 +36,6 @@ require("luasnippets")            -- $HOME/.config/nvim/lua/luasnippets.lua
 
 require("miniconda-python-loc")   -- $HOME/.config/nvim/lua/miniconda-python-loc.lua
 
--- vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/basic.vim ]], true)
--- vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/vim-for-poets.vim ]], true)
-require("custom_functions")       -- $HOME/.config/nvim/lua/custom_functions.lua
-
 -- Also see ->                    -- $HOME/.config/nvim/snippets/
 --require("luasnip.loaders.from_vscode").lazy_load({paths={"/home/"..USER.."/.config/nvim/snippets/"}})
 
