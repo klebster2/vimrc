@@ -3,6 +3,7 @@ require('packer').startup(function()
     -- Packer can manage itself as an optional plugin
     use 'wbthomason/packer.nvim' -- packer.nvim
     use 'morhetz/gruvbox' -- The gruvbox colorscheme
+
     use {
       'kyazdani42/nvim-tree.lua',
       requires = {
@@ -10,9 +11,12 @@ require('packer').startup(function()
       }, -- if using WSL2, Windows Terminal need nerd font so install Consolas NF on the OS terminal
       tag = 'nightly' -- optional, updated every week. (see issue #1193)
     }  -- tree view
-    use { 'ray-x/lsp_signature.nvim' }
+
     use { -- lsp configuration for linting, etc.
       'neovim/nvim-lspconfig',
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+      'onsails/lspkind-nvim',
     }
     use { -- cmp for completion
       'hrsh7th/nvim-cmp',
@@ -22,11 +26,10 @@ require('packer').startup(function()
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-cmdline',
       'saadparwaiz1/cmp_luasnip',
-      'onsails/lspkind-nvim',
     }
     use { -- luasnip - see $HOME/.vim_runtime/nvim/snippets
       'L3MON4D3/LuaSnip', -- snippets for completion see https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip
-      'rafamadriz/friendly-snippets',
+      --'rafamadriz/friendly-snippets',
     }
     use { -- cmp text editor-like plugins
       'uga-rosa/cmp-dictionary',

@@ -175,7 +175,7 @@ fasttext() {
 main() {
     # sudo add-apt-repository universe
     # sudo apt install libfuse2
-    # sudo apt install jq
+    # sudo apt install jq unzip
     echo "* Running nvim setup..."
 
     echo "* Checking whether nvim is installed..."

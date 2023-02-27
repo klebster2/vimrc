@@ -1,7 +1,5 @@
 USER = vim.fn.expand('$USER')
 
-local system_name = "UNKNOWN"
-
 if vim.fn.has("mac") == 1 then
     system_name = "macOS"
 elseif vim.fn.has("unix") == 1 then
@@ -61,132 +59,140 @@ local on_attach = function(client, bufnr)
 end
 
 if system_name ~= "" then
-    lspconfig.pyright.setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-    }
+  -- other config
+
+  require("mason").setup()
+  require("mason-lspconfig").setup {
+    ensure_installed = { "lua_ls", "rust_analyzer" },
+  }
+
+
+  lspconfig.pyright.setup{
+      on_attach = on_attach,
+      flags = lsp_flags,
+  }
+  lspconfig.lua_ls.setup {}
 else
-    print("System failiure ( may be due to " .. system_name .. " incompatibility) .")
-    return
+  print("System failiure ( may be due to " .. system_name .. " incompatibility) .")
 end
 
 local lsp_symbols = {
-    Text = "   Text ",
-    Method = "   Method",
-    Function = "   Function",
-    Constructor = "   Constructor",
-    Field = " ﴲ  Field",
-    Variable = "[] Variable",
-    Class = "   Class",
-    Interface = " ﰮ  Interface",
-    Module = "   Module",
-    Property = " 襁 Property",
-    Unit = "   Unit",
-    Value = "   Value",
-    Enum = " 練 Enum",
-    Keyword = "   Keyword",
-    Snippet = "   Snippet",
-    Color = "   Color",
-    File = "   File",
-    Reference = "   Reference",
-    Folder = "   Folder",
-    EnumMember = "   EnumMember",
-    Constant = " ﲀ  Constant",
-    Struct = " ﳤ  Struct",
-    Event = "   Event",
-    Operator = "   Operator",
-    TypeParameter = "   TypeParameter",
+  Text = "   Text ",
+  Method = "   Method",
+  Function = "   Function",
+  Constructor = "   Constructor",
+  Field = " ﴲ  Field",
+  Variable = "[] Variable",
+  Class = "   Class",
+  Interface = " ﰮ  Interface",
+  Module = "   Module",
+  Property = " 襁 Property",
+  Unit = "   Unit",
+  Value = "   Value",
+  Enum = " 練 Enum",
+  Keyword = "   Keyword",
+  Snippet = "   Snippet",
+  Color = "   Color",
+  File = "   File",
+  Reference = "   Reference",
+  Folder = "   Folder",
+  EnumMember = "   EnumMember",
+  Constant = " ﲀ  Constant",
+  Struct = " ﳤ  Struct",
+  Event = "   Event",
+  Operator = "   Operator",
+  TypeParameter = "   TypeParameter",
 }
 
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
 lspconfig.pyright.setup {
-    capabilities = capabilities,
-    on_attach = on_attach,
-    flags = lsp_flags,
+  capabilities = capabilities,
+  on_attach = on_attach,
+  flags = lsp_flags,
 }
 
 lspconfig.vimls.setup {
-    capabilities = capabilities,
-    on_attach = on_attach,
-    flags = lsp_flags,
+  capabilities = capabilities,
+  on_attach = on_attach,
+  flags = lsp_flags,
 }
 
 cmp.setup {
-    snippet = {
-        expand = function(args)
-            luasnip.lsp_expand(args.body)
-        end
-    },
-    window = { border = border },
-    experimental = { ghost_text = true, native_menu = false },
-    mapping = cmp.mapping.preset.insert(
-        {
-            ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-            ["<C-f>"] = cmp.mapping.scroll_docs(4),
-            ["<C-Space>"] = cmp.mapping.complete(),
-            ["<CR>"] = cmp.mapping.confirm {
-                behavior = cmp.ConfirmBehavior.Replace,
-                select = true
-            },
-            ['<C-e>'] = cmp.mapping.abort(),  -- Also <C-y> (default)
-            ["<Tab>"] = cmp.mapping(
-                function(fallback)
-                    if cmp.visible() then
-                        cmp.select_next_item()
-                    elseif luasnip.expand_or_jumpable() then
-                        luasnip.expand_or_jump()
-                    else
-                        fallback()
-                    end
-                end,
-                {"i", "s"}
-            ),
-            ["<S-Tab>"] = cmp.mapping(
-                function(fallback)
-                    if cmp.visible() then
-                        cmp.select_prev_item()
-                    elseif luasnip.jumpable(-1) then
-                        luasnip.jump(-1)
-                    else
-                        fallback()
-                    end
-                end,
-                {"i", "s"}
-            )
-        }
-    ),
-    sources = {
-      { name = "luasnip" },
-      { name = "nvim_lsp", max_item_count = 6 },
-      { name = "path" },
-      { name = "spell" },  -- See https://github.com/f3fora/cmp-spell
-      { name = "buffer", max_item_count = 6 },
-    },
-    formatting = {
-      fields = {
-        cmp.ItemField.Abbr,
-        cmp.ItemField.Kind,
-        cmp.ItemField.Menu,
-      },
-      format = function(entry, item)
-          item.kind = string.format(
-            "%s %s",
-            lspkind.presets.default[item.kind],
-            lsp_symbols[item.kind]
+  snippet = {
+      expand = function(args)
+          luasnip.lsp_expand(args.body)
+      end
+  },
+  window = { border = border },
+  experimental = { ghost_text = true, native_menu = false },
+  mapping = cmp.mapping.preset.insert(
+      {
+          ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-f>"] = cmp.mapping.scroll_docs(4),
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<CR>"] = cmp.mapping.confirm {
+              behavior = cmp.ConfirmBehavior.Replace,
+              select = true
+          },
+          ['<C-e>'] = cmp.mapping.abort(),  -- Also <C-y> (default)
+          ["<Tab>"] = cmp.mapping(
+              function(fallback)
+                  if cmp.visible() then
+                      cmp.select_next_item()
+                  elseif luasnip.expand_or_jumpable() then
+                      luasnip.expand_or_jump()
+                  else
+                      fallback()
+                  end
+              end,
+              {"i", "s"}
+          ),
+          ["<S-Tab>"] = cmp.mapping(
+              function(fallback)
+                  if cmp.visible() then
+                      cmp.select_prev_item()
+                  elseif luasnip.jumpable(-1) then
+                      luasnip.jump(-1)
+                  else
+                      fallback()
+                  end
+              end,
+              {"i", "s"}
           )
-          item.menu = ({
-            nvim_lsp = "ﲳ",
-            nvim_lua = "",
-            luasnip = "",
-            treesitter = "",
-            path = "ﱮ",
-            buffer = "﬘",
-            bash = "",
-            spell = "暈",
-          })[entry.source.name]
-          return item
-      end,
+      }
+  ),
+  sources = {
+    { name = "luasnip" },
+    { name = "nvim_lsp", max_item_count = 6 },
+    { name = "path" },
+    { name = "spell" },  -- See https://github.com/f3fora/cmp-spell
+    { name = "buffer", max_item_count = 6 },
+  },
+  formatting = {
+    fields = {
+      cmp.ItemField.Abbr,
+      cmp.ItemField.Kind,
+      cmp.ItemField.Menu,
     },
+    format = function(entry, item)
+        item.kind = string.format(
+          "%s %s",
+          lspkind.presets.default[item.kind],
+          lsp_symbols[item.kind]
+        )
+        item.menu = ({
+          nvim_lsp = "ﲳ",
+          nvim_lua = "",
+          luasnip = "",
+          treesitter = "",
+          path = "ﱮ",
+          buffer = "﬘",
+          bash = "",
+          spell = "暈",
+        })[entry.source.name]
+        return item
+    end,
+  },
 }
 
 -- Set configuration for specific filetype.

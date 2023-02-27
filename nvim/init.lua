@@ -27,7 +27,6 @@ require("plugins.options")        -- $HOME/.config/nvim/lua/plugins/options.lua 
 
 -- default cmp AND lsp (language server protocol) configuration
 require("plugins.nvim-cmp-cfg")   -- $HOME/.config/nvim/lua/plugins/nvim-cmp-cfg.lua
---require("plugins.")   -- $HOME/.config/nvim/lua/plugins/nvim-cmp-cfg.lua
 
 -- autocmds (per file type)
 require("autocmds")               -- $HOME/.config/nvim/lua/autocmds.lua
@@ -38,7 +37,7 @@ require("luasnippets")            -- $HOME/.config/nvim/lua/luasnippets.lua
 require("miniconda-python-loc")   -- $HOME/.config/nvim/lua/miniconda-python-loc.lua
 
 -- Also see ->                    -- $HOME/.config/nvim/snippets/
---require("luasnip.loaders.from_vscode").lazy_load({paths={"/home/"..USER.."/.config/nvim/snippets/"}})
+-- require("luasnip.loaders.from_vscode").lazy_load({paths={"/home/"..USER.."/.config/nvim/snippets/"}})
 
 vim.api.nvim_exec([[
    source $HOME/.vim_runtime/vimrcs/basic.vim
