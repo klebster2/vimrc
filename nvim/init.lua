@@ -27,6 +27,7 @@ require("plugins.options")        -- $HOME/.config/nvim/lua/plugins/options.lua 
 
 -- default cmp AND lsp (language server protocol) configuration
 require("plugins.nvim-cmp-cfg")   -- $HOME/.config/nvim/lua/plugins/nvim-cmp-cfg.lua
+--require("plugins.")   -- $HOME/.config/nvim/lua/plugins/nvim-cmp-cfg.lua
 
 -- autocmds (per file type)
 require("autocmds")               -- $HOME/.config/nvim/lua/autocmds.lua

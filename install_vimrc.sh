@@ -127,6 +127,7 @@ prompt_to_install_conda() {
     sudo chmod +x "${array[0]}"
     bash "${array[0]}" || exit 1
     check_decision "Install miniconda?" "${cmd}"
+    rm "${array[0]}"
 }
 
 check_conda_is_installed() {
@@ -172,6 +173,9 @@ fasttext() {
 
 
 main() {
+    # sudo add-apt-repository universe
+    # sudo apt install libfuse2
+    # sudo apt install jq
     echo "* Running nvim setup..."
 
     echo "* Checking whether nvim is installed..."
@@ -207,9 +211,9 @@ main() {
 
     echo "Setting adding paths to ${HOME}/.vimrc"
 
-    echo "set runtimepath+=${HOME}/.vim_runtime
-    let g:python3_host_prog='${CONDA_PYNVIM_ENV_PYTHON_PATH}'
-    " > "${HOME}/.vimrc"
+    #echo "set runtimepath+=${HOME}/.vim_runtime
+    #let g:python3_host_prog='${CONDA_PYNVIM_ENV_PYTHON_PATH}'
+    #" > "${HOME}/.vimrc"
 
     install_fonts # TODO configure correctly
 
@@ -217,15 +221,8 @@ main() {
     nvim +PackerSync +qall
 
     echo "Installing Language servers via LspInstall..."
-    nvim --headless +"LspInstall awk_ls bashls dockerls pyright" +qall  #grammarly
+    nvim --headless +"LspInstall awk_ls bashls dockerls pyright grammarly" +qall
     echo
-
-    # FIXME (or forget)
-    #echo "Trying to fix grammarly ls"
-    #grammarly_ls_init_file="${HOME}/.local/share/nvim/site/pack/packer/start/nvim-lsp-installer/lua/nvim-lsp-installer/servers/grammarly/init.lua"
-
-    #sed -i 's|https://github.com/znck/grammarly|https://github.com/emacs-grammarly/unofficial-grammarly-language-server|' $grammarly_ls_init_file
-    #sed -i 's|grammarly-languageserver|@emacs-grammarly/unofficial-grammarly-language-server|' $grammarly_ls_init_file
 
     pynvim_loc="$(conda env list | grep "pynvim" | head -n1 | sed -r 's/pynvim *(\/.*)/\1/g')"
 
