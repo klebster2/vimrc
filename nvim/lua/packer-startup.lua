@@ -31,13 +31,13 @@ require('packer').startup(function()
       'L3MON4D3/LuaSnip', -- snippets for completion see https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip
       --'rafamadriz/friendly-snippets',
     }
-    use { -- cmp text editor-like plugins
-      'uga-rosa/cmp-dictionary',
-      'f3fora/cmp-spell', -- see $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp-cfg.lua
-      'rudism/telescope-dict.nvim',
-      'rhysd/vim-grammarous',
-      'preservim/vim-wordy',
-    }
+    --use { -- cmp text editor-like plugins
+    --  'uga-rosa/cmp-dictionary',
+    --  'f3fora/cmp-spell', -- see $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp-cfg.lua
+    --  'rudism/telescope-dict.nvim',
+    --  'rhysd/vim-grammarous',
+    --  'preservim/vim-wordy',
+    --}
     use 'svermeulen/vimpeccable'
     use 'nvim-lua/plenary.nvim'
     use 'tpope/vim-fugitive' -- github help

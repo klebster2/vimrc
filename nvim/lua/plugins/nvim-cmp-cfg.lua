@@ -1,4 +1,7 @@
+local vim = vim
+
 USER = vim.fn.expand('$USER')
+local system_name = ""
 
 if vim.fn.has("mac") == 1 then
     system_name = "macOS"
@@ -11,73 +14,100 @@ else
 end
 
 -- Setup nvim-cmp.
-local cmp = require("cmp")
-if not cmp then return end
+local cmp = require("cmp"); if not cmp then return end
+local luasnip = require("luasnip"); if not luasnip then return end
+local lspconfig = require("lspconfig"); if not lspconfig then return end
+local lspkind = require("lspkind"); if not lspkind then return end; lspkind.init()
+local cmp_nvim_lsp = require("cmp_nvim_lsp"); if not cmp_nvim_lsp then return end
 
-local luasnip = require("luasnip")
-if not luasnip then return end
-
-local lspconfig = require("lspconfig")
-if not lspconfig then return end
-
-local lspkind = require("lspkind")
-if not lspkind then return end
-lspkind.init()
-
-local cmp_nvim_lsp = require("cmp_nvim_lsp")
-if not cmp_nvim_lsp then return end
-
--- So as not to load absolutely everything.
+-- LOG: So as not to log absolutely everything.
 vim.lsp.set_log_level("info")
 
-local capabilities = cmp_nvim_lsp.default_capabilities(
-  vim.lsp.protocol.make_client_capabilities()
-)
-
-local lsp_flags = {
-  debounce_text_changes = 150,  -- This is the default in Nvim 0.7+
-}
-local border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
+local capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
+local lsp_flags = {debounce_text_changes = 120}
+local border = { "╭", "╍", "╮", "│", "╯", "╍", "╰", "│" }
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
+local on_attach = function(_, bufnr)
   -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
   local lsp = vim.lsp
   -- Mappings. (See `:help vim.lsp.*` for documentation on any of the below functions)
   local bufopts = { noremap=true, silent=true, buffer=bufnr }
   vim.keymap.set('n', 'lss', lsp.stop_client, bufopts)      -- Stop client (especially useful for when unknown errors happen)
-  vim.keymap.set('n', 'gD', lsp.buf.declaration, bufopts)   -- gjump declaration
+  --vim.keymap.set('n', 'gD', lsp.buf.declaration, bufopts)   -- gjump declaration
   vim.keymap.set('n', 'gd', lsp.buf.definition, bufopts)    -- gjump definition
   vim.keymap.set('n', 'K', lsp.buf.hover, bufopts)          -- jump to help for that opt the cursor is over
-  vim.keymap.set('n', '<leader>D', lsp.buf.type_definition, bufopts)
-  vim.keymap.set('n', '<leader>nn', lsp.buf.rename, bufopts)
+  vim.keymap.set('n', '<leader>d', lsp.buf.type_definition, bufopts) -- jump to definition (<leader>D)
+  vim.keymap.set('n', '<leader>nn', lsp.buf.rename, bufopts) -- newname (<leader>nn)
   vim.keymap.set('n', '<leader>ca', lsp.buf.code_action, bufopts)
   vim.keymap.set('n', 'gr', lsp.buf.references, bufopts)
   vim.keymap.set('n', '<leader>f', lsp.buf.formatting, bufopts)
 end
 
 if system_name ~= "" then
-  -- other config
+  -- Default language Servers:
+  local default_language_servers = {
+    "bashls",
+    "clangd",
+    "cmake",
+    "grammarly",
+    "html",
+    "jedi_language_server",
+    "jsonls",
+    "lua_ls",
+    "marksman",
+    "pyright",
+    "rust_analyzer",
+    "vimls",
+    "yamlls",
+  }
 
   require("mason").setup()
   require("mason-lspconfig").setup {
-    ensure_installed = { "lua_ls", "rust_analyzer" },
+    ensure_installed = default_language_servers,
   }
-
-
-  lspconfig.pyright.setup{
+  for _, value in ipairs(default_language_servers) do
+    lspconfig[value].setup{
       on_attach = on_attach,
       flags = lsp_flags,
+      capabilities = capabilities,
+    }
+  end
+-- Set configuration for specific filetype.
+cmp.setup.cmdline('/', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
   }
-  lspconfig.lua_ls.setup {}
+})
+
+cmp.setup.cmdline('./', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+  })
+})
+
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+  })
+})
+
 else
   print("System failiure ( may be due to " .. system_name .. " incompatibility) .")
+  return
 end
 
 local lsp_symbols = {
-  Text = "   Text ",
+  Text = "   Text",
   Method = "   Method",
   Function = "   Function",
   Constructor = "   Constructor",
@@ -105,17 +135,14 @@ local lsp_symbols = {
 }
 
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-lspconfig.pyright.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  flags = lsp_flags,
-}
-
-lspconfig.vimls.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  flags = lsp_flags,
-}
+vim.api.nvim_set_hl(0, "MyPmenu", { bg="#1d2021", fg="#928374"})
+vim.api.nvim_set_hl(0, "MyNormal",      { fg="#98971a"})
+vim.api.nvim_set_hl(0, "MyFloatBorder", { fg="#1d2021"})
+vim.api.nvim_set_hl(0, "MyPmenuSel",    { bg="#fbf1c7", fg="#282828", bold=true, italic=true})
+vim.api.nvim_set_hl(0, "CmpItemAbbr",        { fg="#d5c4a1"})
+vim.api.nvim_set_hl(0, "CmpItemAbbrMatch",   { fg="#fbf1c7"})
+vim.api.nvim_set_hl(0, "CmpItemAbbrFuzzy",   { fg="#ec5300"})
+vim.api.nvim_set_hl(0, "CmpItemMenu",        { fg="#8ec07c"})
 
 cmp.setup {
   snippet = {
@@ -123,95 +150,80 @@ cmp.setup {
           luasnip.lsp_expand(args.body)
       end
   },
-  window = { border = border },
+  window = {
+    documentation = cmp.config.window.bordered({
+      border = border,
+      winhighlight = "Normal:MyPmenu,FloatBorder:MyPmenu,CursorLine:MyPmenuSel,Search:None",
+      side_padding = 0,
+      col_offset = 1,
+    }),
+  completion = cmp.config.window.bordered({
+      border = "none",
+      winhighlight = "Normal:MyPmenu,FloatBorder:MyPmenu,CursorLine:MyPmenuSel,Search:None",
+      side_padding = 0,
+      col_offset = -1,
+    }),
+  },
   experimental = { ghost_text = true, native_menu = false },
   mapping = cmp.mapping.preset.insert(
       {
+          -- <C-p> = prev, <C-n> = next
           ["<C-d>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<CR>"] = cmp.mapping.confirm {
-              behavior = cmp.ConfirmBehavior.Replace,
+          ['<C-e>'] = cmp.mapping.close(),
+          ["<C-y>"] = cmp.mapping.confirm {
+              behavior = cmp.ConfirmBehavior.Insert,
               select = true
           },
-          ['<C-e>'] = cmp.mapping.abort(),  -- Also <C-y> (default)
-          ["<Tab>"] = cmp.mapping(
-              function(fallback)
-                  if cmp.visible() then
-                      cmp.select_next_item()
-                  elseif luasnip.expand_or_jumpable() then
-                      luasnip.expand_or_jump()
-                  else
-                      fallback()
-                  end
-              end,
-              {"i", "s"}
-          ),
-          ["<S-Tab>"] = cmp.mapping(
-              function(fallback)
-                  if cmp.visible() then
-                      cmp.select_prev_item()
-                  elseif luasnip.jumpable(-1) then
-                      luasnip.jump(-1)
-                  else
-                      fallback()
-                  end
-              end,
-              {"i", "s"}
-          )
+          ["<C-Space>"] = cmp.mapping.complete(),
       }
   ),
   sources = {
+    { name = "nvim_lua" },
     { name = "luasnip" },
-    { name = "nvim_lsp", max_item_count = 6 },
-    { name = "path" },
-    { name = "spell" },  -- See https://github.com/f3fora/cmp-spell
-    { name = "buffer", max_item_count = 6 },
+    { name = "nvim_lsp", max_item_count = 8 },
+    { name = "path", max_item_count = 8 },
+    { name = "spell", keyword_length = 4 },
+    { name = "buffer", max_item_count = 6, keyword_length = 5 },
   },
   formatting = {
     fields = {
+      cmp.ItemField.Menu,
       cmp.ItemField.Abbr,
       cmp.ItemField.Kind,
-      cmp.ItemField.Menu,
     },
-    format = function(entry, item)
-        item.kind = string.format(
+    format = function(entry, vim_item)
+        vim_item.kind = string.format(
           "%s %s",
-          lspkind.presets.default[item.kind],
-          lsp_symbols[item.kind]
+          (lsp_symbols[vim_item.kind] or "?"),
+          (lspkind.presets.default[vim_item.kind] or "?")
         )
-        item.menu = ({
-          nvim_lsp = "ﲳ",
-          nvim_lua = "",
-          luasnip = "",
+        vim_item.menu = ({
+          nvim_lua = "",   -- lua engine
+          luasnip = "",    -- snippets engine
+          nvim_lsp = "",   -- local context
           treesitter = "",
           path = "ﱮ",
+          --bash = "",
           buffer = "﬘",
-          bash = "",
           spell = "暈",
         })[entry.source.name]
-        return item
+
+        --local function trim(text)
+        --  local max = 40
+        --  if text and text:len() > max then
+        --    text = text:sub(1,max) .. ""
+        --  end
+        --  return text
+        --end
+
+        --vim_item.abbr = trim(vim_item.abbr)
+        vim_item.abbr = vim_item.abbr:match("[^(]+")
+
+        return vim_item
     end,
   },
 }
-
--- Set configuration for specific filetype.
-cmp.setup.cmdline('/', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = 'buffer' }
-  }
-})
-
-cmp.setup.cmdline(':', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-      { name = 'path' }
-    }, {
-      { name = 'cmdline' }
-  })
-})
-
 
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 -- local keymap = vim.api.nvim_set_keymap

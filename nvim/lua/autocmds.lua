@@ -47,6 +47,7 @@ vim.api.nvim_create_autocmd("FileType", {pattern = {"lua"},
         keymap('n', "<localleader>fu", "Ifunction()<cr>end<esc>ko", opts)
         vim.bo.shiftwidth = 2
         vim.bo.tabstop = 2
+        --autocmd BufWrite *.lua call LuaFormat()
       end)
     end,
 })
