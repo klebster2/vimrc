@@ -61,6 +61,19 @@ require('packer').startup(function()
     use { 'preservim/tagbar' } -- view python objects
     -- status bar
     use 'vim-airline/vim-airline'
+    use({
+      "jackMort/ChatGPT.nvim",
+        config = function()
+          require("chatgpt").setup({
+            -- optional configuration
+          })
+        end,
+        requires = {
+          "MunifTanjim/nui.nvim",
+          "nvim-lua/plenary.nvim",
+          "nvim-telescope/telescope.nvim"
+        }
+    })
     -- TODO fix
     -- use 'StefanRolink/vimify' -- spotify for vim
     use { "anuvyklack/windows.nvim", -- pretty window rescaling (nice to have)

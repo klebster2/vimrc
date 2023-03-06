@@ -1,3 +1,4 @@
+vim = vim
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
@@ -23,7 +24,8 @@ keymap('n', '<leader>gc', ':Git commit<cr>', opts)
 -- keymap('n', '<leader>rg', ':FzfLua live_grep<cr>', opts)
 
 -- Open small side explorer
-keymap('n', '<leader>vs :vsplit .<cr>', ':vertical resize 40<cr>', opts)
+keymap('n', '<leader>vs', ':vsplit .<cr>:vertical resize 40<cr>', opts)
+keymap('n', '<leader>vs', ':NvimTreeOpen .<cr>:vertical resize 40<cr>', opts)
 
 -- PackerSync is what Plug Install  used to be (pi)
 keymap('n', '<leader>pi', ':PackerSync<cr>', opts)
