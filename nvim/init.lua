@@ -13,7 +13,6 @@ require("packer-startup")
 require("plugins/nvim-tree-cfg")
 require("plugins/keymappings")
 require("plugins/options")
-
 -- default cmp AND lsp (language server protocol) configuration (for python)
 require("plugins/nvim-cmp-cfg")
 
@@ -27,7 +26,7 @@ require("chat-gpt")
 require("miniconda-python-loc")
 
 -- Also see -> $HOME/.config/nvim/snippets/
--- require("luasnip.loaders.from_vscode").lazy_load({paths={"/home/"..USER.."/.config/nvim/snippets/"}})
+require("luasnip.loaders.from_vscode").lazy_load({paths={"/home/"..USER.."/.config/nvim/snippets/"}})
 
 vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/basic.vim ]], true)
 vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/datamuse.vim ]], true)

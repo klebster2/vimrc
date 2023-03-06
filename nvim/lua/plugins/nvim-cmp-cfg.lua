@@ -168,6 +168,7 @@ cmp.setup {
   mapping = cmp.mapping.preset.insert(
       {
           -- <C-p> = prev, <C-n> = next
+          --
           ["<C-d>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ['<C-e>'] = cmp.mapping.close(),
@@ -199,25 +200,14 @@ cmp.setup {
           (lspkind.presets.default[vim_item.kind] or "?")
         )
         vim_item.menu = ({
-          nvim_lua = "",   -- lua engine
-          luasnip = "",    -- snippets engine
-          nvim_lsp = "",   -- local context
+          nvim_lua = "",       -- lua engine
+          luasnip = "",        -- snippets engine
+          nvim_lsp = "",       -- local context
           treesitter = "",
           path = "ﱮ",
-          --bash = "",
           buffer = "﬘",
           spell = "暈",
         })[entry.source.name]
-
-        --local function trim(text)
-        --  local max = 40
-        --  if text and text:len() > max then
-        --    text = text:sub(1,max) .. ""
-        --  end
-        --  return text
-        --end
-
-        --vim_item.abbr = trim(vim_item.abbr)
         vim_item.abbr = vim_item.abbr:match("[^(]+")
 
         return vim_item
