@@ -2,7 +2,8 @@ local use = require('packer').use
 require('packer').startup(function()
     -- Packer can manage itself as an optional plugin
     use 'wbthomason/packer.nvim' -- packer.nvim
-    use 'morhetz/gruvbox' -- The gruvbox colorscheme
+
+    use 'morhetz/gruvbox'
 
     use {
       'kyazdani42/nvim-tree.lua',
@@ -29,15 +30,15 @@ require('packer').startup(function()
     }
     use { -- luasnip - see $HOME/.vim_runtime/nvim/snippets
       'L3MON4D3/LuaSnip', -- snippets for completion see https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip
-      --'rafamadriz/friendly-snippets',
+      'rafamadriz/friendly-snippets',
     }
-    --use { -- cmp text editor-like plugins
+    use { -- cmp text editor-like plugins
     --  'uga-rosa/cmp-dictionary',
-    --  'f3fora/cmp-spell', -- see $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp-cfg.lua
+      'f3fora/cmp-spell', -- see $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp-cfg.lua
     --  'rudism/telescope-dict.nvim',
     --  'rhysd/vim-grammarous',
     --  'preservim/vim-wordy',
-    --}
+    }
     use 'svermeulen/vimpeccable'
     use 'nvim-lua/plenary.nvim'
     use 'tpope/vim-fugitive' -- github help
@@ -48,12 +49,12 @@ require('packer').startup(function()
       run='vim -u NONE -c "helptags undotree/doc" -c q'
     }
     use 'wsdjeg/vim-lua'
-    use {  --
+    use {
       'tpope/vim-surround',
       run='vim -u NONE -c "helptags surround/doc" -c q'
     }
     use { 'gelguy/wilder.nvim', config = function() end, }
-    -- python stuffs
+    -- python
     use { 'psf/black', branch= 'main' } -- python black
     if vim.fn.executable('isort') == 1 then -- fixes when Isort isn't installed
       use 'fisadev/vim-isort' -- python
@@ -61,19 +62,14 @@ require('packer').startup(function()
     use { 'preservim/tagbar' } -- view python objects
     -- status bar
     use 'vim-airline/vim-airline'
-    use({
+    use {
       "jackMort/ChatGPT.nvim",
-        config = function()
-          require("chatgpt").setup({
-            -- optional configuration
-          })
-        end,
         requires = {
           "MunifTanjim/nui.nvim",
           "nvim-lua/plenary.nvim",
           "nvim-telescope/telescope.nvim"
         }
-    })
+    }
     -- TODO fix
     -- use 'StefanRolink/vimify' -- spotify for vim
     use { "anuvyklack/windows.nvim", -- pretty window rescaling (nice to have)
