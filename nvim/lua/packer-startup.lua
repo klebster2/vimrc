@@ -75,4 +75,5 @@ require('packer').startup(function()
           require('windows').setup()
       end
     }
+    use { "numToStr/Comment.nvim" }
 end)

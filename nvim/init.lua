@@ -7,7 +7,7 @@
 -- Note, you can jump to a file in neovim listed here using `gf` (for jgump file)
 -- when the cursor hovers over a reference on the rhs (e.g. $HOME/.config/nvim/lua/ )
 -- You can return to the previous file by using <c+o>
-
+--hello
 -- basic options                  -- $HOME/.config/nvim/lua/
 require("options")                -- $HOME/.config/nvim/lua/options.lua
 require("keymappings")            -- $HOME/.config/nvim/lua/keymappings.lua
@@ -23,6 +23,8 @@ require("plugins.nvim-tree-cfg")  -- $HOME/.config/nvim/lua/plugins/nvim-tree-cf
 require("plugins.keymappings")    -- $HOME/.config/nvim/lua/plugins/keymappings.lua
 -- plugin options
 require("plugins.options")        -- $HOME/.config/nvim/lua/plugins/options.lua
+require("plugins.keymappings")    -- $HOME/.config/nvim/lua/plugins/keymappings.lua    -- keymappings for all plugins
+require("plugins.nvim-comment")   -- $HOME/.config/nvim/lua/plugins/nvim-comment.lua
 
 -- default cmp AND lsp (language server protocol) configuration
 require("plugins.nvim-cmp-cfg")   -- $HOME/.config/nvim/lua/plugins/nvim-cmp-cfg.lua
@@ -32,6 +34,7 @@ require("autocmds")               -- $HOME/.config/nvim/lua/autocmds.lua
 
 require("luasnip-config")         -- $HOME/.config/nvim/lua/luasnip-config.lua
 require("luasnippets")            -- $HOME/.config/nvim/lua/luasnippets.lua
+
 
 require("miniconda-python-loc")   -- $HOME/.config/nvim/lua/miniconda-python-loc.lua
 
