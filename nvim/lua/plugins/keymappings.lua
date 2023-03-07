@@ -1,3 +1,4 @@
+vim = vim
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
@@ -23,7 +24,8 @@ keymap('n', '<leader>gc', ':Git commit<cr>', opts)
 -- keymap('n', '<leader>rg', ':FzfLua live_grep<cr>', opts)
 
 -- Open small side explorer
-keymap('n', '<leader>vs :vsplit .<cr>', ':vertical resize 40<cr>', opts)
+keymap('n', '<leader>vs', ':vsplit .<cr>:vertical resize 40<cr>', opts)
+keymap('n', '<leader>vs', ':NvimTreeOpen .<cr>:vertical resize 40<cr>', opts)
 
 -- PackerSync is what Plug Install  used to be (pi)
 keymap('n', '<leader>pi', ':PackerSync<cr>', opts)
@@ -32,4 +34,7 @@ keymap('n', '<leader>pi', ':PackerSync<cr>', opts)
 
 -------- leader easy edit packer plugin
 keymap('n', '<leader>eV', ':NvimTreeOpen $HOME/.config/nvim/lua/<cr>', opts)
-keymap('n', '<leader>idi', ':FzfLua live_grep cwd=~/.vim_runtime/dicts<cr>:sleep 100m<cr>i\\b\\b<left><left>', opts)
+--keymap('n', '<leader>cp', ':Copilot disable', opts)
+
+keymap('n', '<leader>cope', ':let b:copilot_enabled=v:true<cr>', opts)
+

@@ -214,6 +214,8 @@ main() {
     #echo "set runtimepath+=${HOME}/.vim_runtime
     #let g:python3_host_prog='${CONDA_PYNVIM_ENV_PYTHON_PATH}'
     #" > "${HOME}/.vimrc"
+    git clone https://github.com/github/copilot.vim.git \
+        $HOME/.config/nvim/pack/github/start/copilot.vim
 
     install_fonts # TODO configure correctly
 

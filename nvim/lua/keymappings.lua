@@ -47,6 +47,7 @@ keymap('n', '<leader>nhl', ':set no hlsearch<cr>', opts)
 ------ nvim init opts
 -------- easy source
 keymap('n', '<leader>sv', ':source $HOME/.config/nvim/init.lua<cr>', opts)
+--keymap('n', '<leader>sv', ':source $HOME/.config/nvim/init.lua<cr>', opts)
 -------- easy vimrc (init.lua) edit
 keymap('n', '<leader>ev', ':vertical split $HOME/.config/nvim/init.lua<cr>:edit<cr>', opts)
 -------- edit packer

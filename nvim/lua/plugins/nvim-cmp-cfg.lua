@@ -10,23 +10,21 @@ elseif vim.fn.has("unix") == 1 then
 elseif vim.fn.has("win32") == 1 then
     system_name = "Windows"
 else
-    print("Unsupported system for sumenko")
+    print("Unsupported system for default language server")
 end
 
 -- Setup nvim-cmp.
 local cmp = require("cmp"); if not cmp then return end
+-- Also see -> $HOME/.config/nvim/snippets/
 local luasnip = require("luasnip"); if not luasnip then return end
 local lspconfig = require("lspconfig"); if not lspconfig then return end
-local lspkind = require("lspkind"); if not lspkind then return end; lspkind.init()
-local cmp_nvim_lsp = require("cmp_nvim_lsp"); if not cmp_nvim_lsp then return end
+local lspkind = require("lspkind"); if not lspkind then return end
 
--- LOG: So as not to log absolutely everything.
-vim.lsp.set_log_level("info")
+local cmp_nvim_lsp = require("cmp_nvim_lsp"); if not cmp_nvim_lsp then return end
 
 local capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
 local lsp_flags = {debounce_text_changes = 120}
 local border = { "╭", "╍", "╮", "│", "╯", "╍", "╰", "│" }
-
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(_, bufnr)
@@ -168,6 +166,13 @@ cmp.setup {
   mapping = cmp.mapping.preset.insert(
       {
           -- <C-p> = prev, <C-n> = next
+          --
+          --cmp.setup({
+          ["<CR>"] = cmp.mapping.confirm({
+            -- this is the important line
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = false,
+          }),
           ["<C-d>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ['<C-e>'] = cmp.mapping.close(),
@@ -179,12 +184,13 @@ cmp.setup {
       }
   ),
   sources = {
-    { name = "nvim_lua" },
-    { name = "luasnip" },
-    { name = "nvim_lsp", max_item_count = 8 },
-    { name = "path", max_item_count = 8 },
-    { name = "spell", keyword_length = 4 },
-    { name = "buffer", max_item_count = 6, keyword_length = 5 },
+    { name = "copilot", group_index = 2 },
+    { name = "nvim_lua", group_index = 2 },
+    { name = "luasnip", group_index = 2 },
+    { name = "nvim_lsp", max_item_count = 8, group_index = 2  },
+    { name = "path", max_item_count = 8, group_index = 2 },
+    { name = "buffer", max_item_count = 6, keyword_length = 5, group_index = 2 },
+    { name = "spell", max_item_count = 7, keyword_length = 4, group_index = 2 },
   },
   formatting = {
     fields = {
@@ -199,25 +205,15 @@ cmp.setup {
           (lspkind.presets.default[vim_item.kind] or "?")
         )
         vim_item.menu = ({
-          nvim_lua = "",   -- lua engine
-          luasnip = "",    -- snippets engine
-          nvim_lsp = "",   -- local context
+          datamuse = "!",       -- lua engine
+          nvim_lua = "",       -- lua engine
+          luasnip = "",        -- snippets engine
+          nvim_lsp = "",       -- local context
           treesitter = "",
           path = "ﱮ",
-          --bash = "",
           buffer = "﬘",
           spell = "暈",
         })[entry.source.name]
-
-        --local function trim(text)
-        --  local max = 40
-        --  if text and text:len() > max then
-        --    text = text:sub(1,max) .. ""
-        --  end
-        --  return text
-        --end
-
-        --vim_item.abbr = trim(vim_item.abbr)
         vim_item.abbr = vim_item.abbr:match("[^(]+")
 
         return vim_item
