@@ -1,15 +1,16 @@
 require("chatgpt").setup({
-    loading_text = "loading!!!",
+    welcome_message = WELCOME_MESSAGE, -- set to "" if you don't like the fancy godot robot
+    loading_text = "loading",
     question_sign = "", -- you can use emoji if you want e.g. 🙂
-    answer_sign = "x", -- 🤖
+    answer_sign = "ﮧ", -- 🤖
     max_line_length = 120,
     yank_register = "+",
     chat_layout = {
       relative = "editor",
-      position = "60%",
+      position = "50%",
       size = {
-        height = "90%",
-        width = "90%",
+        height = "80%",
+        width = "80%",
       },
     },
     settings_window = {
@@ -45,11 +46,11 @@ require("chatgpt").setup({
       model = "gpt-3.5-turbo",
       frequency_penalty = 0,
       presence_penalty = 0,
-      max_tokens = 300,
+      max_tokens = 1000,
       temperature = 0.5,
       top_p = 1,
       n = 1,
-    },
+    }, -- well, I'm not sure what to do with this.
     openai_edit_params = {
       model = "code-davinci-edit-001",
       temperature = 0,
@@ -71,3 +72,5 @@ require("chatgpt").setup({
     },
   }
 )
+
+vim.api.nvim_set_keymap("n", "<leader>g", ":ChatGPT<CR>", { noremap = true, silent = true })

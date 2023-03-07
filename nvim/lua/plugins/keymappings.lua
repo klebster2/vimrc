@@ -34,4 +34,7 @@ keymap('n', '<leader>pi', ':PackerSync<cr>', opts)
 
 -------- leader easy edit packer plugin
 keymap('n', '<leader>eV', ':NvimTreeOpen $HOME/.config/nvim/lua/<cr>', opts)
-keymap('n', '<leader>idi', ':FzfLua live_grep cwd=~/.vim_runtime/dicts<cr>:sleep 100m<cr>i\\b\\b<left><left>', opts)
+--keymap('n', '<leader>cp', ':Copilot disable', opts)
+
+keymap('n', '<leader>cope', ':let b:copilot_enabled=v:true<cr>', opts)
+

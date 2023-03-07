@@ -141,8 +141,6 @@ vim.api.nvim_set_hl(0, "CmpItemAbbr",        { fg="#d5c4a1"})
 vim.api.nvim_set_hl(0, "CmpItemAbbrMatch",   { fg="#fbf1c7"})
 vim.api.nvim_set_hl(0, "CmpItemAbbrFuzzy",   { fg="#ec5300"})
 vim.api.nvim_set_hl(0, "CmpItemMenu",        { fg="#8ec07c"})
-vim.api.nvim_set_hl(0, "CmpItemKindCopilot", {fg ="#6CC644"})
-
 
 cmp.setup {
   snippet = {
@@ -169,6 +167,12 @@ cmp.setup {
       {
           -- <C-p> = prev, <C-n> = next
           --
+          --cmp.setup({
+          ["<CR>"] = cmp.mapping.confirm({
+            -- this is the important line
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = false,
+          }),
           ["<C-d>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ['<C-e>'] = cmp.mapping.close(),
@@ -201,6 +205,7 @@ cmp.setup {
           (lspkind.presets.default[vim_item.kind] or "?")
         )
         vim_item.menu = ({
+          datamuse = "!",       -- lua engine
           nvim_lua = "",       -- lua engine
           luasnip = "",        -- snippets engine
           nvim_lsp = "",       -- local context

@@ -3,6 +3,7 @@ require('packer').startup(function()
     -- Packer can manage itself as an optional plugin
     use 'wbthomason/packer.nvim' -- packer.nvim
 
+    -- Colorscheme
     use 'morhetz/gruvbox'
 
     use {
@@ -12,7 +13,6 @@ require('packer').startup(function()
       }, -- if using WSL2, Windows Terminal need nerd font so install Consolas NF on the OS terminal
       tag = 'nightly' -- optional, updated every week. (see issue #1193)
     }  -- tree view
-
     use { -- lsp configuration for linting, etc.
       'neovim/nvim-lspconfig',
       "williamboman/mason.nvim",
@@ -39,11 +39,15 @@ require('packer').startup(function()
     --  'rhysd/vim-grammarous',
     --  'preservim/vim-wordy',
     }
+    use 'junegunn/fzf.vim'
+    -- fzf-wordnet
+    -- use 'CTHULHU-Jesus/fzf-wordnet.vim'
+
     use 'svermeulen/vimpeccable'
     use 'nvim-lua/plenary.nvim'
     use 'tpope/vim-fugitive' -- github help
     use 'jremmen/vim-ripgrep' -- search
-    use 'ibhagwan/fzf-lua' -- Quick file finding - updated for lua
+
     use {
       'mbbill/undotree',
       run='vim -u NONE -c "helptags undotree/doc" -c q'
@@ -62,16 +66,32 @@ require('packer').startup(function()
     use { 'preservim/tagbar' } -- view python objects
     -- status bar
     use 'vim-airline/vim-airline'
+    -- copilot
     use {
-      "jackMort/ChatGPT.nvim",
+      "zbirenbaum/copilot.lua",
+      cmd = "Copilot",
+      event = "InsertEnter",
+      config = function()
+        require("copilot").setup({
+        })
+      end,
+      filetypes = {
+        ["*"] = false, -- disable for all other filetypes and ignore default `filetypes`
+      },
+    }
+    use {
+      "zbirenbaum/copilot-cmp",
+      after = { "copilot.lua" },
+    }
+
+    use {
+      "jackMort/ChatGPT.nvim", -- chat gpt for queries / completion
         requires = {
           "MunifTanjim/nui.nvim",
           "nvim-lua/plenary.nvim",
           "nvim-telescope/telescope.nvim"
         }
     }
-    -- TODO fix
-    -- use 'StefanRolink/vimify' -- spotify for vim
     use { "anuvyklack/windows.nvim", -- pretty window rescaling (nice to have)
       requires = {
           "anuvyklack/middleclass",

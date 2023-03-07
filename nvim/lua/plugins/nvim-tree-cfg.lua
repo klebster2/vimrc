@@ -16,16 +16,6 @@ local git_add = function()
   lib.refresh_tree()
 end
 
-require("nvim-tree").setup {
-  view = {
-    mappings = {
-      list = {
-        { key = "ga", action = "git_add", action_cb = git_add },
-      }
-    }
-  }
-}
-
 require('nvim-tree').setup { -- BEGIN_DEFAULT_OPTS
   disable_netrw = true,
   hijack_netrw = true,
@@ -36,6 +26,7 @@ require('nvim-tree').setup { -- BEGIN_DEFAULT_OPTS
     mappings = {
       custom_only = false,
       list = {
+        { key = "ga", action = "git_add", action_cb = git_add },
       },
     },
   },
