@@ -1,7 +1,6 @@
 -- Learn Vimscript the Hard Way:
 --> "A trick to learning something is to <--
 -->  force yourself to use it."          <--
---
 --> [in other words, remap, and unmap]   <--
 
 -- basic options                  -- $HOME/.config/nvim/lua/
@@ -34,7 +33,6 @@ require("custom_functions")       -- $HOME/.config/nvim/lua/custom_functions.lua
 require("luasnip-config")         -- $HOME/.config/nvim/lua/luasnip-config.lua
 
 -- Also see ->                    -- $HOME/.config/nvim/snippets/
-
 --require("luasnip/loaders/from_vscode").lazy_load({paths='~/.vim_runtime/nvim/snippets'})
 --require("luasnip.loaders.from_vscode").lazy_load({paths={"/home/"..USER.."/.config/nvim/snippets/"}})
 
@@ -43,3 +41,5 @@ vim.api.nvim_exec([[
    source $HOME/.vim_runtime/vimrcs/customcompleters/fasttext.vim
    set completeopt=menu,menuone,noselect
 ]], true)
+--hello world
+--hellothere

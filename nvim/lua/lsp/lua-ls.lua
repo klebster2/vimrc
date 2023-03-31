@@ -25,21 +25,21 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities(
 
 local lsp_flags = {
   -- This is the default in Nvim 0.7+
-  debounce_text_changes = 150,
+  debounce_text_changes = 200,
 }
+vim.lsp.set_log_level("info") -- can also be set to debug
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
   -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   local bufopts = { noremap=true, silent=true, buffer=bufnr }
   -- Stop client (especially useful for when unknown errors happen)
   vim.keymap.set('n', 'lss', vim.lsp.stop_client, bufopts)
-  -- gjump declaration
+  -- gjum declaration
   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
   -- gjump definition
   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
@@ -50,7 +50,7 @@ local on_attach = function(client, bufnr)
   -- vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
   -- vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
   -- vim.keymap.set('n', '<space>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, bufopts)
-  -- vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
+  vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
   vim.keymap.set('n', '<space>nn', vim.lsp.buf.rename, bufopts)
   vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
@@ -60,9 +60,7 @@ end
 if system_name ~= "" then
     require('lspconfig').sumneko_lua.setup {
         cmd = {sumenko_binary, "-E", sumenko_root_path},
-        window = {
-          border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-        },
+        window = { border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }, },
         settings = {
             Lua = {
                 runtime = {
@@ -101,6 +99,3 @@ if system_name ~= "" then
 else
     print("System name is " .. system_name .. " failiure.")
 end
-
--- root_dir = util.find_git_ancestor,
--- single_file_support= true,

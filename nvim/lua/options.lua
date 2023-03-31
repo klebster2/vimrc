@@ -6,7 +6,7 @@ vim.go.backup = false
 vim.go.shiftround = true
 vim.go.foldlevelstart = 1
 
--- buffer
+-- buffer / window / globally scoped
 vim.opt.autoindent = true
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 4
@@ -16,6 +16,8 @@ vim.opt.wildmenu = true
 vim.opt.wildmode = {'list', 'longest'}
 vim.opt.mouse = nil
 vim.opt.runtimepath = vim.opt.runtimepath + '~/.config/nvim/snippets'
+vim.opt.spell = false
+vim.opt.spelllang = { 'en_gb' }  -- The default spell lang
 
 -- local to window
 vim.wo.number = true
@@ -32,10 +34,6 @@ vim.o.completeopt = "menu,menuone,noselect"
 -- color options
 vim.o.termguicolors = true
 vim.o.background = "dark"
-
--- spelling
-vim.opt.spell = false
-vim.opt.spelllang = { 'en_gb' }
 
 -- guard for distributions lacking the 'persistent_undo' feature.
 vim.cmd([[

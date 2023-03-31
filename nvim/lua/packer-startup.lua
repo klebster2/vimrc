@@ -58,6 +58,7 @@ require('packer').startup(function()
     use { 'preservim/tagbar' } -- view python objects
     -- status bar
     use 'vim-airline/vim-airline'
+    use 'sbdchd/neoformat'
     -- TODO fix
     -- use 'StefanRolink/vimify' -- spotify for vim
     use { "anuvyklack/windows.nvim", -- pretty window rescaling (nice to have)
