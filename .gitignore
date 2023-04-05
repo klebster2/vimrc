@@ -5,3 +5,6 @@ nvim/lua-language-server/
 *.log
 nvim/plugin/*
 lua-language-server-*.tar.gz
+nvim/lua/miniconda-python-loc.lua
+__pycache__
+nvim/pack/github/start/copilot.vim/

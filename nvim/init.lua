@@ -1,45 +1,34 @@
--- Learn Vimscript the Hard Way:
---> "A trick to learning something is to <--
--->  force yourself to use it."          <--
---> [in other words, remap, and unmap]   <--
+-- Learn Vimscript the Hard Way: "A trick to learning something is to force yourself to use it." [in other words, remap, and unmap]
+-- You can return to the previous file by using <c+o> (or <c+i>)
 
--- basic options                  -- $HOME/.config/nvim/lua/
-require("options")                -- $HOME/.config/nvim/lua/options.lua
-require("keymappings")            -- $HOME/.config/nvim/lua/keymappings.lua
+-- basic options
+require("options")                --> $HOME/.vim_runtime/nvim/lua/options.lua
+require("keymappings")            --> $HOME/.vim_runtime/nvim/lua/keymappings.lua
 
--- packer and plugin installation
-require("packer-install")         -- $HOME/.config/nvim/lua/packer-install.lua
+-- packer installation and packer packages installation
+require("packer-install")         --> $HOME/.vim_runtime/nvim/lua/packer-install.lua
+require("packer-startup")         --> $HOME/.vim_runtime/nvim/lua/packer-startup.lua
 
----- packer packages
-require("packer-startup")         -- $HOME/.config/nvim/lua/packer-startup.lua
+-- plugin configurations
+require("plugins/nvim-tree-cfg")  --> $HOME/.vim_runtime/nvim/lua/plugins/nvim-tree-cfg.lua
 
--- plugin configurations          -- $HOME/.config/nvim/lua/plugins/ 
-require("plugins.nvim-tree-cfg")  -- $HOME/.config/nvim/lua/plugins/nvim-tree-cfg.lua
-require("plugins.keymappings")    -- $HOME/.config/nvim/lua/plugins/keymappings.lua    -- keymappings for all plugins
-require("plugins.options")        -- $HOME/.config/nvim/lua/plugins/options.lua        -- plugin options
+-- Chat gpt for queries / completion
+require("plugins/chat-gpt")       --> $HOME/.vim_runtime/nvim/lua/plugins/chat-gpt.lua
+
+require("plugins/keymappings")    --> $HOME/.vim_runtime/nvim/lua/plugins/keymappings.lua
+require("plugins/options")        --> $HOME/.vim_runtime/nvim/lua/plugins/options.lua
+
+-- default cmp AND lsp (language server protocol) configuration (for python)
+require("luasnip-config")         --> $HOME/.vim_runtime/nvim/lua/luasnippets.lua
+require("luasnippets")            --> $HOME/.vim_runtime/nvim/lua/luasnippets.lua
+require("plugins/nvim-cmp-cfg")   --> $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp-cfg.lua
 
 -- autocmds (per file type)
-require("autocmds")               -- $HOME/.config/nvim/lua/autocmds.lua
+require("autocmds")               --> $HOME/.vim_runtime/nvim/lua/autocmds.lua
 
--- lsp (language server protocol)
-require("lsp")                    -- $HOME/.config/nvim/lua/lsp
-require("lsp.lua-ls")             -- $HOME/.config/nvim/lua/lsp/lua-ls.lua
-require("lsp.keymappings")        -- $HOME/.config/nvim/lua/lsp/keymappings.lua
+-- legacy vimscript files         --> $HOME/.vim_runtime/vimrcs/
+vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/basic.vim ]], true)
+vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/datamuse.vim ]], true)
+vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/fasttext.vim ]], true)
 
--- TODO: fix lsp configuration(s) belows..
-require("plugins.nvim-cmp-cfg")   -- $HOME/.config/nvim/lua/plugins/nvim-cmp-cfg.lua  -- default cmp configuration
-
-require("custom_functions")       -- $HOME/.config/nvim/lua/custom_functions.lua
-require("luasnip-config")         -- $HOME/.config/nvim/lua/luasnip-config.lua
-
--- Also see ->                    -- $HOME/.config/nvim/snippets/
---require("luasnip/loaders/from_vscode").lazy_load({paths='~/.vim_runtime/nvim/snippets'})
---require("luasnip.loaders.from_vscode").lazy_load({paths={"/home/"..USER.."/.config/nvim/snippets/"}})
-
-vim.api.nvim_exec([[
-   source $HOME/.vim_runtime/vimrcs/basic.vim
-   source $HOME/.vim_runtime/vimrcs/customcompleters/fasttext.vim
-   set completeopt=menu,menuone,noselect
-]], true)
---hello world
---hellothere
+vim.g.copilot_enabled = 1

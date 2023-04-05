@@ -1,20 +1,26 @@
 #!/bin/bash
 
 install_lua_ls() {
-    conda install -c conda-forge ninja
-    git clone --depth=1 \
-        "https://github.com/sumneko/lua-language-server" \
-        "$HOME/.vim_runtime/nvim/lua-language-server"
-    pushd "$HOME/.vim_runtime/nvim/lua-language-server"
+    #IF FRESH START:
+    #rm -r $HOME/.vim_runtime/nvim/lua-language-server
+    if [ -d "$HOME/.vim_runtime/nvim/lua-language-server" ]; then
+        conda install -c conda-forge ninja
+        git clone --depth=1 \
+            "https://github.com/sumneko/lua-language-server" \
+            "$HOME/.vim_runtime/nvim/lua-language-server"
+        pushd "$HOME/.vim_runtime/nvim/lua-language-server"
 
-    git submodule update --depth 1 --init --recursive
-    pushd 3rd/luamake; ./compile/install.sh
-    pushd ../..; ./3rd/luamake/luamake rebuild
+        git submodule update --depth 1 --init --recursive
+        pushd 3rd/luamake; ./compile/install.sh
+        pushd ../..; ./3rd/luamake/luamake rebuild
 
-    popd
-    popd
-    popd
-}
+        popd
+        popd
+        popd
+    else
+        echo "Found lua-language-server installed in $HOME/.vim_runtime/nvim/"
+    fi
+    }
 
 install_fonts() {
     mkdir -pv "$HOME/.local/share/fonts"
@@ -121,6 +127,7 @@ prompt_to_install_conda() {
     sudo chmod +x "${array[0]}"
     bash "${array[0]}" || exit 1
     check_decision "Install miniconda?" "${cmd}"
+    rm "${array[0]}"
 }
 
 check_conda_is_installed() {
@@ -142,13 +149,33 @@ create_pynvim_conda_env() {
         environment_location=$(conda env create -f pynvim-env.yaml -n pynvim 2>&1 | grep -v "^$" | sed 's/.*exists: //g')
         [ ! -z "$environment_location" ] && echo "* Found $environment_location" || echo "No conda environment location found"
         conda env update --file pynvim-env.yaml --prune
+        # TODO: remove lines 214-215, get pynvim loc in one shot.
     fi
     export CONDA_PYNVIM_ENV_PYTHON_PATH="$environment_location/bin/python3"
 
 }
 
+fasttext() {
+    ./fasttext skipgram -input <(
+        while IFS= read line; do 
+            if [[ "$p2_line" != "$p_line" ]] && [[ "$p_line" != "$line" ]] ; then 
+                echo "$p2_line $p_line $line"; 
+            fi;
+            p2_line="$p_line"; p_line="$line"; 
+        done< <(cat "$file" | tail -n+2 | grep -Pv "Repeat [1-9]+|Chorus|[1-9]+x|:" \
+            | grep -Pv "\[.*?\]" | tr '\\\n' '\n' | sed 's/^n//g' \
+            | rev | cut -d ' ' -f1,2,3 | rev \
+            | tr '[:upper:]' '[:lower:]' | sed 's/ /_/g' | sed 's/[,\?\!)(]//g' ) \
+    ) -output model
+    # or maybe even    : ./fasttext supervised -input train.txt -output model -autotune-validation valid.txt -autotune-modelsize 2M
+    # or using the args:                                                      -autotune-validation cooking.valid -autotune-duration 600
+}
+
 
 main() {
+    # sudo add-apt-repository universe
+    # sudo apt install libfuse2
+    # sudo apt install jq unzip
     echo "* Running nvim setup..."
 
     echo "* Checking whether nvim is installed..."
@@ -184,9 +211,11 @@ main() {
 
     echo "Setting adding paths to ${HOME}/.vimrc"
 
-    echo "set runtimepath+=${HOME}/.vim_runtime
-    let g:python3_host_prog='${CONDA_PYNVIM_ENV_PYTHON_PATH}'
-    " > "${HOME}/.vimrc"
+    #echo "set runtimepath+=${HOME}/.vim_runtime
+    #let g:python3_host_prog='${CONDA_PYNVIM_ENV_PYTHON_PATH}'
+    #" > "${HOME}/.vimrc"
+    git clone https://github.com/github/copilot.vim.git \
+        $HOME/.config/nvim/pack/github/start/copilot.vim
 
     install_fonts # TODO configure correctly
 
@@ -194,16 +223,15 @@ main() {
     nvim +PackerSync +qall
 
     echo "Installing Language servers via LspInstall..."
-    nvim --headless +"LspInstall awk_ls bashls dockerls pyright" +qall  #grammarly
+    nvim --headless +"LspInstall awk_ls bashls dockerls pyright grammarly" +qall
     echo
 
-    # FIXME (or forget)
-    #echo "Trying to fix grammarly ls"
-    #grammarly_ls_init_file="${HOME}/.local/share/nvim/site/pack/packer/start/nvim-lsp-installer/lua/nvim-lsp-installer/servers/grammarly/init.lua"
+    pynvim_loc="$(conda env list | grep "pynvim" | head -n1 | sed -r 's/pynvim *(\/.*)/\1/g')"
 
-    #sed -i 's|https://github.com/znck/grammarly|https://github.com/emacs-grammarly/unofficial-grammarly-language-server|' $grammarly_ls_init_file
-    #sed -i 's|grammarly-languageserver|@emacs-grammarly/unofficial-grammarly-language-server|' $grammarly_ls_init_file
-
+    echo "vim.api.nvim_exec([[" >> ./nvim/lua/miniconda-python-loc.lua
+    printf "  g:python3_host_prog=%s/bin/python3\n" "$pynvim_loc" \
+        >> ./nvim/lua/miniconda-python-loc.lua
+    echo "]], true)" >> ./nvim/lua/miniconda-python-loc.lua
 
     echo "Installed dependencies for vim configuration successfully."
 }
