@@ -35,7 +35,7 @@ fun! CallCompleteApiDataMuseLhs()
     let l:endpoint = '"https://api.datamuse.com/words?rel_bgb='.l:query_word.'"'
     let l:cmd2 = 'curl --silent '.l:endpoint."| jq -c "."'[.[]+{".'"type'.'"'.':"'.'jjb"}]'."'"
 
-    let l:cmd = "cat <(".l:cmd1.") <(".l:cmd2.") | jq '.' -c --raw-output | python lm.py '".l:query_word."'"." '".l:model."' 2>/dev/null"
+    let l:cmd = "cat <(".l:cmd1.") <(".l:cmd2.") | jq '.' -c --raw-output | python $HOME/.vim_runtime/lm.py '".l:query_word."'"." '".l:model."' 2>/dev/null"
     echom l:cmd
 
     " rewrite the above as lua vim
@@ -43,7 +43,6 @@ fun! CallCompleteApiDataMuseLhs()
 
     " Record what matches − pass this to complete() later
     let l:data = json_decode(l:subbed_cmd)
-
 
     let l:first_entry_bgb = 0
     let l:first_entry_jjb = 0

@@ -1,5 +1,4 @@
 require("chatgpt").setup({
-    welcome_message = WELCOME_MESSAGE, -- set to "" if you don't like the fancy godot robot
     loading_text = "loading",
     question_sign = "", -- you can use emoji if you want e.g. 🙂
     answer_sign = "ﮧ", -- 🤖
@@ -47,7 +46,7 @@ require("chatgpt").setup({
       frequency_penalty = 0,
       presence_penalty = 0,
       max_tokens = 1000,
-      temperature = 0.5,
+      temperature = 0,
       top_p = 1,
       n = 1,
     }, -- well, I'm not sure what to do with this.
@@ -59,11 +58,12 @@ require("chatgpt").setup({
     },
     keymaps = {
       close = { "<C-c>", "<Esc>" },
+      submit = { "<Enter>" },
       yank_last = "<C-y>",
       scroll_up = "<C-u>",
       scroll_down = "<C-d>",
       toggle_settings = "<C-o>",
-      new_session = "<C-n>",
+      new_session = "<C-s>",
       cycle_windows = "<Tab>",
       -- in the Sessions pane
       select_session = "<Space>",
