@@ -37,4 +37,5 @@ vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/datamuse.
 vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/fasttext.vim ]], true)
 --vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/openai-gpt.vim ]], true)
 
+-- Use Alt+] / Alt+[ to cycle through suggestions
 vim.g.copilot_enabled = 0

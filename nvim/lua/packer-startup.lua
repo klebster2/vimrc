@@ -80,10 +80,10 @@ require("packer").startup(function()
         ["*"] = false, -- disable for all other filetypes and ignore default `filetypes`
       },
     }
-    use {
-      "zbirenbaum/copilot-cmp",
-      after = { "copilot.lua" },
-    }
+    --use {
+    --  "zbirenbaum/copilot-cmp",
+    --  after = { "copilot.lua" },
+    --}
 
     use {
       "jackMort/ChatGPT.nvim", -- chat gpt for queries / completion

@@ -184,9 +184,9 @@ cmp.setup {
       }
   ),
   sources = {
-    { name = "copilot", group_index = 2 },
-    { name = "nvim_lua", group_index = 2 },
-    { name = "luasnip", group_index = 2 },
+    { name = "copilot", group_index = 1,  keyword_length = 2 },
+    { name = "nvim_lua", group_index = 2, keyword_length = 2 },
+    { name = "luasnip", group_index = 2, keyword_length = 2 },
     { name = "nvim_lsp", max_item_count = 8, group_index = 2  },
     { name = "path", max_item_count = 8, group_index = 2 },
     { name = "buffer", max_item_count = 6, keyword_length = 5, group_index = 2 },
