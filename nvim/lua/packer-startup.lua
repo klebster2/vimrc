@@ -107,5 +107,5 @@ require("packer").startup(function()
     }
     use { "numToStr/Comment.nvim" }
     use { "sheerun/vim-polyglot" }
-    use "klebster2/vim-wiktionary"
+    use { "klebster2/vim-wiktionary" }
 end)

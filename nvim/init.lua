@@ -1,4 +1,4 @@
--- Learn Vimscript the Hard Way: "A trick to learning something is to force yourself to use it." [in other words, remap, and unmap]
+-- learn Vimscript the Hard Way: "A trick to learning something is to force yourself to use it." [in other words, remap, and unmap]
 -- You can return to the previous file by using <c+o> (or <c+i>)
 
 -- basic options
@@ -29,7 +29,7 @@ require("plugins/nvim-cmp-cfg")   --> $HOME/.vim_runtime/nvim/lua/plugins/nvim-c
 require("autocmds")               --> $HOME/.vim_runtime/nvim/lua/autocmds.lua
 
 -- miniconda for the nvim python loc
---require("miniconda-python-loc") -- ./nvim/lua/miniconda-python-loc.lua
+--require("miniconda-python-loc") --> $HOME/.vim_runtime/nvim/lua/miniconda-python-loc.lua
 
 -- legacy vimscript files         --> $HOME/.vim_runtime/vimrcs/
 vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/basic.vim ]], true)
