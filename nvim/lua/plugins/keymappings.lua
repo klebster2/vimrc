@@ -35,9 +35,13 @@ keymap('n', '<leader>ebf', ':vsplit $HOME/.bash_functions<cr>', opts)
 
 
 -------- Custom GPT remap
-keymap('n', '<leader>wg', ':vs $HOME/.local/share/nvim/tmp/gpt<cr>PjdG<esc><c-w><c-h>', opts)
+-- keymap('n', '<leader>wg', ':vs $HOME/.local/share/nvim/tmp/gpt<cr>PjdG<esc><c-w><c-h>', opts)
 
 keymap('n', '<leader>ebh', ':vs .<cr>:r!echo "history" | bash -i 2>/dev/null | sed -e "s/\x1b\\[.//g"', opts)
+
+-- GetZ Etymology
+keymap('n', '<leader>ze', ':WiktionaryParser english etymology<cr>', opts)
+
 --vim.api.nvim_exec( [[
 --function! RipgrepFzf(query, fullscreen)
 --  let command_fmt = "perl -pe 'use POSIX qw(strftime); s/^\#\([0-9]+\)/strftime ''\#\%F \%H:\%M:\%S'', localtime(\$1)/e' $HOME/.bash_eternal_history | grep \%s || true"
