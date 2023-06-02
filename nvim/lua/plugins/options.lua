@@ -8,3 +8,4 @@ vim.g.WebDevIconsOS = 'Windows'
 vim.cmd [[ colorscheme gruvbox ]]
 -- statusline
 vim.o.laststatus=3
+vim.g.pydocstring_formatter = 'numpy'

@@ -65,34 +65,39 @@ require("packer").startup(function()
       use "fisadev/vim-isort" -- python
     end
     use { "preservim/tagbar" } -- view python objects
+    use {
+      'heavenshell/vim-pydocstring',
+      run = "make install",
+      ft = { 'python' }
+    } -- docstring format
     -- status bar
-    use "vim-airline/vim-airline"
-    -- copilot
-    use {
-      "zbirenbaum/copilot.lua",
-      cmd = "Copilot",
-      event = "InsertEnter",
-      config = function()
-        require("copilot").setup({
-        })
-      end,
-      filetypes = {
-        ["*"] = false, -- disable for all other filetypes and ignore default `filetypes`
-      },
-    }
-    use {
-      "zbirenbaum/copilot-cmp",
-      after = { "copilot.lua" },
-    }
+    -- use "vim-airline/vim-airline"
+    -- -- copilot
+    -- use {
+    --   "zbirenbaum/copilot.lua",
+    --   cmd = "Copilot",
+    --   event = "InsertEnter",
+    --   config = function()
+    --     require("copilot").setup({
+    --     })
+    --   end,
+    --   filetypes = {
+    --     ["*"] = false, -- disable for all other filetypes and ignore default `filetypes`
+    --   },
+    -- }
+    -- use {
+    --   "zbirenbaum/copilot-cmp",
+    --   after = { "copilot.lua" },
+    -- }
 
-    use {
-      "jackMort/ChatGPT.nvim", -- chat gpt for queries / completion
-        requires = {
-          "MunifTanjim/nui.nvim",
-          "nvim-lua/plenary.nvim",
-          "nvim-telescope/telescope.nvim"
-        }
-    }
+    -- use {
+    --   "jackMort/ChatGPT.nvim", -- chat gpt for queries / completion
+    --     requires = {
+    --       "MunifTanjim/nui.nvim",
+    --       "nvim-lua/plenary.nvim",
+    --       "nvim-telescope/telescope.nvim"
+    --     }
+    -- }
     use { "anuvyklack/windows.nvim", -- pretty window rescaling (nice to have)
       requires = {
           "anuvyklack/middleclass",

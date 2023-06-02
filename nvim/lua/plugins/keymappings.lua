@@ -41,6 +41,7 @@ keymap('n', '<leader>ebh', ':vs .<cr>:r!echo "history" | bash -i 2>/dev/null | s
 
 -- GetZ Etymology
 keymap('n', '<leader>ze', ':WiktionaryParser english etymology<cr>', opts)
+keymap('n', '<silent><script><expr> <C-J>', 'copilot#Accept("\\<CR>")', opts)
 
 --vim.api.nvim_exec( [[
 --function! RipgrepFzf(query, fullscreen)

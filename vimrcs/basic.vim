@@ -1,6 +1,6 @@
 " Default set -------- {{{
 " filetype plugin indent on
-"let g:python3_host_prog=''
+let g:python3_host_prog='/home/kleber/miniconda3/envs/pynvim/bin/python3'
 set backspace=indent,eol,start
 
 " Leader Window vertical split open ---------- {{{
