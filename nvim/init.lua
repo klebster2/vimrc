@@ -13,7 +13,7 @@ require("packer-startup")         --> $HOME/.vim_runtime/nvim/lua/packer-startup
 require("plugins/nvim-tree-cfg")  --> $HOME/.vim_runtime/nvim/lua/plugins/nvim-tree-cfg.lua
 
 -- Chat gpt for queries / completion
-require("plugins/chat-gpt")       --> $HOME/.vim_runtime/nvim/lua/plugins/chat-gpt.lua
+-- require("plugins/chat-gpt")       --> $HOME/.vim_runtime/nvim/lua/plugins/chat-gpt.lua
 
 require("plugins/keymappings")    --> $HOME/.vim_runtime/nvim/lua/plugins/keymappings.lua
 require("plugins/options")        --> $HOME/.vim_runtime/nvim/lua/plugins/options.lua
@@ -35,6 +35,8 @@ require("autocmds")               --> $HOME/.vim_runtime/nvim/lua/autocmds.lua
 vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/basic.vim ]], true)
 vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/datamuse.vim ]], true)
 vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/fasttext.vim ]], true)
+vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/maskprediction.vim ]], true)
+vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/code-generation.vim ]], true)
 --vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/openai-gpt.vim ]], true)
 
 -- Use Alt+] / Alt+[ to cycle through suggestions
