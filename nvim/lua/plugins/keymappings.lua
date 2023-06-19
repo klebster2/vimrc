@@ -39,7 +39,7 @@ keymap('n', '<leader>ebf', ':vsplit $HOME/.bash_functions<cr>', opts)
 
 keymap('n', '<leader>ebh', ':vs .<cr>:r!echo "history" | bash -i 2>/dev/null | sed -e "s/\x1b\\[.//g"', opts)
 
--- GetZ Etymology
+-- Get Etymology
 keymap('n', '<leader>ze', ':WiktionaryParser english etymology<cr>', opts)
 keymap('n', '<silent><script><expr> <C-J>', 'copilot#Accept("\\<CR>")', opts)
 
@@ -56,3 +56,4 @@ keymap('n', '<silent><script><expr> <C-J>', 'copilot#Accept("\\<CR>")', opts)
 --command! -nargs=* -bang RGBH call RipgrepFzf(<q-args>, <bang>0)
 --  ]], opts)
 --keymap('n', '<leader>ebh', ':RGBH', opts)
+--
