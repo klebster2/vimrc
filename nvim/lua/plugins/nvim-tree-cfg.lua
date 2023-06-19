@@ -35,7 +35,6 @@ require('nvim-tree').setup { -- BEGIN_DEFAULT_OPTS
     auto_open = true,
   },
   renderer = {
-    add_trailing = true,
     indent_markers = {
       enable = false,
       icons = {
@@ -44,9 +43,6 @@ require('nvim-tree').setup { -- BEGIN_DEFAULT_OPTS
         none = "  ",
       },
     },
-    icons = {
-      symlink_arrow = " ➜ "
-    }
   },
   filters = {
     custom = { "~/.fzf-git" },
