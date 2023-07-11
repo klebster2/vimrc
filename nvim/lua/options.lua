@@ -5,6 +5,8 @@ vim.go.swapfile = false
 vim.go.backup = false
 vim.go.shiftround = true
 vim.go.foldlevelstart = 1
+-- backspace opt
+vim.go.backspace= "indent,eol,start"
 
 -- buffer
 ---- indentation
@@ -20,7 +22,7 @@ vim.opt.wildmenu = true
 vim.opt.wildmode = {'list', 'longest'}
 vim.opt.mouse = nil
 vim.opt.runtimepath = vim.opt.runtimepath + '~/.config/nvim/snippets'
-vim.opt.spell = false
+vim.opt.spell = true
 vim.opt.spelllang = { 'en_gb' }  -- The default spell lang
 
 -- local to window

@@ -61,8 +61,22 @@ require("packer").startup(function()
     use { "gelguy/wilder.nvim", config = function() end, }
     -- python
     use { "psf/black", branch= "main" } -- python black
-    if vim.fn.executable("isort") == 1 then -- fixes when Isort isn"t installed
-      use "fisadev/vim-isort" -- python
+
+    if vim.fn.executable("isort") == 0 then -- check if Isort is not installed
+      local python_host_prog = vim.api.nvim_eval("g:python3_host_prog")
+      if python_host_prog then
+        local install_cmd = python_host_prog .. " -m pip install isort"
+        vim.fn.system(install_cmd)
+        if vim.fn.executable("isort") == 0 then
+          vim.api.nvim_echo({{"Failed to automatically install isort. Please install it manually.", "ErrorMsg"}}, true, {})
+        else
+          use "fisadev/vim-isort"
+        end
+      else
+        vim.api.nvim_echo({{"g:python3_host_prog is not set. Cannot install isort.", "ErrorMsg"}}, true, {})
+      end
+    else
+      use "fisadev/vim-isort"
     end
     use { "preservim/tagbar" } -- view python objects
     use {
