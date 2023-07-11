@@ -13,8 +13,69 @@ else
     print("Unsupported system for default language server")
 end
 
+-- cmp for datamuse (also an example of how to implement api calling with cmp)
+local Job = require('plenary.job')
+local source = {}
+source.new = function ()
+  return setmetatable({}, {__index = source})
+end
+
+source.get_trigger_characters = function()
+  return { ' ' }
+end
+
+source.complete = function (self, request, callback)
+  local line = vim.api.nvim_get_current_line()
+  local start = vim.fn.col('.') - 1
+  -- fix this to trigger only on certain contexts
+  repeat
+    start = start - 1
+  until start <= 0 or line:sub(start, start) == ' '
+  local query_word = line:sub(start + 1, vim.fn.col('.') - 1)
+  if vim.fn.strlen(query_word) <= 2 then
+    return ""
+  end
+  local side = line:sub(-3, -1) == 'lhs' and 'b' or 'a'
+
+  local function process_response(data)
+    print(vim.inspect(data))
+    --local data = vim.json.decode(response.body)
+    local items = {}
+    local first_entry_bg = 0
+    local first_entry_jj = 0
+    for m in pairs(data) do
+      if data[m].word_type == "jj"..side then
+        if first_entry_jj == 0 then
+          first_entry_jj = data[m].score
+        end
+      elseif data[m].word_type == "bg"..side then
+        if first_entry_bg == 0 then
+          first_entry_bg = data[m].score
+        end
+      end
+      table.insert(items, {
+        label = data[m].word_type == "jj"..side and data[m].word.." "..query_word or query_word.." "..data[m].word,
+        detail = "score:"..tostring(math.floor(data[m].score * 100 / (data[m].word_type == "jj"..side and first_entry_jj or first_entry_bg)))
+      })
+    end
+    callback(items)
+  end
+
+  local function get_cmd(word_type)
+    local cmd = 'curl --silent '..'https://api.datamuse.com/words?rel_'..word_type..side..'='..query_word..' | jq -c \'.[]+{"word_type":"'..word_type..side..'"}\''
+    return cmd
+  end
+  -- Assumes linux utils (cat, cURL and jq)
+  local cmd = "cat <("..get_cmd("bg")..") <("..get_cmd("jj")..") | jq -s '[.[]]'"
+  local cmd_result = vim.fn.system(cmd):gsub('\n+$', '')
+  local data = vim.fn.json_decode(cmd_result)
+  process_response(data)
+end
+
 -- Setup nvim-cmp.
 local cmp = require("cmp"); if not cmp then return end
+cmp.register_source('datamuse', source.new())
+
 -- Also see -> $HOME/.config/nvim/snippets/
 local luasnip = require("luasnip"); if not luasnip then return end
 local lspconfig = require("lspconfig"); if not lspconfig then return end
@@ -191,6 +252,7 @@ cmp.setup {
     { name = "path", max_item_count = 8, group_index = 2 },
     { name = "buffer", max_item_count = 8, keyword_length = 3, group_index = 2 },
     { name = "spell", max_item_count = 8, keyword_length = 4, group_index = 2 },
+    { name = "datamuse", max_item_count = 8, keyword_length = 5, group_index = 3},
   },
   formatting = {
     fields = {
@@ -212,9 +274,9 @@ cmp.setup {
           path = "ﱮ",
           buffer = "﬘",
           spell = "暈",
+          datamuse = "❂",
         })[entry.source.name]
         vim_item.abbr = vim_item.abbr:match("[^(]+")
-
         return vim_item
     end,
   },
@@ -225,3 +287,4 @@ vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+

@@ -27,7 +27,9 @@ require("packer").startup(function()
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-cmdline",
       "saadparwaiz1/cmp_luasnip",
+      "nvim-lua/plenary.nvim",
     }
+
     use { -- luasnip - see $HOME/.vim_runtime/nvim/snippets
       "L3MON4D3/LuaSnip", -- snippets for completion see https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip
       "rafamadriz/friendly-snippets",
@@ -45,7 +47,6 @@ require("packer").startup(function()
     use "CTHULHU-Jesus/fzf-wordnet.vim"
 
     use "svermeulen/vimpeccable"
-    use "nvim-lua/plenary.nvim"
     use "tpope/vim-fugitive" -- github help
     use "jremmen/vim-ripgrep" -- search
 
