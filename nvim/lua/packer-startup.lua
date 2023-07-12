@@ -68,11 +68,11 @@ require("packer").startup(function()
       if python_host_prog then
         local install_cmd = python_host_prog .. " -m pip install isort"
         vim.fn.system(install_cmd)
-        if vim.fn.executable("isort") == 0 then
-          vim.api.nvim_echo({{"Failed to automatically install isort. Please install it manually.", "ErrorMsg"}}, true, {})
-        else
+        -- if vim.fn.executable("isort") == 0 then
+        --   vim.api.nvim_echo({{"Failed to automatically install isort. Please install it manually.", "ErrorMsg"}}, true, {})
+        -- else
           use "fisadev/vim-isort"
-        end
+        --end
       else
         vim.api.nvim_echo({{"g:python3_host_prog is not set. Cannot install isort.", "ErrorMsg"}}, true, {})
       end

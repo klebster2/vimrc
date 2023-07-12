@@ -39,10 +39,10 @@ e.g. these commands will work on this window if there is a scrollbar to the righ
 ```
 cmp.ItemField
 ╭╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╮
-│unknown
-│────────────────────────
-│(field) cmp.ItemField: {
-│    Abbr: unknown,       
+│unknown                 │
+│────────────────────────│
+│(field) cmp.ItemField: {│
+│    Abbr: unknown,      │ 
 │    Kind: unknown,      │
 ╰╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╯
 ```
@@ -56,3 +56,6 @@ To go to diagnostics use `<SPACE>+q` to open a floating window of LSP diagnostic
 `[d` to go to the previous LSP diagnostic and `]d` to go to the next LSP diagnostic
 
 Also see `: help vim.diagnostic.*` for documentation on any of the functions.
+
+#### Copilot scrolling
+According to the docs you can use Alt+] / Alt+[ to cycle through suggestions

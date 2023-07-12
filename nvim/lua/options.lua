@@ -22,8 +22,15 @@ vim.opt.wildmenu = true
 vim.opt.wildmode = {'list', 'longest'}
 vim.opt.mouse = nil
 vim.opt.runtimepath = vim.opt.runtimepath + '~/.config/nvim/snippets'
-vim.opt.spell = true
+vim.opt.spell = false
 vim.opt.spelllang = { 'en_gb' }  -- The default spell lang
+vim.api.nvim_exec([[
+  augroup textFileSpell
+    autocmd!
+    autocmd FileType markdown,text,rst,tex,bib,adoc setlocal spell
+    autocmd BufRead,BufNewFile *.md,*.txt,*.rst,*.tex,*.latex,*.bib,*.adoc,*.asciidoc setlocal spell
+  augroup END
+]], false)
 
 -- local to window
 vim.wo.number = true

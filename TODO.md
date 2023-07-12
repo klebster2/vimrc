@@ -67,4 +67,3 @@ Project Description
 
 ### Completed Column ✓
 - [x] Completed task title
-
