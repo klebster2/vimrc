@@ -1,6 +1,6 @@
 local vim = vim
 
--- -> cmp for datamuse (This is also an example of how to implement api calling with cmp)
+-- => cmp for datamuse (This is also an example of how to implement api calling with cmp)
 local source = {}
 source.new = function()
   return setmetatable({}, { __index = source })
@@ -26,10 +26,14 @@ source.complete = function(self, request, callback)
     start = start - 1
   until start <= 0 or line:sub(start, start) == ' '
   local query_word = line:sub(start + 1, vim.fn.col('.') - 1)
-  if vim.fn.strlen(query_word) <= 2 then
-    return ""
-  end
+  --if vim.fn.strlen(query_word) <= 2 then
+  --  return ""
+  --end
   local side = 'a'
+  -- Side 'a' means 'nouns that are often used to describe the adjective input'.
+  -- Datamuse uses the label 'a' to denote 'follower' of word in the context of Google n-grams
+  -- and likewise the label 'b' to denote 'predecessor' of word in the context of Google n-grams
+  -- See the datamuse api docs here for more information: https://www.datamuse.com/api/
   local function process_response(data)
     local items = {}
     local first_entry_bg = 0
@@ -48,9 +52,10 @@ source.complete = function(self, request, callback)
         --label = data[m].word_type == "jj" .. side and data[m].word .. " " .. query_word or query_word ..
         --    " " .. data[m].word,
         label = data[m].word,
-        detail = "score:" ..
+        detail = "Datamuse score:" ..
             tostring(math.floor(data[m].score * 100 /
-            (data[m].word_type == "jj" .. side and first_entry_jj or first_entry_bg))),
+            (data[m].word_type == "jj" .. side and first_entry_jj or first_entry_bg)))
+          .. ("\nFollowing " .. tostring(data[m].word_type == "jj" .. side and "noun" or "word") ),
         score = data[m].score,
         kind = 1
       })
@@ -69,12 +74,14 @@ source.complete = function(self, request, callback)
   local data = vim.fn.json_decode(cmd_result)
   process_response(data)
 end
--- <- cmp for datamuse
+-- <= cmp for datamuse
 
 -- Setup nvim-cmp.
 local cmp = require("cmp");
 if not cmp then return end
+-- => cmp for datamuse
 cmp.register_source('datamuse', source.new())
+-- <= cmp for datamuse
 
 -- Also see -> $HOME/.config/nvim/snippets/
 local luasnip = require("luasnip");
@@ -225,6 +232,15 @@ vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#8ec07c" })
 cmp.setup.filetype({ 'text', 'markdown' }, {
     sources = {
       { name = "datamuse", max_item_count = 50,  keyword_length = 5, group_index = 3 },
+      { name = "spell",    max_item_count = 8,  keyword_length = 4, group_index = 2 },
+      --{ name = "path",     max_item_count = 8,  group_index = 2 },
+      --{ name = "buffer",   max_item_count = 8,  keyword_length = 3, group_index = 2 },
+    },
+    sorting = {
+      comparators = {
+        sort_by_score, -- datamuse custom score sorter
+        cmp.config.recently_used,
+      }
     }
 })
 -- Enable generic language servers with the additional completion capabilities offered by nvim-cmp
@@ -271,10 +287,9 @@ cmp.setup {
     },
     format = function(entry, vim_item)
       vim_item.kind = string.format(
-        --"%s %s",
-        "%s",
-        (lsp_symbols[vim_item.kind] or "?")
-        --(lspkind.presets.default[vim_item.kind] or "?")
+        "%s %s",
+        (lsp_symbols[vim_item.kind] or "?"),
+        (lspkind.presets.default[vim_item.kind] or "?")
       )
       vim_item.menu = ({
         nvim_lua = "", -- lua engine
@@ -302,7 +317,6 @@ cmp.setup {
           return true
         end
       end,
-      sort_by_score, -- datamuse custom score sorter
     }
   }
 }
