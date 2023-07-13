@@ -18,6 +18,7 @@ keymap('n', '<leader>gs', ':G<cr>', opts)
 keymap('n', '<leader>Gd', ':Gdiffsplit<cr>', opts)
 keymap('n', '<leader>gd', ':Gdiff !~', opts)
 keymap('n', '<leader>gc', ':Git commit<cr>', opts)
+keymap('n', '<leader>ga', ':Git add %<cr>', opts)
 
 -- FZFLua --
 -- keymap('n', '<leader>fi', ':FzfLua files<cr>', opts)

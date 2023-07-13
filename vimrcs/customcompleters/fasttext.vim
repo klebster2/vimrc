@@ -1,4 +1,4 @@
-" Custom thesarus function ------------------- {{{
+" Custom fasttext thesaurus-type function ------------------- {{{
 fun! CallCompleteApiFastText()
     " {{{ vim fasttext suggestions
     " assumed ubuntu / unix system is running and curl is installed, and
@@ -44,7 +44,7 @@ fun! CallCompleteApiFastText()
     " Check if it matches what we're trying to complete; in this case we
     " want to match against the start of both the first and second list
     " entries (i.e. the name and email address)
-    " forq this dict.
+    " for this dict.
         call add(l:res, {
             \ 'icase': 1,
             \ 'word': l:m['neighbor'],

@@ -1,15 +1,7 @@
 -- learn Vimscript the Hard Way: "A trick to learning something is to force yourself to use it." [in other words, remap, and unmap]
 -- You can return to the previous file by using <c+o> (or <c+i>)
 
--- -> Dependencies: (mini)-conda Get CONDA_EXE environment variable
-local conda_exe = os.getenv('CONDA_EXE')
-if conda_exe then
-  local python_host_prog = conda_exe:match("(.*[/\\])"):sub(1, -2):match("(.*[/\\])"):sub(1, -2) .. "/envs/pynvim/bin/python3"
-  -- Check if all directories exist
-  vim.g.python3_host_prog = python_host_prog
-else
-  print("CONDA_EXE environment variable is not set. Please set it before running this script.")
-end -- <- Dependencies: conda
+require("conda-env")              --> $HOME/.vim_runtime/nvim/lua/conda-env.lua  -- Dependencies: (mini)-conda Get CONDA_EXE environment variable
 -- Basic options
 require("options")                --> $HOME/.vim_runtime/nvim/lua/options.lua
 require("keymappings")            --> $HOME/.vim_runtime/nvim/lua/keymappings.lua
@@ -33,5 +25,4 @@ vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/basic.vim ]], true)
 vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/fasttext.vim ]], true)
 vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/maskprediction.vim ]], true)
 vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/code-generation.vim ]], true)
---vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/openai-gpt.vim ]], true)
 vim.g.copilot_enabled = 0

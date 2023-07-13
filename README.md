@@ -58,4 +58,4 @@ To go to diagnostics use `<SPACE>+q` to open a floating window of LSP diagnostic
 Also see `: help vim.diagnostic.*` for documentation on any of the functions.
 
 #### Copilot scrolling
-According to the docs you can use Alt+] / Alt+[ to cycle through suggestions
+According to the docs you can use Alt+] / Alt+[ to cycle through suggestions.
