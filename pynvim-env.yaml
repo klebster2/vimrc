@@ -9,6 +9,5 @@ dependencies:
     - isort==5.10.1
     - jedi==0.18.1
     - msgpack==1.0.3
-    - msgpack==1.0.3
     - mypy==0.931
     - pynvim==0.4.3

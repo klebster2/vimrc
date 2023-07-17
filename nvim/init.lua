@@ -16,7 +16,6 @@ require("plugins/options")        --> $HOME/.vim_runtime/nvim/lua/plugins/option
 --require("customcompleters/datamuse")
 -- Default cmp AND lsp (language server protocol) configuration (for python)
 require("luasnip-config")         --> $HOME/.vim_runtime/nvim/lua/luasnippets.lua
-require("luasnippets")            --> $HOME/.vim_runtime/nvim/lua/luasnippets.lua
 require("plugins/nvim-cmp-cfg")   --> $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp-cfg.lua
 -- Autocmds (per file type)
 require("autocmds")               --> $HOME/.vim_runtime/nvim/lua/autocmds.lua

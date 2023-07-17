@@ -25,7 +25,7 @@ To exit the complete menu use `<CTRL+y>`, also see the settings in ./nvim/lua/lu
 To jump to the next completion using Lsp / Cmp / Luasnip etc.. use
 `<CTRL+p>` for prev and `<CTRL+n>` for next (in insert mode)
 
-Use `gd` to jump (¿g-jump?) to the definition.
+Use `gd` for 'j' to jump (also known as dʒump as in gump) to the definition.
 
 Also see `: help vim.lsp.*` for documentation on any of the LSP functions
 
@@ -36,7 +36,8 @@ and the window to the right (showing the highlighted completion item) is availab
 `<CTRL+f>` for forwards and `<CTRL+d>` for backward
 
 e.g. these commands will work on this window if there is a scrollbar to the right-hand side.
-```
+
+`
 cmp.ItemField
 ╭╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╮
 │unknown                 │
@@ -45,7 +46,7 @@ cmp.ItemField
 │    Abbr: unknown,      │ 
 │    Kind: unknown,      │
 ╰╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╯
-```
+`
 
 ### LSP Diagnostics
 

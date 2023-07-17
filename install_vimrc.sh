@@ -1,35 +1,15 @@
 #!/bin/bash
 
-install_lua_ls() {
-    #IF FRESH START:
-    #rm -r $HOME/.vim_runtime/nvim/lua-language-server
-    if [ -d "$HOME/.vim_runtime/nvim/lua-language-server" ]; then
-        conda install -c conda-forge ninja
-        git clone --depth=1 \
-            "https://github.com/sumneko/lua-language-server" \
-            "$HOME/.vim_runtime/nvim/lua-language-server"
-        pushd "$HOME/.vim_runtime/nvim/lua-language-server"
-
-        git submodule update --depth 1 --init --recursive
-        pushd 3rd/luamake; ./compile/install.sh
-        pushd ../..; ./3rd/luamake/luamake rebuild
-
-        popd
-        popd
-        popd
-    else
-        echo "Found lua-language-server installed in $HOME/.vim_runtime/nvim/"
-    fi
-    }
-
 install_fonts() {
-    mkdir -pv "$HOME/.local/share/fonts"
-    echo "Using https://github.com/ryanoasis/nerd-fonts"
-    pushd "$HOME/.local/share/fonts" && \
-        curl -fLo "Droid Sans Mono for Powerline Nerd Font Complete.otf" \
-        "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf" \
-        > /dev/null 2>&1
-    popd
+    for font_name in DroidSansMono FiraCode Hack; do
+        echo "[-] Download fonts [-]"
+        url="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/$font_name.zip"
+        echo getting $url
+        wget $url 
+        unzip $font_name.zip -d ~/.fonts
+        fc-cache -fv
+    done
+    echo "Downloaded ${font_name}"
 }
 
 install_packer() {
@@ -102,7 +82,15 @@ install_nvim_appimage() {
     human_readable_message="Do you want to add neovim to /usr/bin/ ?"
     need_sudo="$(check_sudo_needed "$(dirname "/usr/bin")")"
     echo "* sudo needed to create tmpdir in $(dirname "$output_path") $need_sudo"
-    _command="mv -v ./nvim.appimage /usr/bin/nvim"
+    # from the neovim docs
+    ./nvim.appimage --appimage-extract
+    ./squashfs-root/AppRun --version
+
+    # Optional: exposing nvim globally.
+    sudo mv squashfs-root /
+    sudo ln -s /squashfs-root/AppRun /usr/bin/nvim
+    nvim
+    _command="mv -v squashfs-root/usr/bin/nvim /usr/bin/nvim"
     $need_sudo && _command="sudo ${_command}"
     check_decision "$human_readable_message" "$_command"
 }
@@ -176,6 +164,7 @@ main() {
     # sudo add-apt-repository universe
     # sudo apt install libfuse2
     # sudo apt install jq unzip
+    jq 2>/dev/null || ( printf "jq npm curl\nAre needed for this setup.\nPlease install before continuing\n" && exit 1 )
     echo "* Running nvim setup..."
 
     echo "* Checking whether nvim is installed..."
@@ -190,6 +179,8 @@ main() {
     create_pynvim_conda_env
     . $HOME/.bashrc
     conda activate pynvim
+    # cleanup
+    rm ./Miniconda*.sh
 
     nvim_loc="${HOME}/.config/nvim"
     nvim_loc_parent="$(dirname "${nvim_loc}")"
@@ -215,17 +206,12 @@ main() {
     #let g:python3_host_prog='${CONDA_PYNVIM_ENV_PYTHON_PATH}'
     #" > "${HOME}/.vimrc"
     # echo "installation of copilot"
-    # git clone https://github.com/github/copilot.vim.git \
-    #     $HOME/.config/nvim/pack/github/start/copilot.vim
+    git clone https://github.com/github/copilot.vim.git $HOME/.config/nvim/pack/github/start/copilot.vim --depth 1
 
     install_fonts # TODO configure correctly
 
     echo "Installing Plugins via PackerSync..."
-    nvim +PackerSync +qall
-
-    echo "Installing Language servers via LspInstall..."
-    nvim --headless +"LspInstall awk_ls bashls dockerls pyright grammarly" +qall
-    echo
+    #nvim +PackerSync +qall
 
     pynvim_loc="$(conda env list | grep "pynvim" | head -n1 | sed -r 's/pynvim *(\/.*)/\1/g')"
 
@@ -235,6 +221,12 @@ main() {
     echo "]], true)" >> ./nvim/lua/miniconda-python-loc.lua
 
     echo "Installed dependencies for vim configuration successfully."
+    nvim +PackerSync +qall
+    echo "Installing Language servers via LspInstall..."
+    nvim --headless +"LspInstall awk_ls bashls dockerls pyright grammarly" +qall
+    echo
+
+    rm *.zip*
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
