@@ -2,11 +2,8 @@ local use = require("packer").use
 require("packer").startup(function()
     -- Packer can manage itself as an optional plugin
     use "wbthomason/packer.nvim" -- packer.nvim
-
-    -- Colorscheme
-    use "morhetz/gruvbox"
-
-    use {
+    use "morhetz/gruvbox" -- Preferred colorscheme
+    use { -- For file / directory viewing
       "kyazdani42/nvim-tree.lua",
       requires = {
         "kyazdani42/nvim-web-devicons", -- optional, for file icons
@@ -29,7 +26,6 @@ require("packer").startup(function()
       "saadparwaiz1/cmp_luasnip",
       "nvim-lua/plenary.nvim",
     }
-
     use { -- luasnip - see $HOME/.vim_runtime/nvim/snippets
       "L3MON4D3/LuaSnip", -- snippets for completion see https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip
       "rafamadriz/friendly-snippets",
@@ -43,9 +39,7 @@ require("packer").startup(function()
     }
     use { 'junegunn/fzf', run='vim -u NONE "fzf#install()" -c q' }
     use "junegunn/fzf.vim"
-    -- fzf-wordnet
-    use "CTHULHU-Jesus/fzf-wordnet.vim"
-
+    --use "CTHULHU-Jesus/fzf-wordnet.vim"     -- fzf-wordnet
     use "svermeulen/vimpeccable"
     use "tpope/vim-fugitive" -- github help
     use "jremmen/vim-ripgrep" -- search
@@ -68,11 +62,7 @@ require("packer").startup(function()
       if python_host_prog then
         local install_cmd = python_host_prog .. " -m pip install isort"
         vim.fn.system(install_cmd)
-        -- if vim.fn.executable("isort") == 0 then
-        --   vim.api.nvim_echo({{"Failed to automatically install isort. Please install it manually.", "ErrorMsg"}}, true, {})
-        -- else
           use "fisadev/vim-isort"
-        --end
       else
         vim.api.nvim_echo({{"g:python3_host_prog is not set. Cannot install isort.", "ErrorMsg"}}, true, {})
       end
@@ -86,8 +76,6 @@ require("packer").startup(function()
       ft = { 'python' }
     } -- docstring format
     -- status bar
-    -- use "vim-airline/vim-airline"
-    -- -- copilot
     -- use {
     --   "zbirenbaum/copilot.lua",
     --   cmd = "Copilot",
@@ -112,7 +100,7 @@ require("packer").startup(function()
     --       "nvim-telescope/telescope.nvim"
     --     }
     -- }
-    use { "anuvyklack/windows.nvim", -- pretty window rescaling (nice to have)
+    use { "anuvyklack/windows.nvim", -- window scaling (nice to have)
       requires = {
           "anuvyklack/middleclass",
           "anuvyklack/animation.nvim"
