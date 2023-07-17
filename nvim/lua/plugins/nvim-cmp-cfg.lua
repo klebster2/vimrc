@@ -10,6 +10,7 @@ source.get_trigger_characters = function()
   return { ' ' }
 end
 
+-- datamuse specific
 local function sort_by_score(entry1, entry2)
   local score1 = entry1.completion_item.score or 0
   local score2 = entry2.completion_item.score or 0

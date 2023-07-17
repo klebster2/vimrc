@@ -12,8 +12,6 @@ require("packer-startup")         --> $HOME/.vim_runtime/nvim/lua/packer-startup
 require("plugins/nvim-tree-cfg")  --> $HOME/.vim_runtime/nvim/lua/plugins/nvim-tree-cfg.lua
 require("plugins/keymappings")    --> $HOME/.vim_runtime/nvim/lua/plugins/keymappings.lua
 require("plugins/options")        --> $HOME/.vim_runtime/nvim/lua/plugins/options.lua
--- customcompleters - datamuse
---require("customcompleters/datamuse")
 -- Default cmp AND lsp (language server protocol) configuration (for python)
 require("luasnip-config")         --> $HOME/.vim_runtime/nvim/lua/luasnippets.lua
 require("plugins/nvim-cmp-cfg")   --> $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp-cfg.lua
