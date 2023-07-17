@@ -37,7 +37,7 @@ and the window to the right (showing the highlighted completion item) is availab
 
 e.g. these commands will work on this window if there is a scrollbar to the right-hand side.
 
-`
+```
 cmp.ItemField
 ╭╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╮
 │unknown                 │
@@ -46,7 +46,7 @@ cmp.ItemField
 │    Abbr: unknown,      │ 
 │    Kind: unknown,      │
 ╰╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╯
-`
+```
 
 ### LSP Diagnostics
 
