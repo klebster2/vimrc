@@ -1,6 +1,5 @@
 -- learn Vimscript the Hard Way: "A trick to learning something is to force yourself to use it." [in other words, remap, and unmap]
 -- You can return to the previous file by using <c+o> (or <c+i>)
-
 require("conda-env")              --> $HOME/.vim_runtime/nvim/lua/conda-env.lua  -- Dependencies: (mini)-conda Get CONDA_EXE environment variable
 -- Basic options
 require("options")                --> $HOME/.vim_runtime/nvim/lua/options.lua
@@ -19,7 +18,8 @@ require("plugins/nvim-cmp-cfg")   --> $HOME/.vim_runtime/nvim/lua/plugins/nvim-c
 require("autocmds")               --> $HOME/.vim_runtime/nvim/lua/autocmds.lua
 -- (legacy) vimscript files         --> $HOME/.vim_runtime/vimrcs/
 vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/basic.vim ]], true)
+vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/autocmds.vim ]], true)
 vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/fasttext.vim ]], true)
 vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/maskprediction.vim ]], true)
 vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/code-generation.vim ]], true)
-vim.g.copilot_enabled = 0
+vim.g.copilot_enabled = 1

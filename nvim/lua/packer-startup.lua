@@ -37,6 +37,29 @@ require("packer").startup(function()
         })
       end,
     }
+    use { 'nvim-lualine/lualine.nvim',
+      config = function ()
+          local custom_gruvbox = require'lualine.themes.gruvbox'
+
+        -- Change the background of lualine_c section for normal mode
+        custom_gruvbox.normal.c.bg = '#112233'
+        require('lualine').setup {
+        options = {
+          fmt = string.lower,
+          theme  = custom_gruvbox
+        },
+        sections = {
+          lualine_a = {
+          {
+            'mode', fmt = function(str)
+            return str:sub(1,1)
+            end
+          }
+        },
+        lualine_b = {'branch'} }
+    }
+      end
+    }
     use { 'junegunn/fzf', run='vim -u NONE "fzf#install()" -c q' }
     --use "junegunn/fzf.vim"
     use "svermeulen/vimpeccable"
