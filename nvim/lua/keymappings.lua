@@ -113,14 +113,6 @@ keymap('c', 'w!!', 'w !sudo tee > /dev/null %', opts)
 keymap('c', 'Vs', 'vs', opts)
 
 ------ Operator mappings
--------- in next parenthesis
-keymap('o', 'in(', ":<c-u>normal! f(vi(<cr>", opts)
--------- in last parenthesis
-keymap('o', 'il(', ':<c-u>normal! F)vi(<cr>', opts)
--------- and next parenthesis
-keymap('o', 'an(', ':<c-u>normal! f(va(<cr>', opts)
--------- and last parentthesis
-keymap('o', 'al(', ':<c-u>normal! F)va(<cr>', opts)
 -------- more operator pending mappings (change inside next email address)
 keymap('o', 'in@', ':<c-u>execute "normal! ?^.+@$\rvg_"<cr>', opts)
 keymap('o', 'an@', ':<c-u>execute "normal! ?^\\S\\+@\\S\\+$\r:nohlsearch\r0vg"<cr>', opts)

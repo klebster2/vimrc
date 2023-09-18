@@ -1,88 +1,87 @@
 local vim = vim
+-- Setup nvim-cmp.
+vim.cmd [[ packadd nvim-cmp ]]
+vim.cmd [[ packadd cmp-nvim-lsp ]]
+vim.cmd [[ packadd cmp-buffer ]]
+vim.cmd [[ packadd cmp-look ]]
 
--- => cmp for datamuse (This is also an example of how to implement api calling with cmp)
-local source = {}
-source.new = function()
-  return setmetatable({}, { __index = source })
-end
+local cmp = require("cmp");
+if not cmp then return end
 
-source.get_trigger_characters = function()
-  return { ' ' }
-end
 
--- datamuse specific
+-- -> cmp for datamuse (This is also an example of how to implement api calling with cmp)
+require('plugins/nvim-cmp/datamuse') -- $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp/datamuse.lua
+
+-- datamuse specific sorting function
 local function sort_by_score(entry1, entry2)
   local score1 = entry1.completion_item.score or 0
   local score2 = entry2.completion_item.score or 0
   return score1 > score2
 end
+-- <- cmp for datamuse
 
-source.complete = function(self, request, callback)
-  local line = vim.api.nvim_get_current_line()
-  local start = vim.fn.col('.') - 1
-  -- fix this to trigger only on certain context
-  -- context 1:
-  -- change the previous word (use the next word somehow as)
-  repeat
-    start = start - 1
-  until start <= 0 or line:sub(start, start) == ' '
-  local query_word = line:sub(start + 1, vim.fn.col('.') - 1)
-  --if vim.fn.strlen(query_word) <= 2 then
-  --  return ""
-  --end
-  local side = 'a'
-  -- Side 'a' means 'nouns that are often used to describe the adjective input'.
-  -- Datamuse uses the label 'a' to denote 'follower' of word in the context of Google n-grams
-  -- and likewise the label 'b' to denote 'predecessor' of word in the context of Google n-grams
-  -- See the datamuse api docs here for more information: https://www.datamuse.com/api/
-  local function process_response(data)
-    local items = {}
-    local first_entry_bg = 0
-    local first_entry_jj = 0
-    for m in pairs(data) do
-      if data[m].word_type == "jj" .. side then
-        if first_entry_jj == 0 then
-          first_entry_jj = data[m].score
-        end
-      elseif data[m].word_type == "bg" .. side then
-        if first_entry_bg == 0 then
-          first_entry_bg = data[m].score
-        end
-      end
-      table.insert(items, {
-        --label = data[m].word_type == "jj" .. side and data[m].word .. " " .. query_word or query_word ..
-        --    " " .. data[m].word,
-        label = data[m].word,
-        detail = "Datamuse score:" ..
-            tostring(math.floor(data[m].score * 100 /
-            (data[m].word_type == "jj" .. side and first_entry_jj or first_entry_bg)))
-          .. ("\nFollowing " .. tostring(data[m].word_type == "jj" .. side and "noun" or "word") ),
-        score = data[m].score,
-        kind = 1
-      })
-    end
-    callback(items)
-  end
-  local function get_cmd(word_type)
-    local cmd = 'curl -s ' .. 'https://api.datamuse.com/words?rel_' ..
-        word_type .. side .. '=' .. query_word .. ' | jq -c \'.[]+{"word_type":"' ..
-        word_type .. side .. '"}\''
-    return cmd
-  end
-  -- The command assumes linux utils (cat, cURL and jq are available)
-  local cmd = "cat <(" .. get_cmd("bg") .. ") <(" .. get_cmd("jj") .. ") | jq -s '[.[]]'"
-  local cmd_result = vim.fn.system(cmd):gsub('\n+$', '')
-  local data = vim.fn.json_decode(cmd_result)
-  process_response(data)
+-- -> cmp for local code generation using huggingface transformers
+local source = {}
+source.new = function()
+  return setmetatable({}, { __index = source })
 end
--- <= cmp for datamuse
+source.get_trigger_characters = function()
+  return { '=', '(', '[', '{' }
+end
 
--- Setup nvim-cmp.
-local cmp = require("cmp");
-if not cmp then return end
--- => cmp for datamuse
-cmp.register_source('datamuse', source.new())
--- <= cmp for datamuse
+-- datamuse specific sorting function
+--source.complete = function(self, request, callback)
+--  local prediction_length = 100  -- 100 tokens to predict
+--  --local line = vim.api.nvim_get_current_line()
+--  local current_line_num = vim.api.nvim_win_get_cursor(0)[1]
+--  local start_line = math.max(current_line_num - 3, 0) -- Ensure it doesn't go below 0
+--  local relevant_lines = vim.api.nvim_buf_get_lines(0, start_line, current_line_num, false)
+--  local lines_text = table.concat(relevant_lines, "\\n")
+--
+--  local function process_response(data)
+--    local items = {}
+--    table.insert(items, {
+--      label = data.generated_text,
+--      detail = "transformer model:" .. "Salesforce/codet5p-770m-py",
+--      kind = 1
+--    })
+--    callback(items)
+--  end
+--  local function get_cmd(line)
+--    -- Note that we are calling a local endpoint here setup via langtransformer_fastapi
+--    -- Using the huggingface transformers library
+--
+--    -- return coroutine.create(function()
+--    -- async_function(function(result)
+--    --   if vim.api.nvim_get_var('request_id') == request_id then
+--    --     -- Process the result and use it in cmp
+--    --     -- E.g., cmp.complete({ items = { ... } })
+--    --   end
+--    -- end)
+--    local cmd = 'curl -s ' .. '"http://localhost:8080/code_prediction/"' ..
+--      ' -H "Content-Type: application/json"' ..
+--      ' --data \'{' ..
+--          '"text": ' .. '"' .. line:gsub('"', '\\"'):gsub("'","\\'"):gsub("\n", "\\n"):gsub("$", "\\\\$") .. '"' .. "," ..
+--          '"model": ' .. '"Salesforce/codet5p-770m-py"' .. "," ..
+--          '"prediction_length": ' .. prediction_length ..
+--        '}\''
+--    print(cmd)
+--    return cmd
+--  end
+--  local function process_cmd(cmd)
+--    return coroutine.create(
+--      function()
+--        local cmd_result = vim.fn.system(cmd)
+--        local data = vim.fn.json_decode(cmd_result)
+--        process_response(data)
+--      end)
+--  end
+--
+--  -- The command assumes linux util (cURL is available)
+--  coroutine.resume(process_cmd(get_cmd(lines_text)))
+--end
+--cmp.register_source('Salesforce__codet5p_770m_py', source.new())
+-- <- cmp for local code generation using hugginface transformers
 
 -- Also see -> $HOME/.config/nvim/snippets/
 local luasnip = require("luasnip");
@@ -230,6 +229,9 @@ vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { fg = "#fbf1c7" })
 vim.api.nvim_set_hl(0, "CmpItemAbbrFuzzy", { fg = "#ec5300" })
 vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#8ec07c" })
 
+require('cmp').setup({
+})
+
 cmp.setup.filetype({ 'text', 'markdown' }, {
     sources = {
       { name = "datamuse", max_item_count = 50,  keyword_length = 5, group_index = 3 },
@@ -272,6 +274,7 @@ cmp.setup {
     }
   ),
   sources = {
+    { name = "Salesforce__codet5p_770m_py",   group_index = 1, keyword_length = 1},
     { name = "copilot",  group_index = 1,     keyword_length = 2 },
     { name = "nvim_lua", group_index = 2,     keyword_length = 2 },
     { name = "luasnip",  group_index = 2,     keyword_length = 2 },
@@ -279,6 +282,7 @@ cmp.setup {
     { name = "path",     max_item_count = 8,  group_index = 2 },
     { name = "buffer",   max_item_count = 8,  keyword_length = 3, group_index = 2 },
     { name = "spell",    max_item_count = 8,  keyword_length = 4, group_index = 2 },
+    --{ name = 'look',     keyword_length = 2,  option = { convert_case = true, loud = true, dict = '/usr/share/dict/words' }}
   },
   formatting = {
     fields = {
@@ -293,6 +297,7 @@ cmp.setup {
         (lspkind.presets.default[vim_item.kind] or "?")
       )
       vim_item.menu = ({
+        Salesforce__codet5p_770m_py = "SF_CodeT5+", -- transformers
         nvim_lua = "", -- lua engine
         luasnip = "", -- snippets engine
         nvim_lsp = "", -- local context
@@ -301,25 +306,26 @@ cmp.setup {
         buffer = "﬘",
         spell = "暈",
         datamuse = "❂",
+
       })[entry.source.name]
       vim_item.abbr = vim_item.abbr:match("[^(]+")
       return vim_item
     end,
   },
-  sorting = {
-    comparators = {
-      cmp.config.exact,
-      cmp.config.recently_used,
-      cmp.config.locality,
-      function(entry1, entry2)
-        local kind1 = kind_mapper[entry1:get_kind()]
-        local kind2 = kind_mapper[entry2:get_kind()]
-        if kind1 < kind2 then
-          return true
-        end
-      end,
-    }
-  }
+  --sorting = {
+  --  comparators = {
+  --    cmp.config.exact,
+  --    cmp.config.recently_used,
+  --    cmp.config.locality,
+  --    function(entry1, entry2)
+  --      local kind1 = kind_mapper[entry1:get_kind()]
+  --      local kind2 = kind_mapper[entry2:get_kind()]
+  --      if kind1 < kind2 then
+  --        return true
+  --      end
+  --    end,
+  --  }
+  --}
 }
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap = true, silent = true }
@@ -327,3 +333,13 @@ vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+
+
+
+
+
+
+
+
+
+
