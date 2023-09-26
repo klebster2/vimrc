@@ -1,14 +1,14 @@
--- global
+--- global
 vim.go.errorbells = false
 vim.go.smartcase = true
 vim.go.swapfile = false
 vim.go.backup = false
 vim.go.shiftround = true
 vim.go.foldlevelstart = 1
--- backspace opt
+--- backspace opt
 vim.go.backspace= "indent,eol,start"
 
--- buffer
+--- buffer
 ---- indentation
 vim.opt.autoindent = true
 vim.opt.smartindent = true
@@ -32,23 +32,23 @@ vim.api.nvim_exec([[
   augroup END
 ]], false)
 
--- local to window
+--- local to window
 vim.wo.number = true
 vim.wo.relativenumber = true
 vim.wo.wrap = false
 
--- other
+--- other
 vim.g.syntax_on = true
 
--- options
--- complete option
+--- options
+--- complete option
 vim.o.completeopt = "menu,menuone,noselect"
 
--- color options
+--- color options
 vim.o.termguicolors = true
 vim.o.background = "dark"
 
--- guard for distributions lacking the 'persistent_undo' feature.
+--- guard for distributions lacking the 'persistent_undo' feature.
 vim.cmd([[
 if has('persistent_undo')
     " define a path to store persistent undo files.

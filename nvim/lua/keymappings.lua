@@ -3,11 +3,11 @@ local opts = { noremap = true, silent = true }
 
 vim.api.nvim_set_keymap('n', '<Space>', '<NOP>', { noremap = true, silent = true })
 
--- Define leader keys
+--- Define leader keys
 vim.g.mapleader = " "
 vim.g.maplocalleader = ";"
 
--- Native Vim Keymaps (No plugins should be needed)
+--- Native Vim Keymaps (No plugins should be needed)
 ---- Normal mode remaps
 ---- try to simplify resizing splits
 if vim.fn.has('unix') then
@@ -59,7 +59,7 @@ keymap('n', '<leader>sb', ':set scrollbind!<cr>', opts)
 keymap('n', '<leader>tp', ':tabprev<cr>', opts)
 keymap('n', '<leader>tn', ':tabnext<cr>', opts)
 keymap('n', '<leader>tt', ':tabnew<cr>', opts)
--- 
+--- 
 ------ What the commit?
 -------- Random commit message
 keymap('n', '<leader>wtc', ":r!curl -s 'http://whatthecommit.com/index.txt'<cr>", opts)
@@ -68,8 +68,8 @@ keymap('n', '<leader>wtc', ":r!curl -s 'http://whatthecommit.com/index.txt'<cr>"
 keymap('n', '<leader>dt', ":put =strftime('%d/%m/%y %H:%M:%S')<cr>", opts)
 
 -------- enable creation of newlines in normal mode
--- keymap('n', '<c-o>', '<esc>o<esc>', opts)
--- keymap('n', '<c-O>', '<esc>O<esc>', opts)
+--- keymap('n', '<c-o>', '<esc>o<esc>', opts)
+--- keymap('n', '<c-O>', '<esc>O<esc>', opts)
 -------- hard H and L remaps
 keymap('n', 'H', '0w', opts)
 keymap('n', 'L', '$', opts)
@@ -79,13 +79,13 @@ keymap('n', 'L', '$', opts)
 ------ Indentation
 keymap('v', '<', '<gv', opts)
 keymap('v', '>', '>gv', opts)
--- base64 encoding
+--- base64 encoding
 keymap('v', '<leader>e64', 'c<c-r>=system(\'base64 \', @")<cr><esc>', opts)
--- base64 decoding
+--- base64 decoding
 keymap('v', '<leader>d64', 'c<c-r>=system(\'base64 --decode\', @")<cr><esc>', opts)
 ------ Rhymezone API:
--- TODO: fix
--- keymap('v', '<leader>zz', "!curl -s 'https://api.rhymezone.com/words?max=600&nonorm=1&k=rz_wke&rel_wke=%V' | jq '.[].word' | sed -r 's/\\\"([a-z]+):(.+):(.+)(.*):(.*)\"/\5\t\2\t\3\t\4/g' | sed 's/\\//g'", opts)
+--- TODO: fix
+--- keymap('v', '<leader>zz', "!curl -s 'https://api.rhymezone.com/words?max=600&nonorm=1&k=rz_wke&rel_wke=%V' | jq '.[].word' | sed -r 's/\\\"([a-z]+):(.+):(.+)(.*):(.*)\"/\5\t\2\t\3\t\4/g' | sed 's/\\//g'", opts)
 
 ------ Quote text in Visual mode
 -------- TODO: use https://github.com/tpope/vim-surround
@@ -97,9 +97,9 @@ keymap('i', 'jk', '<ESC>', opts)
 keymap('i', 'kj', '<ESC>', opts)
 ------ sane escape from insert mode
 keymap('i', '<c-c>', '<ESC>', opts)
--- inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
--- keymap('i', '<expr> <Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', opts)
--- keymap('i', '<expr> <S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<S-Tab>"', opts)
+--- inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+--- keymap('i', '<expr> <Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', opts)
+--- keymap('i', '<expr> <S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<S-Tab>"', opts)
 
 ------ Command Mode
 -------- expand current script path     
@@ -126,8 +126,8 @@ vim.api.nvim_command("command! Q :q")
 ------ Spell
 keymap('n', '<leader>ss', ':set spell!<cr>', opts)
 ------ Lib specific command (needs FzfLua)
--- keymap('n', '<leader>fb', ':FzfLua grep cwd=~/Britfone<cr>', opts)  -- Britfone
+--- keymap('n', '<leader>fb', ':FzfLua grep cwd=~/Britfone<cr>', opts)  -- Britfone
 
--- TODO -> FIX cht
--- -------- use cht.sh to search for command help
+--- TODO -> FIX cht
+--- -------- use cht.sh to search for command help
 keymap('n', '<leader>cht', "<command>cht.sh ", opts)

@@ -62,6 +62,7 @@ require("packer").startup(function()
     --use "junegunn/fzf.vim"
     use "svermeulen/vimpeccable"
     use "tpope/vim-fugitive" -- github / git
+    use "ThePrimeagen/git-worktree.nvim" -- github / git
     use "jremmen/vim-ripgrep" -- search
     use {
       "mbbill/undotree",
@@ -108,6 +109,11 @@ require("packer").startup(function()
       --filetypes = {
         --["*"] = false, -- disable for all other filetypes and ignore default `filetypes`
       --},
+    }
+    use {
+      'nvim-telescope/telescope.nvim', tag = '0.1.3',
+    -- or                            , branch = '0.1.x',
+      requires = { {'nvim-lua/plenary.nvim'} }
     }
     -- use {
     --   "zbirenbaum/copilot-cmp",

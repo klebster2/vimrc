@@ -68,7 +68,7 @@ local function cs(trigger, nodes, opts) --{{{
 	table.insert(target_table, snippet) -- insert snippet into appropriate table
 end --}}}
 
--- Start Refactoring --
+--- Start Refactoring --
 cs("CMD", { -- [CMD] multiline vim.cmd{{{
 	t({ "vim.cmd[[", "  " }),
 	i(1, ""),
@@ -194,6 +194,6 @@ local {} = {}
 	),
 	"jj"
 ) --}}}
--- End Refactoring --
+--- End Refactoring --
 
 return snippets, autosnippets

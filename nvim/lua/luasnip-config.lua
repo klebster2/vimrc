@@ -4,7 +4,7 @@ USER = vim.fn.expand('$USER')
 local types = require "luasnip.util.types"
 if not types then return end
 
--- $HOME/.config/nvim/snippets/
+--- $HOME/.config/nvim/snippets/
 vim.o.runtimepath = vim.o.runtimepath..'~/.vim_runtime/nvim/snippets/'
 require("luasnip.loaders.from_vscode").load({
     include = { "python", "c", "sh", "markdown", "json", "yaml" }
@@ -23,7 +23,7 @@ ls.config.set_config({
     },
 })
 
--- <c-k> snippet expansion / jump key
+--- <c-k> snippet expansion / jump key
 vim.keymap.set({"i", "s"}, "<c-k>", function ()
   if ls.expand_or_jumpable() then
     ls.expand_or_jump()
@@ -31,19 +31,19 @@ vim.keymap.set({"i", "s"}, "<c-k>", function ()
 end, {silent=true})
 
 
--- <c-k> snippet expansion / jump key
+--- <c-k> snippet expansion / jump key
 vim.keymap.set({"i", "s"}, "<c-j>", function ()
   if ls.expand_or_jumpable() then
     ls.jump(-1)
   end
 end, {silent=true})
 
--- <c-l> can be used for selecting an option within a list of options
+--- <c-l> can be used for selecting an option within a list of options
 vim.keymap.set({ "i", "s" }, "<c-l>", function()
   if ls.choice_active() then
     ls.change_choice(1)
   end
 end)
 
--- source luasnip
+--- source luasnip
 vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/lua/luasnip-config.lua<cr>")

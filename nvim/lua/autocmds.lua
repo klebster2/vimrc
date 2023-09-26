@@ -5,11 +5,7 @@ vim.api.nvim_create_autocmd("FileType", {pattern = {"python"},
     callback = function()
       vim.schedule(function()
         keymap('n', "<localleader>pdb", "Iimport<space>pdb<return>pdb.set_trace()<esc>", opts)
-        keymap('n', "<localleader>js", "Iimport<space>json<return><esc>", opts)
         keymap('n', "<localleader>os", "Iimport<space>os<return><esc>", opts)
-        keymap('n', "<localleader>tq", "Iimport<space>tqdm<return><esc>", opts)
-        keymap('n', "<localleader>ap", "Iimport<space>argparser<return><esc>", opts)
-        -- if __name__ == "__main__": <- use `main' in snippets
         keymap('n', "<localleader>pl", "A # pylint: disable=", opts)
         keymap('n', "<localleader>c", "I#<esc>", opts)
         keymap('n', "<localleader>I", "<esc>:Isort", opts)

@@ -7,8 +7,8 @@ local defaults = {
 	use_show_condition = true,
 }
 
--- the options are being passed via cmp.setup.sources, e.g.
--- require('cmp').setup { sources = { { name = 'luasnip', opts = {...} } } }
+--- the options are being passed via cmp.setup.sources, e.g.
+--- require('cmp').setup { sources = { { name = 'luasnip', opts = {...} } } }
 local function init_options(params)
 	params.option = vim.tbl_deep_extend('keep', params.option, defaults)
 	vim.validate({

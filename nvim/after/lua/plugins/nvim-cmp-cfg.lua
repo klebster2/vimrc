@@ -1,26 +1,26 @@
 local vim = vim
--- Setup nvim-cmp.
+--- Setup nvim-cmp.
 vim.cmd [[ packadd nvim-cmp ]]
 vim.cmd [[ packadd cmp-nvim-lsp ]]
 vim.cmd [[ packadd cmp-buffer ]]
 vim.cmd [[ packadd cmp-look ]]
 
--- Setup nvim-cmp.
+--- Setup nvim-cmp.
 local cmp = require("cmp");
 if not cmp then return end
 
--- -> cmp for datamuse (This is also an example of how to implement api calling with cmp)
--- require('plugins/nvim-cmp/datamuse') -- $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp/datamuse.lua
+--- -> cmp for datamuse (This is also an example of how to implement api calling with cmp)
+--- require('plugins/nvim-cmp/datamuse') -- $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp/datamuse.lua
 
--- datamuse specific sorting function
+--- datamuse specific sorting function
 local function sort_by_score(entry1, entry2)
   local score1 = entry1.completion_item.score or 0
   local score2 = entry2.completion_item.score or 0
   return score1 > score2
 end
--- <- cmp for datamuse
+--- <- cmp for datamuse
 
--- -> cmp for local code generation using huggingface transformers
+--- -> cmp for local code generation using huggingface transformers
 local source = {}
 source.new = function()
   return setmetatable({}, { __index = source })
@@ -29,61 +29,61 @@ source.get_trigger_characters = function()
   return { '=', '(', '[', '{' }
 end
 
--- datamuse specific sorting function
+--- datamuse specific sorting function
 --source.complete = function(self, request, callback)
---  local prediction_length = 100  -- 100 tokens to predict
---  --local line = vim.api.nvim_get_current_line()
---  local current_line_num = vim.api.nvim_win_get_cursor(0)[1]
---  local start_line = math.max(current_line_num - 3, 0) -- Ensure it doesn't go below 0
---  local relevant_lines = vim.api.nvim_buf_get_lines(0, start_line, current_line_num, false)
---  local lines_text = table.concat(relevant_lines, "\\n")
+---  local prediction_length = 100  -- 100 tokens to predict
+---  --local line = vim.api.nvim_get_current_line()
+---  local current_line_num = vim.api.nvim_win_get_cursor(0)[1]
+---  local start_line = math.max(current_line_num - 3, 0) -- Ensure it doesn't go below 0
+---  local relevant_lines = vim.api.nvim_buf_get_lines(0, start_line, current_line_num, false)
+---  local lines_text = table.concat(relevant_lines, "\\n")
 --
---  local function process_response(data)
---    local items = {}
---    table.insert(items, {
---      label = data.generated_text,
---      detail = "transformer model:" .. "Salesforce/codet5p-770m-py",
---      kind = 1
---    })
---    callback(items)
---  end
---  local function get_cmd(line)
---    -- Note that we are calling a local endpoint here setup via langtransformer_fastapi
---    -- Using the huggingface transformers library
+---  local function process_response(data)
+---    local items = {}
+---    table.insert(items, {
+---      label = data.generated_text,
+---      detail = "transformer model:" .. "Salesforce/codet5p-770m-py",
+---      kind = 1
+---    })
+---    callback(items)
+---  end
+---  local function get_cmd(line)
+---    -- Note that we are calling a local endpoint here setup via langtransformer_fastapi
+---    -- Using the huggingface transformers library
 --
---    -- return coroutine.create(function()
---    -- async_function(function(result)
---    --   if vim.api.nvim_get_var('request_id') == request_id then
---    --     -- Process the result and use it in cmp
---    --     -- E.g., cmp.complete({ items = { ... } })
---    --   end
---    -- end)
---    local cmd = 'curl -s ' .. '"http://localhost:8080/code_prediction/"' ..
---      ' -H "Content-Type: application/json"' ..
---      ' --data \'{' ..
---          '"text": ' .. '"' .. line:gsub('"', '\\"'):gsub("'","\\'"):gsub("\n", "\\n"):gsub("$", "\\\\$") .. '"' .. "," ..
---          '"model": ' .. '"Salesforce/codet5p-770m-py"' .. "," ..
---          '"prediction_length": ' .. prediction_length ..
---        '}\''
---    print(cmd)
---    return cmd
---  end
---  local function process_cmd(cmd)
---    return coroutine.create(
---      function()
---        local cmd_result = vim.fn.system(cmd)
---        local data = vim.fn.json_decode(cmd_result)
---        process_response(data)
---      end)
---  end
+---    -- return coroutine.create(function()
+---    -- async_function(function(result)
+---    --   if vim.api.nvim_get_var('request_id') == request_id then
+---    --     -- Process the result and use it in cmp
+---    --     -- E.g., cmp.complete({ items = { ... } })
+---    --   end
+---    -- end)
+---    local cmd = 'curl -s ' .. '"http://localhost:8080/code_prediction/"' ..
+---      ' -H "Content-Type: application/json"' ..
+---      ' --data \'{' ..
+---          '"text": ' .. '"' .. line:gsub('"', '\\"'):gsub("'","\\'"):gsub("\n", "\\n"):gsub("$", "\\\\$") .. '"' .. "," ..
+---          '"model": ' .. '"Salesforce/codet5p-770m-py"' .. "," ..
+---          '"prediction_length": ' .. prediction_length ..
+---        '}\''
+---    print(cmd)
+---    return cmd
+---  end
+---  local function process_cmd(cmd)
+---    return coroutine.create(
+---      function()
+---        local cmd_result = vim.fn.system(cmd)
+---        local data = vim.fn.json_decode(cmd_result)
+---        process_response(data)
+---      end)
+---  end
 --
---  -- The command assumes linux util (cURL is available)
---  coroutine.resume(process_cmd(get_cmd(lines_text)))
+---  -- The command assumes linux util (cURL is available)
+---  coroutine.resume(process_cmd(get_cmd(lines_text)))
 --end
 --cmp.register_source('Salesforce__codet5p_770m_py', source.new())
--- <- cmp for local code generation using hugginface transformers
+--- <- cmp for local code generation using hugginface transformers
 
--- Also see -> $HOME/.config/nvim/snippets/
+--- Also see -> $HOME/.config/nvim/snippets/
 local luasnip = require("luasnip");
 if not luasnip then return end
 local lspconfig = require("lspconfig");
@@ -97,8 +97,8 @@ if not cmp_nvim_lsp then return end
 local capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
 local lsp_flags = { debounce_text_changes = 120 }
 local border = { "╭", "╍", "╮", "│", "╯", "╍", "╰", "│" }
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
+--- Use an on_attach function to only map the following keys
+--- after the language server attaches to the current buffer
 local on_attach = function(_, bufnr)
   -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -111,10 +111,10 @@ local on_attach = function(_, bufnr)
   vim.keymap.set('n', '<leader>nn', lsp.buf.rename, bufopts)         -- newname (<leader>nn)
   vim.keymap.set('n', '<leader>ca', lsp.buf.code_action, bufopts)
   vim.keymap.set('n', 'gr', lsp.buf.references, bufopts)
-  vim.keymap.set('n', '<leader>f', lsp.buf.formatting, bufopts)
+  --vim.keymap.set('n', '<leader>f', lsp.buf.formatting, bufopts)
 end
 
--- Default language Servers:
+--- Default language Servers:
 local default_language_servers = {
   "bashls",
   "clangd",
@@ -144,7 +144,7 @@ for _, value in ipairs(default_language_servers) do
     capabilities = capabilities,
   }
 end
--- Set configuration for specific filetype.
+--- Set configuration for specific filetype.
 cmp.setup.cmdline('/', {
   mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
@@ -202,7 +202,7 @@ local lsp_symbols = {
   TypeParameter = "   TypeParameter",
 }
 
--- Window options
+--- Window options
 local doc_window_conf = cmp.config.window.bordered({
 border = border,
 winhighlight = "Normal:MyPmenu,FloatBorder:MyPmenu,CursorLine:MyPmenuSel,Search:None",
@@ -246,7 +246,7 @@ cmp.setup.filetype({ 'text', 'markdown' }, {
       }
     }
 })
--- Enable generic language servers with the additional completion capabilities offered by nvim-cmp
+--- Enable generic language servers with the additional completion capabilities offered by nvim-cmp
 cmp.setup {
   snippet = {
     expand = function(args)
@@ -327,7 +327,7 @@ cmp.setup {
   --  }
   --}
 }
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
+--- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap = true, silent = true }
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)

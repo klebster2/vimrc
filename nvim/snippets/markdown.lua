@@ -73,6 +73,6 @@ end --}}}
 local aam = s({trig="aam",namr="aam",dscr="[noun] -> Borrowed from Dutch aam, from Latin ama, a variant of hama, from Ancient Greek ἄμη (ámē, “bucket”)."},{i("aam")})
 table.insert(snippets,aam)
 
--- s({trig="aardwolf",namr="aardwolf",dscr="[noun] -> Borrowed from Afrikaans aardwolf."},{i("aardwolf")}))
--- End Refactoring --
+--- s({trig="aardwolf",namr="aardwolf",dscr="[noun] -> Borrowed from Afrikaans aardwolf."},{i("aardwolf")}))
+--- End Refactoring --
 return snippets, autosnippets
