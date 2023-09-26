@@ -1,0 +1,68 @@
+-- local vim = vim
+-- -- Setup nvim-cmp.
+-- local cmp = require("cmp");
+-- if not cmp then return end
+-- 
+-- local source = {}
+-- source.new = function()
+--   return setmetatable({}, { __index = source })
+-- end
+-- 
+-- source.get_trigger_characters = function()
+--   return { ' ' }
+-- end
+-- source.complete = function(self, request, callback)
+--   local line = vim.api.nvim_get_current_line()
+--   local start = vim.fn.col('.') - 1
+--   -- fix this to trigger only on certain context
+--   -- context 1:
+--   -- change the previous word (use the next word somehow as)
+--   repeat
+--     start = start - 1
+--   until start <= 0 or line:sub(start, start) == ' '
+--   local query_word = line:sub(start + 1, vim.fn.col('.') - 1)
+--   local side = 'a'
+--   -- Side 'a' means 'nouns that are often used to describe the adjective input'.
+--   -- Datamuse uses the label 'a' to denote 'follower' of word in the context of Google n-grams
+--   -- and likewise the label 'b' to denote 'predecessor' of word in the context of Google n-grams
+--   -- See the datamuse api docs here for more information: https://www.datamuse.com/api/
+--   local function process_response(data)
+--     local items = {}
+--     local first_entry_bg = 0
+--     local first_entry_jj = 0
+--     for m in pairs(data) do
+--       if data[m].word_type == "jj" .. side then
+--         if first_entry_jj == 0 then
+--           first_entry_jj = data[m].score
+--         end
+--       elseif data[m].word_type == "bg" .. side then
+--         if first_entry_bg == 0 then
+--           first_entry_bg = data[m].score
+--         end
+--       end
+--       table.insert(items, {
+--         label = data[m].word,
+--         detail = "Datamuse score:" ..
+--             tostring(math.floor(data[m].score * 100 /
+--             (data[m].word_type == "jj" .. side and first_entry_jj or first_entry_bg)))
+--           .. ("\nFollowing " .. tostring(data[m].word_type == "jj" .. side and "noun" or "word") ),
+--         score = data[m].score,
+--         kind = 1
+--       })
+--     end
+--     callback(items)
+--   end
+--   local function get_cmd(word_type)
+--     local cmd = 'curl -s ' .. 'https://api.datamuse.com/words?rel_' ..
+--         word_type .. side .. '=' .. query_word .. ' | jq -c \'.[]+{"word_type":"' ..
+--         word_type .. side .. '"}\''
+--     return cmd
+--   end
+--   -- The command assumes linux utils (cat, cURL and jq are available)
+--   local cmd = "cat <(" .. get_cmd("bg") .. ") <(" .. get_cmd("jj") .. ") | jq -s '[.[]]'"
+--   local cmd_result = vim.fn.system(cmd):gsub('\n+$', '')
+--   local data = vim.fn.json_decode(cmd_result)
+--   process_response(data)
+-- end
+-- 
+-- cmp.register_source('datamuse', source.new())

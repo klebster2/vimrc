@@ -23,6 +23,7 @@ require("packer").startup(function()
       "hrsh7th/cmp-nvim-lua",
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-cmdline",
+      "octaltree/cmp-look",
       "f3fora/cmp-spell", -- see $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp-cfg.lua
       "saadparwaiz1/cmp_luasnip",
       "nvim-lua/plenary.nvim",
@@ -39,10 +40,7 @@ require("packer").startup(function()
     }
     use { 'nvim-lualine/lualine.nvim',
       config = function ()
-          local custom_gruvbox = require'lualine.themes.gruvbox'
-
-        -- Change the background of lualine_c section for normal mode
-        custom_gruvbox.normal.c.bg = '#112233'
+          local custom_gruvbox = require'lualine.themes.gruvbox_dark'
         require('lualine').setup {
         options = {
           fmt = string.lower,
