@@ -98,7 +98,8 @@ require("packer").startup(function()
       ft = { 'python' }
     } -- docstring format
     -- status bar
-    use {
+    use "vim-airline/vim-airline"
+    use { -- copilot
       "zbirenbaum/copilot.lua",
       cmd = "Copilot",
       event = "InsertEnter",
@@ -106,12 +107,23 @@ require("packer").startup(function()
         require("copilot").setup({
         })
       end,
+      --filetypes = {
+        --["*"] = false, -- disable for all other filetypes and ignore default `filetypes`
+      --},
     }
-    use {
-      "zbirenbaum/copilot-cmp",
-      after = { "copilot.lua" },
-    }
-    use { "anuvyklack/windows.nvim", -- window scaling (nice to have)
+    -- use {
+    --   "zbirenbaum/copilot-cmp",
+    --   after = { "copilot.lua" },
+    -- }
+    -- use {
+    --   "jackMort/ChatGPT.nvim", -- chat gpt for queries / completion
+    --     requires = {
+    --       "MunifTanjim/nui.nvim",
+    --       "nvim-lua/plenary.nvim",
+    --       "nvim-telescope/telescope.nvim"
+    --     }
+    -- }
+    use { "anuvyklack/windows.nvim", -- pretty window rescaling (nice to have)
       requires = {
           "anuvyklack/middleclass",
           "anuvyklack/animation.nvim"

@@ -51,4 +51,3 @@ fun! CallGenerationPredictionApi()
 endfun
 
 inoremap <C-x><C-x><C-x> <C-r>=CallGenerationPredictionApi()<CR>
-

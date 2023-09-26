@@ -9,3 +9,4 @@ lua-language-server-*.tar.gz
 nvim/lua/miniconda-python-loc.lua
 __pycache__
 nvim/pack/github/start/copilot.vim/
+Miniconda*
