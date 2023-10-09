@@ -1,23 +1,24 @@
 local vim = vim
+
+--- Setup nvim-cmp.
+local cmp = require("cmp");
+if not cmp then return end
+
 --- Setup nvim-cmp.
 vim.cmd [[ packadd nvim-cmp ]]
 vim.cmd [[ packadd cmp-nvim-lsp ]]
 vim.cmd [[ packadd cmp-buffer ]]
 vim.cmd [[ packadd cmp-look ]]
 
---- Setup nvim-cmp.
-local cmp = require("cmp");
-if not cmp then return end
-
 --- -> cmp for datamuse (This is also an example of how to implement api calling with cmp)
 --- require('plugins/nvim-cmp/datamuse') -- $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp/datamuse.lua
 
 --- datamuse specific sorting function
-local function sort_by_score(entry1, entry2)
-  local score1 = entry1.completion_item.score or 0
-  local score2 = entry2.completion_item.score or 0
-  return score1 > score2
-end
+--- local function sort_by_score(entry1, entry2)
+---   local score1 = entry1.completion_item.score or 0
+---   local score2 = entry2.completion_item.score or 0
+---   return score1 > score2
+--- end
 --- <- cmp for datamuse
 
 --- -> cmp for local code generation using huggingface transformers
@@ -37,7 +38,7 @@ end
 ---  local start_line = math.max(current_line_num - 3, 0) -- Ensure it doesn't go below 0
 ---  local relevant_lines = vim.api.nvim_buf_get_lines(0, start_line, current_line_num, false)
 ---  local lines_text = table.concat(relevant_lines, "\\n")
---
+---
 ---  local function process_response(data)
 ---    local items = {}
 ---    table.insert(items, {
@@ -50,7 +51,7 @@ end
 ---  local function get_cmd(line)
 ---    -- Note that we are calling a local endpoint here setup via langtransformer_fastapi
 ---    -- Using the huggingface transformers library
---
+---
 ---    -- return coroutine.create(function()
 ---    -- async_function(function(result)
 ---    --   if vim.api.nvim_get_var('request_id') == request_id then
@@ -76,7 +77,7 @@ end
 ---        process_response(data)
 ---      end)
 ---  end
---
+---
 ---  -- The command assumes linux util (cURL is available)
 ---  coroutine.resume(process_cmd(get_cmd(lines_text)))
 --end
@@ -277,7 +278,7 @@ cmp.setup {
     -- { name = "Salesforce__codet5p_770m_py",   group_index = 1, keyword_length = 1},
     { name = "copilot",  group_index = 1,     keyword_length = 2 },
     { name = "nvim_lua", group_index = 2,     keyword_length = 2 },
-    { name = "luasnip",  group_index = 2,     keyword_length = 2 },
+   { name = "luasnip",  group_index = 2,     keyword_length = 2 },
     { name = "nvim_lsp", max_item_count = 10, group_index = 2 },
     { name = "path",     max_item_count = 8,  group_index = 2 },
     { name = "buffer",   max_item_count = 8,  keyword_length = 3, group_index = 2 },
