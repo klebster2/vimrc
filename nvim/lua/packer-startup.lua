@@ -98,18 +98,18 @@ require("packer").startup(function()
     } -- docstring format
     -- status bar
     use "vim-airline/vim-airline"
-    use { -- copilot
-      "zbirenbaum/copilot.lua",
-      cmd = "Copilot",
-      event = "InsertEnter",
-      config = function()
-        require("copilot").setup({
-        })
-      end,
-      --filetypes = {
-        --["*"] = false, -- disable for all other filetypes and ignore default `filetypes`
-      --},
-    }
+    -- use { -- copilot
+    --   "zbirenbaum/copilot.lua",
+    --   cmd = "Copilot",
+    --   event = "InsertEnter",
+    --   config = function()
+    --     require("copilot").setup({
+    --     })
+    --   end,
+    --   --filetypes = {
+    --     --["*"] = false, -- disable for all other filetypes and ignore default `filetypes`
+    --   --},
+    -- }
     use {
       'nvim-telescope/telescope.nvim', tag = '0.1.3',
     -- or                            , branch = '0.1.x',
@@ -142,4 +142,13 @@ require("packer").startup(function()
     use { "numToStr/Comment.nvim" }
     use { "sheerun/vim-polyglot" }
     -- use { "klebster2/vim-wiktionary" }
-  end)
+    -- require("packer").startup(function(use)
+    use {
+      'huggingface/llm.nvim',
+      config = function()
+        require('llm').setup({
+          -- cf Setup
+        })
+      end
+    }
+end)
