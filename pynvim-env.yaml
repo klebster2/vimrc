@@ -3,7 +3,7 @@ channels:
   - defaults
 dependencies:
   - pip=21.2.2
-  - python=3.7.11
+  - python>=3.8
   - pip:
     - black==22.12.0
     - isort==5.10.1
