@@ -2,14 +2,19 @@
 
 install_fonts() {
     for font_name in DroidSansMono FiraCode Hack; do
-        echo "[-] Download fonts [-]"
-        url="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/$font_name.zip"
-        echo getting $url
-        wget $url 
-        unzip $font_name.zip -d ~/.fonts
-        fc-cache -fv
+        fonts_exist="$(ls -1 ~/.fonts | grep "$(echo ${FONTNAME/.zip})" | head -n1)"
+        if [ -z $fonts_exist ]; then
+            echo "[-] Download fonts [-]"
+            url="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/$font_name.zip"
+            echo getting $url
+            wget $url
+            unzip $font_name.zip -d ~/.fonts
+            fc-cache -fv
+            echo "Downloaded ${font_name}"
+        else
+            echo "Skipping font ${font_name}"
+        fi
     done
-    echo "Downloaded ${font_name}"
 }
 
 install_packer() {
