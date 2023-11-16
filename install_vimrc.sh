@@ -205,17 +205,11 @@ main() {
     install_lua_ls
 
     echo "Setting adding paths to ${HOME}/.vimrc"
-
-    #echo "set runtimepath+=${HOME}/.vim_runtime
-    #let g:python3_host_prog='${CONDA_PYNVIM_ENV_PYTHON_PATH}'
-    #" > "${HOME}/.vimrc"
-    # echo "installation of copilot"
+    
+    echo "Installing dependencies for vim configuration."
     git clone https://github.com/github/copilot.vim.git $HOME/.config/nvim/pack/github/start/copilot.vim --depth 1
 
-    install_fonts # TODO configure correctly
-
-    echo "Installing Plugins via PackerSync..."
-    #nvim +PackerSync +qall
+    install_fonts
 
     pynvim_loc="$(conda env list | grep "pynvim" | head -n1 | sed -r 's/pynvim *(\/.*)/\1/g')"
 
@@ -223,9 +217,11 @@ main() {
     printf "  g:python3_host_prog=%s/bin/python3\n" "$pynvim_loc" \
         >> ./nvim/lua/miniconda-python-loc.lua
     echo "]], true)" >> ./nvim/lua/miniconda-python-loc.lua
-
     echo "Installed dependencies for vim configuration successfully."
+
+    echo "Installing Plugins via PackerSync..."
     nvim +PackerSync +qall
+
     echo "Installing Language servers via LspInstall..."
     nvim --headless +"LspInstall awk_ls bashls dockerls pyright grammarly" +qall
     echo
