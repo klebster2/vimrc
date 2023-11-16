@@ -174,13 +174,17 @@ main() {
         install_nvim_appimage "${appimage_target_directory}"
 
     if !(check_conda_is_installed); then
-        prompt_to_install_conda 
+        prompt_to_install_conda
+        echo "Please rerun the installation script after first running `. ~/.bashrc` to see if the base conda env is activated"
+        # cleanup
+        rm ./Miniconda*.sh
+        exit
+    else
+        echo "Conda installation found"
+        create_pynvim_conda_env
+        . $HOME/.bashrc
+        conda activate pynvim
     fi
-    create_pynvim_conda_env
-    . $HOME/.bashrc
-    conda activate pynvim
-    # cleanup
-    rm ./Miniconda*.sh
 
     nvim_loc="${HOME}/.config/nvim"
     nvim_loc_parent="$(dirname "${nvim_loc}")"
