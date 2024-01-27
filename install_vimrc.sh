@@ -169,10 +169,19 @@ main() {
     # sudo add-apt-repository universe
     # sudo apt install libfuse2
     # sudo apt install jq unzip
-    jq 2>/dev/null || ( printf "jq npm curl\nAre needed for this setup.\nPlease install before continuing\n" && exit 1 )
+    for tool in jq curl; do
+        if ! $tool -V 2>/dev/null ; then
+            printf "$tool is needed for this neovim setup.\nplease install before continuing\n" && exit 1
+        fi
+    done
+    npm_check="$(npm -l)"
+    if ! (echo $npm_check | grep npm@ &>/dev/null) ; then
+        printf "npm is needed for this neovim setup.\nplease install before continuing\n" && exit 1
+    fi
+
     echo "* Running nvim setup..."
 
-    echo "* Checking whether nvim is installed..."
+    echo "* Checking whether nvim is already installed..."
     appimage_target_directory="/usr/bin"
     check_nvim_is_installed && \
         printf "* Found nvim already installed at $(which nvim)\n" || \
