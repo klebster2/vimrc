@@ -9,7 +9,7 @@ install_fonts() {
             echo getting $url
             wget $url
             unzip $font_name.zip -d ~/.fonts
-            fc-cache -fv
+            #fc-cache -fv
             echo "Downloaded ${font_name}"
         else
             echo "Skipping font ${font_name}"
@@ -216,7 +216,7 @@ main() {
     [ -d "${packer_path}/start/packer.nvim" ] || \
         install_packer "${packer_path}/start/packer.nvim"
 
-    install_lua_ls
+    #install_lua_ls
 
     echo "Setting adding paths to ${HOME}/.vimrc"
     
