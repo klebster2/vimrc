@@ -134,7 +134,7 @@ require("packer").startup(function()
       'huggingface/llm.nvim',
       config = function()
         require('llm').setup({
-          model = "codellama/CodeLlama-34B-hf", --- also see "bigcode/starcoderplus", "bigcode/starcoder"
+          model = "codellama/CodeLlama-13B-hf", --- also see "bigcode/starcoderplus", "bigcode/starcoder"
           query_params = {
             max_new_tokens = 100,
             temperature = 0.2,             --- lower temperature to get more 'appropriate' output
@@ -142,14 +142,14 @@ require("packer").startup(function()
             stop_tokens = nil,
           },
           fim = {
-          enabled = true,
-          prefix = "<PRE> ",     ---  "<fim_prefix>" for "codellama/CodeLlama-13b-hf", (the space matters)
-          middle = " <MID>",     ---  "<fim_middle>" for "codellama/CodeLlama-13b-hf", (the space matters)
-          suffix = " <SUF>",     ---  "<fim_suffix>" for "codellama/CodeLlama-13b-hf", (the space matters)
+            enabled = true,
+            prefix = "<fim_prefix> ",     ---  "<fim_prefix>" for "codellama/CodeLlama-13b-hf", (the space matters)
+            middle = "<fim_middle>",     ---  "<fim_middle>" for "codellama/CodeLlama-13b-hf", (the space matters)
+            suffix = "<fim_suffix>",     ---  "<fim_suffix>" for "codellama/CodeLlama-13b-hf", (the space matters)
           },
           context_window = 4096,        --- max number of tokens for the context window (max for "codellama/CodeLlama-13b-hf": 4096, max for "bigcode/starcoder: 8192)
           tokenizer = {
-            repository = "codellama/CodeLlama-34B-hf",
+            repository = "codellama/CodeLlama-13B-hf",
           },
           lsp = {
             bin_path = vim.api.nvim_call_function("stdpath", { "data" }) .. "/mason/bin/llm-ls",
