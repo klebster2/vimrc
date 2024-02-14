@@ -58,8 +58,9 @@ require("packer").startup(function()
     }
       end
     }
+
     use { 'junegunn/fzf', run='vim -u NONE "fzf#install()" -c q' }
-    --use "junegunn/fzf.vim"
+
     use "svermeulen/vimpeccable"
     use "tpope/vim-fugitive" -- github / git
     use "ThePrimeagen/git-worktree.nvim" -- github / git
@@ -98,35 +99,22 @@ require("packer").startup(function()
     } -- docstring format
     -- status bar
     use "vim-airline/vim-airline"
-    -- use { -- copilot
-    --   "zbirenbaum/copilot.lua",
-    --   cmd = "Copilot",
-    --   event = "InsertEnter",
-    --   config = function()
-    --     require("copilot").setup({
-    --     })
-    --   end,
-    --   --filetypes = {
-    --     --["*"] = false, -- disable for all other filetypes and ignore default `filetypes`
-    --   --},
-    -- }
+    use { -- copilot
+      "zbirenbaum/copilot.lua",
+      cmd = "Copilot",
+      event = "InsertEnter",
+      config = function()
+        require("copilot").setup({
+        })
+      end,
+      filetypes = {
+        ["*"] = false, -- disable for all other filetypes and ignore default `filetypes`
+      },
+    }
     use {
       'nvim-telescope/telescope.nvim', tag = '0.1.3',
-    -- or                            , branch = '0.1.x',
-      requires = { {'nvim-lua/plenary.nvim'} }
+      requires = { 'nvim-lua/plenary.nvim' }
     }
-    -- use {
-    --   "zbirenbaum/copilot-cmp",
-    --   after = { "copilot.lua" },
-    -- }
-    -- use {
-    --   "jackMort/ChatGPT.nvim", -- chat gpt for queries / completion
-    --     requires = {
-    --       "MunifTanjim/nui.nvim",
-    --       "nvim-lua/plenary.nvim",
-    --       "nvim-telescope/telescope.nvim"
-    --     }
-    -- }
     use { "anuvyklack/windows.nvim", -- pretty window rescaling (nice to have)
       requires = {
           "anuvyklack/middleclass",
@@ -141,8 +129,7 @@ require("packer").startup(function()
     }
     use { "numToStr/Comment.nvim" }
     use { "sheerun/vim-polyglot" }
-    -- use { "klebster2/vim-wiktionary" }
-    -- require("packer").startup(function(use)
+
     use {
       'huggingface/llm.nvim',
       config = function()
@@ -171,4 +158,18 @@ require("packer").startup(function()
       })
       end
     }
+
+    local python_host_prog = vim.api.nvim_eval("g:python3_host_prog")
+    if python_host_prog then
+      local install_cmd = python_host_prog .. " -m pip install wiktionaryparser PyYAML"
+      vim.fn.system(install_cmd)
+      use {
+        "klebster2/vim-wiktionary",
+        config = function()
+          vim.g.wiktionary_language = 'english'
+        end
+      }
+    else
+      vim.api.nvim_echo({{"g:python3_host_prog is not set. Cannot install wiktionaryparser.", "ErrorMsg"}}, true, {})
+    end
 end)
