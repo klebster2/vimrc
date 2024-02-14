@@ -1,6 +1,11 @@
 local lib = require("nvim-tree.lib")
 
 local gitignore_files = function(path, ignore_files)
+  -- if exists .gitignore, read it and add to ignore_files
+  local gitignore_exists = vim.fn.filereadable(path .. "/.gitignore") == 1
+  if not gitignore_exists then
+    return ignore_files
+  end
   local gitignore = vim.fn.glob(path .. "/.gitignore")
   local lines = vim.fn.readfile(gitignore)
   local _ignore_files = ignore_files
