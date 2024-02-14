@@ -59,7 +59,12 @@ require("packer").startup(function()
       end
     }
 
-    use { 'junegunn/fzf', run='vim -u NONE "fzf#install()" -c q' }
+    use {
+      'junegunn/fzf', run='vim -u NONE "fzf#install()" -c q',
+      requires = {
+        'junegunn/fzf.vim',
+      }
+    }
 
     use "svermeulen/vimpeccable"
     use "tpope/vim-fugitive" -- github / git
