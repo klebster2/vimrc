@@ -1,5 +1,21 @@
 local lib = require("nvim-tree.lib")
 
+local gitignore_files = function(path, ignore_files)
+  local gitignore = vim.fn.glob(path .. "/.gitignore")
+  local lines = vim.fn.readfile(gitignore)
+  local _ignore_files = ignore_files
+  -- echom
+  vim.cmd("echom 'gitignore: " .. gitignore .. "'")
+  if gitignore == "" then
+    return {}
+  end
+  for _, line in pairs(lines) do
+    vim.cmd("echom 'gitignore line: " .. line .. "'")
+    _ignore_files[#_ignore_files + 1] = line
+    end
+  return _ignore_files
+end
+
 local git_add = function()
   local node = lib.get_node_at_cursor()
   local gs = node.git_status.file
@@ -45,8 +61,8 @@ require('nvim-tree').setup { -- BEGIN_DEFAULT_OPTS
     },
   },
   filters = {
-    custom = { "~/.fzf-git" },
-    exclude = { ".git" },
+    custom = gitignore_files(vim.fn.getcwd(), {".git"}),
+      -- Get all fuzzy paths from .gitignore (current directory)
   },
   actions = {
     open_file = {
@@ -56,6 +72,11 @@ require('nvim-tree').setup { -- BEGIN_DEFAULT_OPTS
   trash = {
     cmd = "trash",
     require_confirm = true,
+  },
+  git = {
+    enable = true,
+    ignore = true,
+    timeout = 500,
   },
 }
 
