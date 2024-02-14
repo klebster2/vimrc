@@ -4,13 +4,12 @@ local gitignore_files = function(path, ignore_files)
   local gitignore = vim.fn.glob(path .. "/.gitignore")
   local lines = vim.fn.readfile(gitignore)
   local _ignore_files = ignore_files
-  -- echom
-  vim.cmd("echom 'gitignore: " .. gitignore .. "'")
+  -- vim.cmd("echom 'gitignore: " .. gitignore .. "'")
   if gitignore == "" then
     return {}
   end
   for _, line in pairs(lines) do
-    vim.cmd("echom 'gitignore line: " .. line .. "'")
+    -- vim.cmd("echom 'gitignore line: " .. line .. "'")
     _ignore_files[#_ignore_files + 1] = line
     end
   return _ignore_files
