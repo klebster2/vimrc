@@ -24,6 +24,3 @@ require("plugins/indent-blank-line") --> $HOME/.vim_runtime/nvim/after/lua/plugi
 require("autocmds")                  --> $HOME/.vim_runtime/nvim/lua/autocmds.lua
 --- (Legacy) vimscript files         --> $HOME/.vim_runtime/vimrcs/
 vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/basic.vim ]], true)
---vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/fasttext.vim ]], true)
---vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/maskprediction.vim ]], true)
---vim.api.nvim_exec([[ source $HOME/.vim_runtime/vimrcs/customcompleters/code-generation.vim ]], true)

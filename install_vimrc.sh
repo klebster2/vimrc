@@ -158,10 +158,10 @@ main() {
             printf "$tool is needed for this neovim setup.\nplease install before continuing\n" && exit 1
         fi
     done
-    npm_check="$(npm -l)"
-    if ! (echo $npm_check | grep npm@ &>/dev/null) ; then
-        printf "npm is needed for this neovim setup.\nplease install before continuing\n" && exit 1
-    fi
+    #npm_check="$(npm -l)"
+    #if ! (echo $npm_check | grep npm@ &>/dev/null) ; then
+    #    printf "npm is needed for this neovim setup.\nplease install before continuing\n" && exit 1
+    #fi
 
     echo "* Running nvim setup..."
 

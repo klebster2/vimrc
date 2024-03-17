@@ -8,7 +8,6 @@ require("packer").startup(function()
       requires = {
         "kyazdani42/nvim-web-devicons", -- optional, for file icons
       }, -- if using WSL2, Windows Terminal need nerd font so install Consolas NF on the OS terminal
-      tag = "nightly" -- optional, updated every week. (see issue #1193)
     }  -- tree view
     use { -- lsp configuration for linting, etc.
       "neovim/nvim-lspconfig",
