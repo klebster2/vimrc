@@ -9,7 +9,9 @@ vim.g.maplocalleader = ";"
 
 --- Native Vim Keymaps (No plugins should be needed)
 ---- Normal mode remaps
----- try to simplify resizing splits
+-- 1. Jump to keymapping file:
+keymap('n' , '<leader>m', ':e $HOME/.config/nvim/lua/keymappings.lua<cr>', opts)
+---- 2. Try to simplify resizing splits
 if vim.fn.has('unix') then
   -- use ctrl
   keymap('n', 'j', '<C-w>-5', opts)
@@ -23,21 +25,23 @@ else
   keymap('n', '<M-h>', '<C-w><', opts)
   keymap('n', '<M-l>', '<C-w>>', opts)
 end
----- Move between windows
+---- 3. Move between windows
 keymap('n', '<leader>h', ':wincmd h<CR>', opts)
 keymap('n', '<leader>j', ':wincmd j<CR>', opts)
 keymap('n', '<leader>k', ':wincmd k<CR>', opts)
 keymap('n', '<leader>l', ':wincmd l<CR>', opts)
----- Visual splits
+
+---- 4. Visual (vertical) split
 keymap('n', '<leader>vx', ':vs .<CR>', opts)
-keymap('n', '<leader>sx', ':Ss .<CR>', opts)
----- Leader Window closing remaps
+
+---- 5. Leader Window closing remaps
 keymap('n', '<leader>o', ':only<cr>', opts)
 
------ Line Numbers
+---- 6. Line Numbers
 keymap('n', '<leader>sn', ':set number!<cr>', opts)
 keymap('n', '<leader>srn', ':set relativenumber!<cr>', opts)
------- Viewing Behaviour
+
+---- 7. Viewing Behaviour
 keymap('n', '<leader>sw', ':set wrap!<cr>', opts)
 ------ Paste behaviour pasting rather than following commands in insertmode
 keymap('n', '<leader>sp', ':set paste!<cr>', opts)
@@ -46,7 +50,7 @@ keymap('n', '<leader>nhl', ':set no hlsearch<cr>', opts)
 
 ------ nvim init opts
 -------- easy source
-keymap('n', '<leader>sv', ':source $HOME/.config/nvim/init.lua<cr>', opts)
+keymap('n', '<leader>sv', ':source $HOME/.config/nvim/init.lua<cr>:echom "$HOME/.config/nvim/init.lua sourced"<cr>', opts)
 --keymap('n', '<leader>sv', ':source $HOME/.config/nvim/init.lua<cr>', opts)
 -------- easy vimrc (init.lua) edit
 keymap('n', '<leader>ev', ':vertical split $HOME/.config/nvim/init.lua<cr>:edit<cr>', opts)

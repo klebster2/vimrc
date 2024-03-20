@@ -1,7 +1,9 @@
 ---- learn Vimscript the Hard Way: "A trick to learning something is to force yourself to use it." [in other words, remap, and unmap]
 ---- You can return to the previous file by using <c+o> (or <c+i>)
 --- see :help 'runtimepath' or :help 'rtp'
-require("conda-env")                 --> $HOME/.vim_runtime/nvim/lua/conda-env.lua  -- Dependencies: (mini)-conda Get CONDA_EXE environment variable
+
+-- Dependencies: (mini)-conda Get CONDA_EXE environment variable
+require("conda-env")                 --> $HOME/.vim_runtime/nvim/lua/conda-env.lua
 --- Basic options
 require("options")                   --> $HOME/.vim_runtime/nvim/lua/options.lua
 --- Basic keymappings
@@ -9,6 +11,8 @@ require("keymappings")               --> $HOME/.vim_runtime/nvim/lua/keymappings
 --- Packer installation and packer packages installation
 require("packer-install")            --> $HOME/.vim_runtime/nvim/lua/packer-install.lua
 require("packer-startup")            --> $HOME/.vim_runtime/nvim/lua/packer-startup.lua
+require("thesaurus")                 --> $HOME/.vim_runtime/nvim/lua/thesaurus.lua
+
 --- Plugin configurations
 require("plugins/nvim-tree-cfg")     --> $HOME/.vim_runtime/nvim/after/lua/plugins/nvim-tree-cfg.lua
 require("plugins/keymappings")       --> $HOME/.vim_runtime/nvim/after/lua/plugins/keymappings.lua

@@ -176,4 +176,17 @@ require("packer").startup(function()
     else
       vim.api.nvim_echo({{"g:python3_host_prog is not set. Cannot install wiktionaryparser.", "ErrorMsg"}}, true, {})
     end
+    use {
+      'rafi/telescope-thesaurus.nvim',
+      requires={
+        'nvim-telescope/telescope.nvim',
+      },
+      opts = {
+        extensions = {
+          thesaurus = {
+            provider = 'datamuse',
+          },
+        },
+      },
+    }
 end)

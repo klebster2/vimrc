@@ -32,23 +32,39 @@ local git_add = function()
   elseif gs == "M " or gs == "A " then
     vim.cmd("silent !git restore --staged " .. node.absolute_path)
   end
+end
 
-  lib.refresh_tree()
+local function on_attach(bufnr)
+  local api = require('nvim-tree.api')
+
+  local function opts(desc)
+    return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+  end
+
+  -- copy default mappings here from defaults in next section
+  vim.keymap.set('n', '<C-]>', api.tree.change_root_to_node,          opts('CD'))
+  vim.keymap.set('n', '<C-e>', api.node.open.replace_tree_buffer,     opts('Open: In Place'))
+  ---
+  -- OR use all default mappings
+  api.config.mappings.default_on_attach(bufnr)
+
+  -- remove a default
+  vim.keymap.del('n', '<C-]>', { buffer = bufnr })
+
+  -- override a default
+  vim.keymap.set('n', '<C-e>', api.tree.reload,                       opts('Refresh'))
+
+  -- add your mappings
+  vim.keymap.set('n', '?',     api.tree.toggle_help,                  opts('Help'))
+  vim.keymap.set('n', 'ga',    git_add,                               opts('Git Add'))
 end
 
 require('nvim-tree').setup { -- BEGIN_DEFAULT_OPTS
   disable_netrw = true,
   hijack_netrw = true,
-  ignore_buffer_on_setup = false,
   update_cwd = true,
   view = {
     width = 35,
-    mappings = {
-      custom_only = false,
-      list = {
-        { key = "ga", action = "git_add", action_cb = git_add },
-      },
-    },
   },
   hijack_directories = {
     enable = true,
@@ -82,6 +98,7 @@ require('nvim-tree').setup { -- BEGIN_DEFAULT_OPTS
     ignore = true,
     timeout = 500,
   },
+  on_attach = on_attach,
 }
 
 local function open_nvim_tree(data)
@@ -101,3 +118,4 @@ local function open_nvim_tree(data)
 end
 
 vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
+
