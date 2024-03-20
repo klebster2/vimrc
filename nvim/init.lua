@@ -13,7 +13,7 @@ require("packer-startup")            --> $HOME/.vim_runtime/nvim/lua/packer-star
 require("plugins/nvim-tree-cfg")     --> $HOME/.vim_runtime/nvim/after/lua/plugins/nvim-tree-cfg.lua
 require("plugins/keymappings")       --> $HOME/.vim_runtime/nvim/after/lua/plugins/keymappings.lua
 require("plugins/options")           --> $HOME/.vim_runtime/nvim/after/lua/options.lua
-require("plugins/snippets")              --> $HOME/.vim_runtime/nvim/after/lua/snippets/init.lua
+--require("plugins/snippets")              --> $HOME/.vim_runtime/nvim/after/lua/snippets/init.lua
 --- Default CMP + LSP 'Mason' (language server protocol) configuration (for python)
 require("luasnip-config")            --> $HOME/.vim_runtime/nvim/lua/luasnip-config.lua                 # TODO: move to /after
 --require("plugins/llm")               --> $HOME/.vim_runtime/nvim/after/lua/plugins/llm.lua

@@ -1,20 +1,22 @@
 #!/bin/bash
 
 install_fonts() {
-    for font_name in DroidSansMono FiraCode Hack; do
-        fonts_exist="$(ls -1 ~/.fonts | grep "$(echo ${FONTNAME/.zip})" | head -n1)"
-        if [ -z $fonts_exist ]; then
-            echo "[-] Download fonts [-]"
-            url="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/$font_name.zip"
-            echo getting $url
-            wget $url
-            unzip $font_name.zip -d ~/.fonts
-            #fc-cache -fv
-            echo "Downloaded ${font_name}"
-        else
-            echo "Skipping font ${font_name}"
-        fi
-    done
+    fonts_dir="${HOME}/.local/share/fonts"
+    if [ ! -d "${fonts_dir}" ]; then
+        echo "mkdir -p $fonts_dir"
+        mkdir -p "${fonts_dir}"
+    else
+        echo "Found fonts dir $fonts_dir"
+    fi
+
+    version=5.2
+    zip=Fira_Code_v${version}.zip
+    curl --fail --location --show-error https://github.com/tonsky/FiraCode/releases/download/${version}/${zip} --output ${zip}
+    unzip -o -q -d ${fonts_dir} ${zip}
+    rm ${zip}
+
+    echo "fc-cache -f"
+    fc-cache -f
 }
 
 install_packer() {
@@ -26,6 +28,7 @@ install_packer() {
         
 }
 
+./TODO.md
 check_sudo_needed() {
     local _dir="$1"
     diruser=$(ls -alF "$_dir" | grep " \.\/" | awk -F ' ' '{print$3}')
@@ -153,6 +156,9 @@ main() {
     # sudo add-apt-repository universe
     # sudo apt install libfuse2
     # sudo apt install jq unzip
+
+    # Install gruvbox for terminal using gogh
+    #bash -c "$(wget -qO- https://git.io/vQgMr)"
     for tool in jq curl; do
         if ! $tool -V 2>/dev/null ; then
             printf "$tool is needed for this neovim setup.\nplease install before continuing\n" && exit 1
@@ -162,6 +168,7 @@ main() {
     #if ! (echo $npm_check | grep npm@ &>/dev/null) ; then
     #    printf "npm is needed for this neovim setup.\nplease install before continuing\n" && exit 1
     #fi
+    bash -c "$(curl -so- "https://github.com/Gogh-Co/Gogh/blob/master/installs/gruvbox-dark.sh")"
 
     echo "* Running nvim setup..."
 
