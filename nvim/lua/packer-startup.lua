@@ -103,18 +103,6 @@ require("packer").startup(function()
     } -- docstring format
     -- status bar
     use "vim-airline/vim-airline"
-    use { -- copilot
-      "zbirenbaum/copilot.lua",
-      cmd = "Copilot",
-      event = "InsertEnter",
-      config = function()
-        require("copilot").setup({
-        })
-      end,
-      filetypes = {
-        ["*"] = false, -- disable for all other filetypes and ignore default `filetypes`
-      },
-    }
     use {
       'nvim-telescope/telescope.nvim', tag = '0.1.3',
       requires = { 'nvim-lua/plenary.nvim' }
@@ -133,35 +121,6 @@ require("packer").startup(function()
     }
     use { "numToStr/Comment.nvim" }
     use { "sheerun/vim-polyglot" }
-
-    use {
-      'huggingface/llm.nvim',
-      config = function()
-        require('llm').setup({
-          model = "codellama/CodeLlama-13B-hf", --- also see "bigcode/starcoderplus", "bigcode/starcoder"
-          query_params = {
-            max_new_tokens = 100,
-            temperature = 0.2,             --- lower temperature to get more 'appropriate' output
-            top_p = 0.8,                 --- lower top_p to get more suggestions
-            stop_tokens = nil,
-          },
-          fim = {
-            enabled = true,
-            prefix = "<fim_prefix> ",     ---  "<fim_prefix>" for "codellama/CodeLlama-13b-hf", (the space matters)
-            middle = "<fim_middle>",     ---  "<fim_middle>" for "codellama/CodeLlama-13b-hf", (the space matters)
-            suffix = "<fim_suffix>",     ---  "<fim_suffix>" for "codellama/CodeLlama-13b-hf", (the space matters)
-          },
-          context_window = 4096,        --- max number of tokens for the context window (max for "codellama/CodeLlama-13b-hf": 4096, max for "bigcode/starcoder: 8192)
-          tokenizer = {
-            repository = "codellama/CodeLlama-13B-hf",
-          },
-          lsp = {
-            bin_path = vim.api.nvim_call_function("stdpath", { "data" }) .. "/mason/bin/llm-ls",
-          },
-          enable_suggestions_on_startup = false, -- do not enable by default
-      })
-      end
-    }
 
     local python_host_prog = vim.api.nvim_eval("g:python3_host_prog")
     if python_host_prog then
@@ -187,6 +146,44 @@ require("packer").startup(function()
             provider = 'datamuse',
           },
         },
+      }
+    }
+
+    -- LLM (Language Models) for autocompletion
+    use { "David-Kunz/gen.nvim",   -- Uses Ollama under the hood
+      config = function()
+        require("gen").setup({
+          model = "gemma:2b", -- The default model to use.
+            port = "11434", -- The port on which the Ollama service is listening.
+            quit_map = "q", -- set keymap for close the response window
+            retry_map = "<c-r>", -- set keymap to re-send the current prompt
+            init = function(options) pcall(io.popen, "ollama serve > /dev/null 2>&1 &") end,
+            -- Function to initialize Ollama
+            command = function(options)
+                local body = {model = options.model, stream = true}
+                return "curl --silent --no-buffer -X POST http://" .. options.host .. ":" .. options.port .. "/api/chat -d $body"
+            end,
+            -- The command for the Ollama service. You can use placeholders $prompt, $model and $body (shellescaped).
+          -- The command for the Ollama service. You can use placeholders $prompt, $model and $body (shellescaped).
+          -- This can also be a command string.
+          -- The executed command must return a JSON object with { response, context }
+          -- (context property is optional).
+          -- list_models = '<omitted lua function>', -- Retrieves a list of model names
+          show_prompt = true, -- Shows the prompt submitted to Ollama.
+          show_model = true, -- Displays which model you are using at the beginning of your chat session.
+      })
+      end
+    }
+    use { -- copilot (paid)
+      "zbirenbaum/copilot.lua",
+      cmd = "Copilot",
+      event = "InsertEnter",
+      config = function()
+        require("copilot").setup({
+        })
+      end,
+      filetypes = {
+        ["*"] = false, -- disable for all other filetypes and ignore default `filetypes`
       },
     }
 end)

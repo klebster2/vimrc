@@ -1,3 +1,4 @@
+----- Default options for Neovim (without any plugins / plugin options)
 --- global
 vim.go.errorbells = false
 vim.go.smartcase = true

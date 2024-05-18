@@ -1,9 +1,17 @@
-local conda_exe = os.getenv('CONDA_EXE')
-if conda_exe then
-  local python_host_prog = conda_exe:match("(.*[/\\])"):sub(1, -2):match("(.*[/\\])"):sub(1, -2) .. "/envs/pynvim/bin/python"
+local conda_prefix = os.getenv('CONDA_PREFIX')
+if conda_prefix then
+  local python_host_prog = conda_prefix .. "/envs/pynvim/bin/python"
   -- Check if all directories exist
   vim.g.python3_host_prog = python_host_prog
-  print("CONDA_EXE environment variable is set. Using python host program: " .. python_host_prog)
+  vim.api.nvim_echo(
+    {{"CONDA_PREFIX environment variable is set. Using python host program: " .. python_host_prog, "DebugMsg"}},
+    true,
+    {}
+  )
 else
-  print("CONDA_EXE environment variable is not set. Please set it before running this script.")
+  vim.api.nvim_echo(
+    {{"CONDA_PREFIX environment variable is not set. Using default python host program.", "WarningMsg"}},
+    true,
+    {}
+  )
 end
