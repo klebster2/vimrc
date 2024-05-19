@@ -46,7 +46,7 @@ local function on_attach(bufnr)
   vim.keymap.set('n', '<C-e>', api.node.open.replace_tree_buffer,     opts('Open: In Place'))
   ---
   -- OR use all default mappings
-  api.config.mappings.default_on_attach(bufnr)
+  --api.config.mappings.default_on_attach(bufnr)
 
   -- remove a default
   vim.keymap.del('n', '<C-]>', { buffer = bufnr })
