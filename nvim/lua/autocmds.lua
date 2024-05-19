@@ -1,12 +1,13 @@
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
-vim.api.nvim_create_autocmd("FileType", {pattern = {"python"},
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = {"python"},
     callback = function()
       vim.schedule(function()
         keymap('n', "<localleader>pdb", "Iimport<space>pdb<return>pdb.set_trace()<esc>", opts)
-        keymap('n', "<localleader>os", "Iimport<space>os<return><esc>", opts)
-        keymap('n', "<localleader>pl", "A # pylint: disable=", opts)
+        keymap('n', "<localleader>pl", "A # pylint: disable=true<esc>", opts)
+        keymap('n', "<localleader>tt", "A # type: ignore<esc>", opts)
         keymap('n', "<localleader>c", "I#<esc>", opts)
         keymap('n', "<localleader>I", "<esc>:Isort", opts)
         keymap('n', "<localleader>ff", "<esc>:Black<return><esc>:Isort<return>", opts)
@@ -17,7 +18,15 @@ vim.api.nvim_create_autocmd("FileType", {pattern = {"python"},
       end)
     end,
 })
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = {"*.py"},
+    callback = function()
+        vim.cmd("Isort")
+        vim.cmd("Black")
+    end,
+})
 
+--- Bash / Shell scripts
 vim.api.nvim_create_autocmd("FileType", {pattern = {"shell","bash"},
     callback = function()
       vim.schedule(function()
@@ -26,7 +35,14 @@ vim.api.nvim_create_autocmd("FileType", {pattern = {"shell","bash"},
       end)
     end,
 })
+vim.api.nvim_create_autocmd("BufWritePost", {
+    pattern = {"*.sh", "*.bash"},
+    callback = function()
+        vim.cmd("!shellcheck % 2>/dev/null")
+    end,
+})
 
+--- Json
 vim.api.nvim_create_autocmd("FileType", {pattern = {"json"},
     callback = function()
       vim.schedule(function()
@@ -44,5 +60,15 @@ vim.api.nvim_create_autocmd("FileType", {pattern = {"lua"},
         vim.bo.shiftwidth = 2
         vim.bo.tabstop = 2
       end)
+    end,
+})
+
+-- Autocommand to remove trailing whitespace for specified file types
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = {"*.sh", "*.awk", "*.bash", "*.js", "*.c", "*.cpp", "*.pl", "*.py", "*.lisp", "*.lua", "*.md"},
+    callback = function()
+        local current_view = vim.fn.winsaveview()
+        vim.cmd("%s/\\s\\+$//e")
+        vim.fn.winrestview(current_view)
     end,
 })

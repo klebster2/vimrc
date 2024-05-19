@@ -12,7 +12,7 @@ git clone "https://github.com/klebster2/vimrc" ~/.vim_runtime && cd ~/.vim_runti
 Then run the installer
 
 ``` bash
-./install_vimrc.sh
+./install.sh
 ```
 
 # Usage notes and Useful commands
@@ -63,7 +63,7 @@ cmp.ItemField
 │unknown                 │
 │────────────────────────│
 │(field) cmp.ItemField: {│
-│    Abbr: unknown,      │ 
+│    Abbr: unknown,      │
 │    Kind: unknown,      │
 ╰╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╯
 ```

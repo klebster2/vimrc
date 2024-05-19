@@ -12,7 +12,7 @@ install_fonts() {
     version=5.2
     zip=Fira_Code_v${version}.zip
     curl --fail --location --show-error https://github.com/tonsky/FiraCode/releases/download/${version}/${zip} --output ${zip}
-    unzip -o -q -d ${fonts_dir} ${zip}
+    unzip -o -q -d "${fonts_dir}" ${zip}
     rm ${zip}
 
     echo "fc-cache -f"
@@ -25,10 +25,9 @@ install_packer() {
     echo "making packer path... in $(dirname "$_dest")"
     mkdir -pv "$(dirname "$_dest")"
     git clone --depth 1 "https://github.com/wbthomason/packer.nvim" "$_dest"
-        
+
 }
 
-./TODO.md
 check_sudo_needed() {
     local _dir="$1"
     diruser=$(ls -alF "$_dir" | grep " \.\/" | awk -F ' ' '{print$3}')
@@ -42,7 +41,7 @@ check_sudo_needed() {
 check_decision() {
     local _human_readable_message="$1" _command="$2"
     echo "Do you want to run \"$_command\" ?"
-    printf "$_human_readable_message "
+    printf "%s" "$_human_readable_message "
     read -p " (y/n/q)? " y_n_q
     msg="option selected"
     case "$y_n_q" in
@@ -60,7 +59,7 @@ symlink_vim_runtime_nvim_to_nvim_loc() {
         echo "Adding symlink as "${_nvim_loc}"..."
         ln -s "$HOME/.vim_runtime/nvim" "${_nvim_loc_parent}"  2> /dev/null
         if [ $? -ne 0 ]; then
-            cmd="rm -r \"${_nvim_loc}\" && ln -s \"$HOME/.vim_runtime/nvim\" \"${_nvim_loc_parent}\" 2> /dev/null" 
+            cmd="rm -r \"${_nvim_loc}\" && ln -s \"$HOME/.vim_runtime/nvim\" \"${_nvim_loc_parent}\" 2> /dev/null"
             check_decision "Overwrite ${_nvim_loc}" "$cmd"
         fi
     fi
@@ -202,7 +201,7 @@ main() {
     echo "* Symlink ~/.vim_runtime/nvim to ~/.config/nvim"
     symlink_vim_runtime_nvim_to_nvim_loc "${nvim_loc}"
 
-    check_make_undo_tree "${nvim_loc}/.undotree" 
+    check_make_undo_tree "${nvim_loc}/.undotree"
 
     [ -d "${packer_path}/start/packer.nvim" ] || \
         install_packer "${packer_path}/start/packer.nvim"
@@ -210,7 +209,7 @@ main() {
     #install_lua_ls
 
     echo "Setting adding paths to ${HOME}/.vimrc"
-    
+
     echo "Installing dependencies for vim configuration."
     git clone https://github.com/github/copilot.vim.git $HOME/.config/nvim/pack/github/start/copilot.vim --depth 1
 
