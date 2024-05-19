@@ -10,19 +10,31 @@ vim.api.nvim_create_autocmd("FileType", {
         keymap('n', "<localleader>tt", "A # type: ignore<esc>", opts)
         keymap('n', "<localleader>c", "I#<esc>", opts)
         keymap('n', "<localleader>I", "<esc>:Isort", opts)
-        keymap('n', "<localleader>ff", "<esc>:Black<return><esc>:Isort<return>", opts)
         vim.opt_local.foldenable = true
         vim.opt_local.foldmethod = "syntax"
         vim.bo.shiftwidth = 4
         vim.bo.tabstop = 4
+        local gen = require('gen')
+        if gen then
+          gen.prompts['Fix_Code'] = {
+            prompt = "Rewrite the following python code. Use PEP 484 conventions, and type-hinting where necessary.\n\n```$filetype\n...\n```:\n```$filetype\n$text\n```",
+            replace = true,
+            extract = "```$filetype\n(.-)```"
+          }
+        end
       end)
     end,
 })
+
 vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = {"*.py"},
     callback = function()
-        vim.cmd("Isort")
-        vim.cmd("Black")
+        local black = require('black')
+        local isort = require('isort')
+        if black and isort then
+          vim.cmd("Isort")
+          vim.cmd("Black")
+        end
     end,
 })
 
@@ -38,7 +50,13 @@ vim.api.nvim_create_autocmd("FileType", {pattern = {"shell","bash"},
 vim.api.nvim_create_autocmd("BufWritePost", {
     pattern = {"*.sh", "*.bash"},
     callback = function()
-        vim.cmd("!shellcheck % 2>/dev/null")
+        vim.cmd("!shellcheck % 2>/dev/null | grep -Pv '^$'")
+        -- check if is executable
+        if vim.fn.executable(vim.fn.expand("%")) == 1 then
+          vim.api.nvim_echo({{"Executable permissions are set for " .. vim.fn.expand("%"), "Type"}}, true, {})
+        else
+          vim.api.nvim_echo({{"Executable permissions are not set for " .. vim.fn.expand("%"), "Type"}}, true, {})
+        end
     end,
 })
 
@@ -60,6 +78,14 @@ vim.api.nvim_create_autocmd("FileType", {pattern = {"lua"},
         vim.bo.shiftwidth = 2
         vim.bo.tabstop = 2
       end)
+    end,
+})
+
+-- Autocommand to run Luacheck on save for Lua files
+vim.api.nvim_create_autocmd("BufWritePost", {
+    pattern = {"*.lua"},
+    callback = function()
+        vim.cmd("!luacheck % --no-color")
     end,
 })
 

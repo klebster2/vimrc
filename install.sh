@@ -42,12 +42,12 @@ check_decision() {
     local _human_readable_message="$1" _command="$2"
     echo "Do you want to run \"$_command\" ?"
     printf "%s" "$_human_readable_message "
-    read -p " (y/n/q)? " y_n_q
+    read -rp " (y/n/q)? " y_n_q
     msg="option selected"
     case "$y_n_q" in
         y|Y|Yes|yes ) echo "'${y_n_q}' $msg'"; $_command ;;
         n|N|No|no ) echo "'${y_n_q}' $msg, skipping";;
-        q|Q|Quit|quit ) echo "'${y_n_q}' $msg, quitting"; break;;
+        q|Q|Quit|quit ) echo "'${y_n_q}' $msg, quitting"; return;;
         * ) echo "invalid";;
     esac
 }
@@ -56,7 +56,7 @@ symlink_vim_runtime_nvim_to_nvim_loc() {
     local _nvim_loc="$1"
     _nvim_loc_parent="$(dirname "${_nvim_loc}")"
     if [ ! -L "${_nvim_loc}" ]; then
-        echo "Adding symlink as "${_nvim_loc}"..."
+        echo "Adding symlink as ${_nvim_loc}..."
         ln -s "$HOME/.vim_runtime/nvim" "${_nvim_loc_parent}"  2> /dev/null
         if [ $? -ne 0 ]; then
             cmd="rm -r \"${_nvim_loc}\" && ln -s \"$HOME/.vim_runtime/nvim\" \"${_nvim_loc_parent}\" 2> /dev/null"
@@ -158,35 +158,38 @@ main() {
 
     # Install gruvbox for terminal using gogh
     #bash -c "$(wget -qO- https://git.io/vQgMr)"
+    #npm_check="$(npm -l)"
+    #if ! (echo $npm_check | grep npm@ &>/dev/null) ; then
+    #    printf "npm is needed for this neovim setup.\nplease install before continuing\n" && exit 1
+    #fi
+    #
     for tool in jq curl; do
         if ! $tool -V 2>/dev/null ; then
             printf "$tool is needed for this neovim setup.\nplease install before continuing\n" && exit 1
         fi
     done
-    #npm_check="$(npm -l)"
-    #if ! (echo $npm_check | grep npm@ &>/dev/null) ; then
-    #    printf "npm is needed for this neovim setup.\nplease install before continuing\n" && exit 1
-    #fi
     bash -c "$(curl -so- "https://github.com/Gogh-Co/Gogh/blob/master/installs/gruvbox-dark.sh")"
 
     echo "* Running nvim setup..."
 
     echo "* Checking whether nvim is already installed..."
     appimage_target_directory="/usr/bin"
-    check_nvim_is_installed && \
-        printf "* Found nvim already installed at $(which nvim)\n" || \
+    if check_nvim_is_installed; then
+        printf "* Found nvim already installed at %s\n" "$(which nvim)"
+    else
         install_nvim_appimage "${appimage_target_directory}"
+    fi
 
-    if !(check_conda_is_installed); then
+    if ! (check_conda_is_installed); then
         prompt_to_install_conda
-        echo "Please rerun the installation script after first running `. ~/.bashrc` to see if the base conda env is activated"
+        echo "Please rerun the installation script after first running . ${HOME}/.bashrc to see if the base conda env is activated"
         # cleanup
         rm ./Miniconda*.sh
         exit
     else
         echo "Conda installation found"
         create_pynvim_conda_env
-        . $HOME/.bashrc
+        source "${HOME}/.bashrc"
         conda activate pynvim
     fi
 
@@ -211,16 +214,15 @@ main() {
     echo "Setting adding paths to ${HOME}/.vimrc"
 
     echo "Installing dependencies for vim configuration."
-    git clone https://github.com/github/copilot.vim.git $HOME/.config/nvim/pack/github/start/copilot.vim --depth 1
+    git clone https://github.com/github/copilot.vim.git "${HOME}/.config/nvim/pack/github/start/copilot.vim" --depth 1
 
     install_fonts
 
     pynvim_loc="$(conda env list | grep "pynvim" | head -n1 | sed -r 's/pynvim *(\/.*)/\1/g')"
 
-    echo "vim.api.nvim_exec([[" >> ./nvim/lua/miniconda-python-loc.lua
-    printf "  g:python3_host_prog=%s/bin/python3\n" "$pynvim_loc" \
-        >> ./nvim/lua/miniconda-python-loc.lua
-    echo "]], true)" >> ./nvim/lua/miniconda-python-loc.lua
+    { echo "vim.api.nvim_exec([[";
+    printf "  g:python3_host_prog=%s/bin/python3\n" "$pynvim_loc";
+    echo "]], true)"; } >> ./nvim/lua/miniconda-python-loc.lua
     echo "Installed dependencies for vim configuration successfully."
 
     echo "Installing Plugins via PackerSync..."
@@ -230,7 +232,7 @@ main() {
     nvim --headless +"LspInstall awk_ls bashls dockerls pyright grammarly" +qall
     echo
 
-    rm *.zip*
+    rm ./*.zip*
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
