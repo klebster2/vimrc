@@ -23,7 +23,7 @@ ls.config.set_config({
     },
 })
 
---- <c-k> snippet expansion / jump key
+--- <c-k> snippet expansion / jump key (up)
 vim.keymap.set({"i", "s"}, "<c-k>", function ()
   if ls.expand_or_jumpable() then
     ls.expand_or_jump()
@@ -31,7 +31,7 @@ vim.keymap.set({"i", "s"}, "<c-k>", function ()
 end, {silent=true})
 
 
---- <c-k> snippet expansion / jump key
+--- <c-j> snippet expansion / jump key (down)
 vim.keymap.set({"i", "s"}, "<c-j>", function ()
   if ls.expand_or_jumpable() then
     ls.jump(-1)
@@ -46,4 +46,4 @@ vim.keymap.set({ "i", "s" }, "<c-l>", function()
 end)
 
 --- source luasnip
-vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/lua/luasnip-config.lua<cr>")
+vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/lua/luasnip-config.lua <cr>")

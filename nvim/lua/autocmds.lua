@@ -1,5 +1,6 @@
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
+--- first check vim is in the global scope
 
 vim.api.nvim_create_autocmd("FileType", {
     pattern = {"python"},
@@ -81,7 +82,7 @@ vim.api.nvim_create_autocmd("FileType", {pattern = {"lua"},
     end,
 })
 
--- Autocommand to run Luacheck on save for Lua files
+--- Autocommand to run Luacheck on save for Lua files
 vim.api.nvim_create_autocmd("BufWritePost", {
     pattern = {"*.lua"},
     callback = function()
@@ -89,7 +90,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     end,
 })
 
--- Autocommand to remove trailing whitespace for specified file types
+--- Autocommand to remove trailing whitespace for specified file types
 vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = {"*.sh", "*.awk", "*.bash", "*.js", "*.c", "*.cpp", "*.pl", "*.py", "*.lisp", "*.lua", "*.md"},
     callback = function()

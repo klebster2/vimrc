@@ -34,14 +34,10 @@ keymap('n', '<leader>pi', ':PackerSync<cr>', opts)
 keymap('n', '<leader>eV', ':NvimTreeOpen $HOME/.config/nvim/lua/<cr>', opts)
 keymap('n', '<leader>ebf', ':vsplit $HOME/.bash_functions<cr>', opts)
 
-
--------- Custom GPT remap
---- keymap('n', '<leader>wg', ':vs $HOME/.local/share/nvim/tmp/gpt<cr>PjdG<esc><c-w><c-h>', opts)
-
 keymap('n', '<leader>ebh', ':vs .<cr>:r!echo "history" | bash -i 2>/dev/null | sed -e "s/\x1b\\[.//g"', opts)
 
 --- Get Etymology
-keymap('n', '<leader>ze', ':WiktionaryParser english etymology<cr>', opts)
+keymap('n', '<leader>ee', ':WiktionaryEtymology<cr>', opts)
 keymap('n', '<silent><script><expr> <C-J>', 'copilot#Accept("\\<CR>")', opts)
 
 --- Telescope

@@ -1,3 +1,4 @@
+---- luacheck: mutating non-standard global variable 'vim'
 ----- Default options for Neovim (without any plugins / plugin options)
 --- global
 vim.go.errorbells = false
@@ -22,7 +23,7 @@ vim.opt.tabstop = 4
 vim.opt.wildmenu = true
 vim.opt.wildmode = {'list', 'longest'}
 vim.opt.mouse = nil
-vim.opt.runtimepath = vim.opt.runtimepath + '~/.config/nvim/snippets'
+---vim.opt.runtimepath = vim.opt.runtimepath + '~/.config/nvim/snippets'
 vim.opt.spell = false
 vim.opt.spelllang = { 'en_gb' }  -- The default spell lang
 vim.api.nvim_exec([[
