@@ -25,27 +25,24 @@ To exit the complete menu use `<CTRL+y>`, also see the settings in ./nvim/lua/lu
 To jump to the next completion using Lsp / Cmp / Luasnip etc.. use
 `<CTRL+p>` for prev and `<CTRL+n>` for next (in insert mode)
 
-Use `gd` for 'j' to jump (also known as dʒump as in gump) to the definition.
+Use `gd` for 'j' to jump to the definition.
 
 Also see `: help vim.lsp.*` for documentation on any of the LSP functions
 
 
 #### NvimTree
 
-<ol>
-<li> <p>`<R>` (refresh) to perform a reread of the files contained in the project </p>
-<li> <p>`<H>` (hide) to hide/display hidden files and folders (beginning with a dot .)</p>
-<li> <p>`<E>` (expand_all) to expand the entire file tree starting from the root folder (workspace)</p>
-<li> <p>`<W>` (collapse_all) to close all open folders starting from the root folder</p>
-<li> <p>`-` (dir_up) allows you to go back up folders. This navigation also allows you to exit the root folder (workspace) to your home directory</p>
-<li> <p>`<\s>` (system) to open the file with the system application set by default for that file type</p>
-<li> <p>`<f>` (find) to open the interactive file search to which search filters can be applied</p>
-<li> <p>`<SHIFT+f>` to close the interactive search</p>
-<li> <p>`<CTRL+k>` to display information about the file such as size, creation date, etc.</p>
-<li> <p>`g + ?` to open the help with all the predefined shortcuts for quick reference</p>
-<li> <p>`q` to close the file explorer</p>
-</ol>
-
+- `<R>` (refresh) to perform a reread of the files contained in the project.
+- `<H>` (hide) to hide/display hidden files and folders (beginning with a dot .)
+- `<E>` (expand_all) to expand the entire file tree starting from the root folder (workspace)
+- `<W>` (collapse_all) to close all open folders starting from the root folder
+- `-` (dir_up) allows you to go back up folders. This navigation also allows you to exit the root folder (workspace) to your home directory
+- `<\s>` (system) to open the file with the system application set by default for that file type
+- `<f>` (find) to open the interactive file search to which search filters can be applied
+- `<SHIFT+f>` to close the interactive search
+- `<CTRL+k>` to display information about the file such as size, creation date, etc.
+- `g + ?` to open the help with all the predefined shortcuts for quick reference
+- `q` to close the file explorer
 
 #### Nvim Spell:
 
