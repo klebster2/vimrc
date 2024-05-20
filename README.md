@@ -17,7 +17,7 @@ Then run the installer
 
 # Usage notes and Useful commands
 
-To exit insert mode, use jk by using them together quickly.
+To exit insert mode, use `jk` by using them together quickly.
 
 ### Completion menu (LSP / CMP)
 To exit the complete menu use `<CTRL+y>`, also see the settings in ./nvim/lua/luasnip-config.lua
@@ -33,23 +33,24 @@ Also see `: help vim.lsp.*` for documentation on any of the LSP functions
 #### NvimTree
 
 <ol>
-<li> `<R>` (refresh) to perform a reread of the files contained in the project
-<li> `<H>` (hide) to hide/display hidden files and folders (beginning with a dot .)
-<li> `<E>` (expand_all) to expand the entire file tree starting from the root folder (workspace)
-<li> `<W>` (collapse_all) to close all open folders starting from the root folder
-<li> `-` (dir_up) allows you to go back up folders. This navigation also allows you to exit the root folder (workspace) to your home directory
-<li> `<s>` (system) to open the file with the system application set by default for that file type
-<li> `<f>` (find) to open the interactive file search to which search filters can be applied
-<li> `<SHIFT+f>` to close the interactive search
-<li> `<CTRL+k>` to display information about the file such as size, creation date, etc.
-<li> `g + ?` to open the help with all the predefined shortcuts for quick reference
-<li> `q` to close the file explorer
+<li> <p>`<R>` (refresh) to perform a reread of the files contained in the project </p>
+<li> <p>`<H>` (hide) to hide/display hidden files and folders (beginning with a dot .)</p>
+<li> <p>`<E>` (expand_all) to expand the entire file tree starting from the root folder (workspace)</p>
+<li> <p>`<W>` (collapse_all) to close all open folders starting from the root folder</p>
+<li> <p>`-` (dir_up) allows you to go back up folders. This navigation also allows you to exit the root folder (workspace) to your home directory</p>
+<li> <p>`<\s>` (system) to open the file with the system application set by default for that file type</p>
+<li> <p>`<f>` (find) to open the interactive file search to which search filters can be applied</p>
+<li> <p>`<SHIFT+f>` to close the interactive search</p>
+<li> <p>`<CTRL+k>` to display information about the file such as size, creation date, etc.</p>
+<li> <p>`g + ?` to open the help with all the predefined shortcuts for quick reference</p>
+<li> <p>`q` to close the file explorer</p>
 </ol>
 
 
 #### Nvim Spell:
 
 Use  `<z+w>` to add a word to the dictionary.
+Use `<leader>ss` to set spell (misspelt words will appear)
 
 #### LSP Doc Scrolling
 
@@ -57,7 +58,7 @@ When in insert mode with completions appearing (from {LSP, Snippets Engine, etc.
 and the window to the right (showing the highlighted completion item) is available, you can also scroll the docs using
 `<CTRL+f>` for forwards and `<CTRL+d>` for backward
 
-e.g. these commands will work on this window if there is a scrollbar to the right-hand side.
+E.g. These commands will work on this window if there is a scrollbar to the right-hand side.
 
 ```
 cmp.ItemField
