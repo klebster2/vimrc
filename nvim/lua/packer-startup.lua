@@ -37,6 +37,25 @@ require("packer").startup(function()
         })
       end,
     }
+    use {
+      "christoomey/vim-tmux-navigator",
+      config = function()
+        require("tmux-navigator").setup({
+          cmd = {
+            "TmuxNavigateLeft",
+            "TmuxNavigateDown",
+            "TmuxNavigateUp",
+            "TmuxNavigateRight",
+          },
+          keys = {
+            {"<C-h>", "TmuxNavigateLeft"},
+            {"<C-j>", "TmuxNavigateDown"},
+            {"<C-k>", "TmuxNavigateUp"},
+            {"<C-l>", "TmuxNavigateRight"}
+          }
+        })
+      end
+    }
     use { 'nvim-lualine/lualine.nvim',
       config = function ()
           local custom_gruvbox = require'lualine.themes.gruvbox_dark'
@@ -153,7 +172,7 @@ require("packer").startup(function()
     use { "David-Kunz/gen.nvim",   -- Uses Ollama under the hood
       config = function()
         require("gen").setup({
-          model = "gemma:2b", -- The default model to use.
+          model = "llama3:8b", -- The default model to use.
             port = "11434", -- The port on which the Ollama service is listening.
             quit_map = "q", -- set keymap for close the response window
             retry_map = "<c-r>", -- set keymap to re-send the current prompt

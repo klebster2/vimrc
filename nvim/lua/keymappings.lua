@@ -51,7 +51,7 @@ keymap('n', '<leader>nhl', ':set no hlsearch<cr>', opts)
 ------ nvim init opts
 -------- easy source
 keymap('n', '<leader>sv', ':source $HOME/.config/nvim/init.lua<cr>:echom "$HOME/.config/nvim/init.lua sourced"<cr>', opts)
---keymap('n', '<leader>sv', ':source $HOME/.config/nvim/init.lua<cr>', opts)
+---keymap('n', '<leader>sv', ':source $HOME/.config/nvim/init.lua<cr>', opts)
 -------- easy vimrc (init.lua) edit
 keymap('n', '<leader>ev', ':vertical split $HOME/.config/nvim/init.lua<cr>:edit<cr>', opts)
 -------- edit packer
@@ -64,7 +64,7 @@ keymap('n', '<leader>tp', ':tabprev<cr>', opts)
 keymap('n', '<leader>tn', ':tabnext<cr>', opts)
 keymap('n', '<leader>tt', ':tabnew<cr>', opts)
 keymap('n', '<leader>tc', ':tabclose<cr>', opts)
---- 
+---
 ------ What the commit?
 -------- Random commit message
 keymap('n', '<leader>wtc', ":r!curl -s 'https://whatthecommit.com/index.txt'<cr>", opts)
@@ -73,9 +73,8 @@ keymap('n', '<leader>wtc', ":r!curl -s 'https://whatthecommit.com/index.txt'<cr>
 keymap('n', '<leader>dt', ":put =strftime('%d/%m/%y %H:%M:%S')<cr>", opts)
 
 -------- hard H and L remaps
-keymap('n', 'H', '0w', opts)
+keymap('n', 'H', '0', opts)
 keymap('n', 'L', '$', opts)
---keymap('n', 's', 'i<cr><esc>', opts)
 
 ------ Visual mode remaps
 ------ Indentation
@@ -86,10 +85,6 @@ keymap('v', '>', '>gv', opts)
 keymap('v', '<leader>e64', 'c<c-r>=system(\'base64 \', @")<cr><esc>', opts)
 --- base64 decoding
 keymap('v', '<leader>d64', 'c<c-r>=system(\'base64 --decode\', @")<cr><esc>', opts)
------- Rhymezone API:
-
---- TODO: fix
---- keymap('v', '<leader>zz', "!curl -s 'https://api.rhymezone.com/words?max=600&nonorm=1&k=rz_wke&rel_wke=%V' | jq '.[].word' | sed -r 's/\\\"([a-z]+):(.+):(.+)(.*):(.*)\"/\5\t\2\t\3\t\4/g' | sed 's/\\//g'", opts)
 
 ------ Quote text in Visual mode
 -------- TODO: use https://github.com/tpope/vim-surround
@@ -99,14 +94,14 @@ keymap('v', '<leader>d64', 'c<c-r>=system(\'base64 --decode\', @")<cr><esc>', op
 keymap('i', 'jk', '<ESC>', opts)
 ------ and for butterfingers
 keymap('i', 'kj', '<ESC>', opts)
------- sane escape from insert mode
+------ Sane escape from insert mode (Ctrl-C)
 keymap('i', '<c-c>', '<ESC>', opts)
 --- inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 --- keymap('i', '<expr> <Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', opts)
 --- keymap('i', '<expr> <S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<S-Tab>"', opts)
 
 ------ Command Mode Mappings {{
--------- expand current script path     
+-------- expand current script path
 keymap('c', '%%', "<C-R>=expand('%:h').'/'<cr>", opts)
 
 ---- " Leader write with permissions ------------- {{{
@@ -119,8 +114,9 @@ keymap('o', 'in@', ':<c-u>execute "normal! ?^.+@$\rvg_"<cr>', opts)
 keymap('o', 'an@', ':<c-u>execute "normal! ?^\\S\\+@\\S\\+$\r:nohlsearch\r0vg"<cr>', opts)
 
 ------ Command remaps
--------- forgive :Wq (Write and quit)
+-------- forgive :Wq, :WQ (Write and quit)
 vim.api.nvim_command("command! Wq :wq")
+vim.api.nvim_command("command! WQ :wq")
 -------- and Q
 vim.api.nvim_command("command! Q :q")
 
@@ -130,6 +126,4 @@ keymap('n', '<leader>ss', ':set spell!<cr>', opts)
 --- keymap('n', '<leader>fb', ':FzfLua grep cwd=~/Britfone<cr>', opts)  -- Britfone
 
 --- TODO -> FIX cht
---- -------- use cht.sh to search for command help
 keymap('n', '<leader>cht', "<command>cht.sh ", opts)
---- }}

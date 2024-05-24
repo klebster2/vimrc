@@ -569,11 +569,10 @@ require("luasnip.loaders.from_snipmate").load({ include = { "c" } }) -- Load onl
 -- the `-u` argument like this: `nvim -u yeet.txt`.
 require("luasnip.loaders.from_snipmate").load({ path = { "./my-snippets" } })
 -- If path is not specified, luasnip will look for the `snippets` directory in rtp (for custom-snippet probably
--- `~/.config/nvim/snippets`).
+-- ~/.config/nvim/snippets ).
 
 require("luasnip.loaders.from_snipmate").lazy_load() -- Lazy loading
 
 -- see DOC.md/LUA SNIPPETS LOADER for some details.
 require("luasnip.loaders.from_lua").load({ include = { "c" } })
 require("luasnip.loaders.from_lua").lazy_load({ include = { "all", "cpp" } })
-

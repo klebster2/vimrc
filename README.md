@@ -23,14 +23,27 @@ To exit insert mode, use `jk` by using them together quickly.
 To exit the complete menu use `<CTRL+y>`, also see the settings in ./nvim/lua/luasnip-config.lua
 
 To jump to the next completion using Lsp / Cmp / Luasnip etc.. use
-`<CTRL+p>` for prev and `<CTRL+n>` for next (in insert mode)
+
+`<CTRL+p>` for prev and
+
+`<CTRL+n>` for next (in insert mode)
 
 Use `gd` for 'j' to jump to the definition.
 
 Also see `: help vim.lsp.*` for documentation on any of the LSP functions
 
+### Luasnip
+
+Use
+
+`CTRL+k` after selecting a luasnip option to jump to the next snippet (where you can enter code)
+
+`CTRL+j` to jump to the previous snippet
+
 
 #### NvimTree
+
+Use
 
 `<R>` (refresh) to perform a reread of the files contained in the project.
 
@@ -57,16 +70,19 @@ Also see `: help vim.lsp.*` for documentation on any of the LSP functions
 
 #### Nvim Spell:
 
-Use  `<z+w>` to add a word to the dictionary.
-Use `<leader>ss` to set spell (misspelt words will appear)
+`<z+w>` to add a word to the dictionary.
+
+`<leader>ss` to set spell (misspelled words will appear underlined)
 
 #### LSP Doc Scrolling
 
 When in insert mode with completions appearing (from {LSP, Snippets Engine, etc.} + cmp)
+
 and the window to the right (showing the highlighted completion item) is available, you can also scroll the docs using
+
 `<CTRL+f>` for forwards and `<CTRL+d>` for backward
 
-E.g. These commands will work on this window if there is a scrollbar to the right-hand side.
+These commands will work on this window if there is a scrollbar to the right-hand side.
 
 ```
 cmp.ItemField
@@ -83,16 +99,18 @@ cmp.ItemField
 
 When in normal mode, the LSP will have already run and will be highlighting areas of code syntax.
 
-To go to diagnostics use `<SPACE>+e` to open a floating window containing the LSP diagnostic (what smells bad according to the LSP)
+To go to diagnostics use `<SPACE>+e` to open a floating window containing the LSP diagnostic (according to the LSP)
+
 To go to diagnostics use `<SPACE>+q` to open a floating window of LSP diagnostics
-`[d` to go to the previous LSP diagnostic and `]d` to go to the next LSP diagnostic
+
+While in normal mode use `[d` to go to the previous LSP diagnostic and `]d` to go to the next LSP diagnostic
 
 Also see `: help vim.diagnostic.*` for documentation on any of the functions.
 
 #### Copilot scrolling
-According to the docs you can use Alt+] / Alt+[ to cycle through suggestions.
 
+According to the docs you can use Alt+] / Alt+[ to cycle through suggestions.
 
 #### More mappings
 
-Go to `./nvim/lua/keymappings.lua` for more mappings
+Go to `./nvim/lua/keymappings.lua` for the basic set of mappings (with the current configuration, you can use `<leader>m`).

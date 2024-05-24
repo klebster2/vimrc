@@ -30,7 +30,6 @@ vim.keymap.set({"i", "s"}, "<c-k>", function ()
   end
 end, {silent=true})
 
-
 --- <c-j> snippet expansion / jump key (down)
 vim.keymap.set({"i", "s"}, "<c-j>", function ()
   if ls.expand_or_jumpable() then

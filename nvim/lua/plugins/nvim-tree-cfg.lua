@@ -46,7 +46,7 @@ local function on_attach(bufnr)
   vim.keymap.set('n', '<C-e>', api.node.open.replace_tree_buffer,     opts('Open: In Place'))
   ---
   -- OR use all default mappings
-  --api.config.mappings.default_on_attach(bufnr)
+  api.config.mappings.default_on_attach(bufnr)
 
   -- remove a default
   vim.keymap.del('n', '<C-]>', { buffer = bufnr })
@@ -101,21 +101,20 @@ require('nvim-tree').setup { -- BEGIN_DEFAULT_OPTS
   on_attach = on_attach,
 }
 
-local function open_nvim_tree(data)
-
-  -- buffer is a directory
-  local directory = vim.fn.isdirectory(data.file) == 1
-
-  if not directory then
-    return
-  end
-
-  -- change to the directory
-  vim.cmd.cd(data.file)
-
-  -- open the tree
-  require("nvim-tree.api").tree.open()
-end
-
-vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
-
+--- local function open_nvim_tree(data)
+--- 
+---   -- buffer is a directory
+---   local directory = vim.fn.isdirectory(data.file) == 1
+--- 
+---   if not directory then
+---     return
+---   end
+--- 
+---   -- change to the directory
+---   vim.cmd.cd(data.file)
+--- 
+---   -- open the tree
+---   require("nvim-tree.api").tree.open()
+--- end
+--- 
+--- vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
