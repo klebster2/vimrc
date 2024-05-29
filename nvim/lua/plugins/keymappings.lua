@@ -2,7 +2,7 @@ vim = vim
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
-vim.api.nvim_set_keymap('n', '<Space>', '<NOP>', { noremap = true, silent = true })
+keymap('n', '<Space>', '<NOP>', { noremap = true, silent = true })
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = ";"
@@ -44,3 +44,6 @@ keymap('n', '<silent><script><expr> <C-J>', 'copilot#Accept("\\<CR>")', opts)
 keymap('n', '<leader>ff', "<cmd>Telescope find_files<cr>", opts)
 keymap('n', '<leader>f', "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({previewer=false}))<cr>", opts)
 keymap('n', '<c-t>', "<cmd>Telescope live_grep<cr>", opts)
+keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
+keymap("i", "<C-H>", 'copilot#Previous()', { silent = true, expr = true })
+keymap("i", "<C-K>", 'copilot#Next()', { silent = true, expr = true })

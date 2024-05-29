@@ -1,3 +1,4 @@
+local vim = vim  -- luacheck: --ignore
 local use = require("packer").use
 require("packer").startup(function()
     -- Packer can manage itself as an optional plugin
@@ -15,7 +16,7 @@ require("packer").startup(function()
       "williamboman/mason-lspconfig.nvim",
       "onsails/lspkind-nvim",
     }
-    use { -- cmp for completion
+    use { -- cmp for completion --> $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp-cfg.lua
       "hrsh7th/nvim-cmp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
@@ -23,11 +24,19 @@ require("packer").startup(function()
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-cmdline",
       "octaltree/cmp-look",
-      "f3fora/cmp-spell", -- see $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp-cfg.lua
+      "f3fora/cmp-spell",
       "saadparwaiz1/cmp_luasnip",
       "nvim-lua/plenary.nvim",
       "L3MON4D3/LuaSnip", -- snippets for completion see https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip and luasnip ( $HOME/.vim_runtime/nvim/snippets )
       "rafamadriz/friendly-snippets",
+    }
+    use {
+      'https://gitlab.com/schrieveslaach/sonarlint.nvim',
+      as = 'sonarlint.nvim',
+      requires = {
+        "mfussenegger/nvim-jdtls", --- Java LSP
+      },
+
     }
     use {
       "KadoBOT/cmp-plugins",
@@ -39,22 +48,6 @@ require("packer").startup(function()
     }
     use {
       "christoomey/vim-tmux-navigator",
-      config = function()
-        require("tmux-navigator").setup({
-          cmd = {
-            "TmuxNavigateLeft",
-            "TmuxNavigateDown",
-            "TmuxNavigateUp",
-            "TmuxNavigateRight",
-          },
-          keys = {
-            {"<C-h>", "TmuxNavigateLeft"},
-            {"<C-j>", "TmuxNavigateDown"},
-            {"<C-k>", "TmuxNavigateUp"},
-            {"<C-l>", "TmuxNavigateRight"}
-          }
-        })
-      end
     }
     use { 'nvim-lualine/lualine.nvim',
       config = function ()
@@ -115,18 +108,18 @@ require("packer").startup(function()
     end
 
     use { "preservim/tagbar" } -- view python objects
-    use {
+    use {  -- docstring format (NumPy)
       'heavenshell/vim-pydocstring',
       run = "make install",
       ft = { 'python' }
-    } -- docstring format
+    }
     -- status bar
     use "vim-airline/vim-airline"
     use {
       'nvim-telescope/telescope.nvim', tag = '0.1.3',
       requires = { 'nvim-lua/plenary.nvim' }
     }
-    use { "anuvyklack/windows.nvim", -- pretty window rescaling (nice to have)
+    use { "anuvyklack/windows.nvim", -- pretty window rescaling
       requires = {
           "anuvyklack/middleclass",
           "anuvyklack/animation.nvim"
@@ -168,11 +161,12 @@ require("packer").startup(function()
       }
     }
 
+
     -- LLM (Language Models) for autocompletion
     use { "David-Kunz/gen.nvim",   -- Uses Ollama under the hood
       config = function()
         require("gen").setup({
-          model = "llama3:8b", -- The default model to use.
+          model = "llama3:3b", -- The default model to use.
             port = "11434", -- The port on which the Ollama service is listening.
             quit_map = "q", -- set keymap for close the response window
             retry_map = "<c-r>", -- set keymap to re-send the current prompt

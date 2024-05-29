@@ -1,5 +1,4 @@
---- Colorscheme gruvbox
-vim.cmd [[ colorscheme gruvbox ]]
+--- Colorscheme: gruvbox
 --- Vendor plugins ( See $HOME/.vim_runtime/nvim/lua/packer-startup.lua )
 require("plugins/keymappings")        --> $HOME/.vim_runtime/nvim/lua/plugins/keymappings.lua (needs NvimTree, Telescope, Fugitive, Packer, ..)
 require("plugins/options")            --> $HOME/.vim_runtime/nvim/lua/plugins/options.lua

@@ -30,13 +30,53 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = {"*.py"},
     callback = function()
-        local black = require('black')
-        local isort = require('isort')
-        if black and isort then
-          vim.cmd("Isort")
+        if vim.fn.executable("Black") == 0 then -- check if Isort is not installed
           vim.cmd("Black")
         end
+
+        if vim.fn.executable("isort") == 0 then -- check if Isort is not installed
+          vim.cmd("Isort")
+        end
     end,
+})
+
+vim.api.nvim_exec([[
+  augroup textFileSpell
+    autocmd!
+    autocmd FileType markdown,text,rst,tex,bib,adoc setlocal spell
+    autocmd BufRead,BufNewFile *.md,*.txt,*.rst,*.tex,*.latex,*.bib,*.adoc,*.asciidoc setlocal spell
+  augroup END
+]], false)
+
+local bufIsBig = function(bufnr)
+	local max_filesize = 100 * 1024 -- 100 KB
+	local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(bufnr))
+	if ok and stats and stats.size > max_filesize then
+		return true
+	else
+		return false
+	end
+end
+local cmp = require('cmp')
+local default_cmp_sources = cmp.config.sources({
+	{ name = 'nvim_lsp' },
+	{ name = 'nvim_lsp_signature_help' },
+}, {
+	{ name = 'vsnip' },
+	{ name = 'path' }
+})
+-- If a file is too large, I don't want to add to it's cmp sources treesitter, see:
+-- https://github.com/hrsh7th/nvim-cmp/issues/1522
+vim.api.nvim_create_autocmd('BufReadPre', {
+	callback = function(t)
+		local sources = default_cmp_sources
+		if not bufIsBig(t.buf) then
+			sources[#sources+1] = {name = 'treesitter', group_index = 2}
+		end
+	cmp.setup.buffer {
+		sources = sources
+	}
+	end
 })
 
 --- Bash / Shell scripts
@@ -48,6 +88,7 @@ vim.api.nvim_create_autocmd("FileType", {pattern = {"shell","bash"},
       end)
     end,
 })
+
 vim.api.nvim_create_autocmd("BufWritePost", {
     pattern = {"*.sh", "*.bash"},
     callback = function()

@@ -1,4 +1,5 @@
 ---- luacheck: mutating non-standard global variable 'vim'
+local vim = vim
 ----- Default options for Neovim (without any plugins / plugin options)
 --- global
 vim.go.errorbells = false
@@ -26,13 +27,6 @@ vim.opt.mouse = nil
 ---vim.opt.runtimepath = vim.opt.runtimepath + '~/.config/nvim/snippets'
 vim.opt.spell = false
 vim.opt.spelllang = { 'en_gb' }  -- The default spell lang
-vim.api.nvim_exec([[
-  augroup textFileSpell
-    autocmd!
-    autocmd FileType markdown,text,rst,tex,bib,adoc setlocal spell
-    autocmd BufRead,BufNewFile *.md,*.txt,*.rst,*.tex,*.latex,*.bib,*.adoc,*.asciidoc setlocal spell
-  augroup END
-]], false)
 
 --- local to window
 vim.wo.number = true
@@ -42,6 +36,7 @@ vim.wo.wrap = false
 --- other
 vim.g.syntax_on = true
 
+vim.opt.tabline = "-"
 --- options
 --- complete option
 vim.o.completeopt = "menu,menuone,noselect"
@@ -49,6 +44,8 @@ vim.o.completeopt = "menu,menuone,noselect"
 --- color options
 vim.o.termguicolors = true
 vim.o.background = "dark"
+
+vim.opt.mouse = ""
 
 --- guard for distributions lacking the 'persistent_undo' feature.
 vim.cmd([[

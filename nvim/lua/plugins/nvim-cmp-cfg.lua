@@ -50,16 +50,40 @@ local default_language_servers = {
   "jsonls",
   "lua_ls",
   "marksman",
+  --"mypy",
+  --"pydocstyle",
   "pyright",
   "rust_analyzer",
   "vimls",
   "yamlls",
 }
 
+require('sonarlint').setup({
+   server = {
+      cmd = {
+         'sonarlint-language-server',
+         -- Ensure that sonarlint-language-server uses stdio channel
+         '-stdio',
+         '-analyzers',
+         -- paths to the analyzers you need, using those for python and java in this example
+         --
+         vim.fn.expand( vim.env.HOME .. "/.local/share/nvim/mason/packages/sonarlint-language-server/extension/analyzers/sonarpython.jar"),
+      }
+   },
+   filetypes = {
+      'python',
+   },
+   on_attach = on_attach,
+   lsp_flags = lsp_flags,
+   capabilities = capabilities,
+})
+
 require("mason").setup()
 require("mason-lspconfig").setup {
   ensure_installed = default_language_servers,
+  force_install = true
 }
+
 
 for _, value in ipairs(default_language_servers) do
   lspconfig[value].setup {
@@ -68,6 +92,7 @@ for _, value in ipairs(default_language_servers) do
     capabilities = capabilities,
   }
 end
+
 --- Set configuration for specific filetype.
 cmp.setup.cmdline('/', {
   mapping = cmp.mapping.preset.cmdline(),
@@ -77,7 +102,14 @@ cmp.setup.cmdline('/', {
     { name = 'path' }
   }, {
     { name = 'cmdline' }
-  })
+  },
+  {
+    { name = 'spell' }
+  },
+  {
+    { name = 'look' }
+  }
+  )
 })
 
 cmp.setup.cmdline('./', {
@@ -95,35 +127,42 @@ cmp.setup.cmdline(':', {
     { name = 'path' }
   }, {
     { name = 'cmdline' }
+  },
+  {
+    { name = 'spell' }
+  },
+  {
+    { name = 'look' }
   })
 })
 
+--- Works with 'DroidSansMono Nerd Font Mono'
 local lsp_symbols = {
   Text = "   Text",
-  Method = "", -- "   Method",
-  Function = "", -- "   Function",
+  Method = "   Method",
+  Function = "   Function",
   Constructor = "   Constructor",
-  Field = "", -- " ﴲ  Field",
+  Field = " ﴲ  Field",
   Variable = "[] Variable",
-  Class = "", -- "   Class",
-  Interface = "", -- " ﰮ  Interface",
-  Module = "", -- "   Module",
-  Property = "", -- " 襁 Property",
+  Class = "   Class",
+  Interface = " ﰮ  Interface",
+  Module = "   Module",
+  Property = " 襁 Property",
   Unit = "   Unit",
-  Value = "", -- "   Value",
-  Enum = "", -- " 練 Enum",
-  Keyword = "", -- "   Keyword",
+  Value = "   Value",
+  Enum = " 練 Enum",
+  Keyword = "   Keyword",
   Snippet = "   Snippet",
-  Color = "", -- "   Color",
-  File = "", -- "   File",
-  Reference = "", -- "   Reference",
-  Folder = "", -- "   Folder",
+  Color = "   Color",
+  File = "   File",
+  Reference = "   Reference",
+  Folder = "   Folder",
   EnumMember = "   EnumMember",
-  Constant = "", -- " ﲀ  Constant",
-  Struct = "", -- " ﳤ  Struct",
+  Constant = " ﲀ  Constant",
+  Struct = " ﳤ  Struct",
   Event = "   Event",
-  Operator = "", -- "   Operator",
-  TypeParameter = "", -- "   TypeParameter",
+  Operator = "   Operator",
+  TypeParameter = "   TypeParameter",
 }
 
 --- Window options
@@ -153,8 +192,6 @@ vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { fg = "#fbf1c7" })
 vim.api.nvim_set_hl(0, "CmpItemAbbrFuzzy", { fg = "#ec5300" })
 vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#8ec07c" })
 
---require('cmp').setup({
---})
 local kind_mapper = {
   Text = 1,
   Method = 2,
@@ -186,9 +223,9 @@ local kind_mapper = {
 cmp.setup.filetype({ 'text', 'markdown' }, {
     sources = {
       ---{ name = "datamuse", max_item_count = 50,  keyword_length = 5, group_index = 3 },
-      { name = "spell",    max_item_count = 8,  keyword_length = 4, group_index = 2 },
       { name = "path",     max_item_count = 2,  group_index = 2 },
-      ---{ name = "buffer",   max_item_count = 8,  keyword_length = 3, group_index = 2 },
+      { name = "buffer",   max_item_count = 8,  keyword_length = 3, group_index = 2 },
+      { name = "spell",    max_item_count = 8,  keyword_length = 4, group_index = 2 },
     },
     sorting = {
       comparators = {
@@ -226,7 +263,7 @@ cmp.setup {
     }
   ),
   sources = {
-    { name = "copilot",  group_index = 1,     keyword_length = 2 },
+    --- { name = "copilot",  group_index = 1,     keyword_length = 2 },
     { name = "nvim_lua", group_index = 2,     keyword_length = 2 },
     { name = "luasnip",  group_index = 2,     keyword_length = 2 },
     { name = "nvim_lsp", max_item_count = 10, group_index = 2 },
@@ -244,20 +281,17 @@ cmp.setup {
     format = function(entry, vim_item)
       vim_item.kind = string.format(
         "%s %s",
-        (lsp_symbols[vim_item.kind] or "?"),
-        (lspkind.presets.default[vim_item.kind] or "?")
+        (lsp_symbols[vim_item.kind] or "!"),
+        (lspkind.presets.default[vim_item.kind] or "!")
       )
       vim_item.menu = ({
-        --- Salesforce__codet5p_770m_py = "SF_CodeT5+", --- transformers
         nvim_lua = "", -- lua engine
         luasnip = "", -- snippets engine
         nvim_lsp = "", -- local context
-        treesitter = "",
+        treesitter = "", -- treesitter ( $HOME/.vim_runtime/nvim/lua/plugins/treesitter.lua )
         path = "ﱮ",
         buffer = "﬘",
         spell = "暈",
-        datamuse = "❂",
-
       })[entry.source.name]
       vim_item.abbr = vim_item.abbr:match("[^(]+")
       return vim_item
@@ -278,7 +312,7 @@ cmp.setup {
     }
   }
 }
---- See `:help vim.diagnostic.*` for documentation on any of the below functions
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap = true, silent = true }
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)

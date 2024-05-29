@@ -1,3 +1,4 @@
+local vim = vim
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
@@ -9,7 +10,7 @@ vim.g.maplocalleader = ";"
 
 --- Native Vim Keymaps (No plugins should be needed)
 ---- Normal mode remaps
--- 1. Jump to keymapping file:
+---- 1. Jump to keymapping file (this file):
 keymap('n' , '<leader>m', ':e $HOME/.config/nvim/lua/keymappings.lua<cr>', opts)
 ---- 2. Try to simplify resizing splits
 if vim.fn.has('unix') then
@@ -48,33 +49,29 @@ keymap('n', '<leader>sp', ':set paste!<cr>', opts)
 ------ No highlight search (turn off)
 keymap('n', '<leader>nhl', ':set no hlsearch<cr>', opts)
 
------- nvim init opts
+---- 8. nvim init opts
 -------- easy source
-keymap('n', '<leader>sv', ':source $HOME/.config/nvim/init.lua<cr>:echom "$HOME/.config/nvim/init.lua sourced"<cr>', opts)
----keymap('n', '<leader>sv', ':source $HOME/.config/nvim/init.lua<cr>', opts)
+keymap(
+  'n',
+  '<leader>sv',
+  ':source $HOME/.config/nvim/init.lua<cr>:echom "$HOME/.config/nvim/init.lua was sourced"<cr>',
+  opts
+)
 -------- easy vimrc (init.lua) edit
 keymap('n', '<leader>ev', ':vertical split $HOME/.config/nvim/init.lua<cr>:edit<cr>', opts)
--------- edit packer
+-------- edit packer plugin installations
 keymap('n', '<leader>ep', ':vs $HOME/.config/nvim/lua/packer-startup.lua<cr>', opts)
 -------- scrollbind for scrolling multiple files
 keymap('n', '<leader>sb', ':set scrollbind!<cr>', opts)
 
------- Tab remaps
+---- 9. Tab remaps
 keymap('n', '<leader>tp', ':tabprev<cr>', opts)
 keymap('n', '<leader>tn', ':tabnext<cr>', opts)
 keymap('n', '<leader>tt', ':tabnew<cr>', opts)
 keymap('n', '<leader>tc', ':tabclose<cr>', opts)
----
------- What the commit?
--------- Random commit message
-keymap('n', '<leader>wtc', ":r!curl -s 'https://whatthecommit.com/index.txt'<cr>", opts)
 
 ------ Insert datetime
 keymap('n', '<leader>dt', ":put =strftime('%d/%m/%y %H:%M:%S')<cr>", opts)
-
--------- hard H and L remaps
-keymap('n', 'H', '0', opts)
-keymap('n', 'L', '$', opts)
 
 ------ Visual mode remaps
 ------ Indentation
@@ -94,15 +91,13 @@ keymap('v', '<leader>d64', 'c<c-r>=system(\'base64 --decode\', @")<cr><esc>', op
 keymap('i', 'jk', '<ESC>', opts)
 ------ and for butterfingers
 keymap('i', 'kj', '<ESC>', opts)
+
 ------ Sane escape from insert mode (Ctrl-C)
 keymap('i', '<c-c>', '<ESC>', opts)
---- inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
---- keymap('i', '<expr> <Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', opts)
---- keymap('i', '<expr> <S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<S-Tab>"', opts)
 
 ------ Command Mode Mappings {{
--------- expand current script path
-keymap('c', '%%', "<C-R>=expand('%:h').'/'<cr>", opts)
+-------- expand current script path and open
+keymap('c', '%%', "<C-R>=expand('%:p:h').'/'<cr><cr><C-Left>", opts)
 
 ---- " Leader write with permissions ------------- {{{
 keymap('c', 'w!!', 'w !sudo tee > /dev/null %', opts)
@@ -122,8 +117,7 @@ vim.api.nvim_command("command! Q :q")
 
 ------ Spell
 keymap('n', '<leader>ss', ':set spell!<cr>', opts)
------- Lib specific command (needs FzfLua)
---- keymap('n', '<leader>fb', ':FzfLua grep cwd=~/Britfone<cr>', opts)  -- Britfone
 
---- TODO -> FIX cht
-keymap('n', '<leader>cht', "<command>cht.sh ", opts)
+------ What the commit?
+-------- Random commit message
+keymap('n', '<leader>wtc', ":r!curl -s 'https://whatthecommit.com/index.txt'<cr>", opts)
