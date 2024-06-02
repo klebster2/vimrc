@@ -220,9 +220,6 @@ main() {
 
     pynvim_loc="$(conda env list | grep "pynvim" | head -n1 | sed -r 's/pynvim *(\/.*)/\1/g')"
 
-    { echo "vim.api.nvim_exec([[";
-    printf "  g:python3_host_prog=%s/bin/python3\n" "$pynvim_loc";
-    echo "]], true)"; } > ./nvim/lua/miniconda-python-loc.lua
     echo "Installed dependencies for vim configuration successfully."
 
     echo "Installing Plugins via PackerSync..."
