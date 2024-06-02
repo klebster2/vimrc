@@ -222,7 +222,7 @@ main() {
 
     { echo "vim.api.nvim_exec([[";
     printf "  g:python3_host_prog=%s/bin/python3\n" "$pynvim_loc";
-    echo "]], true)"; } >> ./nvim/lua/miniconda-python-loc.lua
+    echo "]], true)"; } > ./nvim/lua/miniconda-python-loc.lua
     echo "Installed dependencies for vim configuration successfully."
 
     echo "Installing Plugins via PackerSync..."

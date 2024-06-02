@@ -122,28 +122,18 @@ require("packer").startup(function()
     use { "anuvyklack/windows.nvim", -- pretty window rescaling
       requires = {
           "anuvyklack/middleclass",
-          "anuvyklack/animation.nvim"
-      },
-      config = function()
-          vim.o.winwidth = 10
-          vim.o.winminwidth = 10
-          vim.o.equalalways = false
-          require("windows").setup()
-      end
+      }
     }
     use { "numToStr/Comment.nvim" }
     use { "sheerun/vim-polyglot" }
 
     local python_host_prog = vim.api.nvim_eval("g:python3_host_prog")
     if python_host_prog then
-      local install_cmd = python_host_prog .. " -m pip install wiktionaryparser PyYAML"
-      vim.fn.system(install_cmd)
       use {
         "klebster2/vim-wiktionary",
-        config = function()
-          vim.g.wiktionary_language = 'english'
-        end
+        run = python_host_prog .. " -m pip install wiktionaryparser PyYAML"
       }
+      vim.g.wiktionary_language = 'english'
     else
       vim.api.nvim_echo({{"g:python3_host_prog is not set. Cannot install wiktionaryparser.", "ErrorMsg"}}, true, {})
     end
