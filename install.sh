@@ -154,7 +154,8 @@ create_pynvim_conda_env() {
 
 main() {
     # sudo add-apt-repository universe
-    set -eu pipefail
+    set -eux pipefail
+
     for tool in jq curl; do
         if ! $tool -V 2>/dev/null ; then
             printf '%s is needed for this neovim setup.\nplease install before continuing\n' "$tool" && exit 1
@@ -163,9 +164,10 @@ main() {
     # Check npm is installed
     # Given that `npm -h` returns 1
 
+    npm_install_helper="# installs fnm (Fast Node Manager)\ncurl -fsSL https://fnm.vercel.app/install | bash\\\\\\\\\n# download and install Node.js\nfnm use --install-if-missing 20\n# verifies the right Node.js version is in the environment\nnode -v # should print \`v20.14.0\`\n# verifies the right NPM version is in the environment\nnpm -v # should print \`10.7.0\`"
     npm help 2>/dev/null
     if [ $? -eq 1 ] ; then
-        printf 'npm is needed for this neovim setup.\nplease install before continuing\n' && exit 1
+        printf 'npm is needed for this neovim setup.\nplease install before continuing\n\n%s' "${npm_install_helper}" && exit 1
     fi
     # bash -c "$(curl -so- "https://github.com/Gogh-Co/Gogh/blob/master/installs/gruvbox-dark.sh")"
 
