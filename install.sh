@@ -132,19 +132,20 @@ check_conda_is_installed() {
 create_pynvim_conda_env() {
     echo
     echo "* Checking for conda environment location"
+    environment_location="$(find / -mindepth 1 -maxdepth 3 -type d -iname "miniconda*" 2>/dev/null | head -n1)"
     if [ -d "$environment_location" ]; then
         human_readable_message="Do you want to remove ${environment_location} before reinstalling?"
         _command="rm -r \"${environment_location}\""
-        sudo ${_command}
+        check_decision "$human_readable_message" "$_command" || check_decision "$human_readable_message" "sudo ${_command}"
     fi
 
-    conda env create -f pynvim-env.yaml -n pynvim
-    if [ $? -ne 0 ]; then
+    if [ -d "${environment_location}/$(grep "name:" ./pynvim-env.yaml | awk '{print $2}')" ]; then
+        conda env create -f pynvim-env.yaml -n pynvim
+    else
         echo "* Assuming pynvim conda env already exists..."
         environment_location=$(conda env create -f pynvim-env.yaml -n pynvim 2>&1 | grep -v "^$" | sed 's/.*exists: //g')
         [ ! -z "$environment_location" ] && echo "* Found $environment_location" || echo "No conda environment location found"
-        conda env update --file pynvim-env.yaml --prune
-        # TODO: remove lines 214-215, get pynvim loc in one shot.
+        conda env update -f pynvim-env.yaml --prune
     fi
     export CONDA_PYNVIM_ENV_PYTHON_PATH="$environment_location/bin/python3"
 
@@ -153,22 +154,20 @@ create_pynvim_conda_env() {
 
 main() {
     # sudo add-apt-repository universe
-    # sudo apt install libfuse2
-    # sudo apt install jq unzip
-
-    # Install gruvbox for terminal using gogh
-    #bash -c "$(wget -qO- https://git.io/vQgMr)"
-    #npm_check="$(npm -l)"
-    #if ! (echo $npm_check | grep npm@ &>/dev/null) ; then
-    #    printf "npm is needed for this neovim setup.\nplease install before continuing\n" && exit 1
-    #fi
-    #
+    set -eu pipefail
     for tool in jq curl; do
         if ! $tool -V 2>/dev/null ; then
-            printf "$tool is needed for this neovim setup.\nplease install before continuing\n" && exit 1
+            printf '%s is needed for this neovim setup.\nplease install before continuing\n' "$tool" && exit 1
         fi
     done
-    bash -c "$(curl -so- "https://github.com/Gogh-Co/Gogh/blob/master/installs/gruvbox-dark.sh")"
+    # Check npm is installed
+    # Given that `npm -h` returns 1
+
+    npm help 2>/dev/null
+    if [ $? -eq 1 ] ; then
+        printf 'npm is needed for this neovim setup.\nplease install before continuing\n' && exit 1
+    fi
+    # bash -c "$(curl -so- "https://github.com/Gogh-Co/Gogh/blob/master/installs/gruvbox-dark.sh")"
 
     echo "* Running nvim setup..."
 
@@ -180,6 +179,7 @@ main() {
         install_nvim_appimage "${appimage_target_directory}"
     fi
 
+    set -x
     if ! (check_conda_is_installed); then
         prompt_to_install_conda
         echo "Please rerun the installation script after first running . ${HOME}/.bashrc to see if the base conda env is activated"
@@ -188,9 +188,13 @@ main() {
         exit
     else
         echo "Conda installation found"
-        create_pynvim_conda_env
-        source "${HOME}/.bashrc"
-        conda activate pynvim
+        environment_location="$(find / -mindepth 1 -maxdepth 3 -type d -iname "miniconda*" 2>/dev/null | head -n1)"
+        if [ -d "${environment_location}/$(grep "name:" ./pynvim-env.yaml | awk '{print $2}')" ]; then
+            echo "Found conda environment location: ${environment_location}";
+        else
+            create_pynvim_conda_env
+        fi
+        #source "${HOME}/.bashrc"
     fi
 
     nvim_loc="${HOME}/.config/nvim"
@@ -206,19 +210,16 @@ main() {
 
     check_make_undo_tree "${nvim_loc}/.undotree"
 
-    [ -d "${packer_path}/start/packer.nvim" ] || \
-        install_packer "${packer_path}/start/packer.nvim"
-
-    #install_lua_ls
+#    [ -d "${packer_path}/start/packer.nvim" ] || \
+#        install_packer "${packer_path}/start/packer.nvim"
 
     echo "Setting adding paths to ${HOME}/.vimrc"
 
     echo "Installing dependencies for vim configuration."
-    git clone https://github.com/github/copilot.vim.git "${HOME}/.config/nvim/pack/github/start/copilot.vim" --depth 1
+    [ -d "${HOME}/.config/nvim/pack/github/start/copilot.vim" ] || \
+        git clone https://github.com/github/copilot.vim.git "${HOME}/.config/nvim/pack/github/start/copilot.vim" --depth 1
 
     install_fonts
-
-    pynvim_loc="$(conda env list | grep "pynvim" | head -n1 | sed -r 's/pynvim *(\/.*)/\1/g')"
 
     echo "Installed dependencies for vim configuration successfully."
 
@@ -229,7 +230,16 @@ main() {
     nvim --headless +"LspInstall awk_ls bashls dockerls pyright grammarly" +qall
     echo
 
-    rm ./*.zip*
+    for file in ./*.zip*; do
+        if [ -f "$file" ]; then
+            echo "Cleaning up zip files..."
+            rm ./*.zip*
+        fi
+    done
+    if [ -f ./nvim.appimage ]; then
+        echo "Cleaning up appimage..."
+        rm ./nvim.appimage
+    fi
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
