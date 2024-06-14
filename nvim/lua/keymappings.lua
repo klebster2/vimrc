@@ -70,6 +70,10 @@ keymap('n', '<leader>tn', ':tabnext<cr>', opts)
 keymap('n', '<leader>tt', ':tabnew<cr>', opts)
 keymap('n', '<leader>tc', ':tabclose<cr>', opts)
 
+---- 10. Edit Bash History File (with time formatting)
+--- perl -pe 'use POSIX qw(strftime); s/^\#(\d+)/strftime "\#\%F \%H:\%M:\%S", localtime($1)/e' $HISTFILE
+keymap('n', '<leader>eh', ':new<cr>:r!perl -pe \'use POSIX qw(strftime); s/^\\#(\\d+)/strftime "\\#\\%F \\%H:\\%M:\\%S", localtime($1)/e\' $HISTFILE<cr>', opts)
+
 ------ Insert datetime
 keymap('n', '<leader>dt', ":put =strftime('%d/%m/%y %H:%M:%S')<cr>", opts)
 

@@ -1,3 +1,4 @@
+local vim = vim
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 --- first check vim is in the global scope
@@ -15,15 +16,17 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt_local.foldmethod = "syntax"
         vim.bo.shiftwidth = 4
         vim.bo.tabstop = 4
-        local gen = require('gen')
-        if gen then
-          gen.prompts['Fix_Code'] = {
-            prompt = "Rewrite the following python code. Use PEP 484 conventions, and type-hinting where necessary.\n\n```$filetype\n...\n```:\n```$filetype\n$text\n```",
-            replace = true,
-            extract = "```$filetype\n(.-)```"
-          }
-        end
       end)
+    end,
+})
+
+vim.api.nvim_create_autocmd("BufWritePost", {
+    group = vim.api.nvim_create_augroup("Format", {clear=true}),
+    pattern = {"*.py"},
+    callback = function()
+        --vim.cmd("!python -m doctest -v %")
+        --- grep for failed
+        vim.cmd("!python -m doctest -v % | grep -P 'failed|error'")
     end,
 })
 

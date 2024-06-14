@@ -1,14 +1,6 @@
-local vim = vim
-
 --- Setup nvim-cmp.
 local cmp = require("cmp");
 if not cmp then return end
-
---- Setup nvim-cmp.
-vim.cmd [[ packadd nvim-cmp ]]
-vim.cmd [[ packadd cmp-nvim-lsp ]]
-vim.cmd [[ packadd cmp-buffer ]]
-vim.cmd [[ packadd cmp-look ]]
 
 local luasnip = require("luasnip");
 if not luasnip then return end
@@ -50,33 +42,11 @@ local default_language_servers = {
   "jsonls",
   "lua_ls",
   "marksman",
-  --"mypy",
-  --"pydocstyle",
   "pyright",
   "rust_analyzer",
   "vimls",
   "yamlls",
 }
-
-require('sonarlint').setup({
-   server = {
-      cmd = {
-         'sonarlint-language-server',
-         -- Ensure that sonarlint-language-server uses stdio channel
-         '-stdio',
-         '-analyzers',
-         -- paths to the analyzers you need, using those for python and java in this example
-         --
-         vim.fn.expand( vim.env.HOME .. "/.local/share/nvim/mason/packages/sonarlint-language-server/extension/analyzers/sonarpython.jar"),
-      }
-   },
-   filetypes = {
-      'python',
-   },
-   on_attach = on_attach,
-   lsp_flags = lsp_flags,
-   capabilities = capabilities,
-})
 
 require("mason").setup()
 require("mason-lspconfig").setup {
@@ -92,49 +62,6 @@ for _, value in ipairs(default_language_servers) do
     capabilities = capabilities,
   }
 end
-
---- Set configuration for specific filetype.
-cmp.setup.cmdline('/', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = 'buffer' }
-  }, {
-    { name = 'path' }
-  }, {
-    { name = 'cmdline' }
-  },
-  {
-    { name = 'spell' }
-  },
-  {
-    { name = 'look' }
-  }
-  )
-})
-
-cmp.setup.cmdline('./', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = 'path' }
-  }, {
-    { name = 'cmdline' }
-  })
-})
-
-cmp.setup.cmdline(':', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = 'path' }
-  }, {
-    { name = 'cmdline' }
-  },
-  {
-    { name = 'spell' }
-  },
-  {
-    { name = 'look' }
-  })
-})
 
 --- Works with 'DroidSansMono Nerd Font Mono'
 local lsp_symbols = {
@@ -183,15 +110,6 @@ local window = {
   completion = completion_window_conf,
 }
 
-vim.api.nvim_set_hl(0, "MyPmenu", { bg = "#1d2021", fg = "#928374" })
-vim.api.nvim_set_hl(0, "MyNormal", { fg = "#98971a" })
-vim.api.nvim_set_hl(0, "MyFloatBorder", { fg = "#1d2021" })
-vim.api.nvim_set_hl(0, "MyPmenuSel", { bg = "#fbf1c7", fg = "#282828", bold = true, italic = true })
-vim.api.nvim_set_hl(0, "CmpItemAbbr", { fg = "#d5c4a1" })
-vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { fg = "#fbf1c7" })
-vim.api.nvim_set_hl(0, "CmpItemAbbrFuzzy", { fg = "#ec5300" })
-vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#8ec07c" })
-
 local kind_mapper = {
   Text = 1,
   Method = 2,
@@ -220,20 +138,50 @@ local kind_mapper = {
   TypeParameter = 25,
 }
 
-cmp.setup.filetype({ 'text', 'markdown' }, {
-    sources = {
-      ---{ name = "datamuse", max_item_count = 50,  keyword_length = 5, group_index = 3 },
-      { name = "path",     max_item_count = 2,  group_index = 2 },
-      { name = "buffer",   max_item_count = 8,  keyword_length = 3, group_index = 2 },
-      { name = "spell",    max_item_count = 8,  keyword_length = 4, group_index = 2 },
-    },
-    sorting = {
-      comparators = {
-        -- sort_by_score, -- datamuse custom score sorter
-        cmp.config.recently_used,
-      }
+--- Set configuration for specific filetype.
+cmp.setup.cmdline('/', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources(
+    {
+      { name = 'buffer' }
+    }, {
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+    }, {
+      { name = 'spell' }
+    }, {
+      { name = 'look' }
     }
+  )
 })
+
+cmp.setup.cmdline('./', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources(
+    {
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+    }
+  )
+})
+
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources(
+    {
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+    }, {
+      { name = 'spell' }
+    }, {
+      { name = 'look' }
+    }
+  )
+})
+
 
 --- Enable generic language servers with the additional completion capabilities offered by nvim-cmp
 cmp.setup {
@@ -269,8 +217,8 @@ cmp.setup {
     { name = "nvim_lsp", max_item_count = 10, group_index = 2 },
     { name = "path",     max_item_count = 8,  group_index = 2 },
     { name = "buffer",   max_item_count = 8,  keyword_length = 3, group_index = 2 },
-    { name = "spell",    max_item_count = 8,  keyword_length = 4, group_index = 2 },
-    { name = 'look',     keyword_length = 2,  option = { convert_case = true, loud = true, dict = '/usr/share/dict/words' }}
+    --{ name = "spell",    max_item_count = 8, keyword_length = 4, group_index = 2 },
+    { name = 'look',     max_item_count = 8, keyword_length = 4,  option = { convert_case = true, loud = true, dict = '/usr/share/dict/words' }}
   },
   formatting = {
     fields = {
@@ -312,9 +260,3 @@ cmp.setup {
     }
   }
 }
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
-local opts = { noremap = true, silent = true }
-vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
-vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)

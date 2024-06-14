@@ -1,4 +1,3 @@
-vim = vim
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
@@ -8,10 +7,10 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = ";"
 
 --- Global Plugin Remaps --
------- UndoTree
+--- Plugin: UndoTree
 keymap('n', '<leader>u', ':UndotreeToggle<cr>', opts)
 
---- vim-fugitive --
+--- Plugin: vim-fugitive --
 keymap('n', '<leader>gh', ':diffget //3<cr>', opts)
 keymap('n', '<leader>gu', ':diffget //2<cr>', opts)
 keymap('n', '<leader>gs', ':G<cr>', opts)
@@ -19,10 +18,6 @@ keymap('n', '<leader>Gd', ':Gdiffsplit<cr>', opts)
 keymap('n', '<leader>gd', ':Gdiff !~', opts)
 keymap('n', '<leader>gc', ':Git commit<cr>', opts)
 keymap('n', '<leader>ga', ':Git add %<cr>', opts)
-
---- FZFLua --
---- keymap('n', '<leader>fi', ':FzfLua files<cr>', opts)
---- keymap('n', '<leader>rg', ':FzfLua live_grep<cr>', opts)
 
 --- Open small side explorer
 keymap('n', '<leader>vs', ':NvimTreeOpen .<cr>:vertical resize 40<cr>', opts)
@@ -34,16 +29,25 @@ keymap('n', '<leader>pi', ':PackerSync<cr>', opts)
 keymap('n', '<leader>eV', ':NvimTreeOpen $HOME/.config/nvim/lua/<cr>', opts)
 keymap('n', '<leader>ebf', ':vsplit $HOME/.bash_functions<cr>', opts)
 
-keymap('n', '<leader>ebh', ':vs .<cr>:r!echo "history" | bash -i 2>/dev/null | sed -e "s/\x1b\\[.//g"', opts)
-
 --- Get Etymology
 keymap('n', '<leader>ee', ':WiktionaryEtymology<cr>', opts)
-keymap('n', '<silent><script><expr> <C-J>', 'copilot#Accept("\\<CR>")', opts)
 
---- Telescope
+--- Plugin: Telescope
 keymap('n', '<leader>ff', "<cmd>Telescope find_files<cr>", opts)
 keymap('n', '<leader>f', "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({previewer=false}))<cr>", opts)
 keymap('n', '<c-t>', "<cmd>Telescope live_grep<cr>", opts)
-keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
-keymap("i", "<C-H>", 'copilot#Previous()', { silent = true, expr = true })
-keymap("i", "<C-K>", 'copilot#Next()', { silent = true, expr = true })
+
+--- Plugin: Copilot
+keymap("i", "<c-i>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
+keymap('n', '<silent><script><expr> <C-J>', 'copilot#Accept("\\<CR>")', opts)
+keymap("i", "<c-h>", 'copilot#Previous()', { silent = true, expr = true })
+keymap("i", "<c-k>", 'copilot#Next()', { silent = true, expr = true })
+
+keymap('n', '<leader>ebh', ':new<cr>:r!cat $HISTFILE<cr>', opts)
+
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+local opts = { noremap = true, silent = true }
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)

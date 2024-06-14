@@ -1,14 +1,23 @@
-local vim = vim  -- luacheck: --ignore
+local vim = vim
 local use = require("packer").use
+
+local function setup_python_library(python_host_prog, library_name, pip_installable_name)
+  local install_cmd = python_host_prog .. " -c 'import " .. library_name .. "'"
+  if vim.fn.system(install_cmd) == 0 then
+    vim.api.nvim_echo({{library_name .. " is already installed.", "Normal"}}, true, {})
+  else
+    install_cmd = python_host_prog .. " -m pip install " .. pip_installable_name
+    vim.fn.system(install_cmd)
+  end
+end
+-- Packer can manage itself as an optional plugin
 require("packer").startup(function()
-    -- Packer can manage itself as an optional plugin
     use "wbthomason/packer.nvim" -- packer.nvim
-    use "morhetz/gruvbox" -- Preferred colorscheme
     use { -- For file / directory viewing
       "kyazdani42/nvim-tree.lua",
       requires = {
         "kyazdani42/nvim-web-devicons", -- optional, for file icons
-      }, -- if using WSL2, Windows Terminal need nerd font so install Consolas NF on the OS terminal
+      }, -- if using WSL2, Windows Terminal needs nerd font so install Consolas NF on the OS terminal
     }  -- tree view
     use { -- lsp configuration for linting, etc.
       "neovim/nvim-lspconfig",
@@ -31,14 +40,6 @@ require("packer").startup(function()
       "rafamadriz/friendly-snippets",
     }
     use {
-      'https://gitlab.com/schrieveslaach/sonarlint.nvim',
-      as = 'sonarlint.nvim',
-      requires = {
-        "mfussenegger/nvim-jdtls", --- Java LSP
-      },
-
-    }
-    use {
       "KadoBOT/cmp-plugins",
       config = function()
         require("cmp-plugins").setup({
@@ -51,7 +52,7 @@ require("packer").startup(function()
     }
     use { 'nvim-lualine/lualine.nvim',
       config = function ()
-          local custom_gruvbox = require'lualine.themes.gruvbox_dark'
+        local custom_gruvbox = require'lualine.themes.gruvbox_dark'
         require('lualine').setup {
         options = {
           fmt = string.lower,
@@ -76,7 +77,6 @@ require("packer").startup(function()
         'junegunn/fzf.vim',
       }
     }
-
     use "svermeulen/vimpeccable"
     use "tpope/vim-fugitive" -- github / git
     use "ThePrimeagen/git-worktree.nvim" -- github / git
@@ -91,93 +91,26 @@ require("packer").startup(function()
       run='vim -u NONE -c "helptags surround/doc" -c q'
     }
     use { "gelguy/wilder.nvim", config = function() end, }
-
     -- python
     use { "psf/black", branch= "main" } -- python black
     if vim.fn.executable("isort") == 0 then -- check if Isort is not installed
-      local python_host_prog = vim.api.nvim_eval("g:python3_host_prog")
-      if python_host_prog then
-        local install_cmd = python_host_prog .. " -m pip install isort"
-        vim.fn.system(install_cmd)
-          use "fisadev/vim-isort"
-      else
-        vim.api.nvim_echo({{"g:python3_host_prog is not set. Cannot install isort.", "ErrorMsg"}}, true, {})
-      end
-    else
-      use "fisadev/vim-isort"
+        setup_python_library(vim.api.nvim_eval("g:python3_host_prog"), "isort", "isort")
     end
-
+    use "fisadev/vim-isort"
     use { "preservim/tagbar" } -- view python objects
-    use {  -- docstring format (NumPy)
-      'heavenshell/vim-pydocstring',
-      run = "make install",
-      ft = { 'python' }
-    }
-    -- status bar
-    use "vim-airline/vim-airline"
     use {
       'nvim-telescope/telescope.nvim', tag = '0.1.3',
       requires = { 'nvim-lua/plenary.nvim' }
     }
-    use { "anuvyklack/windows.nvim", -- pretty window rescaling
-      requires = {
-          "anuvyklack/middleclass",
-      }
+    use { "anuvyklack/windows.nvim",
+      requires = "anuvyklack/middleclass",
+      config = function()
+          require('windows').setup()
+      end
     }
     use { "numToStr/Comment.nvim" }
     use { "sheerun/vim-polyglot" }
-
-    local python_host_prog = vim.api.nvim_eval("g:python3_host_prog")
-    if python_host_prog then
-      use {
-        "klebster2/vim-wiktionary",
-        run = python_host_prog .. " -m pip install wiktionaryparser PyYAML"
-      }
-      vim.g.wiktionary_language = 'english'
-    else
-      vim.api.nvim_echo({{"g:python3_host_prog is not set. Cannot install wiktionaryparser.", "ErrorMsg"}}, true, {})
-    end
     use {
-      'rafi/telescope-thesaurus.nvim',
-      requires={
-        'nvim-telescope/telescope.nvim',
-      },
-      opts = {
-        extensions = {
-          thesaurus = {
-            provider = 'datamuse',
-          },
-        },
-      }
-    }
-
-
-    -- LLM (Language Models) for autocompletion
-    use { "David-Kunz/gen.nvim",   -- Uses Ollama under the hood
-      config = function()
-        require("gen").setup({
-          model = "llama3:3b", -- The default model to use.
-            port = "11434", -- The port on which the Ollama service is listening.
-            quit_map = "q", -- set keymap for close the response window
-            retry_map = "<c-r>", -- set keymap to re-send the current prompt
-            init = function(options) pcall(io.popen, "ollama serve > /dev/null 2>&1 &") end,
-            -- Function to initialize Ollama
-            command = function(options)
-                local body = {model = options.model, stream = true}
-                return "curl --silent --no-buffer -X POST http://" .. options.host .. ":" .. options.port .. "/api/chat -d $body"
-            end,
-            -- The command for the Ollama service. You can use placeholders $prompt, $model and $body (shellescaped).
-          -- The command for the Ollama service. You can use placeholders $prompt, $model and $body (shellescaped).
-          -- This can also be a command string.
-          -- The executed command must return a JSON object with { response, context }
-          -- (context property is optional).
-          -- list_models = '<omitted lua function>', -- Retrieves a list of model names
-          show_prompt = true, -- Shows the prompt submitted to Ollama.
-          show_model = true, -- Displays which model you are using at the beginning of your chat session.
-      })
-      end
-    }
-    use { -- copilot (paid)
       "zbirenbaum/copilot.lua",
       cmd = "Copilot",
       event = "InsertEnter",
