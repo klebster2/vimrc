@@ -133,7 +133,7 @@ create_pynvim_conda_env() {
     echo
     echo "* Checking for conda environment location"
     environment_location="$(find / -mindepth 1 -maxdepth 3 -type d -iname "miniconda*" 2>/dev/null | head -n1)"
-    if [ -d "$environment_location" ]; then
+    if [ -d "$environment_location" ] && $REINSTALL_CONDA; then
         human_readable_message="Do you want to remove ${environment_location} before reinstalling?"
         _command="rm -r \"${environment_location}\""
         check_decision "$human_readable_message" "$_command" || check_decision "$human_readable_message" "sudo ${_command}"
@@ -154,19 +154,19 @@ create_pynvim_conda_env() {
 
 main() {
     # sudo add-apt-repository universe
-    set -eux pipefail
+    set -eu pipefail
+    REINSTALL_CONDA=false
 
-    for tool in jq curl; do
-        if ! $tool -V 2>/dev/null ; then
+    for tool in "jq -V" "curl -V" "unzip -v"; do
+        if ! $tool 2>/dev/null ; then
             printf '%s is needed for this neovim setup.\nplease install before continuing\n' "$tool" && exit 1
         fi
     done
-    # Check npm is installed
+    # Check npm is installed (note that unzip is needed for the npm install)
     # Given that `npm -h` returns 1
 
-    npm_install_helper="# installs fnm (Fast Node Manager)\ncurl -fsSL https://fnm.vercel.app/install | bash\\\\\\\\\n# download and install Node.js\nfnm use --install-if-missing 20\n# verifies the right Node.js version is in the environment\nnode -v # should print \`v20.14.0\`\n# verifies the right NPM version is in the environment\nnpm -v # should print \`10.7.0\`"
-    npm help 2>/dev/null
-    if [ $? -eq 1 ] ; then
+    npm_install_helper="\`curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20\`"
+    if ! npm help 2>/dev/null ; then
         printf 'npm is needed for this neovim setup.\nplease install before continuing\n\n%s' "${npm_install_helper}" && exit 1
     fi
     # bash -c "$(curl -so- "https://github.com/Gogh-Co/Gogh/blob/master/installs/gruvbox-dark.sh")"
@@ -181,7 +181,6 @@ main() {
         install_nvim_appimage "${appimage_target_directory}"
     fi
 
-    set -x
     if ! (check_conda_is_installed); then
         prompt_to_install_conda
         echo "Please rerun the installation script after first running . ${HOME}/.bashrc to see if the base conda env is activated"
