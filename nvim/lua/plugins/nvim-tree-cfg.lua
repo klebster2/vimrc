@@ -14,7 +14,6 @@ local gitignore_files = function(path, ignore_files)
     return {}
   end
   for _, line in pairs(lines) do
-    -- vim.cmd("echom 'gitignore line: " .. line .. "'")
     _ignore_files[#_ignore_files + 1] = line
     end
   return _ignore_files

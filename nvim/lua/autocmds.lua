@@ -24,22 +24,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     group = vim.api.nvim_create_augroup("Format", {clear=true}),
     pattern = {"*.py"},
     callback = function()
-        --vim.cmd("!python -m doctest -v %")
-        --- grep for failed
         vim.cmd("!python -m doctest -v % | grep -P 'failed|error'")
-    end,
-})
-
-vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = {"*.py"},
-    callback = function()
-        if vim.fn.executable("Black") == 0 then -- check if Isort is not installed
-          vim.cmd("Black")
-        end
-
-        if vim.fn.executable("isort") == 0 then -- check if Isort is not installed
-          vim.cmd("Isort")
-        end
     end,
 })
 
@@ -60,27 +45,27 @@ local bufIsBig = function(bufnr)
 		return false
 	end
 end
-local cmp = require('cmp')
-local default_cmp_sources = cmp.config.sources({
-	{ name = 'nvim_lsp' },
-	{ name = 'nvim_lsp_signature_help' },
-}, {
-	{ name = 'vsnip' },
-	{ name = 'path' }
-})
--- If a file is too large, I don't want to add to it's cmp sources treesitter, see:
--- https://github.com/hrsh7th/nvim-cmp/issues/1522
-vim.api.nvim_create_autocmd('BufReadPre', {
-	callback = function(t)
-		local sources = default_cmp_sources
-		if not bufIsBig(t.buf) then
-			sources[#sources+1] = {name = 'treesitter', group_index = 2}
-		end
-	cmp.setup.buffer {
-		sources = sources
-	}
-	end
-})
+---local cmp = require('cmp')
+---local default_cmp_sources = cmp.config.sources({
+---	{ name = 'nvim_lsp' },
+---	{ name = 'nvim_lsp_signature_help' },
+---}, {
+---	{ name = 'vsnip' },
+---	{ name = 'path' }
+---})
+----- If a file is too large, I don't want to add to it's cmp sources treesitter, see:
+----- https://github.com/hrsh7th/nvim-cmp/issues/1522
+---vim.api.nvim_create_autocmd('BufReadPre', {
+---	callback = function(t)
+---		local sources = default_cmp_sources
+---		if not bufIsBig(t.buf) then
+---			sources[#sources+1] = {name = 'treesitter', group_index = 2}
+---		end
+---	cmp.setup.buffer {
+---		sources = sources
+---	}
+---	end
+---})
 
 --- Bash / Shell scripts
 vim.api.nvim_create_autocmd("FileType", {pattern = {"shell","bash"},

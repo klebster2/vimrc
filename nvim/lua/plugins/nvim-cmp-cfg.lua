@@ -32,6 +32,12 @@ local on_attach = function(_, bufnr)
   vim.keymap.set('n', 'gr', lsp.buf.references, bufopts)
 end
 
+lspkind.init({
+  symbol_map = {
+    Copilot = "",
+  },
+})
+
 local default_language_servers = {
   "bashls",
   "clangd",
@@ -54,7 +60,6 @@ require("mason-lspconfig").setup {
   force_install = true
 }
 
-
 for _, value in ipairs(default_language_servers) do
   lspconfig[value].setup {
     on_attach = on_attach,
@@ -65,49 +70,50 @@ end
 
 --- Works with 'DroidSansMono Nerd Font Mono'
 local lsp_symbols = {
-  Text = "   Text",
-  Method = "   Method",
-  Function = "   Function",
-  Constructor = "   Constructor",
-  Field = " ﴲ  Field",
-  Variable = "[] Variable",
-  Class = "   Class",
-  Interface = " ﰮ  Interface",
-  Module = "   Module",
-  Property = " 襁 Property",
-  Unit = "   Unit",
-  Value = "   Value",
-  Enum = " 練 Enum",
-  Keyword = "   Keyword",
-  Snippet = "   Snippet",
-  Color = "   Color",
-  File = "   File",
-  Reference = "   Reference",
-  Folder = "   Folder",
-  EnumMember = "   EnumMember",
-  Constant = " ﲀ  Constant",
-  Struct = " ﳤ  Struct",
-  Event = "   Event",
-  Operator = "   Operator",
-  TypeParameter = "   TypeParameter",
+  Text = "   TEXT",
+  Method = "   METH",
+  Function = "   FUNC",
+  Constructor = "   CONSTR",
+  Field = " ﴲ  FIELD",
+  Variable = "[] VAR",
+  Class = "   CLASS",
+  Interface = " ﰮ  INTERF",
+  Module = "   MOD",
+  Property = " 襁 PROP",
+  Unit = "   UNIT",
+  Value = "   VALUE",
+  Enum = " 練 ENUM",
+  Keyword = "   KEYW",
+  Snippet = "   SNIP",
+  Color = "   COLOR",
+  File = "   FILE",
+  Reference = "   REF",
+  Folder = "   FOLDER",
+  EnumMember = "   ENUMMEM",
+  Constant = " ﲀ  CONST",
+  Struct = " ﳤ  STRUCT",
+  Event = "   EVENT",
+  Operator = "   OPER",
+  TypeParameter = "   TYPE",
+  Copilot = "   COPILOT",
 }
 
+---vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#8ec07c" })
+
 --- Window options
-local doc_window_conf = cmp.config.window.bordered({
-border = border,
-winhighlight = "Normal:MyPmenu,FloatBorder:MyPmenu,CursorLine:MyPmenuSel,Search:None",
-side_padding = 0,
-col_offset = 1,
-})
-local completion_window_conf = cmp.config.window.bordered({
-  border = "none",
-  winhighlight = "Normal:MyPmenu,FloatBorder:MyPmenu,CursorLine:MyPmenuSel,Search:None",
-  side_padding = 0,
-  col_offset = -1,
-})
 local window = {
-  documentation = doc_window_conf,
-  completion = completion_window_conf,
+  documentation = cmp.config.window.bordered({
+    border = border,
+    winhighlight = "Normal:MyPmenu,FloatBorder:MyPmenu,CursorLine:MyPmenuSel,Search:None",
+    side_padding = 0,
+    col_offset = 1,
+  }),
+  completion = cmp.config.window.bordered({
+    border = "none",
+    winhighlight = "Normal:MyPmenu,FloatBorder:MyPmenu,CursorLine:MyPmenuSel,Search:None",
+    side_padding = 0,
+    col_offset = -1,
+  }),
 }
 
 local kind_mapper = {
@@ -136,6 +142,7 @@ local kind_mapper = {
   Event = 23,
   Operator = 24,
   TypeParameter = 25,
+  Copilot = 26,
 }
 
 --- Set configuration for specific filetype.
@@ -182,8 +189,6 @@ cmp.setup.cmdline(':', {
   )
 })
 
-
---- Enable generic language servers with the additional completion capabilities offered by nvim-cmp
 cmp.setup {
   snippet = {
     expand = function(args)
@@ -194,9 +199,7 @@ cmp.setup {
   experimental = { ghost_text = false, native_menu = false },
   mapping = cmp.mapping.preset.insert(
     {
-      -- tab is not enabled here
       ["<CR>"] = cmp.mapping.confirm({
-        -- this is the important line
         behavior = cmp.ConfirmBehavior.Replace,
         select = false,
       }),
@@ -207,18 +210,21 @@ cmp.setup {
         behavior = cmp.ConfirmBehavior.Insert,
         select = true
       },
+      ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
       ["<C-Space>"] = cmp.mapping.complete(),
     }
   ),
   sources = {
-    --- { name = "copilot",  group_index = 1,     keyword_length = 2 },
-    { name = "nvim_lua", group_index = 2,     keyword_length = 2 },
-    { name = "luasnip",  group_index = 2,     keyword_length = 2 },
-    { name = "nvim_lsp", max_item_count = 10, group_index = 2 },
-    { name = "path",     max_item_count = 8,  group_index = 2 },
-    { name = "buffer",   max_item_count = 8,  keyword_length = 3, group_index = 2 },
-    --{ name = "spell",    max_item_count = 8, keyword_length = 4, group_index = 2 },
-    { name = 'look',     max_item_count = 8, keyword_length = 4,  option = { convert_case = true, loud = true, dict = '/usr/share/dict/words' }}
+    { name = "copilot", max_item_count = 10, priority = 10 },
+    { name = "nvim_lua", max_item_count = 10, priority = 10 },
+    { name = "luasnip", max_item_count = 10, priority = 10 },
+    { name = "treesitter", max_item_count = 10, priority = 10 },
+    { name = "nvim_lsp", max_item_count = 10, priority = 10 },
+    { name = "path", max_item_count = 3, priority = 10 },
+    { name = "buffer", max_item_count = 5, priority = 10, keyword_length = 4 },
+    { name = "cmdline", max_item_count = 3, priority = 10, keyword_length = 4 },
+    { name = "look", max_item_count = 5, priority = 10, keyword_length = 4 },
+    { name = "spell", max_item_count = 5, priority = 10, keyword_length = 4 },
   },
   formatting = {
     fields = {
@@ -230,9 +236,10 @@ cmp.setup {
       vim_item.kind = string.format(
         "%s %s",
         (lsp_symbols[vim_item.kind] or "!"),
-        (lspkind.presets.default[vim_item.kind] or "!")
+        (lspkind.presets.default[vim_item.kind] or "")
       )
       vim_item.menu = ({
+        Copilot = "", -- Copilot
         nvim_lua = "", -- lua engine
         luasnip = "", -- snippets engine
         nvim_lsp = "", -- local context
@@ -241,13 +248,18 @@ cmp.setup {
         buffer = "﬘",
         spell = "暈",
       })[entry.source.name]
-      vim_item.abbr = vim_item.abbr:match("[^(]+")
+      --- Add max_width to the menu item
+      vim_item.max_width = 50
       return vim_item
-    end,
+  end,
   },
   sorting = {
+    priority_weight = 2,
     comparators = {
+      --require("copilot_cmp").setup().comparators.score,
+      cmp.config.compare.offset,
       cmp.config.exact,
+      cmp.config.score,
       cmp.config.recently_used,
       cmp.config.locality,
       function(entry1, entry2)
@@ -257,6 +269,18 @@ cmp.setup {
           return true
         end
       end,
+      cmp.config.compare.recently_used,
     }
   }
+}
+
+
+lspconfig.lua.setup{
+    settings = {
+        Lua = {
+            diagnostics = {
+                globals = { 'vim' }
+            }
+        }
+    }
 }

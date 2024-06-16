@@ -7,4 +7,19 @@ vim.api.nvim_set_hl(0, "CmpItemAbbr", { fg = "#d5c4a1" })
 vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { fg = "#fbf1c7" })
 vim.api.nvim_set_hl(0, "CmpItemAbbrFuzzy", { fg = "#ec5300" })
 vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#8ec07c" })
+--vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#282828" })
+-- Make lua functions orange and bold
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = {"lua"},
+    callback = function()
+      vim.schedule(function()
+        vim.api.nvim_set_hl(0, "Function", { fg = "#fe8019", bold = true })
+    end)
+  end,
+})
 
+
+vim.api.nvim_set_hl(0, "CmpItemMenuCopilot", { fg = "#8ec07c" })
+--vim.api.nvim_set_hl(0, "CmpItemAbbrMatchCopilot", { fg = "#fbf1c7" })
+--vim.api.nvim_set_hl(0, "CmpItemAbbrFuzzyCopilot", { fg = "#ec5300" })
+vim.api.nvim_set_hl(0, "CmpItemKindCopilot", {fg ="#8ec07c"})

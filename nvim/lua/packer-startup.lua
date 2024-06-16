@@ -1,4 +1,3 @@
-local vim = vim
 local use = require("packer").use
 
 local function setup_python_library(python_host_prog, library_name, pip_installable_name)
@@ -116,10 +115,21 @@ require("packer").startup(function()
       event = "InsertEnter",
       config = function()
         require("copilot").setup({
+          --suggestion = { enabled = false }, -- Favor copilot-cmp
+          --panel = { enabled = false },
         })
       end,
       filetypes = {
         ["*"] = false, -- disable for all other filetypes and ignore default `filetypes`
       },
+
+    }
+    use {
+      "zbirenbaum/copilot-cmp",
+      after = { "copilot.lua" },
+      config = function ()
+        require("copilot_cmp").setup()
+      end
     }
 end)
+-- hello world
