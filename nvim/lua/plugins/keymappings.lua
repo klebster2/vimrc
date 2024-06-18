@@ -37,13 +37,9 @@ keymap('n', '<leader>ff', "<cmd>Telescope find_files<cr>", opts)
 keymap('n', '<leader>f', "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({previewer=false}))<cr>", opts)
 keymap('n', '<c-t>', "<cmd>Telescope live_grep<cr>", opts)
 
---- Plugin: Copilot
-keymap("i", "<c-i>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
-keymap('n', '<silent><script><expr> <C-J>', 'copilot#Accept("\\<CR>")', opts)
-keymap("i", "<c-h>", 'copilot#Previous()', { silent = true, expr = true })
-keymap("i", "<c-k>", 'copilot#Next()', { silent = true, expr = true })
-
-keymap('n', '<leader>ebh', ':new<cr>:r!cat $HISTFILE<cr>', opts)
+-- perl -pe 'use POSIX qw(strftime); s/^#(\d+)/strftime "#%F %H:%M:%S", localtime($1)/e' "$1"
+keymap('n', '<leader>ebh', ":new<cr>:r!perl -pe 'use POSIX qw(strftime); s/^\\#(\\d+)/strftime \"\\#\\%F \\%H:\\%M:\\%S\", localtime($1)/e' $HISTFILE<cr>", opts)
+-- keymap('n', '<leader>ebh', ':new<cr>:r!cat $HISTFILE<cr>', opts)
 
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap = true, silent = true }

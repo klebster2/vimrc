@@ -79,6 +79,13 @@ require("packer").startup(function()
     use "svermeulen/vimpeccable"
     use "tpope/vim-fugitive" -- github / git
     use "ThePrimeagen/git-worktree.nvim" -- github / git
+    use {
+        'nvim-treesitter/nvim-treesitter',
+        run = function()
+            local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+            ts_update()
+        end,
+    }
     use "jremmen/vim-ripgrep" -- search
     use {
       "mbbill/undotree",
@@ -92,10 +99,14 @@ require("packer").startup(function()
     use { "gelguy/wilder.nvim", config = function() end, }
     -- python
     use { "psf/black", branch= "main" } -- python black
-    if vim.fn.executable("isort") == 0 then -- check if Isort is not installed
-        setup_python_library(vim.api.nvim_eval("g:python3_host_prog"), "isort", "isort")
-    end
-    use "fisadev/vim-isort"
+    use {
+      "fisadev/vim-isort",
+      run = function()
+        if vim.fn.executable("isort") == 0 then -- check if Isort is not installed
+            setup_python_library(vim.api.nvim_eval("g:python3_host_prog"), "isort", "isort")
+        end
+      end,
+    }
     use { "preservim/tagbar" } -- view python objects
     use {
       'nvim-telescope/telescope.nvim', tag = '0.1.3',
@@ -114,15 +125,8 @@ require("packer").startup(function()
       cmd = "Copilot",
       event = "InsertEnter",
       config = function()
-        require("copilot").setup({
-          --suggestion = { enabled = false }, -- Favor copilot-cmp
-          --panel = { enabled = false },
-        })
+        require("copilot").setup()
       end,
-      filetypes = {
-        ["*"] = false, -- disable for all other filetypes and ignore default `filetypes`
-      },
-
     }
     use {
       "zbirenbaum/copilot-cmp",

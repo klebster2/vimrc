@@ -98,12 +98,10 @@ local lsp_symbols = {
   Copilot = "   COPILOT",
 }
 
----vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#8ec07c" })
-
 --- Window options
 local window = {
   documentation = cmp.config.window.bordered({
-    border = border,
+    border = "none",
     winhighlight = "Normal:MyPmenu,FloatBorder:MyPmenu,CursorLine:MyPmenuSel,Search:None",
     side_padding = 0,
     col_offset = 1,
@@ -146,7 +144,7 @@ local kind_mapper = {
 }
 
 --- Set configuration for specific filetype.
-cmp.setup.cmdline('/', {
+cmp.setup.cmdline({'/', '?'}, {
   mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources(
     {
@@ -199,19 +197,18 @@ cmp.setup {
   experimental = { ghost_text = false, native_menu = false },
   mapping = cmp.mapping.preset.insert(
     {
+      ["<C-b>"] = cmp.mapping.scroll_docs(-4),     --- Mnemonic - back
+      ["<C-f>"] = cmp.mapping.scroll_docs(4),      --- Mnemonic - forward
+      ["<C-e>"] = cmp.mapping.abort(),             --- Mnemonic - escape
       ["<CR>"] = cmp.mapping.confirm({
         behavior = cmp.ConfirmBehavior.Replace,
         select = false,
       }),
-      ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-      ["<C-f>"] = cmp.mapping.scroll_docs(4),
-      ['<C-e>'] = cmp.mapping.close(),
       ["<C-y>"] = cmp.mapping.confirm {
         behavior = cmp.ConfirmBehavior.Insert,
         select = true
       },
-      ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
-      ["<C-Space>"] = cmp.mapping.complete(),
+      ["<C-Space>"] = cmp.mapping.complete({select=true}),
     }
   ),
   sources = {
@@ -220,11 +217,11 @@ cmp.setup {
     { name = "luasnip", max_item_count = 10, priority = 10 },
     { name = "treesitter", max_item_count = 10, priority = 10 },
     { name = "nvim_lsp", max_item_count = 10, priority = 10 },
-    { name = "path", max_item_count = 3, priority = 10 },
-    { name = "buffer", max_item_count = 5, priority = 10, keyword_length = 4 },
-    { name = "cmdline", max_item_count = 3, priority = 10, keyword_length = 4 },
-    { name = "look", max_item_count = 5, priority = 10, keyword_length = 4 },
-    { name = "spell", max_item_count = 5, priority = 10, keyword_length = 4 },
+    { name = "path", max_item_count = 3, priority = 8 },
+    { name = "buffer", max_item_count = 5, priority = 7, keyword_length = 4 },
+    { name = "look", max_item_count = 5, priority = 7, keyword_length = 4 },
+    { name = "cmdline", max_item_count = 3, priority = 6, keyword_length = 4 },
+    { name = "spell", max_item_count = 5, priority = 5, keyword_length = 4 },
   },
   formatting = {
     fields = {
@@ -248,15 +245,14 @@ cmp.setup {
         buffer = "﬘",
         spell = "暈",
       })[entry.source.name]
-      --- Add max_width to the menu item
-      vim_item.max_width = 50
+      --- TODO: Add max_width to the menu item
+      --- vim_item.max_width = 50
       return vim_item
   end,
   },
   sorting = {
     priority_weight = 2,
     comparators = {
-      --require("copilot_cmp").setup().comparators.score,
       cmp.config.compare.offset,
       cmp.config.exact,
       cmp.config.score,
@@ -275,12 +271,13 @@ cmp.setup {
 }
 
 
-lspconfig.lua.setup{
+lspconfig['lua_ls'].setup{
     settings = {
         Lua = {
             diagnostics = {
-                globals = { 'vim' }
+                globals = { 'vim' }   -- disable vim global warnings
             }
         }
-    }
+    },
+    capabilities = capabilities
 }

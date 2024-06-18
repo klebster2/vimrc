@@ -14,17 +14,18 @@ vim.go.backspace= "indent,eol,start"
 ---- indentation
 vim.opt.autoindent = true
 vim.opt.smartindent = true
-vim.opt.cindent = true
-
+--vim.opt.cindent = true
+vim.cmd([[ filetype plugin indent on ]])
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 4
-vim.opt.softtabstop = 4
+vim.cmd([[let tabwidth=4]])
 vim.opt.tabstop = 4
 vim.opt.wildmenu = true
 vim.opt.wildmode = {'list', 'longest'}
 vim.opt.mouse = nil
 vim.opt.spell = false
 vim.opt.spelllang = { 'en_gb' }  -- The default spell lang
+vim.opt.shell='bash --login'
 
 --- local to window
 vim.wo.number = true
@@ -34,13 +35,7 @@ vim.wo.wrap = false
 --- other
 vim.g.syntax_on = true
 
-vim.opt.tabline = "-"
---- options
---- complete option
-vim.o.completeopt = "menu,menuone,noselect"
-
 --- color options
 vim.o.termguicolors = true
 vim.o.background = "dark"
-
 vim.opt.mouse = ""
