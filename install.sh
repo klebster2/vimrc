@@ -134,7 +134,7 @@ main() {
     set -euox pipefail
     REINSTALL_CONDA=false
 
-    for tool in "jq -V" "curl -V" "unzip -v"; do
+    for tool in "jq -V" "curl -V" "unzip -v" "aiksaurus -v"; do
         if ! $tool 2>/dev/null ; then
             printf '%s is needed for this neovim setup.\nplease install before continuing\n' "$(echo "$tool" | cut -d ' ' -f1)" && exit 1
         fi
@@ -162,6 +162,7 @@ main() {
     else
         set +e
         echo "Conda installation found"
+        # TODO: prompt user to use one of the conda locations (numbered)
         environment_location="$(find / -mindepth 1 -maxdepth 3 -type d -iname "miniconda*" 2>/dev/null | head -n1)"
         grep "name:" ./pynvim-env.yaml | awk '{print $2}'
         if [ -d "${environment_location}/$(grep "name:" ./pynvim-env.yaml | awk '{print $2}')" ]; then
