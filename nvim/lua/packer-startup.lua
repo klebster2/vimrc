@@ -97,7 +97,6 @@ require("packer").startup(function()
       run='vim -u NONE -c "helptags surround/doc" -c q'
     }
     use { "gelguy/wilder.nvim", config = function() end, }
-    -- python
     use { "psf/black", branch= "main" } -- python black
     use {
       "fisadev/vim-isort",
@@ -117,6 +116,12 @@ require("packer").startup(function()
       config = function()
           require('windows').setup()
       end
+    }
+    use {
+      "wincent/shellbot",
+      run = function()
+        require("chatgpt").chatgpt()
+      end,
     }
     use { "numToStr/Comment.nvim" }
     use { "sheerun/vim-polyglot" }

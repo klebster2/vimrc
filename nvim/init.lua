@@ -13,8 +13,10 @@ require("keymappings")               --> $HOME/.vim_runtime/nvim/lua/keymappings
 
 --- Default CMP + LSP 'Mason' (language server protocol) configuration (for python)
 require("colorscheme")               --> $HOME/.vim_runtime/nvim/lua/colorscheme.lua
+
 require("packer-install")            --> $HOME/.vim_runtime/nvim/lua/packer-install.lua
 require("packer-startup")            --> $HOME/.vim_runtime/nvim/lua/packer-startup.lua
+require("autocmds")                   --> $HOME/.vim_runtime/nvim/lua/autocmds.lua
 
 --- Vendor plugins ( --> $HOME/.vim_runtime/nvim/lua/packer-startup.lua )
 if require("packer") then
@@ -25,7 +27,5 @@ if require("packer") then
   require("plugins.nvim-tree-cfg")      --> $HOME/.vim_runtime/nvim/lua/plugins/nvim-tree-cfg.lua
   require("plugins.treesitter-cfg")     --> $HOME/.vim_runtime/nvim/lua/plugins/treesitter-cfg.lua
   require("plugins.luasnip-config")     --> $HOME/.vim_runtime/nvim/lua/plugins/luasnip-config.lua
-  ---- TODO: split into autocmds-vendor and autocmds
-  require("autocmds")                   --> $HOME/.vim_runtime/nvim/lua/autocmds.lua
+  require("plugins.autocmds")           --> $HOME/.vim_runtime/nvim/lua/plugins/autocmds.lua
 end
-require("thesaurus")                    --> $HOME/.vim_runtime/nvim/lua/thesaurus.lua

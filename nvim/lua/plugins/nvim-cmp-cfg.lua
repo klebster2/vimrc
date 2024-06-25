@@ -13,8 +13,6 @@ local cmp_nvim_lsp = require("cmp_nvim_lsp");
 if not cmp_nvim_lsp then return end
 
 local capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
-local lsp_flags = { debounce_text_changes = 120 }
-local border = { "╭", "╍", "╮", "│", "╯", "╍", "╰", "│" }
 
 --- Use an on_attach function to only map the following keys
 --- after the language server attaches to the current buffer
@@ -35,8 +33,11 @@ end
 lspkind.init({
   symbol_map = {
     Copilot = "",
+    thesaurus = "",
   },
 })
+
+require("plugins.nvim-cmp.thesaurus") ---- TODO - make this a plugin <<< $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp/thesaurus.lua
 
 local default_language_servers = {
   "bashls",
@@ -63,7 +64,7 @@ require("mason-lspconfig").setup {
 for _, value in ipairs(default_language_servers) do
   lspconfig[value].setup {
     on_attach = on_attach,
-    flags = lsp_flags,
+    flags = { debounce_text_changes = 120 },
     capabilities = capabilities,
   }
 end
@@ -96,52 +97,54 @@ local lsp_symbols = {
   Operator = "   OPER",
   TypeParameter = "   TYPE",
   Copilot = "   COPILOT",
+  Thesaurus = "   THESAU",
 }
 
 --- Window options
 local window = {
   documentation = cmp.config.window.bordered({
-    border = "none",
+    border = { "╭", "╍", "╮", "│", "╯", "╍", "╰", "│" },
     winhighlight = "Normal:MyPmenu,FloatBorder:MyPmenu,CursorLine:MyPmenuSel,Search:None",
     side_padding = 0,
     col_offset = 1,
   }),
   completion = cmp.config.window.bordered({
-    border = "none",
+    border = 'none',
     winhighlight = "Normal:MyPmenu,FloatBorder:MyPmenu,CursorLine:MyPmenuSel,Search:None",
     side_padding = 0,
     col_offset = -1,
   }),
 }
 
-local kind_mapper = {
-  Text = 1,
-  Method = 2,
-  Function = 3,
-  Constructor = 4,
-  Field = 5,
-  Variable = 6,
-  Class = 7,
-  Interface = 8,
-  Module = 9,
-  Property = 10,
-  Unit = 11,
-  Value = 12,
-  Enum = 13,
-  Keyword = 14,
-  Snippet = 15,
-  Color = 16,
-  File = 17,
-  Reference = 18,
-  Folder = 19,
-  EnumMember = 20,
-  Constant = 21,
-  Struct = 22,
-  Event = 23,
-  Operator = 24,
-  TypeParameter = 25,
-  Copilot = 26,
-}
+local kind_mapper = cmp.lsp.CompletionItemKind
+kind_mapper.Copilot = 25
+kind_mapper.Thesaurus = 26
+
+cmp.setup.filetype('text', {
+    sources = cmp.config.sources({
+        { name = 'thesaurus', keyword_length = 3, priority = 10 },
+        { name = "spell", max_item_count = 5, priority = 5, keyword_length = 6 },
+      }),
+    formatting = {
+      fields = {
+        cmp.ItemField.Menu,
+        cmp.ItemField.Abbr,
+        cmp.ItemField.Kind,
+      },
+      format = function(entry, vim_item)
+        vim_item.kind = string.format(
+          "%s %s",
+          (lsp_symbols[vim_item.kind] or "!"),
+          (lspkind.presets.default[vim_item.kind] or "")
+        )
+        vim_item.menu = ({
+          spell = "暈",
+          thesaurus = "",
+        })[entry.source.name]
+        return vim_item
+    end,
+    },
+})
 
 --- Set configuration for specific filetype.
 cmp.setup.cmdline({'/', '?'}, {
@@ -221,7 +224,18 @@ cmp.setup {
     { name = "buffer", max_item_count = 5, priority = 7, keyword_length = 4 },
     { name = "look", max_item_count = 5, priority = 7, keyword_length = 4 },
     { name = "cmdline", max_item_count = 3, priority = 6, keyword_length = 4 },
-    { name = "spell", max_item_count = 5, priority = 5, keyword_length = 4 },
+    {
+        name = "spell",   --- check $HOME/.vim_runtime/nvim/lua/options.lua
+        option = {
+            keep_all_entries = false,
+            enable_in_context = function()
+                return true
+            end,
+            preselect_correct_word = true,
+        },
+        max_item_count = 3, priority = 5, keyword_length = 5
+    },
+    { name = "thesaurus", max_item_count = 20, priority = 3, keyword_length = 4 },
   },
   formatting = {
     fields = {
@@ -243,10 +257,9 @@ cmp.setup {
         treesitter = "", -- treesitter ( $HOME/.vim_runtime/nvim/lua/plugins/treesitter.lua )
         path = "ﱮ",
         buffer = "﬘",
-        spell = "暈",
+        --spell = "暈",
+        thesaurus = "",  -- Custom thesaurus
       })[entry.source.name]
-      --- TODO: Add max_width to the menu item
-      --- vim_item.max_width = 50
       return vim_item
   end,
   },
