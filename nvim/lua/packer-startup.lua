@@ -24,7 +24,7 @@ require("packer").startup(function()
       "williamboman/mason-lspconfig.nvim",
       "onsails/lspkind-nvim",
     }
-    use { -- cmp for completion --> $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp-cfg.lua
+    use { -- cmp for completion --> $HOME/.config/nvim/lua/plugins/nvim-cmp-cfg.lua
       "hrsh7th/nvim-cmp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
@@ -35,7 +35,7 @@ require("packer").startup(function()
       "f3fora/cmp-spell",
       "saadparwaiz1/cmp_luasnip",
       "nvim-lua/plenary.nvim",
-      "L3MON4D3/LuaSnip", -- snippets for completion see https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip and luasnip ( $HOME/.vim_runtime/nvim/snippets )
+      "L3MON4D3/LuaSnip", -- snippets for completion see https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip and luasnip ( $HOME/.config/nvim/snippets )
       "rafamadriz/friendly-snippets",
     }
     use {
@@ -141,4 +141,3 @@ require("packer").startup(function()
       end
     }
 end)
--- hello world

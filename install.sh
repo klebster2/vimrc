@@ -1,6 +1,7 @@
 #!/bin/bash
 
 install_fonts() {
+    local _cache_font="$1"
     fonts_dir="${HOME}/.local/share/fonts"
     if [ ! -d "${fonts_dir}" ]; then
         echo "mkdir -p $fonts_dir"
@@ -14,8 +15,9 @@ install_fonts() {
     unzip -o -q -d "${fonts_dir}" ${zip}
     rm ${zip}
 
-    echo "fc-cache -f"
-    fc-cache -f
+    if $_cache_font; then
+        fc-cache -f
+    fi
 }
 
 check_decision() {
@@ -30,19 +32,6 @@ check_decision() {
         q|Q|Quit|quit ) echo "'${y_n_q}' $msg, quitting"; return;;
         * ) echo "invalid";;
     esac
-}
-
-symlink_vim_runtime_nvim_to_nvim_loc() {
-    local _nvim_loc="$1"
-    _nvim_loc_parent="$(dirname "${_nvim_loc}")"
-    if [ ! -L "${_nvim_loc}" ]; then
-        echo "Adding symlink as ${_nvim_loc}..."
-        if ! ln -s "$HOME/.vim_runtime/nvim" "${_nvim_loc_parent}"  2> /dev/null; then
-            cmd="rm -r \"${_nvim_loc}\" && ln -s \"$HOME/.vim_runtime/nvim\" \"${_nvim_loc_parent}\" 2> /dev/null"
-            check_decision "Overwrite ${_nvim_loc}" "$cmd"
-        fi
-    fi
-
 }
 
 check_make_undo_tree() {
@@ -133,16 +122,20 @@ create_pynvim_conda_env() {
 main() {
     set -euox pipefail
     REINSTALL_CONDA=false
+    CACHE_FONT=false
 
-    for tool in "jq -V" "curl -V" "unzip -v" "aiksaurus -v"; do
+    for tool in "jq -V" "curl -V" "unzip -v" ; do
+        # Consider also using "aiksaurus -v"
         if ! $tool 2>/dev/null ; then
             printf '%s is needed for this neovim setup.\nplease install before continuing\n' "$(echo "$tool" | cut -d ' ' -f1)" && exit 1
+            printf 'curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20\n'
+            printf 'sudo apt-get install jq curl unzip -y'
         fi
     done
 
     npm_install_helper="\`curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20\`"
     if ! npm help 2>/dev/null ; then
-        printf 'npm is needed for this neovim setup.\nplease install before continuing\n\n%s' "${npm_install_helper}" && exit 1
+        printf 'npm is still needed for this neovim setup.\nplease install before continuing\n\n%s' "${npm_install_helper}" && exit 1
     fi
 
     echo "* Running nvim setup..."
@@ -161,7 +154,7 @@ main() {
         exit
     else
         set +e
-        echo "Conda installation found"
+        echo "* Conda installation found"
         # TODO: prompt user to use one of the conda locations (numbered)
         environment_location="$(find / -mindepth 1 -maxdepth 3 -type d -iname "miniconda*" 2>/dev/null | head -n1)"
         grep "name:" ./pynvim-env.yaml | awk '{print $2}'
@@ -173,37 +166,25 @@ main() {
         set -e
     fi
 
-    nvim_loc="${HOME}/.config/nvim"
-    nvim_loc_parent="$(dirname "${nvim_loc}")"
+    check_make_undo_tree "${HOME}/.config/nvim/.undotree"
 
-    mkdir_p_verbose "${nvim_loc_parent}"
-    mkdir_p_verbose "${HOME}/.local/bin"
+    echo "* Installing dependencies for vim configuration."
+    #install_fonts $CACHE_FONT
+    echo "** Installing Plugins via PackerSync..."
+    nvim --headless +"PackerSync" +qall
 
-    echo "* Symlink ~/.vim_runtime/nvim to ~/.config/nvim"
-    symlink_vim_runtime_nvim_to_nvim_loc "${nvim_loc}"
-
-    check_make_undo_tree "${nvim_loc}/.undotree"
-
-    echo "Setting adding paths to ${HOME}/.vimrc"
-    echo "Installing dependencies for vim configuration."
-    install_fonts
-
-    echo "Installed dependencies for vim configuration successfully."
-    echo "Installing Plugins via PackerSync..."
-    nvim +PackerSync +qall
-
-    echo "Installing Language servers via LspInstall..."
+    echo "** Installing Language servers via LspInstall..."
     nvim --headless +"LspInstall awk_ls bashls dockerls pyright grammarly" +qall
     echo
 
     for file in ./*.zip*; do
         if [ -f "$file" ]; then
-            echo "Cleaning up zip files..."
+            echo "* Cleaning up zip files..."
             rm ./*.zip*
         fi
     done
     if [ -f ./nvim.appimage ]; then
-        echo "Removing nvim.appimage (intermediate app file)"
+        echo "* Removing nvim.appimage (intermediate app file)"
         rm ./nvim.appimage
     fi
 }

@@ -37,7 +37,7 @@ lspkind.init({
   },
 })
 
-require("plugins.nvim-cmp.thesaurus") ---- TODO - make this a plugin <<< $HOME/.vim_runtime/nvim/lua/plugins/nvim-cmp/thesaurus.lua
+require("plugins.nvim-cmp.thesaurus") ---- TODO - make this a plugin <<< $HOME/.config/nvim/lua/plugins/nvim-cmp/thesaurus.lua
 
 local default_language_servers = {
   "bashls",
@@ -225,7 +225,7 @@ cmp.setup {
     { name = "look", max_item_count = 5, priority = 7, keyword_length = 4 },
     { name = "cmdline", max_item_count = 3, priority = 6, keyword_length = 4 },
     {
-        name = "spell",   --- check $HOME/.vim_runtime/nvim/lua/options.lua
+        name = "spell",   --- check $HOME/.config/nvim/lua/options.lua
         option = {
             keep_all_entries = false,
             enable_in_context = function()
@@ -233,7 +233,7 @@ cmp.setup {
             end,
             preselect_correct_word = true,
         },
-        max_item_count = 3, priority = 5, keyword_length = 5
+        max_item_count = 3, priority = 5, keyword_length = 6
     },
     { name = "thesaurus", max_item_count = 20, priority = 3, keyword_length = 4 },
   },
@@ -254,7 +254,7 @@ cmp.setup {
         nvim_lua = "", -- lua engine
         luasnip = "", -- snippets engine
         nvim_lsp = "", -- local context
-        treesitter = "", -- treesitter ( $HOME/.vim_runtime/nvim/lua/plugins/treesitter.lua )
+        treesitter = "", -- treesitter ( $HOME/.config/nvim/lua/plugins/treesitter.lua )
         path = "ﱮ",
         buffer = "﬘",
         --spell = "暈",

@@ -3,16 +3,10 @@
 Ubuntu Setup
 ============
 
-First clone repo to `~/.vim_runtime`:
+First clone repo to `~/.config/nvim`:
 
 ```bash
-git clone "https://github.com/klebster2/vimrc" ~/.vim_runtime && cd ~/.vim_runtime
-```
-
-Then run the installer
-
-``` bash
-./install.sh
+mkdir -pv ~/.config && git clone "https://github.com/klebster2/vimrc" ~/.config/nvim && cd -v ~/.config/nvim && ./install.sh
 ```
 
 # Usage notes and Useful commands

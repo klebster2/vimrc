@@ -21,7 +21,7 @@ source.is_available = function()
   return vim.api.nvim_get_mode().mode == 'i'
 end
 
-local thesaurus_path = vim.fn.expand(os.getenv('HOME') .. "/.vim_runtime/dicts/thesaurus/thesaurus-no-underscore-no-numbers-no-names-no-space.txt")
+local thesaurus_path = vim.fn.expand(os.getenv('HOME') .. "/.config/nvim/dicts/thesaurus/thesaurus-no-underscore-no-numbers-no-names-no-space.txt")
 
 for line in io.lines(thesaurus_path) do
   local parts = vim.fn.split(line, ',')
