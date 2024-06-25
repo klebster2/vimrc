@@ -171,10 +171,10 @@ main() {
     echo "* Installing dependencies for vim configuration."
     #install_fonts $CACHE_FONT
     echo "** Installing Plugins via PackerSync..."
-    nvim --headless +"PackerSync" +qall
+    nvim --headless "+PackerSync" +qall
 
     echo "** Installing Language servers via LspInstall..."
-    nvim --headless +"LspInstall awk_ls bashls dockerls pyright grammarly" +qall
+    nvim --headless "+LspInstall awk_ls bashls dockerls pyright grammarly" +qall
     echo
 
     for file in ./*.zip*; do

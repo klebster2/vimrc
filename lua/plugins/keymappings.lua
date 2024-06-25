@@ -30,7 +30,7 @@ keymap('n', '<leader>eV', ':NvimTreeOpen $HOME/.config/nvim/lua/<cr>', opts)
 keymap('n', '<leader>ebf', ':vsplit $HOME/.bash_functions<cr>', opts)
 
 --- Get Etymology
-keymap('n', '<leader>ee', ':WiktionaryEtymology<cr>', opts)
+--keymap('n', '<leader>ee', ':WiktionaryEtymology<cr>', opts)
 
 --- Plugin: Telescope
 keymap('n', '<leader>ff', "<cmd>Telescope find_files<cr>", opts)
