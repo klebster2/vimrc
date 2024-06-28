@@ -6,7 +6,7 @@ Ubuntu Setup
 First clone repo to `~/.config/nvim`:
 
 ```bash
-mkdir -pv ~/.config && git clone "https://github.com/klebster2/vimrc" ~/.config/nvim && cd -v ~/.config/nvim && ./install.sh
+mkdir -pv ~/.config && git clone "https://github.com/klebster2/vimrc" ~/.config/nvim && cd ~/.config/nvim && ./install.sh
 ```
 
 # Usage notes and Useful commands
