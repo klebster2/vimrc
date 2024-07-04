@@ -120,32 +120,6 @@ local kind_mapper = cmp.lsp.CompletionItemKind
 kind_mapper.Copilot = 25
 kind_mapper.Thesaurus = 26
 
-cmp.setup.filetype('text', {
-    sources = cmp.config.sources({
-        { name = 'thesaurus', keyword_length = 3, priority = 10 },
-        { name = "spell", max_item_count = 5, priority = 5, keyword_length = 6 },
-      }),
-    formatting = {
-      fields = {
-        cmp.ItemField.Menu,
-        cmp.ItemField.Abbr,
-        cmp.ItemField.Kind,
-      },
-      format = function(entry, vim_item)
-        vim_item.kind = string.format(
-          "%s %s",
-          (lsp_symbols[vim_item.kind] or "!"),
-          (lspkind.presets.default[vim_item.kind] or "")
-        )
-        vim_item.menu = ({
-          spell = "暈",
-          thesaurus = "",
-        })[entry.source.name]
-        return vim_item
-    end,
-    },
-})
-
 --- Set configuration for specific filetype.
 cmp.setup.cmdline({'/', '?'}, {
   mapping = cmp.mapping.preset.cmdline(),
@@ -197,7 +171,7 @@ cmp.setup {
     end
   },
   window = window,
-  experimental = { ghost_text = false, native_menu = false },
+  experimental = { ghost_text = true, native_menu = false },
   mapping = cmp.mapping.preset.insert(
     {
       ["<C-b>"] = cmp.mapping.scroll_docs(-4),     --- Mnemonic - back
@@ -217,7 +191,7 @@ cmp.setup {
   sources = {
     { name = "copilot", max_item_count = 10, priority = 10 },
     { name = "nvim_lua", max_item_count = 10, priority = 10 },
-    { name = "luasnip", max_item_count = 10, priority = 10 },
+    { name = "luasnip", max_item_count = 2, priority = 10 },
     { name = "treesitter", max_item_count = 10, priority = 10 },
     { name = "nvim_lsp", max_item_count = 10, priority = 10 },
     { name = "path", max_item_count = 3, priority = 8 },
@@ -233,9 +207,9 @@ cmp.setup {
             end,
             preselect_correct_word = true,
         },
-        max_item_count = 3, priority = 5, keyword_length = 6
+        max_item_count = 3, priority = 3, keyword_length = 6
     },
-    { name = "thesaurus", max_item_count = 20, priority = 3, keyword_length = 4 },
+    { name = "thesaurus", max_item_count = 5, priority = 5, keyword_length = 4 },
   },
   formatting = {
     fields = {
@@ -257,7 +231,7 @@ cmp.setup {
         treesitter = "", -- treesitter ( $HOME/.config/nvim/lua/plugins/treesitter.lua )
         path = "ﱮ",
         buffer = "﬘",
-        --spell = "暈",
+        spell = "暈",
         thesaurus = "",  -- Custom thesaurus
       })[entry.source.name]
       return vim_item

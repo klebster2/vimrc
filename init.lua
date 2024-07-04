@@ -29,4 +29,3 @@ if require("packer") then
   require("plugins.luasnip-config")     --> $HOME/.config/nvim/lua/plugins/luasnip-config.lua
   require("plugins.autocmds")           --> $HOME/.config/nvim/lua/plugins/autocmds.lua
 end
-

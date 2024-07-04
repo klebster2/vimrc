@@ -1,8 +1,6 @@
 local cmp = require("cmp");
 if not cmp then return end
 
----- TODO - make this a plugin >>>
---- First, find the current file root, thesaurus is three directories back, then inside dicts/theasaurus as thesaurus.txt
 local thesaurus = {}
 
 local source = {}
@@ -22,6 +20,7 @@ source.is_available = function()
 end
 
 local thesaurus_path = vim.fn.expand(os.getenv('HOME') .. "/.config/nvim/dicts/thesaurus/thesaurus-no-underscore-no-numbers-no-names-no-space.txt")
+
 
 for line in io.lines(thesaurus_path) do
   local parts = vim.fn.split(line, ',')

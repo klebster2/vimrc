@@ -5,7 +5,7 @@ vim.go.errorbells = false
 vim.go.smartcase = true
 vim.go.swapfile = false
 vim.go.backup = false
-vim.go.foldlevelstart = 1
+--vim.go.foldlevelstart = 1
 --- backspace opt
 vim.go.backspace= "indent,eol,start"
 
