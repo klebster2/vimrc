@@ -47,6 +47,14 @@ require("packer").startup(function()
       end,
     }
     use {
+      'mireq/luasnip-snippets',
+      dependencies = {'L3MON4D3/LuaSnip'},
+      init = function()
+        -- Mandatory setup function
+        require('luasnip_snippets.common.snip_utils').setup()
+      end
+    }
+    use {
       "christoomey/vim-tmux-navigator",
     }
     use { 'nvim-lualine/lualine.nvim',

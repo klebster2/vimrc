@@ -7,8 +7,11 @@ if not types then return end
 require("luasnip.loaders.from_vscode").load({
     include = {
       "awk",
+      "bash",
       "c",
+      "cpp",
       "javascript",
+      "java",
       "json",
       "markdown",
       "python",
@@ -50,3 +53,10 @@ vim.keymap.set({ "i", "s" }, "<c-l>", function()
     ls.change_choice(1)
   end
 end)
+
+local s = ls.snippet
+local t = ls.text_node
+
+ls.add_snippets('lua', {
+    s('h', t('hello world!')),
+})
