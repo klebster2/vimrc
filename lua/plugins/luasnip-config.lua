@@ -54,9 +54,4 @@ vim.keymap.set({ "i", "s" }, "<c-l>", function()
   end
 end)
 
-local s = ls.snippet
-local t = ls.text_node
-
-ls.add_snippets('lua', {
-    s('h', t('hello world!')),
-})
+require("plugins.snippets")           --> $HOME/.config/nvim/lua/plugins/snippets.lua

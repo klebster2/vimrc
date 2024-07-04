@@ -72,26 +72,8 @@ local function bash(_, _, command)
 	return res
 end
 
--- Returns a snippet_node wrapped around an insertNode whose initial
--- text value is set to the current date in the desired format.
-local date_input = function(args, snip, old_state, fmt)
-	local fmt = fmt or "%Y-%m-%d"
-	return sn(nil, i(1, os.date(fmt)))
-end
-
--- snippets are added via ls.add_snippets(filetype, snippets[, opts]), where
--- opts may specify the `type` of the snippets ("snippets" or "autosnippets",
--- for snippets that should expand directly after the trigger is typed).
---
--- opts can also specify a key. By passing an unique key to each add_snippets, it's possible to reload snippets by
--- re-`:luafile`ing the file in which they are defined (eg. this one).
---
 ls.add_snippets("all", {
 	s("ls", f(bash, {}, { user_args = { "ls" } })),
-	-- Set store_selection_keys = "<Tab>" (for example) in your
-	-- luasnip.config.setup() call to populate
-	-- TM_SELECTED_TEXT/SELECT_RAW/SELECT_DEDENT.
-	-- In this case: select a URL, hit Tab, then expand this snippet.
 	s("link_url", {
 		t('<a href="'),
 		f(function(_, snip)
@@ -103,44 +85,6 @@ ls.add_snippets("all", {
 		i(1),
 		t("</a>"),
 		i(0),
-	}),
-	-- Shorthand for repeating the text in a given node.
-	s("repeat", { i(1, "text"), t({ "", "" }), rep(1) }),
-	-- Directly insert the ouput from a function evaluated at runtime.
-	s("part", p(os.date, "%Y")),
-	-- use matchNodes (`m(argnode, condition, then, else)`) to insert text
-	-- based on a pattern/function/lambda-evaluation.
-	-- It's basically a shortcut for simple functionNodes:
-	s("mat", {
-		i(1, { "sample_text" }),
-		t(": "),
-		m(1, "%d", "contains a number", "no number :("),
-	}),
-	-- The `then`-text defaults to the first capture group/the entire
-	-- match if there are none.
-	s("mat2", {
-		i(1, { "sample_text" }),
-		t(": "),
-		m(1, "[abc][abc][abc]"),
-	}),
-	-- It is even possible to apply gsubs' or other transformations
-	-- before matching.
-	s("mat3", {
-		i(1, { "sample_text" }),
-		t(": "),
-		m(
-			1,
-			l._1:gsub("[123]", ""):match("%d"),
-			"contains a number that isn't 1, 2 or 3!"
-		),
-	}),
-	s("mat4", {
-		i(1, { "sample_text" }),
-		t(": "),
-		m(1, function(args)
-			-- args is a table of multiline-strings (as usual).
-			return (#args[1][1] % 2 == 0 and args[1]) or nil
-		end),
 	}),
 	-- The nonempty-node inserts text depending on whether the arg-node is
 	-- empty.
@@ -192,20 +136,22 @@ ls.add_snippets("all", {
 	key = "all_auto",
 })
 
+for _, name in ipairs({"local", "var"}) do
+	ls.add_snippets('lua', {
+			s(name, c(1, {
+						fmt('local {} = {}',  {
+							i(1),
+							i(2)
+						}),
+					fmt('{} = {}', {
+							i(1),
+							i(2)
+						})
+				})
+			)
+	})
+end
 --- luasnippets for lua
-ls.add_snippets('lua', {
-		s('var', c(1, {
-					fmt('local {} = {}',  {
-						i(1),
-						i(2)
-					}),
-				fmt('{} = {}', {
-						i(1),
-						i(2)
-					})
-			})
-		)
-})
 ls.add_snippets('lua', {
 		s('require', {t('require'),
 				t('('),
@@ -223,7 +169,8 @@ ls.add_snippets('lua', {
 				i(1)
 		}))
 })
-local func_template = [[
+
+local lua_func_template = [[
 -- {}{}
 -- @returns {}
 function {}({})
@@ -233,9 +180,9 @@ end
 
 ls.add_snippets('lua', {
 		s(
-			'ii', fmt(func_template, {
+			'ii', fmt(lua_func_template, {
 		i(1, 'function'),
-		d(5, function(values)
+		d(4, function(values)
 			local param_str = values[1][1]
 			param_str = param_str:gsub(' ', '')
 			if param_str == '' then
@@ -253,12 +200,185 @@ ls.add_snippets('lua', {
 			end
 			return sn(nil, nodes)
 		end, { 3 }),
-		i(2, 'param'),
-		i(3, 'param'),
-		i(4, 'return'),
-		i(6, 'return'),
+		i(2, 'returnValue'),
+		rep(1),
+		i(3, 'params'),
+		rep(2),
 		}))
 })
+
+local pep_484_numpy_python_func_template = [[
+def {}({}) -> {}:
+    """{}
+
+		Parameters
+		----------
+		{}
+
+		Raises
+		------
+		{}
+				{}
+
+		{}
+		{}
+				{}
+
+		Examples
+		--------
+		>>> {}
+		{}
+		"""
+		{}
+]]
+
+local pep_484_numpy_python_method_template = [[
+    def {}(self, {}) -> {}:
+				"""{}
+
+				Parameters
+				----------
+				{}
+
+				Raises
+				------
+				{}
+						{}
+
+				{}
+				{}
+						{}
+
+				Examples
+				--------
+				>>> {}
+				{}
+				"""
+				{}
+]]
+
+local pep_484_numpy_python_class_template = [[
+class {}:
+  """{}
+
+  Attributes
+  ----------
+  {}
+  """
+  def __init__(self, {}):
+  	"""{}
+
+   	Parameters
+ 	----------
+    {}
+    """
+    {}
+]]
+
+
+ls.add_snippets('python', {
+	s(
+		'pdb', t('import pdb; pdb.set_trace()')
+	),
+	s(
+		'__main__', t({'if __name__	== "__main__":', "" })
+	),
+  s(
+		'def(function)',	fmt(pep_484_numpy_python_func_template, {
+				i(1, 'function_name'),
+				i(2, 'args'),
+				i(3, 'returnType'),
+				i(4, 'Description'),
+				d(5, function(values)
+					local param_str = values[1][1]
+					if param_str == '' then
+						return sn(1, { t('') })
+					end
+					local params = vim.split(param_str, ',')
+					local nodes = {}
+					for index, param in ipairs(params) do
+						local _param_str = param:gsub('^ ', '')
+						table.insert(nodes, sn(index, fmt('\n\n:param {} {}:\n{}', {
+							t(_param_str),
+							i(1, 'type'),
+							i(2, 'description'),
+						})))
+					end
+					return sn(nil, nodes)
+				end, { 2 }),
+				i(6, 'Exception'),
+				i(7, 'exceptionDescription'),
+				c(8, {
+					t({'Returns', '-------'}),
+					t({'Yields', '------'}),
+				}),
+			  rep(3),
+				i(9, 'returnDescription'),
+			  i(10, 'ExampleCode'),
+				i(11, 'ExampleOutput'),
+			  i(12, 'pass')})),
+  s(
+		'def(method)',	fmt(pep_484_numpy_python_method_template, {
+				i(1, 'function_name'),
+				i(2, 'args'),
+				i(3, 'returnType'),
+				i(4, 'Description'),
+				d(5, function(values)
+					local param_str = values[1][1]
+					if param_str == '' then
+						return sn(1, { t('') })
+					end
+					local params = vim.split(param_str, ',')
+					local nodes = {}
+					for index, param in ipairs(params) do
+						local _param_str = param:gsub('^ ', '')
+						table.insert(nodes, sn(index, fmt('\n\n:param {} {}:\n{}', {
+							t(_param_str),
+							i(1, 'type'),
+							i(2, 'description'),
+						})))
+					end
+					return sn(nil, nodes)
+				end, { 2 }),
+				i(6, 'Exception'),
+				i(7, 'exceptionDescription'),
+				c(8, {
+					t({'Returns', '-------'}),
+					t({'Yields', '------'}),
+				}),
+			  rep(3),
+				i(9, 'returnDescription'),
+			  i(10, 'ExampleCode'),
+				i(11, 'ExampleOutput'),
+			  i(12, 'pass')})),
+			s(
+				'class',	fmt(pep_484_numpy_python_class_template, {
+						i(1, 'ClassName'),
+						i(2, 'Description'),
+						i(3, 'Attributes'),
+						i(4, 'args'),
+						i(5, 'Description'),
+						d(6, function(values)
+							local param_str = values[1][1]
+							if param_str == '' then
+								return sn(1, { t('') })
+							end
+							local params = vim.split(param_str, ',')
+							local nodes = {}
+							for index, param in ipairs(params) do
+							local _param_str = param:gsub('^ ', '')
+							table.insert(nodes, sn(index, fmt('\n\n    :param {} {}:\n    {}', {
+								t(_param_str),
+								i(1, 'type'),
+								i(2, 'description'),
+							}))
+							)
+							end
+							return sn(nil, nodes)
+						end, { 4 }),
+						i(7, 'pass')})),
+})
+
 
 ls.filetype_extend("cpp", { "c" })
 -- Beside defining your own snippets you can also load snippets from "vscode-like" packages
