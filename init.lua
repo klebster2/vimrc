@@ -5,20 +5,20 @@
 --- see :help 'runtimepath' or :help 'rtp'
 
 --- Basic options
-require("options")                   --> $HOME/.config/nvim/lua/options.lua
-require("persistent-undo")           --> $HOME/.config/nvim/lua/persistent-undo.lua
+require("options")                      --> $HOME/.config/nvim/lua/options.lua
+require("persistent-undo")              --> $HOME/.config/nvim/lua/persistent-undo.lua
 
 --- Basic keymappings
-require("keymappings")               --> $HOME/.config/nvim/lua/keymappings.lua
+require("keymappings")                  --> $HOME/.config/nvim/lua/keymappings.lua
 
 --- Default CMP + LSP 'Mason' (language server protocol) configuration (for python)
-require("colorscheme")               --> $HOME/.config/nvim/lua/colorscheme.lua
+require("colorscheme")                  --> $HOME/.config/nvim/lua/colorscheme.lua
 
-require("packer-install")            --> $HOME/.config/nvim/lua/packer-install.lua
-require("packer-startup")            --> $HOME/.config/nvim/lua/packer-startup.lua
-require("autocmds")                   --> $HOME/.config/nvim/lua/autocmds.lua
+require("packer-install")               --> $HOME/.config/nvim/lua/packer-install.lua
+require("packer-startup")               --> $HOME/.config/nvim/lua/packer-startup.lua
+require("autocmds")                     --> $HOME/.config/nvim/lua/autocmds.lua
 
---- Vendor plugins ( --> $HOME/.config/nvim/lua/packer-startup.lua )
+--- Vendor plugins                    ( --> $HOME/.config/nvim/lua/packer-startup.lua )
 if require("packer") then
   require("plugins.keymappings")        --> $HOME/.config/nvim/lua/plugins/keymappings.lua
   require("plugins.options")            --> $HOME/.config/nvim/lua/plugins/options.lua
@@ -28,4 +28,3 @@ if require("packer") then
   require("plugins.luasnip-config")     --> $HOME/.config/nvim/lua/plugins/luasnip-config.lua
   require("plugins.autocmds")           --> $HOME/.config/nvim/lua/plugins/autocmds.lua
 end
-

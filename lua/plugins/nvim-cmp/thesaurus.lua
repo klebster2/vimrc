@@ -15,6 +15,7 @@ source.get_trigger_characters = function()
            'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' }
 end
 
+
 source.is_available = function()
   return vim.api.nvim_get_mode().mode == 'i'
 end
