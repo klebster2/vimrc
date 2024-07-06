@@ -143,11 +143,11 @@ for _, name in ipairs({"local", "var"}) do
 							i(1),
 							i(2)
 						}),
-					fmt('{} = {}', {
-							i(1),
-							i(2)
-						})
-				})
+						fmt('{} = {}', {
+								i(1),
+								i(2)
+							})
+					})
 			)
 	})
 end
@@ -208,8 +208,33 @@ ls.add_snippets('lua', {
 })
 
 local pep_484_numpy_python_func_template = [[
-def {}({}) -> {}:
+def {}({}, *args, **kwargs) -> {}:
     """{}
+
+	Parameters
+	----------
+	{}
+
+	Raises
+	------
+	{}
+			{}
+
+	{}
+	{}
+			{}
+
+	Examples
+	--------
+	>>> {}
+	{}
+	"""
+	{}
+]]
+
+local pep_484_numpy_python_method_template = [[
+	def {}(self, {}, *args, **kwargs) -> {}:
+		"""{}
 
 		Parameters
 		----------
@@ -232,49 +257,27 @@ def {}({}) -> {}:
 		{}
 ]]
 
-local pep_484_numpy_python_method_template = [[
-    def {}(self, {}) -> {}:
-				"""{}
-
-				Parameters
-				----------
-				{}
-
-				Raises
-				------
-				{}
-						{}
-
-				{}
-				{}
-						{}
-
-				Examples
-				--------
-				>>> {}
-				{}
-				"""
-				{}
-]]
-
-local pep_484_numpy_python_class_template = [[
+local pep_484_numpy_python_class_template_args_kwargs = [[
 class {}:
-  """{}
+	"""{}
 
-  Attributes
-  ----------
-  {}
-  """
-  def __init__(self, {}):
-  	"""{}
+	Attributes
+	----------
+	{}
+	"""
+	def __init__(self, {}, *args, **kwargs):
+		"""{}
 
-   	Parameters
- 	----------
-    {}
-    """
-    {}
+		Parameters
+		----------
+		{}
+		:param *args:
+				additional arguments
+		:param **kwargs:
+				additional keyword arguments
+		"""
+		{}
 ]]
-
 
 ls.add_snippets('python', {
 	s(
@@ -298,19 +301,32 @@ ls.add_snippets('python', {
 					local nodes = {}
 					for index, param in ipairs(params) do
 						local _param_str = param:gsub('^ ', '')
-						table.insert(nodes, sn(index, fmt('\n\n:param {} {}:\n{}', {
-							t(_param_str),
-							i(1, 'type'),
-							i(2, 'description'),
-						})))
+						if vim.split(_param_str, ':') then
+							local param_type = vim.split(_param_str, ':')
+							table.insert(nodes, sn(index, fmt('\n\n{}{} {}:\n{}{}', {
+								t('\t:param '),
+								t(param_type[1]:gsub(' ', '')),
+								t(param_type[2]:gsub(' ', '')),
+								t('\t\t '),
+								i(2, 'description'),
+							})))
+						else
+							table.insert(nodes, sn(index, fmt('\n\n{}{} {}:\n{}{}', {
+								t('\t:param '),
+								t(_param_str),
+								i(1, 'type'),
+								t('\t\t '),
+								i(2, 'description'),
+							})))
+						end
 					end
 					return sn(nil, nodes)
 				end, { 2 }),
 				i(6, 'Exception'),
 				i(7, 'exceptionDescription'),
 				c(8, {
-					t({'Returns', '-------'}),
-					t({'Yields', '------'}),
+					t({'Returns', '\t-------'}),
+					t({'Yields', '\t------'}),
 				}),
 			  rep(3),
 				i(9, 'returnDescription'),
@@ -332,9 +348,11 @@ ls.add_snippets('python', {
 					local nodes = {}
 					for index, param in ipairs(params) do
 						local _param_str = param:gsub('^ ', '')
-						table.insert(nodes, sn(index, fmt('\n\n:param {} {}:\n{}', {
+						table.insert(nodes, sn(index, fmt('\n\n{}{} {}:\n{}{}', {
+							t('\t:param '),
 							t(_param_str),
 							i(1, 'type'),
+							t('\t\t '),
 							i(2, 'description'),
 						})))
 					end
@@ -352,7 +370,7 @@ ls.add_snippets('python', {
 				i(11, 'ExampleOutput'),
 			  i(12, 'pass')})),
 			s(
-				'class',	fmt(pep_484_numpy_python_class_template, {
+				'class',	fmt(pep_484_numpy_python_class_template_args_kwargs, {
 						i(1, 'ClassName'),
 						i(2, 'Description'),
 						i(3, 'Attributes'),
@@ -366,13 +384,14 @@ ls.add_snippets('python', {
 							local params = vim.split(param_str, ',')
 							local nodes = {}
 							for index, param in ipairs(params) do
-							local _param_str = param:gsub('^ ', '')
-							table.insert(nodes, sn(index, fmt('\n\n    :param {} {}:\n    {}', {
-								t(_param_str),
-								i(1, 'type'),
-								i(2, 'description'),
-							}))
-							)
+								local _param_str = param:gsub('^ ', '')
+								table.insert(nodes, sn(index, fmt('\n\n{}{} {}:\n{}{}', {
+									t('\t\t:param '),
+									t(_param_str),
+									i(1, 'type'),
+									t('\t\t\t '),
+									i(2, 'description'),
+								})))
 							end
 							return sn(nil, nodes)
 						end, { 4 }),
@@ -381,38 +400,7 @@ ls.add_snippets('python', {
 
 
 ls.filetype_extend("cpp", { "c" })
+
 -- Beside defining your own snippets you can also load snippets from "vscode-like" packages
--- that expose snippets in json files, for example <https://github.com/rafamadriz/friendly-snippets>.
-
-require("luasnip.loaders.from_vscode").load({ include = { "python" } }) -- Load only python snippets
-
--- The directories will have to be structured like eg. <https://github.com/rafamadriz/friendly-snippets> (include
--- a similar `package.json`)
---require("luasnip.loaders.from_vscode").load({ paths = { "./my-snippets" } }) -- Load snippets from my-snippets folder
-
--- You can also use lazy loading so snippets are loaded on-demand, not all at once (may interfere with lazy-loading luasnip itself).
-require("luasnip.loaders.from_vscode").lazy_load() -- You can pass { paths = "./my-snippets/"} as well
-
--- You can also use snippets in snipmate format, for example <https://github.com/honza/vim-snippets>.
--- The usage is similar to vscode.
-
--- One peculiarity of honza/vim-snippets is that the file containing global
--- snippets is _.snippets, so we need to tell luasnip that the filetype "_"
--- contains global snippets:
-ls.filetype_extend("all", { "_" })
-
---require("luasnip.loaders.from_snipmate").load({ include = { "c" } }) -- Load only snippets for c.
-
--- Load snippets from my-snippets folder
--- The "." refers to the directory where of your `$MYVIMRC` (you can print it
--- out with `:lua print(vim.env.MYVIMRC)`.
--- NOTE: It's not always set! It isn't set for example if you call neovim with
--- the `-u` argument like this: `nvim -u yeet.txt`.
---require("luasnip.loaders.from_snipmate").load({ path = { "./my-snippets" } })
--- If path is not specified, luasnip will look for the `snippets` directory in rtp (for custom-snippet probably
--- ~/.config/nvim/snippets ).
-
-require("luasnip.loaders.from_snipmate").lazy_load() -- Lazy loading
-
--- see DOC.md/LUA SNIPPETS LOADER for some details.
 require("luasnip.loaders.from_lua").lazy_load({ include = { "all", "cpp", "c", "python" } })
+require("luasnip.loaders.from_vscode").load({ paths = { "~/.local/share/nvim/site/pack/packer/start/friendly-snippets" } })
