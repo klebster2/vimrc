@@ -32,7 +32,7 @@ require("packer").startup(function()
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-cmdline",
       "octaltree/cmp-look",
-      "f3fora/cmp-spell",
+      --"f3fora/cmp-spell",
       "saadparwaiz1/cmp_luasnip",
       "nvim-lua/plenary.nvim",
       "L3MON4D3/LuaSnip", -- snippets for completion see https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip and luasnip ( $HOME/.config/nvim/snippets )

@@ -20,7 +20,7 @@ vim.opt.wildmenu = true
 vim.opt.wildmode = {'list', 'longest'}
 vim.opt.mouse = nil
 vim.opt.spell = false
-vim.opt.spelllang = { 'en_gb' }  -- The default spell lang
+--vim.opt.spelllang = { 'en_gb' }  -- The default spell lang
 vim.opt.shell='bash --login'
 
 vim.cmd([[ filetype plugin indent on ]])

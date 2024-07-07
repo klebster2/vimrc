@@ -1,4 +1,4 @@
----- learn Vimscript the Hard Way: "A trick to learning something is to force yourself to use it."
+---- Learn Vimscript the Hard Way: "A trick to learning something is to force yourself to use it."
 ---- [in other words, remap, and unmap]
 ---- You can return to the previous file by using <c+o> (or <c+i>)
 
@@ -28,3 +28,4 @@ if require("packer") then
   require("plugins.luasnip-config")     --> $HOME/.config/nvim/lua/plugins/luasnip-config.lua
   require("plugins.autocmds")           --> $HOME/.config/nvim/lua/plugins/autocmds.lua
 end
+

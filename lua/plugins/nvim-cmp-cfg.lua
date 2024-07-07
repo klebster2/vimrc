@@ -97,7 +97,7 @@ local lsp_symbols = {
   Operator = "   OPER",
   TypeParameter = "   TYPE",
   Copilot = "   COPILOT",
-  Thesaurus = "   THESAU",
+  thesaurus = "   THESAU",
 }
 
 --- Window options
@@ -125,13 +125,9 @@ cmp.setup.cmdline({'/', '?'}, {
   mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources(
     {
-      { name = 'buffer' }
-    }, {
       { name = 'path' }
     }, {
       { name = 'cmdline' }
-    }, {
-      { name = 'spell' }
     }, {
       { name = 'look' }
     }
@@ -156,10 +152,6 @@ cmp.setup.cmdline(':', {
       { name = 'path' }
     }, {
       { name = 'cmdline' }
-    }, {
-      { name = 'spell' }
-    }, {
-      { name = 'look' }
     }
   )
 })
@@ -195,21 +187,19 @@ cmp.setup {
     { name = "treesitter", max_item_count = 10, priority = 10 },
     { name = "nvim_lsp", max_item_count = 10, priority = 10 },
     { name = "path", max_item_count = 3, priority = 8 },
-    { name = "buffer", max_item_count = 5, priority = 7, keyword_length = 4 },
-    { name = "look", max_item_count = 5, priority = 7, keyword_length = 4 },
     { name = "cmdline", max_item_count = 3, priority = 6, keyword_length = 4 },
-    {
-        name = "spell",   --- check $HOME/.config/nvim/lua/options.lua
-        option = {
-            keep_all_entries = false,
-            enable_in_context = function()
-                return true
-            end,
-            preselect_correct_word = true,
-        },
-        max_item_count = 3, priority = 3, keyword_length = 6
-    },
-    { name = "thesaurus", max_item_count = 10, priority = 5, keyword_length = 4 },
+    --{
+    --    name = "spell",   --- check $HOME/.config/nvim/lua/options.lua
+    --    option = {
+    --        keep_all_entries = false,
+    --        enable_in_context = function()
+    --            return true
+    --        end,
+    --        preselect_correct_word = true,
+    --    },
+    --    max_item_count = 3, priority = 3, keyword_length = 6
+    --},
+    { name = "thesaurus", max_item_count = 10, priority = 3, keyword_length = 4 },
   },
   formatting = {
     fields = {
