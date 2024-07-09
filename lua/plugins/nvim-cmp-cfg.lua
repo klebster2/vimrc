@@ -37,7 +37,7 @@ lspkind.init({
   },
 })
 
-require("plugins.nvim-cmp.thesaurus") ---- TODO - make this a plugin <<< $HOME/.config/nvim/lua/plugins/nvim-cmp/thesaurus.lua
+require("cmp_rogets_thesaurus") ---- TODO - make this a plugin <<< $HOME/.config/nvim/lua/plugins/nvim-cmp/thesaurus.lua
 
 local default_language_servers = {
   "bashls",
@@ -199,7 +199,7 @@ cmp.setup {
     --    },
     --    max_item_count = 3, priority = 3, keyword_length = 6
     --},
-    { name = "thesaurus", max_item_count = 10, priority = 3, keyword_length = 4 },
+    { name = "rogets_thesaurus", max_item_count = 10, priority = 3, keyword_length = 4 },
   },
   formatting = {
     fields = {
