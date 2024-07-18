@@ -12,4 +12,4 @@ nvim/pack/github/start/copilot.vim/
 Miniconda*
 nvim.appimage
 .undotree
-packer_complied.lua
+plugin/packer_compiled.lua

@@ -1,5 +1,4 @@
----- Learn Vimscript the Hard Way: "A trick to learning something is to force yourself to use it."
----- [in other words, remap, and unmap]
+---- Learn Vimscript the Hard Way: "A trick to learning something is to force yourself to use it." [in other words, remap, and unmap]
 ---- You can return to the previous file by using <c+o> (or <c+i>)
 
 --- see :help 'runtimepath' or :help 'rtp'
@@ -18,7 +17,7 @@ require("packer-install")               --> $HOME/.config/nvim/lua/packer-instal
 require("packer-startup")               --> $HOME/.config/nvim/lua/packer-startup.lua
 require("autocmds")                     --> $HOME/.config/nvim/lua/autocmds.lua
 
---- Vendor plugins                    ( --> $HOME/.config/nvim/lua/packer-startup.lua )
+-- Vendor plugins                    ( --> $HOME/.config/nvim/lua/packer-startup.lua )
 if require("packer") then
   require("plugins.keymappings")        --> $HOME/.config/nvim/lua/plugins/keymappings.lua
   require("plugins.options")            --> $HOME/.config/nvim/lua/plugins/options.lua
@@ -28,4 +27,3 @@ if require("packer") then
   require("plugins.luasnip-config")     --> $HOME/.config/nvim/lua/plugins/luasnip-config.lua
   require("plugins.autocmds")           --> $HOME/.config/nvim/lua/plugins/autocmds.lua
 end
-

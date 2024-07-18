@@ -1,4 +1,21 @@
-local use = require("packer").use
+local execute = vim.api.nvim_command
+
+local fn = vim.fn
+
+local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+
+require("conda-env")                 --> $HOME/.config/nvim/lua/conda-env.lua
+
+local ensure_packer = function()
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
+end
+
+local packer_bootstrap = ensure_packer()
 
 local function setup_python_library(python_host_prog, library_name, pip_installable_name)
   local install_cmd = python_host_prog .. " -c 'import " .. library_name .. "'"
@@ -9,8 +26,8 @@ local function setup_python_library(python_host_prog, library_name, pip_installa
     vim.fn.system(install_cmd)
   end
 end
--- Packer can manage itself as an optional plugin
-require("packer").startup(function()
+return require('packer').startup(function(use)
+
     use "wbthomason/packer.nvim" -- packer.nvim
     use { -- For file / directory viewing
       "kyazdani42/nvim-tree.lua",
@@ -148,5 +165,7 @@ require("packer").startup(function()
         require("copilot_cmp").setup()
       end
     }
+  if packer_bootstrap then
+    require('packer').sync()
+  end
 end)
-

@@ -150,10 +150,11 @@ main() {
 
     echo "* Installing dependencies for vim configuration."
     echo "** Installing Plugins via PackerSync..."
-    nvim --headless "+PackerSync" +qall
+    #nvim --headless "+PackerSync" +qall
+    nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
     echo "** Installing Language servers via LspInstall..."
-    nvim --headless "+LspInstall awk_ls bashls dockerls pyright grammarly" +qall
+    nvim --headless -c 'autocmd User LspInstall awk_ls bashls dockerls pyright grammarly'
     echo
 
     for file in ./*.zip*; do
