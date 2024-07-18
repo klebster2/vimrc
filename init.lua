@@ -18,6 +18,7 @@ require("packer-startup")               --> $HOME/.config/nvim/lua/packer-startu
 
 require("autocmds")                     --> $HOME/.config/nvim/lua/autocmds.lua
 
+
 -- Vendor plugins                    ( --> $HOME/.config/nvim/lua/packer-startup.lua )
 if require("packer") then
   require("plugins.keymappings")        --> $HOME/.config/nvim/lua/plugins/keymappings.lua

@@ -13,3 +13,5 @@ vim.api.nvim_create_autocmd("BufWritePre", {
         end
     end,
 })
+vim.keymap.set("n", "<c-F>", require('fzf-lua').files, { desc = "Fzf Files" })
+vim.keymap.set("n", "<c-T>", require('fzf-lua').helptags, { desc = "Fzf helptags" })

@@ -102,10 +102,8 @@ create_pynvim_conda_env() {
 main() {
     set -euox pipefail
     REINSTALL_CONDA=false
-    CACHE_FONT=false
 
     for tool in "jq -V" "curl -V" ; do
-        # Consider also using "aiksaurus -v"
         if ! $tool 2>/dev/null ; then
             printf '%s is needed for this neovim setup.\nplease install before continuing\n' "$(echo "$tool" | cut -d ' ' -f1)" && exit 1
             printf 'curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20\n'
@@ -129,13 +127,11 @@ main() {
     if ! (check_conda_is_installed); then
         prompt_to_install_conda
         echo "Please rerun the installation script after first running . ${HOME}/.bashrc to see if the base conda env is activated"
-        # cleanup
         rm ./Miniconda*.sh
         exit
     else
         set +e
         echo "* Conda installation found"
-        # TODO: prompt user to use one of the conda locations (numbered)
         environment_location="$(find / -mindepth 1 -maxdepth 3 -type d -iname "miniconda*" 2>/dev/null | head -n1)"
         grep "name:" ./pynvim-env.yaml | awk '{print $2}'
         if [ -d "${environment_location}/$(grep "name:" ./pynvim-env.yaml | awk '{print $2}')" ]; then
@@ -150,7 +146,6 @@ main() {
 
     echo "* Installing dependencies for vim configuration."
     echo "** Installing Plugins via PackerSync..."
-    #nvim --headless "+PackerSync" +qall
     nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
     echo "** Installing Language servers via LspInstall..."

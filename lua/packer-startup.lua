@@ -132,10 +132,6 @@ return require('packer').startup(function(use)
       end,
     }
     use { "preservim/tagbar" } -- view python objects
-    use {
-      'nvim-telescope/telescope.nvim', tag = '0.1.3',
-      requires = { 'nvim-lua/plenary.nvim' }
-    }
     use { "anuvyklack/windows.nvim",
       requires = "anuvyklack/middleclass",
       config = function()
