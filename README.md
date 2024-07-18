@@ -3,10 +3,38 @@
 Ubuntu Setup
 ============
 
-First clone repo to `~/.config/nvim`:
+1. Install the following packages (via `apt`, `apt-get`, `snap` or another package manager of your choosing)
+
+- [`jq`](https://jqlang.github.io/jq/) For querying json files.
+- [`curl`](https://curl.se/) For downloading installation files
+- [`npm`](https://www.npmjs.com/) (node package manager)
+
+To install all the dependencies, you can usually run:
 
 ```bash
-mkdir -pv ~/.config && git clone "https://github.com/klebster2/vimrc" ~/.config/nvim && cd ~/.config/nvim && ./install.sh
+apt-get install jq curl -y
+curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20
+```
+
+Use sudo with `apt-get` if you are not root.
+
+E.g.
+
+```bash
+sudo apt-get install jq curl -y
+curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20
+```
+
+2. Next, clone repo to `~/.config/nvim`, and run the install script:
+
+Clone the repo to `~/.config/nvim`
+```bash
+mkdir -pv ~/.config && git clone "https://github.com/klebster2/vimrc" ~/.config/nvim
+```
+
+Run the installation script [`install.sh`](./install.sh)
+```bash
+pushd ~/.config/nvim && ./install.sh && popd
 ```
 
 # Usage notes and Useful commands
