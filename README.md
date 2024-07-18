@@ -36,6 +36,8 @@ Run the installation script [`install.sh`](./install.sh)
 ```bash
 pushd ~/.config/nvim && ./install.sh && popd
 ```
+3. Enjoy!
+That's it for now. Enjoy your vim experience.
 
 # Usage notes and Useful commands
 
