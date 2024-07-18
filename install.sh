@@ -1,25 +1,5 @@
 #!/bin/bash
 
-install_fonts() {
-    local _cache_font="$1"
-    fonts_dir="${HOME}/.local/share/fonts"
-    if [ ! -d "${fonts_dir}" ]; then
-        echo "mkdir -p $fonts_dir"
-        mkdir -p "${fonts_dir}"
-    else
-        echo "Found fonts dir $fonts_dir"
-    fi
-    version=5.2
-    zip=Fira_Code_v${version}.zip
-    curl --fail --location --show-error https://github.com/tonsky/FiraCode/releases/download/${version}/${zip} --output ${zip}
-    unzip -o -q -d "${fonts_dir}" ${zip}
-    rm ${zip}
-
-    if $_cache_font; then
-        fc-cache -f
-    fi
-}
-
 check_decision() {
     local _human_readable_message="$1" _command="$2"
     echo "Do you want to run \"$_command\" ?"
@@ -169,7 +149,6 @@ main() {
     check_make_undo_tree "${HOME}/.config/nvim/.undotree"
 
     echo "* Installing dependencies for vim configuration."
-    #install_fonts $CACHE_FONT
     echo "** Installing Plugins via PackerSync..."
     nvim --headless "+PackerSync" +qall
 
