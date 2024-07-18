@@ -69,7 +69,7 @@ for _, value in ipairs(default_language_servers) do
   }
 end
 
---- Works with 'DroidSansMono Nerd Font Mono'
+--- Works with 'Consolas NF' & 'DroidSansMono Nerd Font Mono'
 local lsp_symbols = {
   Text = "   TEXT",
   Method = "   METH",
@@ -188,17 +188,17 @@ cmp.setup {
     { name = "nvim_lsp", max_item_count = 10, priority = 10 },
     { name = "path", max_item_count = 3, priority = 8 },
     { name = "cmdline", max_item_count = 3, priority = 6, keyword_length = 4 },
-    --{
-    --    name = "spell",   --- check $HOME/.config/nvim/lua/options.lua
-    --    option = {
-    --        keep_all_entries = false,
-    --        enable_in_context = function()
-    --            return true
-    --        end,
-    --        preselect_correct_word = true,
-    --    },
-    --    max_item_count = 3, priority = 3, keyword_length = 6
-    --},
+    {
+        name = "spell",   --- check $HOME/.config/nvim/lua/options.lua
+        option = {
+            keep_all_entries = false,
+            enable_in_context = function()
+                return true
+            end,
+            preselect_correct_word = true,
+        },
+        max_item_count = 3, priority = 3, keyword_length = 6
+    },
     { name = "rogets_thesaurus", max_item_count = 10, priority = 3, keyword_length = 4 },
   },
   formatting = {
@@ -222,7 +222,7 @@ cmp.setup {
         path = "ﱮ",
         buffer = "﬘",
         spell = "暈",
-        thesaurus = "",  -- Custom thesaurus
+        rogets_thesaurus = "",  -- Custom thesaurus
       })[entry.source.name]
       return vim_item
   end,

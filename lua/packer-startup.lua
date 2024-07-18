@@ -1,5 +1,3 @@
-local execute = vim.api.nvim_command
-
 local fn = vim.fn
 
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
@@ -95,11 +93,13 @@ return require('packer').startup(function(use)
       end
     }
 
-    use {
-      'junegunn/fzf', run='vim -u NONE "fzf#install()" -c q',
+    use { "ibhagwan/fzf-lua",
       requires = {
-        'junegunn/fzf.vim',
-      }
+        "nvim-tree/nvim-web-devicons",
+      },
+      config = function()
+        require("fzf-lua").setup()
+      end
     }
     use "svermeulen/vimpeccable"
     use "tpope/vim-fugitive" -- github / git

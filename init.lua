@@ -13,8 +13,9 @@ require("keymappings")                  --> $HOME/.config/nvim/lua/keymappings.l
 --- Default CMP + LSP 'Mason' (language server protocol) configuration (for python)
 require("colorscheme")                  --> $HOME/.config/nvim/lua/colorscheme.lua
 
-require("packer-install")               --> $HOME/.config/nvim/lua/packer-install.lua
+--- Packer startup ( bootstrap ) step (all plugins loaded here)
 require("packer-startup")               --> $HOME/.config/nvim/lua/packer-startup.lua
+
 require("autocmds")                     --> $HOME/.config/nvim/lua/autocmds.lua
 
 -- Vendor plugins                    ( --> $HOME/.config/nvim/lua/packer-startup.lua )
