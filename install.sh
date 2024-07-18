@@ -104,12 +104,12 @@ main() {
     REINSTALL_CONDA=false
     CACHE_FONT=false
 
-    for tool in "jq -V" "curl -V" "unzip -v" ; do
+    for tool in "jq -V" "curl -V" ; do
         # Consider also using "aiksaurus -v"
         if ! $tool 2>/dev/null ; then
             printf '%s is needed for this neovim setup.\nplease install before continuing\n' "$(echo "$tool" | cut -d ' ' -f1)" && exit 1
             printf 'curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20\n'
-            printf 'sudo apt-get install jq curl unzip -y'
+            printf 'sudo apt-get install jq curl -y'
         fi
     done
 
