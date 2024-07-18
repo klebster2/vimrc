@@ -14,16 +14,6 @@ check_decision() {
     esac
 }
 
-check_make_undo_tree() {
-    local _undotree_path="$1"
-    echo
-    echo "* Checking whether ${_undotree_path} exists"
-    if [ ! -d "$_undotree_path" ]; then
-        echo "** No undo dir found..."
-        mkdir -v "$_undotree_path"
-    fi
-}
-
 check_nvim_is_installed() {
     nvim -v > /dev/null 2>&1
 }
@@ -141,8 +131,6 @@ main() {
         fi
         set -e
     fi
-
-    check_make_undo_tree "${HOME}/.config/nvim/.undotree"
 
     echo "* Installing dependencies for vim configuration."
     echo "** Installing Plugins via PackerSync..."
