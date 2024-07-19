@@ -117,8 +117,8 @@ When within NvimTree (Using command mode `:NvimTreeToggle` to activate), use
 
 ### Nvim Spell
 
-`<z+w>` to add a word to the dictionary.
-`<leader>ss` to set spell (misspelled words will appear underlined)
+- `<z+w>` to add a word to the dictionary.
+- `<leader>ss` to set spell (misspelled words will appear underlined)
 
 ## Finally
 Go to `./nvim/lua/keymappings.lua` for the basic set of mappings (with the current configuration, you can use `<leader>m`).
