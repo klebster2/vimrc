@@ -1,5 +1,4 @@
 #!/bin/bash
-
 check_decision() {
     local _human_readable_message="$1" _command="$2"
     echo "Do you want to run \"$_command\" ?"
@@ -24,10 +23,6 @@ install_nvim_appimage() {
     curl -LO "https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
     chgrp sudo nvim.appimage
     chmod ugo+x nvim.appimage
-    human_readable_message="Do you want to add neovim to /usr/bin/ ?"
-    need_sudo="$(check_sudo_needed "$(dirname "/usr/bin")")"
-    output_path="${_appimage_target_directory}/nvim"
-    echo "* sudo needed to create tmpdir in $(dirname "$output_path") $need_sudo"
     # from the neovim docs
     ./nvim.appimage --appimage-extract
     ./squashfs-root/AppRun --version
@@ -85,25 +80,24 @@ create_pynvim_conda_env() {
         conda env update -f pynvim-env.yaml --prune
     fi
     export CONDA_PYNVIM_ENV_PYTHON_PATH="$environment_location/bin/python3"
-
 }
 
 
 main() {
     set -euox pipefail
     REINSTALL_CONDA=false
+    npm_install_helper="curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20"
 
     for tool in "jq -V" "curl -V" ; do
         if ! $tool 2>/dev/null ; then
             printf '%s is needed for this neovim setup.\nplease install before continuing\n' "$(echo "$tool" | cut -d ' ' -f1)" && exit 1
-            printf 'curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20\n'
+            printf '%s' "$npm_install_helper"
             printf 'sudo apt-get install jq curl -y'
         fi
     done
 
-    npm_install_helper="\`curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20\`"
     if ! npm help 2>/dev/null ; then
-        printf 'npm is still needed for this neovim setup.\nplease install before continuing\n\n%s' "${npm_install_helper}" && exit 1
+        printf 'npm is still needed for this neovim setup.\nplease install before continuing\n\n`%s`' "${npm_install_helper}" && exit 1
     fi
 
     echo "* Running nvim setup..."
@@ -135,9 +129,8 @@ main() {
     echo "* Installing dependencies for vim configuration."
     echo "** Installing Plugins via PackerSync..."
     nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-
-    echo "** Installing Language servers via LspInstall..."
-    nvim --headless -c 'autocmd User LspInstall awk_ls bashls dockerls pyright grammarly'
+    #echo "** Installing Language servers via LspInstall..."
+    #nvim --headless -c 'autocmd User LspInstall awk_ls bashls dockerls pyright grammarly'
     echo
 
     for file in ./*.zip*; do
