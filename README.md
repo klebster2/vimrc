@@ -1,7 +1,8 @@
 # klebster2's vimrc
 
 # Table of Contents  
-- [Ubuntu Setup](#ubuntu-setup)
+- [Setup](#setup)
+   - [Ubuntu](#ubuntu)
 - [Usage notes and Useful commands](#usage-notes-and-useful-commands)
    - [Useful commands](#useful-commands)
       - [Completion Menu Lsp and Cmp](#completion-menu-for-lsp-and-cmp)
@@ -13,7 +14,9 @@
    - [Finally](#finally)
 
 
-# Ubuntu Setup
+# Setup
+
+## Ubuntu
 
 1. Install the following packages (via `apt`, `apt-get`, `snap` or another package manager of your choosing)
 
@@ -28,14 +31,7 @@ apt-get install jq curl -y
 curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20
 ```
 
-Use sudo with `apt-get` if you are not root.
-
-E.g.
-
-```bash
-sudo apt-get install jq curl -y
-curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20
-```
+Use `sudo` with `apt-get` if you are not root.
 
 2. Next, clone repo to `~/.config/nvim`, and run the install script:
 
