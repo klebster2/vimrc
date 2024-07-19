@@ -1,7 +1,19 @@
 # klebster2's vimrc
 
-Ubuntu Setup
-============
+# Table of Contents  
+- [Ubuntu Setup](#ubuntu-setup)
+- [Usage notes and Useful commands](#usage-notes-and-useful-commands)
+   - [Useful commands](#useful-commands)
+      - [Completion Menu Lsp and Cmp](#completion-menu-for-lsp-and-cmp)
+         - [Completion Docs](#completion-docs)
+         - [LSP Diagnostics](#lsp-diagnostics)
+      - [Luasnip](#luasnip)
+      - [NvimTree](#nvimtree)
+      - [Nvim Spell](#nvim-spell)
+   - [Finally](#finally)
+
+
+# Ubuntu Setup
 
 1. Install the following packages (via `apt`, `apt-get`, `snap` or another package manager of your choosing)
 
@@ -49,7 +61,7 @@ That's it for now. Enjoy your vim experience.
 - Use `gf` for 'j' to jump to the **F**ile.
 
 
-### Completion menu (LSP / CMP) 
+### Completion menu for Lsp and Cmp
 
 Note that this applies to Insert Mode only.
 
@@ -67,6 +79,20 @@ To jump to the next completion using Lsp / Cmp / Luasnip etc.. use
 - `<CTRL-b>` to scroll the docs **B**ackwards
 
 Also see `: help vim.lsp.*` for documentation on any of the LSP functions
+
+#### LSP Diagnostics
+
+Note that this applies to Normal Mode only.
+
+When in normal mode, the LSP will have already run and will be highlighting areas of code syntax.
+Use:
+
+- `<SPACE>+e` to open a floating window containing the LSP diagnostic (according to the LSP)
+- `<SPACE>+q` to open a window of LSP diagnostics below the current buffer
+- `[d` to go to the previous LSP diagnostic
+- `]d` to go to the next LSP diagnostic
+
+Also see `: help vim.diagnostic.*` for documentation on any of the functions.
 
 ### Luasnip
 
@@ -93,25 +119,10 @@ When within NvimTree (Using command mode `:NvimTreeToggle` to activate), use
 - `<q>` to close the file explorer
 
 
-#### Nvim Spell:
+### Nvim Spell
 
 `<z+w>` to add a word to the dictionary.
 `<leader>ss` to set spell (misspelled words will appear underlined)
 
-### LSP Diagnostics
-
-Note that this applies to Normal Mode only.
-
-When in normal mode, the LSP will have already run and will be highlighting areas of code syntax.
-Use:
-
-- `<SPACE>+e` to open a floating window containing the LSP diagnostic (according to the LSP)
-- `<SPACE>+q` to open a window of LSP diagnostics below the current buffer
-- `[d` to go to the previous LSP diagnostic
-- `]d` to go to the next LSP diagnostic
-
-Also see `: help vim.diagnostic.*` for documentation on any of the functions.
-
-#### More mappings
-
+## Finally
 Go to `./nvim/lua/keymappings.lua` for the basic set of mappings (with the current configuration, you can use `<leader>m`).
