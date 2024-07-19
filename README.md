@@ -1,6 +1,6 @@
 # klebster2's vimrc
 
-# Table of Contents  
+# Table of Contents
 - [Setup](#setup)
    - [Ubuntu](#ubuntu)
 - [Usage notes and Useful commands](#usage-notes-and-useful-commands)
@@ -121,4 +121,8 @@ When within NvimTree (Using command mode `:NvimTreeToggle` to activate), use
 - `<leader>ss` to set spell (misspelled words will appear underlined)
 
 ## Finally
-Go to `./nvim/lua/keymappings.lua` for the basic set of mappings (with the current configuration, you can use `<leader>m`).
+
+To go to two of the mappings.lua files, use:
+
+- `<leader>m` to get to `~/.config/nvim/lua/keymappings.lua` (the basic set of mappings).
+- `<leader>pm` to get to `~/.config/nvim/lua/plugins/keymappings.lua` (the set of plugin-based mappings).
