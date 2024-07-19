@@ -97,3 +97,9 @@ vim.api.nvim_create_autocmd("BufWritePre", {
         vim.fn.winrestview(current_view)
     end,
 })
+
+vim.api.nvim_create_autocmd("FileType", {pattern = {"bash_history"},
+    callback = function()
+      vim.cmd('set buftype=nowrite')
+    end,
+})
