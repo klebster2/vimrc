@@ -124,5 +124,5 @@ When within NvimTree (Using command mode `:NvimTreeToggle` to activate), use
 
 To go to two of the mappings.lua files, use:
 
-- `<leader>m` to get to `~/.config/nvim/lua/keymappings.lua` (the basic set of mappings).
-- `<leader>pm` to get to `~/.config/nvim/lua/plugins/keymappings.lua` (the set of plugin-based mappings).
+- `<leader>em` to get to `~/.config/nvim/lua/keymappings.lua` (the basic set of mappings).
+- `<leader>epm` to get to `~/.config/nvim/lua/plugins/keymappings.lua` (the set of plugin-based mappings).

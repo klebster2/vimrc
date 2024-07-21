@@ -48,6 +48,5 @@ vim.keymap.set("n", "<c-F>", require('fzf-lua').files, { desc = "Fzf Files" })
 vim.keymap.set("n", "<c-T>", require('fzf-lua').helptags, { desc = "Fzf helptags" })
 vim.keymap.set("n", "<c-X>", require('fzf-lua').grep_cword, { desc = "Fzf Live Grep on CWORD" })
 
--- Go to this file: (<leader>mp / <leader>pm)
-keymap('n', '<leader>mp', ':e ~/.config/nvim/lua/plugins/keymappings.lua<cr>', opts)
-keymap('n', '<leader>pm', ':e ~/.config/nvim/lua/plugins/keymappings.lua<cr>', opts)
+-- Go to this file: (<leader>emp / <leader>epm)
+keymap('n', '<leader>epm', ':e ~/.config/nvim/lua/plugins/keymappings.lua<cr>', opts)

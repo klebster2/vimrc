@@ -11,8 +11,9 @@ vim.g.maplocalleader = ";"
 --- Native Vim Keymaps (No plugins should be needed)
 ---- Normal mode remaps
 ---- 1. Jump to keymapping file (this file):
-keymap('n' , '<leader>m', ':e $HOME/.config/nvim/lua/keymappings.lua<cr>', opts)
----- 2. Try to simplify resizing splits
+keymap('n' , '<leader>em', ':edit $HOME/.config/nvim/lua/keymappings.lua<cr>', opts)
+
+---- 2. Try to simplify resizing window splits
 if vim.fn.has('unix') then
   -- use ctrl
   keymap('n', 'j', '<C-w>-5', opts)
@@ -26,7 +27,8 @@ else
   keymap('n', '<M-h>', '<C-w><', opts)
   keymap('n', '<M-l>', '<C-w>>', opts)
 end
----- 3. Move between windows
+
+---- 3. Move between windows ( also see tmux plugin and remap in $HOME/.tmux.conf ( 'christoomey/vim-tmux-navigator' ) )
 keymap('n', '<leader>h', ':wincmd h<CR>', opts)
 keymap('n', '<leader>j', ':wincmd j<CR>', opts)
 keymap('n', '<leader>k', ':wincmd k<CR>', opts)
@@ -51,18 +53,13 @@ keymap('n', '<leader>nhl', ':set no hlsearch<cr>', opts)
 
 ---- 8. nvim init opts
 -------- easy source
-keymap(
-  'n',
-  '<leader>sv',
-  ':source $HOME/.config/nvim/init.lua<cr>:echom "$HOME/.config/nvim/init.lua was sourced"<cr>',
-  opts
-)
+keymap('n', '<leader>sv', ':source $HOME/.config/nvim/init.lua<cr>:echom "$HOME/.config/nvim/init.lua was sourced"<cr>', opts)
 -------- easy vimrc (init.lua) edit
 keymap('n', '<leader>ev', ':vertical split $HOME/.config/nvim/init.lua<cr>:edit<cr>', opts)
 -------- edit packer plugin installations
-keymap('n', '<leader>ep', ':vs $HOME/.config/nvim/lua/packer-startup.lua<cr>', opts)
+keymap('n', '<leader>ep', ':vertical split $HOME/.config/nvim/lua/packer-startup.lua<cr>', opts)
 -------- scrollbind for scrolling multiple files
-keymap('n', '<leader>sb', ':set scrollbind!<cr>', opts)
+keymap('n', '<leader>ssb', ':set scrollbind!<cr>', opts)
 
 ---- 9. Tab remaps
 keymap('n', '<leader>tp', ':tabprev<cr>', opts)
@@ -70,11 +67,18 @@ keymap('n', '<leader>tn', ':tabnext<cr>', opts)
 keymap('n', '<leader>tt', ':tabnew<cr>', opts)
 keymap('n', '<leader>tc', ':tabclose<cr>', opts)
 
+-- 10. Bash files
 -- Open the formatted Bash History File (you will need to add the following to your .bashrc or .bash_profile)
 --- ```bash
 --- export HISTTIMEFORMAT="[%F %T] "
 --- ```
 keymap('n', '<leader>ebh', ":new<cr>:set buftype=nowrite<cr>:cnoremap <buffer> q q!<cr>:r!perl -pe 'use POSIX qw(strftime); s/^\\#(\\d+)/strftime \"\\#\\%F \\%H:\\%M:\\%S\", localtime($1)/e' $HISTFILE<cr>:setlocal readonly<cr>", opts)
+keymap('n', '<leader>eb', ":vertical split $HOME/.bashrc<cr>", opts)
+keymap('n', '<leader>ebf', ":vertical split $HOME/.dotfiles/bash_functions<cr>", opts)
+
+-- 11. tmux
+-- Open the tmux configuration file
+keymap('n', '<leader>et', ":edit $HOME/.tmux.conf<cr>", opts)
 
 ------ Insert datetime
 keymap('n', '<leader>dt', ":put =strftime('%d/%m/%y %H:%M:%S')<cr>", opts)
@@ -115,15 +119,10 @@ keymap('o', 'in@', ':<c-u>execute "normal! ?^.+@$\rvg_"<cr>', opts)
 keymap('o', 'an@', ':<c-u>execute "normal! ?^\\S\\+@\\S\\+$\r:nohlsearch\r0vg"<cr>', opts)
 
 ------ Command remaps
--------- forgive :Wq, :WQ (Write and quit)
+-------- Forgive :Wq, :WQ (Write and quit), and Q (quit)
 vim.api.nvim_command("command! Wq :wq")
 vim.api.nvim_command("command! WQ :wq")
--------- and Q
 vim.api.nvim_command("command! Q :q")
 
 ------ Spell
 keymap('n', '<leader>ss', ':set spell!<cr>', opts)
-
------- What the commit?
--------- Random commit message
-keymap('n', '<leader>wtc', ":r!curl -s 'https://whatthecommit.com/index.txt'<cr>", opts)

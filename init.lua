@@ -22,9 +22,11 @@ require("autocmds")                     --> $HOME/.config/nvim/lua/autocmds.lua
 if require("packer") then
   require("plugins.keymappings")        --> $HOME/.config/nvim/lua/plugins/keymappings.lua
   require("plugins.options")            --> $HOME/.config/nvim/lua/plugins/options.lua
+  require("plugins.huggingface-llm")    --> $HOME/.config/nvim/lua/plugins/huggingface-llm.lua
   require("plugins.nvim-cmp-cfg")       --> $HOME/.config/nvim/lua/plugins/nvim-cmp-cfg.lua
   require("plugins.nvim-tree-cfg")      --> $HOME/.config/nvim/lua/plugins/nvim-tree-cfg.lua
   require("plugins.treesitter-cfg")     --> $HOME/.config/nvim/lua/plugins/treesitter-cfg.lua
+  require("plugins.lualine")            --> $HOME/.config/nvim/lua/plugins/lualine.lua
   require("plugins.luasnip-config")     --> $HOME/.config/nvim/lua/plugins/luasnip-config.lua
   require("plugins.autocmds")           --> $HOME/.config/nvim/lua/plugins/autocmds.lua
 end

@@ -1,4 +1,5 @@
 #!/bin/bash
+
 check_decision() {
     local _human_readable_message="$1" _command="$2"
     echo "Do you want to run \"$_command\" ?"
@@ -19,14 +20,11 @@ check_nvim_is_installed() {
 
 install_nvim_appimage() {
     local _appimage_target_directory="$1"
-    ## sudo may be needed - only use priviledges if needed to mkdir
     curl -LO "https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
     chgrp sudo nvim.appimage
     chmod ugo+x nvim.appimage
-    # from the neovim docs
     ./nvim.appimage --appimage-extract
     ./squashfs-root/AppRun --version
-    # Optional: exposing nvim globally.
     mv squashfs-root / || sudo mv squashfs-root /
     ln -s /squashfs-root/AppRun /usr/bin/nvim || sudo ln -s /squashfs-root/AppRun /usr/bin/nvim
     nvim --version
@@ -84,7 +82,7 @@ create_pynvim_conda_env() {
 
 
 main() {
-    set -euox pipefail
+    set -euo pipefail
     REINSTALL_CONDA=false
     npm_install_helper="curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20"
 
@@ -129,8 +127,7 @@ main() {
     echo "* Installing dependencies for vim configuration."
     echo "** Installing Plugins via PackerSync..."
     nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-    #echo "** Installing Language servers via LspInstall..."
-    #nvim --headless -c 'autocmd User LspInstall awk_ls bashls dockerls pyright grammarly'
+    nvim --headless -c 'LspInstall awk_ls bashls dockerls pyright grammarly' -c 'quitall'
     echo
 
     for file in ./*.zip*; do
