@@ -71,20 +71,23 @@ If you are unsure what a 'leader' key is, then read this: [Learn Vimscript the H
 ## Useful commands
 
 - To exit insert mode use `jk` typing them together quickly. (The default in vim / nvim is `<ESC>`, but that won't work because it has been unmapped).
-- Use `gd` for 'j' to jump to the **D**efinition.
-- Use `gf` for 'j' to jump to the **F**ile.
+
+- Use `gd` for **G**o to the **D**efinition.
+- Use `gf` for **G**o to the **F**ile.
 
 ### Completion menu for Lsp and Cmp
 
-Note that this applies to Insert Mode only.
+Note that this applies to completions in Insert Mode only.
 
 To jump to the next completion using Lsp / Cmp / Luasnip etc.. use
 
 - `<CTRL+p>` for **P**rev
 - `<CTRL+n>` for **N**ext
-- `<CTRL+e>` for **E**xit
-- `<CTRL+y>` for **Y**es (confirm completion and insert the completion)
-- `<CR>` for Enter confirm, replacing everying that was previously there.
+
+Use
+- `<CTRL+e>` to **E**xit
+- `<CTRL+y>` to 'say' **Y**es, completing the text with the current option; confirm completion and insert the completion
+- `<CR>` replacing everying that was previously there
 
 #### Completion Docs
 
@@ -113,6 +116,7 @@ When completing a snippet, use
 
 - `<CTRL+k>` after selecting a luasnip option to jump to the next snippet jump point
 - `<CTRL+j>` to jump to the previous snippet jump point
+See the snippets file here: [./lua/plugins/snippets.lua](./lua/plugins/snippets.lua)
 
 ### NvimTree
 
