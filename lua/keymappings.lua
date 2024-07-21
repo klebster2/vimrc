@@ -80,8 +80,8 @@ keymap('n', '<leader>ebf', ":vertical split $HOME/.dotfiles/bash_functions<cr>",
 -- Open the tmux configuration file
 keymap('n', '<leader>et', ":edit $HOME/.tmux.conf<cr>", opts)
 
------- Insert datetime
-keymap('n', '<leader>dt', ":put =strftime('%d/%m/%y %H:%M:%S')<cr>", opts)
+------ Insert datetime %d/%m/%y %H:%M
+keymap('n', '<leader>dt', ":put =strftime('%d/%m/%y %H:%M')<cr>", opts)
 
 ------ Visual mode remaps
 ------ Indentation
@@ -106,9 +106,6 @@ keymap('i', 'kj', '<ESC>', opts)
 keymap('i', '<c-c>', '<ESC>', opts)
 
 ------ Command Mode Mappings {{
--------- expand current script path and open
-keymap('c', '%%', "<C-R>=expand('%:p:h').'/'<cr><cr><C-Left>", opts)
-
 ---- " Leader write with permissions ------------- {{{
 keymap('c', 'w!!', 'w !sudo tee > /dev/null %', opts)
 keymap('c', 'Vs', 'vs', opts)

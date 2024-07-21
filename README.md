@@ -71,7 +71,12 @@ If you are unsure what a 'leader' key is, then read this: [Learn Vimscript the H
 
 - Use `gd` for **G**o to the **D**efinition.
 - Use `gf` for **G**o to the **F**ile.
+
 - To exit insert mode use `jk` typing them together quickly. Note that the default in vi, vim and neovim is `<ESC>`, but `<ESC>` won't work because in this configuration, because it has been unmapped.
+- To jump to your tmux configuration file use `<leader>et` for **E**dit **T**mux
+- To jump to your bashrc file use `<leader>eb` for **E**dit **B**ash
+
+You're probably starting to see a pattern
 
 ### Completion menu for Lsp and Cmp
 
@@ -130,11 +135,11 @@ See the snippets file here: [`./lua/plugins/snippets.lua`](./lua/plugins/snippet
 
 When within the NvimTree viewer (You can use the command mode `:NvimTreeToggle` to activate from normal mode, or  `:vertical split .`), use
 
-- `<R>` to **P**erform a reread of the files contained in the project.
-- `<H>` to **H**ide/display hidden files and folders (beginning with a dot .)
-- `<E>` to **E**xpand the entire file tree starting from the root folder (workspace)
-- `<W>` To **C**ollapse all open folders starting from the root folder
-- `<f>` to **F**ind the interactive file search to which search filters can be applied
+- `<SHIFT+r>` to **R**eread the files contained in the focused project
+- `<SHIFT+h>` to **H**ide/display hidden files and folders beginning with a dot `.`. Note that some other files may be hidden by default (like git files / directories).
+- `<SHIFT+e>` to **E**xpand the *entire* file tree starting from the root folder (workspace)
+- `<f>` to **F**ind files (opening a search filter that will be applied)
+- `<SHIFT+w>` To collapse all open folders starting from the root folder
 - `<\s>` to open the file with the **S**ystem application set by default for that file type
 - `<->` (Dash/Hyphen) Allows you to go back up folders. This navigation also allows you to exit the root folder (workspace) to your home directory
 - `<SHIFT+f>` to close the interactive search
@@ -146,5 +151,5 @@ For the NvimTree configuration, go to [`./lua/plugins/nvim-tree-cfg.lua`](./lua/
 
 ### Nvim Spell
 
-- `<z+w>` to add a word to the dictionary.
+- `<z>+<w>` to add a word to the dictionary.
 - `<leader>ss` to set spell (misspelled words will appear underlined)
