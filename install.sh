@@ -14,30 +14,6 @@ check_decision() {
     esac
 }
 
-check_nvim_is_installed() {
-    nvim -v > /dev/null 2>&1
-}
-
-install_nvim_appimage() {
-    local _appimage_target_directory="$1"
-    curl -LO "https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
-    chgrp sudo nvim.appimage
-    chmod ugo+x nvim.appimage
-    ./nvim.appimage --appimage-extract
-    ./squashfs-root/AppRun --version
-    mv squashfs-root / || sudo mv squashfs-root /
-    ln -s /squashfs-root/AppRun /usr/bin/nvim || sudo ln -s /squashfs-root/AppRun /usr/bin/nvim
-    nvim --version
-}
-
-mkdir_p_verbose() {
-    local _dir="$1"
-    [ ! -d "$_dir" ] && \
-        mkdir -pv "$_dir" && \
-        echo "made $_dir" || \
-        echo "$_dir found"
-}
-
 prompt_to_install_conda() {
     os2kernel="$(uname -a | sed -r 's|.* (.*) .*?\/(.*)$|\2-\1|g')"
     IFS=', ' read -r -a array <<< "$(curl "https://repo.anaconda.com/miniconda/" \
@@ -84,33 +60,25 @@ create_pynvim_conda_env() {
 main() {
     set -euo pipefail
     REINSTALL_CONDA=false
-    npm_install_helper="curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20"
-
-    for tool in "jq -V" "curl -V" ; do
-        if ! $tool 2>/dev/null ; then
-            printf '%s is needed for this neovim setup.\nplease install before continuing\n' "$(echo "$tool" | cut -d ' ' -f1)" && exit 1
-            printf '%s' "$npm_install_helper"
-            printf 'sudo apt-get install jq curl -y'
-        fi
-    done
-
-    if ! npm help 2>/dev/null ; then
-        printf 'npm is still needed for this neovim setup.\nplease install before continuing\n\n`%s`' "${npm_install_helper}" && exit 1
-    fi
-
     echo "* Running nvim setup..."
     echo "* Checking whether nvim is already installed..."
-    if check_nvim_is_installed; then
+    if nvim -v > /dev/null 2>&1; then
         printf "* Found nvim already installed at %s\n" "$(which nvim)"
     else
-        install_nvim_appimage "/usr/bin"
+        local _appimage_target_directory="$1"
+        curl -LO "https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
+        chgrp sudo nvim.appimage
+        chmod ugo+x nvim.appimage
+        ./nvim.appimage --appimage-extract
+        ./squashfs-root/AppRun --version
+        mv squashfs-root / || sudo mv squashfs-root /
+        ln -s /squashfs-root/AppRun /usr/bin/nvim || sudo ln -s /squashfs-root/AppRun /usr/bin/nvim
+        nvim --version
     fi
-
     if ! (check_conda_is_installed); then
         prompt_to_install_conda
         echo "Please rerun the installation script after first running . ${HOME}/.bashrc to see if the base conda env is activated"
-        rm ./Miniconda*.sh
-        exit
+        rm ./Miniconda*.sh && exit 1
     else
         set +e
         echo "* Conda installation found"
@@ -123,22 +91,17 @@ main() {
         fi
         set -e
     fi
-
-    echo "* Installing dependencies for vim configuration."
-    echo "** Installing Plugins via PackerSync..."
+    echo "* Installing dependencies for Neovim configuration."
     nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
     nvim --headless -c 'LspInstall awk_ls bashls dockerls pyright grammarly' -c 'quitall'
     echo
-
     for file in ./*.zip*; do
         if [ -f "$file" ]; then
-            echo "* Cleaning up zip files..."
-            rm ./*.zip*
+            rm -v ./*.zip*
         fi
     done
     if [ -f ./nvim.appimage ]; then
-        echo "* Removing nvim.appimage (intermediate app file)"
-        rm ./nvim.appimage
+        rm -v ./nvim.appimage
     fi
 }
 
