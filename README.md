@@ -2,7 +2,7 @@
 
 # Table of Contents
 - [Setup](#setup)
-   - [Ubuntu](#ubuntu)
+   - [Ubuntu Installation](#ubuntu-installation)
 - [Usage notes and Useful commands](#usage-notes-and-useful-commands)
    - [Useful commands](#useful-commands)
       - [Completion Menu Lsp and Cmp](#completion-menu-for-lsp-and-cmp)
@@ -11,12 +11,11 @@
       - [Luasnip](#luasnip)
       - [NvimTree](#nvimtree)
       - [Nvim Spell](#nvim-spell)
-   - [Finally](#finally)
 
 
 # Setup
 
-## Ubuntu
+## Ubuntu installation
 
 1. Install the following packages (via `apt`, `apt-get`, `snap` or another package manager of your choosing)
 
@@ -70,10 +69,9 @@ If you are unsure what a 'leader' key is, then read this: [Learn Vimscript the H
 
 ## Useful commands
 
-- To exit insert mode use `jk` typing them together quickly. (The default in vim / nvim is `<ESC>`, but that won't work because it has been unmapped).
-
 - Use `gd` for **G**o to the **D**efinition.
 - Use `gf` for **G**o to the **F**ile.
+- To exit insert mode use `jk` typing them together quickly. Note that the default in vi, vim and neovim is `<ESC>`, but `<ESC>` won't work because in this configuration, because it has been unmapped.
 
 ### Completion menu for Lsp and Cmp
 
@@ -108,19 +106,23 @@ Use:
 - `[d` to go to the previous LSP diagnostic
 - `]d` to go to the next LSP diagnostic
 
-Also see `: help vim.diagnostic.*` for documentation on any of the functions.
+Also see `: help vim.diagnostic.*` for documentation on any of the Lsp diagnostics.
 
-### Luasnip
+---
+
+For more information on Lsp / Cmp, and to see the configuration file, go to the file [`./lua/plugins/nvim-cmp-cfg.lua`](./lua/plugins/nvim-cmp-cfg.lua).
+
+### LuaSnip
 
 [LuaSnip](https://github.com/L3MON4D3/LuaSnip) is a snippets engine, that permits the user to use templates.
 These templates should ideally increase the speed of development while not sacrificing quality.
 
 When completing a snippet, use
 
-- `<CTRL+k>` after selecting a luasnip option to jump to the next snippet jump point
-- `<CTRL+j>` to jump to the previous snippet jump point
+- `<CTRL+k>` after selecting a luasnip option to jump to the **next** snippet jump point
+- `<CTRL+j>` to jump to the **previous** snippet jump point
 
-See the snippets file here: [./lua/plugins/snippets.lua](./lua/plugins/snippets.lua)
+See the snippets file here: [`./lua/plugins/snippets.lua`](./lua/plugins/snippets.lua)
 
 ### NvimTree
 
@@ -140,7 +142,7 @@ When within the NvimTree viewer (You can use the command mode `:NvimTreeToggle` 
 - `<g+?>` to open the help with all the predefined shortcuts for quick reference
 - `<q>` to close the file explorer
 
-For the NvimTree configuration, go to [./lua/plugins/nvim-tree-cfg.lua](./lua/plugins/nvim-tree-cfg.lua)
+For the NvimTree configuration, go to [`./lua/plugins/nvim-tree-cfg.lua`](./lua/plugins/nvim-tree-cfg.lua)
 
 ### Nvim Spell
 
