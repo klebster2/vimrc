@@ -72,6 +72,9 @@ keymap('n', '<leader>tc', ':tabclose<cr>', opts)
 --- ```bash
 --- export HISTTIMEFORMAT="[%F %T] "
 --- ```
+--- Inspired by stackoverflow post: http://stackoverflow.com/questions/9457233/unlimited-bash-history
+--- Example of time format in dotfiles:   https://github.com/klebster2/dotfiles/blob/c8a491b4b09a6509df4a49fe3f94eb9e211efbc3/bashrc#L26
+--- Example of histfile name in dotfiles: https://github.com/klebster2/dotfiles/blob/c8a491b4b09a6509df4a49fe3f94eb9e211efbc3/bashrc#L30
 keymap('n', '<leader>ebh', ":new<cr>:set buftype=nowrite<cr>:cnoremap <buffer> q q!<cr>:r!perl -pe 'use POSIX qw(strftime); s/^\\#(\\d+)/strftime \"\\#\\%F \\%H:\\%M:\\%S\", localtime($1)/e' $HISTFILE<cr>:setlocal readonly<cr>", opts)
 keymap('n', '<leader>eb', ":vertical split $HOME/.bashrc<cr>", opts)
 keymap('n', '<leader>ebf', ":vertical split $HOME/.dotfiles/bash_functions<cr>", opts)

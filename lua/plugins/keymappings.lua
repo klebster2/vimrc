@@ -32,11 +32,6 @@ keymap('n', '<leader>ebf', ':vsplit $HOME/.bash_functions<cr>', opts)
 --- Get Etymology
 --keymap('n', '<leader>ee', ':WiktionaryEtymology<cr>', opts)
 
---- Plugin: Telescope
-keymap('n', '<leader>ff', "<cmd>Telescope find_files<cr>", opts)
-keymap('n', '<leader>f', "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({previewer=false}))<cr>", opts)
---keymap('n', '<c-t>', "<cmd>Telescope live_grep<cr>", opts)
-
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
@@ -48,5 +43,5 @@ vim.keymap.set("n", "<c-F>", require('fzf-lua').files, { desc = "Fzf Files" })
 vim.keymap.set("n", "<c-T>", require('fzf-lua').helptags, { desc = "Fzf helptags" })
 vim.keymap.set("n", "<c-X>", require('fzf-lua').grep_cword, { desc = "Fzf Live Grep on CWORD" })
 
--- Go to this file: (<leader>emp / <leader>epm)
+-- Go to this file: ( <leader>epm )
 keymap('n', '<leader>epm', ':e ~/.config/nvim/lua/plugins/keymappings.lua<cr>', opts)

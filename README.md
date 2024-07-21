@@ -12,87 +12,108 @@
       - [NvimTree](#nvimtree)
       - [Nvim Spell](#nvim-spell)
 
+---
 
 # Setup
 
 ## Ubuntu installation
 
-1. Install the following packages (via `apt`, `apt-get`, `snap` or another package manager of your choosing)
+1. Install the following packages (via `apt`, `apt-get`, `snap` or another package manager of your choosing).
 
-- [`jq`](https://jqlang.github.io/jq/) For querying json files.
-- [`curl`](https://curl.se/) For downloading installation files
-- [`npm`](https://www.npmjs.com/) (node package manager)
+   - [`jq`](https://jqlang.github.io/jq/) For querying json files.
+   - [`curl`](https://curl.se/) For downloading installation files
+   - [`npm`](https://www.npmjs.com/) (node package manager)
 
-To install all the dependencies, you should run:
+   To install all the dependencies, you should run:
 
-```bash
-# Install jq, curl
-apt-get install jq curl -y
-# Install node
-curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20
-```
+   ```bash
+   # Install jq, curl
+   apt-get install jq curl -y
+   # Install node
+   curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20
+   ```
 
-Use `sudo` with `apt-get` if you are not root.
+   Use `sudo` with `apt-get` if you are not root.
 
-2. Next, clone the repo to `~/.config/nvim` (default neovim configuration location), and run the install script:
+2. Next, install neovim. You can use the following shell script.
 
-Clone the repo to `~/.config/nvim`
+   ```bash
+   curl -LO "https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
+   chgrp sudo nvim.appimage
+   chmod ugo+x nvim.appimage
+   ./nvim.appimage --appimage-extract
+   ./squashfs-root/AppRun --version
+   mv squashfs-root / || sudo mv squashfs-root /
+   ln -s /squashfs-root/AppRun /usr/bin/nvim || sudo ln -s /squashfs-root/AppRun /usr/bin/nvim
+   nvim --version
+   ```
 
-```bash
-mkdir -pv ~/.config && git clone "https://github.com/klebster2/vimrc" ~/.config/nvim
-```
+3. Next, clone the repo to `~/.config/nvim` (default neovim configuration location), and run the install script:
 
-Run the installation script [`install.sh`](./install.sh)
+   Clone the repo to `~/.config/nvim`
 
-```bash
-pushd ~/.config/nvim && ./install.sh && popd
-```
+   ```bash
+   mkdir -pv ~/.config && git clone "https://github.com/klebster2/vimrc" ~/.config/nvim
+   ```
 
-3. Enjoy!
+   Run the installation script [`install.sh`](./install.sh)
 
-That's it for now. Enjoy your neovim experience.
+   ```bash
+   pushd ~/.config/nvim && ./install.sh && popd
+   ```
+
+4. That's it for now. I hope that you enjoy your neovim experience!
 
 # Usage notes and Useful commands
 
-The following section lists groups of useful commands.
+The following section lists groups of useful commands, especially shortcuts.
 
-* Note that _some_ of the mappings listed below can be found within the following files:
-- [`lua/keymappings.lua`](./lua/keymappings.lua)
-- [`lua/plugins/keymappings.lua`](./lua/plugins/keymappings.lua)
+---
+
+Some of the mappings listed below can be found within the following keymapping files:
 
 To go to either two of the keymappings.lua files, when in normal mode, use:
 
-- `<leader>em` to get to the file [`~/.config/nvim/lua/keymappings.lua`](./lua/keymappings.lua) (the basic set of mappings that should work with native neovim).
-- `<leader>epm` to get to the file [`~/.config/nvim/lua/plugins/keymappings.lua`](./lua/plugins/keymappings.lua) (the plugin-based mappings that cannot work without the plugins).
+- `<leader>em` to get to the file [`lua/keymappings.lua`](./lua/keymappings.lua) (the basic set of mappings that should work with native neovim).
 
-If you are unsure what a 'leader' key is, then read this: [Learn Vimscript the Hard Way - Chapter 06 - Leaders](https://learnvimscriptthehardway.stevelosh.com/chapters/06.html)
+- `<leader>epm` to get to the file [`lua/plugins/keymappings.lua`](./lua/plugins/keymappings.lua) (the plugin-based mappings that cannot work without the plugins).
+
+If you are unsure what a 'leader' key is, first read this: [Learn Vimscript the Hard Way - Chapter 06 - Leaders](https://learnvimscriptthehardway.stevelosh.com/chapters/06.html)
 
 ## Useful commands
 
+_Note that the following commands apply to Normal Mode only._
+
 - Use `gd` for **G**o to the **D**efinition.
+
 - Use `gf` for **G**o to the **F**ile.
 
 - To exit insert mode use `jk` typing them together quickly. Note that the default in vi, vim and neovim is `<ESC>`, but `<ESC>` won't work because in this configuration, because it has been unmapped.
-- To jump to your tmux configuration file use `<leader>et` for **E**dit **T**mux
-- To jump to your bashrc file use `<leader>eb` for **E**dit **B**ash
 
-You're probably starting to see a pattern
+To jump to a configuration file (these will only work if you have a configuration file at that localtion), use:
+
+- `<leader>et` for **E**dit **T**mux, to edit the tmux configuration file: `~/.tmux.conf`
+- `<leader>eb` for **E**dit **B**ash, to edit the bashrc file `~/.bashrc`
+- `<leader>ei` for **E**dit **I**nputrc, to edit the inputrc file `~/.inputrc`
 
 ### Completion menu for Lsp and Cmp
 
-Note that this applies to completions in Insert Mode only.
+_Note that this applies to completions in Insert Mode only, when the cmp popup menu is visible._
 
-To jump to the next completion using Lsp / Cmp / Luasnip etc.. use
+To jump to the subsequent completions using Lsp, Cmp, Luasnip, etc. use
 
 - `<CTRL+p>` for **P**rev
 - `<CTRL+n>` for **N**ext
 
 Use
+
 - `<CTRL+e>` to **E**xit
-- `<CTRL+y>` to 'say' **Y**es, completing the text with the current option; confirm completion and insert the completion
-- `<CR>` replacing everying that was previously there
+- `<CTRL+y>` to affirm; **Y**es, the user wants to complete the text with the current option; confirm and insert the completion
+- `<CR>` to Accept the completion, replacing everying that was previously there
 
 #### Completion Docs
+
+_Note that this applies to Insert Mode only (as above)._
 
 - `<CTRL-f>` to scroll the docs **F**orwards
 - `<CTRL-b>` to scroll the docs **B**ackwards
@@ -101,7 +122,7 @@ Also see `: help vim.lsp.*` for documentation on any of the LSP functions
 
 #### LSP Diagnostics
 
-Note that this applies to Normal Mode only.
+_Note that this applies to Normal Mode only._
 
 When in normal mode, the LSP will have already run and will be highlighting areas of code syntax.
 Use:
@@ -113,9 +134,7 @@ Use:
 
 Also see `: help vim.diagnostic.*` for documentation on any of the Lsp diagnostics.
 
----
-
-For more information on Lsp / Cmp, and to see the configuration file, go to the file [`./lua/plugins/nvim-cmp-cfg.lua`](./lua/plugins/nvim-cmp-cfg.lua).
+_For more information on Lsp / Cmp, and to see the configuration file, go to the file [`lua/plugins/nvim-cmp-cfg.lua`](./lua/plugins/nvim-cmp-cfg.lua)._
 
 ### LuaSnip
 
@@ -127,7 +146,7 @@ When completing a snippet, use
 - `<CTRL+k>` after selecting a luasnip option to jump to the **next** snippet jump point
 - `<CTRL+j>` to jump to the **previous** snippet jump point
 
-See the snippets file here: [`./lua/plugins/snippets.lua`](./lua/plugins/snippets.lua)
+See the snippets file here: [`lua/plugins/snippets.lua`](./lua/plugins/snippets.lua)
 
 ### NvimTree
 
@@ -141,13 +160,25 @@ When within the NvimTree viewer (You can use the command mode `:NvimTreeToggle` 
 - `<f>` to **F**ind files (opening a search filter that will be applied)
 - `<SHIFT+w>` To collapse all open folders starting from the root folder
 - `<\s>` to open the file with the **S**ystem application set by default for that file type
-- `<->` (Dash/Hyphen) Allows you to go back up folders. This navigation also allows you to exit the root folder (workspace) to your home directory
+- `<->` (Dash/Hyphen) Allows you to go "backwards" into parent folders. This navigation also allows you to exit the root folder (workspace) to your home directory
 - `<SHIFT+f>` to close the interactive search
 - `<CTRL+k>` to display information about the file such as size, creation date, etc.
 - `<g+?>` to open the help with all the predefined shortcuts for quick reference
 - `<q>` to close the file explorer
 
-For the NvimTree configuration, go to [`./lua/plugins/nvim-tree-cfg.lua`](./lua/plugins/nvim-tree-cfg.lua)
+For the NvimTree configuration, go to [`lua/plugins/nvim-tree-cfg.lua`](./lua/plugins/nvim-tree-cfg.lua)
+
+### Fzf-Lua
+
+[Fzf](https://github.com/junegunn/fzf) is a powerful fuzzy-finder. It can be used to quickly find files using keybindings in the terminal such as `<Ctrl+r>` for history.
+Since the release of fzf's cousins [fzf.vim](https://github.com/junegunn/fzf.vim) a github user who goes by the name ibhagwan wrote an [Fzf-Lua](https://github.com/ibhagwan/fzf-lua/tree/main) plugin for neovim that is blazingly fast.
+[_Allegedly_](https://www.reddit.com/r/neovim/comments/113ewaf/comment/j8qqf27/#t1_j8qqf27-comment-rtjson-content), it is even faster than Telescope.
+
+Use:
+
+- `<CTRL-f>` to start searching for files.
+- `<CTRL-t>` to search helptags
+- `<CTRL-x>` to grep the cword (word under the cursor)
 
 ### Nvim Spell
 

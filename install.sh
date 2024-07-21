@@ -65,15 +65,7 @@ main() {
     if nvim -v > /dev/null 2>&1; then
         printf "* Found nvim already installed at %s\n" "$(which nvim)"
     else
-        local _appimage_target_directory="$1"
-        curl -LO "https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
-        chgrp sudo nvim.appimage
-        chmod ugo+x nvim.appimage
-        ./nvim.appimage --appimage-extract
-        ./squashfs-root/AppRun --version
-        mv squashfs-root / || sudo mv squashfs-root /
-        ln -s /squashfs-root/AppRun /usr/bin/nvim || sudo ln -s /squashfs-root/AppRun /usr/bin/nvim
-        nvim --version
+        printf "* Nvim not found!\n" && exit 1
     fi
     if ! (check_conda_is_installed); then
         prompt_to_install_conda
