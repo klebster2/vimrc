@@ -112,15 +112,19 @@ Also see `: help vim.diagnostic.*` for documentation on any of the functions.
 
 ### Luasnip
 
+[LuaSnip](https://github.com/L3MON4D3/LuaSnip) is a snippets engine, that permits the user to use templates.
+These templates should ideally increase the speed of development while not sacrificing quality.
+
 When completing a snippet, use
 
 - `<CTRL+k>` after selecting a luasnip option to jump to the next snippet jump point
 - `<CTRL+j>` to jump to the previous snippet jump point
+
 See the snippets file here: [./lua/plugins/snippets.lua](./lua/plugins/snippets.lua)
 
 ### NvimTree
 
-NvimTree is a plugin used for file / directory viewing.
+[NvimTree](https://github.com/nvim-tree/nvim-tree.lua) is a plugin used for file / directory viewing.
 
 When within the NvimTree viewer (You can use the command mode `:NvimTreeToggle` to activate from normal mode, or  `:vertical split .`), use
 
@@ -136,11 +140,9 @@ When within the NvimTree viewer (You can use the command mode `:NvimTreeToggle` 
 - `<g+?>` to open the help with all the predefined shortcuts for quick reference
 - `<q>` to close the file explorer
 
+For the NvimTree configuration, go to [./lua/plugins/nvim-tree-cfg.lua](./lua/plugins/nvim-tree-cfg.lua)
+
 ### Nvim Spell
 
 - `<z+w>` to add a word to the dictionary.
 - `<leader>ss` to set spell (misspelled words will appear underlined)
-
-### Other remaps
-
-https://learnvimscriptthehardway.stevelosh.com/chapters/07.html#sourcing-mapping
