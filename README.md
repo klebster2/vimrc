@@ -24,38 +24,55 @@
 - [`curl`](https://curl.se/) For downloading installation files
 - [`npm`](https://www.npmjs.com/) (node package manager)
 
-To install all the dependencies, you can usually run:
+To install all the dependencies, you should run:
 
 ```bash
+# Install jq, curl
 apt-get install jq curl -y
+# Install node
 curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20
 ```
 
 Use `sudo` with `apt-get` if you are not root.
 
-2. Next, clone repo to `~/.config/nvim`, and run the install script:
+2. Next, clone the repo to `~/.config/nvim` (default neovim configuration location), and run the install script:
 
 Clone the repo to `~/.config/nvim`
+
 ```bash
 mkdir -pv ~/.config && git clone "https://github.com/klebster2/vimrc" ~/.config/nvim
 ```
 
 Run the installation script [`install.sh`](./install.sh)
+
 ```bash
 pushd ~/.config/nvim && ./install.sh && popd
 ```
 
 3. Enjoy!
-That's it for now. Enjoy your vim experience.
+
+That's it for now. Enjoy your neovim experience.
 
 # Usage notes and Useful commands
 
+The following section lists groups of useful commands.
+
+* Note that _some_ of the mappings listed below can be found within the following files:
+- [`lua/keymappings.lua`](./lua/keymappings.lua)
+- [`lua/plugins/keymappings.lua`](./lua/plugins/keymappings.lua)
+
+To go to either two of the keymappings.lua files, when in normal mode, use:
+
+- `<leader>em` to get to the file [`~/.config/nvim/lua/keymappings.lua`](./lua/keymappings.lua) (the basic set of mappings that should work with native neovim).
+- `<leader>epm` to get to the file [`~/.config/nvim/lua/plugins/keymappings.lua`](./lua/plugins/keymappings.lua) (the plugin-based mappings that cannot work without the plugins).
+
+If you are unsure what a 'leader' key is, then read this: [Learn Vimscript the Hard Way - Chapter 06 - Leaders](https://learnvimscriptthehardway.stevelosh.com/chapters/06.html)
+
 ## Useful commands
 
-- To exit insert mode use `jk` typing them together quickly. (the default in vim / nvim is `<ESC>`, but that won't work because it has been unmapped).
+- To exit insert mode use `jk` typing them together quickly. (The default in vim / nvim is `<ESC>`, but that won't work because it has been unmapped).
 - Use `gd` for 'j' to jump to the **D**efinition.
 - Use `gf` for 'j' to jump to the **F**ile.
-
 
 ### Completion menu for Lsp and Cmp
 
@@ -97,10 +114,11 @@ When completing a snippet, use
 - `<CTRL+k>` after selecting a luasnip option to jump to the next snippet jump point
 - `<CTRL+j>` to jump to the previous snippet jump point
 
-
 ### NvimTree
 
-When within NvimTree (Using command mode `:NvimTreeToggle` to activate), use
+NvimTree is a plugin used for file / directory viewing.
+
+When within the NvimTree viewer (You can use the command mode `:NvimTreeToggle` to activate from normal mode, or  `:vertical split .`), use
 
 - `<R>` to **P**erform a reread of the files contained in the project.
 - `<H>` to **H**ide/display hidden files and folders (beginning with a dot .)
@@ -114,15 +132,11 @@ When within NvimTree (Using command mode `:NvimTreeToggle` to activate), use
 - `<g+?>` to open the help with all the predefined shortcuts for quick reference
 - `<q>` to close the file explorer
 
-
 ### Nvim Spell
 
 - `<z+w>` to add a word to the dictionary.
 - `<leader>ss` to set spell (misspelled words will appear underlined)
 
-## Finally
+### Other remaps
 
-To go to two of the mappings.lua files, use:
-
-- `<leader>em` to get to `~/.config/nvim/lua/keymappings.lua` (the basic set of mappings).
-- `<leader>epm` to get to `~/.config/nvim/lua/plugins/keymappings.lua` (the set of plugin-based mappings).
+https://learnvimscriptthehardway.stevelosh.com/chapters/07.html#sourcing-mapping
