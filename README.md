@@ -16,6 +16,7 @@
       - [NvimTree](#nvimtree)
       - [Fzf-Lua](#fzf-lua)
       - [Nvim Spell](#nvim-spell)
+      - [Json File formatting](#json-file-formatting)
 
 ---
 
@@ -34,7 +35,6 @@
    To install all the above dependencies, run:
 
    ```bash
-   # Install jq, curl
    apt-get install jq curl -y
    # Install node / node package manager - npm
    curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20
@@ -150,7 +150,7 @@ Use:
 
 Also see `: help vim.diagnostic.*` for documentation on any of the Lsp diagnostics.
 
-_For more information on Lsp / Cmp, and to see the configuration file, go to the file [`lua/plugins/nvim-cmp-cfg.lua`](./lua/plugins/nvim-cmp-cfg.lua)._
+_To see the configuration, go to the file [`lua/plugins/nvim-cmp-cfg.lua`](./lua/plugins/nvim-cmp-cfg.lua)._
 
 ### LuaSnip
 
@@ -198,6 +198,8 @@ Use:
 
 ### Nvim Spell
 
+Use:
+
 - `<z>+<w>` to add a word to the dictionary.
 - `<leader>ss` to set spell (misspelled words will appear underlined)
 
@@ -205,4 +207,4 @@ Use:
 
 Use:
 
-- `<localleader>j` inside a json file to format it with equal indentation.
+- `<localleader>j` inside a json file to format it with consistent indentation.
