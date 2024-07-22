@@ -3,6 +3,10 @@
 # Table of Contents
 - [Setup](#setup)
    - [Ubuntu Installation](#ubuntu-installation)
+       - [1. Install the packages jq, curl, and npm](#1-install-the-packages-jq-curl-and-npm)
+       - [2. Install neovim](#2-install-neovim)
+       - [3. Clone the repo, and run install.sh](#3-clone-the-repo-and-run-installsh)
+       - [4. That's it for now.](#4-thats-it-for-now)
 - [Usage notes and Useful commands](#usage-notes-and-useful-commands)
    - [Useful commands](#useful-commands)
       - [Completion Menu Lsp and Cmp](#completion-menu-for-lsp-and-cmp)
@@ -18,24 +22,28 @@
 
 ## Ubuntu installation
 
-1. Install the following packages (via `apt`, `apt-get`, `snap` or another package manager of your choosing).
+### 1. Install the packages jq, curl, and npm
+
+   You can do this via `apt`, `apt-get`, `snap` or another package manager of your choosing.
 
    - [`jq`](https://jqlang.github.io/jq/) For querying json files.
    - [`curl`](https://curl.se/) For downloading installation files
    - [`npm`](https://www.npmjs.com/) (node package manager)
 
-   To install all the dependencies, you should run:
+   To install all the above dependencies, run:
 
    ```bash
    # Install jq, curl
    apt-get install jq curl -y
-   # Install node
+   # Install node / node package manager - npm
    curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20
    ```
 
    Use `sudo` with `apt-get` if you are not root.
 
-2. Next, install neovim. You can use the following shell script.
+### 2. Install neovim
+
+   You can use the following shell script.
 
    ```bash
    curl -LO "https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
@@ -48,9 +56,9 @@
    nvim --version
    ```
 
-3. Next, clone the repo to `~/.config/nvim` (default neovim configuration location), and run the install script:
+### 3. Clone the repo, and run install.sh
 
-   Clone the repo to `~/.config/nvim`
+   Clone the repo to `~/.config/nvim` (the default neovim location)
 
    ```bash
    mkdir -pv ~/.config && git clone "https://github.com/klebster2/vimrc" ~/.config/nvim
@@ -62,13 +70,13 @@
    pushd ~/.config/nvim && ./install.sh && popd
    ```
 
-4. That's it for now. I hope that you enjoy your neovim experience!
+### 4. That's it for now.
+
+   I hope you enjoy your neovim experience!
 
 # Usage notes and Useful commands
 
-The following section lists groups of useful commands, especially shortcuts.
-
----
+_The following section lists groups of useful commands, especially shortcuts._
 
 Some of the mappings listed below can be found within the following keymapping files:
 
@@ -96,9 +104,14 @@ To jump to a configuration file (these will only work if you have a configuratio
 - `<leader>eb` for **E**dit **B**ash, to edit the bashrc file `~/.bashrc`
 - `<leader>ei` for **E**dit **I**nputrc, to edit the inputrc file `~/.inputrc`
 
-### Completion menu for Lsp and Cmp
+### Completion menu for LSP and CMP
 
 _Note that this applies to completions in Insert Mode only, when the cmp popup menu is visible._
+
+[Nvim-Cmp](https://github.com/hrsh7th/nvim-cmp) is an autocompletion engine.
+[LspConfig](https://github.com/neovim/nvim-lspconfig) is a NeoVim client that allows for configuring ([Language-Server-Protocol](https://microsoft.github.io/language-server-protocol/)s in NeoVim)
+
+- Read more on the [NeoVim help page](https://neovim.io/doc/user/lsp.html)
 
 To jump to the subsequent completions using Lsp, Cmp, Luasnip, etc. use
 
