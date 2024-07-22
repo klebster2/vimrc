@@ -127,7 +127,7 @@ To jump to the subsequent completions using Lsp, Cmp, Luasnip, etc. use
 Use
 
 - `<CTRL+e>` to **E**xit
-- `<CTRL+y>` to affirm; **Y**es, the user wants to complete the text with the current option; confirm and insert the completion
+- `<CTRL+y>` to say _**Y**es_, the user wants to complete the text with the current option; confirm and insert the completion
 - `<CR>` to Accept the completion, replacing everying that was previously there
 
 #### Completion Docs
@@ -137,13 +137,12 @@ _Note that this applies to Insert Mode only (as above)._
 - `<CTRL-f>` to scroll the docs **F**orwards
 - `<CTRL-b>` to scroll the docs **B**ackwards
 
-Also see `: help vim.lsp.*` for documentation on any of the LSP functions
+Also see `:help vim.lsp.*` for documentation on any of the LSP functions
 
 #### LSP Diagnostics
 
 _Note that this applies to Normal Mode only._
 
-When in normal mode, the LSP will have already run and will be highlighting areas of code syntax.
 Use:
 
 - `<SPACE>+e` to open a floating window containing the LSP diagnostic (according to the LSP)
@@ -151,14 +150,14 @@ Use:
 - `[d` to go to the previous LSP diagnostic
 - `]d` to go to the next LSP diagnostic
 
-Also see `: help vim.diagnostic.*` for documentation on any of the Lsp diagnostics.
+Also see `:help vim.diagnostic.*` for documentation on any of the Lsp diagnostics.
 
 _To see the configuration, go to the file [`lua/plugins/nvim-cmp-cfg.lua`](./lua/plugins/nvim-cmp-cfg.lua)._
 
 ### LuaSnip
 
-[LuaSnip](https://github.com/L3MON4D3/LuaSnip) is a snippets engine, that permits the user to use templates.
-These templates should ideally increase the speed of development while not sacrificing quality.
+[LuaSnip](https://github.com/L3MON4D3/LuaSnip) is a snippets engine, that permits the user to use snippet templates.
+These templates should ideally increase the speed of development while not sacrificing code quality.
 
 When completing a snippet, use
 
@@ -171,10 +170,10 @@ See the snippets file here: [`lua/plugins/snippets.lua`](./lua/plugins/snippets.
 
 [NvimTree](https://github.com/nvim-tree/nvim-tree.lua) is a plugin used for file / directory viewing.
 
-When within the NvimTree viewer (You can use the command mode `:NvimTreeToggle` to activate from normal mode, or  `:vertical split .`), use
+When within the NvimTree viewer (You can use the command mode `:NvimTreeToggle` to activate from normal mode, or  `:vertical split .`), use any of the defaults:
 
 - `<SHIFT+r>` to **R**eread the files contained in the focused project
-- `<SHIFT+h>` to **H**ide/display hidden files and folders beginning with a dot `.`. Note that some other files may be hidden by default (like git files / directories).
+- `<SHIFT+h>` to toggle the display of hidden files and folders beginning with a dot `.`. Note that some other files may be hidden by default (like git files / directories).
 - `<SHIFT+e>` to **E**xpand the *entire* file tree starting from the root folder (workspace)
 - `<f>` to **F**ind files (opening a search filter that will be applied)
 - `<SHIFT+w>` To collapse all open folders starting from the root folder
@@ -186,6 +185,8 @@ When within the NvimTree viewer (You can use the command mode `:NvimTreeToggle` 
 - `<q>` to close the file explorer
 
 For the NvimTree configuration, go to [`lua/plugins/nvim-tree-cfg.lua`](./lua/plugins/nvim-tree-cfg.lua)
+
+Also note that some files and directories such as `.git/`, and `.gitignore` may be omitted from the NvimTree view due to how unusual it is for those files to be edited.
 
 ### Fzf-Lua
 
