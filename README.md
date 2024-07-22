@@ -81,11 +81,11 @@ _The following section lists groups of useful commands, especially shortcuts._
 
 Some of the mappings listed below can be found within the following keymapping files:
 
-To go to either two of the keymappings.lua files, when in normal mode, use:
+To go to either one of the two keymappings.lua files, when in normal mode, use:
 
-- `<leader>em` to get to the file [`lua/keymappings.lua`](./lua/keymappings.lua) (the basic set of mappings that should work with native neovim).
+- `<leader>em` to go to [`lua/keymappings.lua`](./lua/keymappings.lua) (the basic set of mappings that should work with native neovim).
 
-- `<leader>epm` to get to the file [`lua/plugins/keymappings.lua`](./lua/plugins/keymappings.lua) (the plugin-based mappings that cannot work without the plugins).
+- `<leader>epm` to go to [`lua/plugins/keymappings.lua`](./lua/plugins/keymappings.lua) (the plugin-based mappings that cannot work without the plugins).
 
 If you are unsure what a 'leader' key is, first read this: [Learn Vimscript the Hard Way - Chapter 06 - Leaders](https://learnvimscriptthehardway.stevelosh.com/chapters/06.html)
 
@@ -94,17 +94,20 @@ If you are unsure what a 'leader' key is, first read this: [Learn Vimscript the 
 _Note that the following commands apply to Normal Mode only._
 
 - Use `gd` for **G**o to the **D**efinition.
-   - When the Cursor is on a word (cword) that is a function-call, you can type `gd` to go to the function **D**efinition.
+   - When the **C**ursor is on a **W**ord (**cw**ord), and that word is a function-call, you can type `gd` to go to the function **D**efinition.
 
 - Use `gf` for **G**o to the **F**ile.
-   - When the Cursor is on a file, you can type `gf` to go to the file.
+   - When the Cursor is on a **F**ile (fullpath, or partial path), you can type `gf` to **G**o to the **F**ile.
 
-- To exit insert mode use `jk` typing them together quickly. Note that the default in vi, vim and neovim is `<ESC>`, but `<ESC>` won't work because in this configuration, because it has been unmapped.
+- To exit insert mode use `jk` typing them together quickly. Note that the default way to exit normal mode in vi, vim and neovim is `<ESC>`, but `<ESC>` won't work because in this configuration, because it has been unmapped.
+   - Learn Vimscript the Hard Way: ["A trick to learning something is to force yourself to use it."](https://learnvimscriptthehardway.stevelosh.com/chapters/10.html#learning-the-map). In other words, unmap and remap.
 
 To jump to a configuration file (these will only work if you have a configuration file at that localtion), use:
 
 - `<leader>et` for **E**dit **T**mux, to edit the tmux configuration file: `~/.tmux.conf`
+
 - `<leader>eb` for **E**dit **B**ash, to edit the bashrc file `~/.bashrc`
+
 - `<leader>ei` for **E**dit **I**nputrc, to edit the inputrc file `~/.inputrc`
 
 ### Completion menu for LSP and CMP

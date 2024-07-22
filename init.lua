@@ -1,4 +1,3 @@
----- Learn Vimscript the Hard Way: "A trick to learning something is to force yourself to use it." [in other words, remap, and unmap]
 ---- You can return to the previous file by using <c+o> (or <c+i>)
 
 --- see :help 'runtimepath' or :help 'rtp'
