@@ -152,7 +152,7 @@ Use:
 
 Also see `:help vim.diagnostic.*` for documentation on any of the Lsp diagnostics.
 
-_To see the configuration, go to the file [`lua/plugins/nvim-cmp-cfg.lua`](./lua/plugins/nvim-cmp-cfg.lua)._
+_To see the configuration, go to the file_ [`lua/plugins/nvim-cmp-cfg.lua`](./lua/plugins/nvim-cmp-cfg.lua).
 
 ### LuaSnip
 
