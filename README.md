@@ -200,3 +200,9 @@ Use:
 
 - `<z>+<w>` to add a word to the dictionary.
 - `<leader>ss` to set spell (misspelled words will appear underlined)
+
+### Json File formatting
+
+Use:
+
+- `<localleader>j` inside a json file to format it with equal indentation.
