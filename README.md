@@ -102,7 +102,7 @@ _Note that the following commands apply to Normal Mode only._
 - To exit insert mode use `jk` typing them together quickly. Note that the default way to exit normal mode in vi, vim and neovim is `<ESC>`, but `<ESC>` won't work because in this configuration, because it has been unmapped.
    - Learn Vimscript the Hard Way: ["A trick to learning something is to force yourself to use it."](https://learnvimscriptthehardway.stevelosh.com/chapters/10.html#learning-the-map). In other words, unmap and remap.
 
-To jump to a configuration file (these will only work if you have a configuration file at that localtion), use:
+To jump to a configuration file (these will only work if you have a configuration file at that location), use:
 
 - `<leader>et` for **E**dit **T**mux, to edit the tmux configuration file: `~/.tmux.conf`
 
