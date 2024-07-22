@@ -187,8 +187,8 @@ For the NvimTree configuration, go to [`lua/plugins/nvim-tree-cfg.lua`](./lua/pl
 ### Fzf-Lua
 
 [Fzf](https://github.com/junegunn/fzf) is a powerful fuzzy-finder. It can be used to quickly find files using keybindings in the terminal such as `<Ctrl+r>` for history.
-Since the release of fzf's cousins [fzf.vim](https://github.com/junegunn/fzf.vim) a github user who goes by the name ibhagwan wrote an [Fzf-Lua](https://github.com/ibhagwan/fzf-lua/tree/main) plugin for neovim that is blazingly fast.
-[_Allegedly_](https://www.reddit.com/r/neovim/comments/113ewaf/comment/j8qqf27/#t1_j8qqf27-comment-rtjson-content), it is even faster than Telescope.
+Since the release of one of fzf's cousins [fzf.vim](https://github.com/junegunn/fzf.vim), a github user wrote an [Fzf-Lua](https://github.com/ibhagwan/fzf-lua/tree/main) plugin for neovim that is blazingly fast.
+[_Allegedly_](https://www.reddit.com/r/neovim/comments/113ewaf/comment/j8qqf27/#t1_j8qqf27-comment-rtjson-content), it is even faster than [Telescope](https://github.com/nvim-telescope/telescope.nvim).
 
 Use:
 
