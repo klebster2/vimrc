@@ -117,7 +117,7 @@ _Note that this applies to completions in Insert Mode only, when the cmp popup m
 [Nvim-Cmp](https://github.com/hrsh7th/nvim-cmp) is an autocompletion engine.
 [LspConfig](https://github.com/neovim/nvim-lspconfig) is a NeoVim client that allows for configuring ([Language-Server-Protocol](https://microsoft.github.io/language-server-protocol/)s in NeoVim)
 
-- Read more on the [NeoVim help page](https://neovim.io/doc/user/lsp.html)
+- Read more about the NeoVim LSP client on the [NeoVim LSP help page](https://neovim.io/doc/user/lsp.html)
 
 To jump to the subsequent completions using Lsp, Cmp, Luasnip, etc. use
 
