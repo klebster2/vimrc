@@ -14,6 +14,7 @@
          - [LSP Diagnostics](#lsp-diagnostics)
       - [Luasnip](#luasnip)
       - [NvimTree](#nvimtree)
+      - [Fzf-Lua](#fzf-lua)
       - [Nvim Spell](#nvim-spell)
 
 ---
@@ -93,8 +94,10 @@ If you are unsure what a 'leader' key is, first read this: [Learn Vimscript the 
 _Note that the following commands apply to Normal Mode only._
 
 - Use `gd` for **G**o to the **D**efinition.
+   - When the Cursor is on a word (cword) that is a function-call, you can type `gd` to go to the function **D**efinition.
 
 - Use `gf` for **G**o to the **F**ile.
+   - When the Cursor is on a file, you can type `gf` to go to the file.
 
 - To exit insert mode use `jk` typing them together quickly. Note that the default in vi, vim and neovim is `<ESC>`, but `<ESC>` won't work because in this configuration, because it has been unmapped.
 
