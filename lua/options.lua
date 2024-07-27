@@ -38,3 +38,5 @@ vim.g.syntax_on = true
 vim.o.termguicolors = true
 vim.o.background = "dark"
 vim.opt.mouse = "a"
+
+vim.g.syntax_on = true

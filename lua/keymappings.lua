@@ -2,7 +2,7 @@ local vim = vim
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
-vim.api.nvim_set_keymap('n', '<Space>', '<NOP>', { noremap = true, silent = true })
+keymap('n', '<Space>', '<NOP>', { noremap = true, silent = true })
 
 --- Define leader keys
 vim.g.mapleader = " "
@@ -126,3 +126,29 @@ vim.api.nvim_command("command! Q :q")
 
 ------ Spell
 keymap('n', '<leader>ss', ':set spell!<cr>', opts)
+
+--- Global Plugin Remaps --
+--- Plugin: UndoTree
+keymap('n', '<leader>u', ':UndotreeToggle<cr>', opts)
+
+--- Open small side explorer
+keymap('n', '<leader>vs', ':NvimTreeOpen .<cr>:vertical resize 40<cr>', opts)
+
+--- PackerSync is what Plug Install  used to be (pi)
+keymap('n', '<leader>pi', ':PackerSync<cr>', opts)
+
+-------- leader easy edit packer plugin
+keymap('n', '<leader>eV', ':NvimTreeOpen $HOME/.config/nvim/lua/<cr>', opts)
+keymap('n', '<leader>ebf', ':vsplit $HOME/.bash_functions<cr>', opts)
+
+--- Get Etymology
+--keymap('n', '<leader>ee', ':WiktionaryEtymology<cr>', opts)
+
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+
+-- Go to this file: ( <leader>epm )
+--keymap('n', '<leader>epm', ':e ~/.config/nvim/lua/plugins/keymappings.lua<cr>', opts)

@@ -17,6 +17,3 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-
-vim.api.nvim_set_hl(0, "CmpItemMenuCopilot", { fg = "#8ec07c" })
-vim.api.nvim_set_hl(0, "CmpItemKindCopilot", {fg ="#8ec07c"})
