@@ -56,8 +56,8 @@ keymap('n', '<leader>nhl', ':set no hlsearch<cr>', opts)
 keymap('n', '<leader>sv', ':source $HOME/.config/nvim/init.lua<cr>:echom "$HOME/.config/nvim/init.lua was sourced"<cr>', opts)
 -------- easy vimrc (init.lua) edit
 keymap('n', '<leader>ev', ':vertical split $HOME/.config/nvim/init.lua<cr>:edit<cr>', opts)
--------- edit packer plugin installations
-keymap('n', '<leader>ep', ':vertical split $HOME/.config/nvim/lua/packer-startup.lua<cr>', opts)
+-------- edit plugin installations (lazy.nvim)
+keymap('n', '<leader>ep', ':vertical split $HOME/.config/nvim/lua/plugins/init.lua<cr>', opts)
 -------- scrollbind for scrolling multiple files
 keymap('n', '<leader>ssb', ':set scrollbind!<cr>', opts)
 

@@ -81,6 +81,7 @@ vim.api.nvim_create_autocmd("FileType", {pattern = {"lua"},
 })
 
 --- Autocommand to run Luacheck on save for Lua files
+--- Requires: luacheck
 vim.api.nvim_create_autocmd("BufWritePost", {
     pattern = {"*.lua"},
     callback = function()
@@ -97,6 +98,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
         vim.fn.winrestview(current_view)
     end,
 })
+
 -- See dotfiles
 vim.api.nvim_create_autocmd("FileType", {pattern = {"bash_history"},
     callback = function()
