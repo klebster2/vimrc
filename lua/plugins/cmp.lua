@@ -273,8 +273,13 @@ return {
         },
         capabilities = capabilities
     }
+    --- Also see $HOME/.config/nvim/lua/colorscheme.lua
     vim.api.nvim_set_hl(0, "CmpItemMenuCopilot", { fg = "#8ec07c" })
     vim.api.nvim_set_hl(0, "CmpItemKindCopilot", {fg ="#8ec07c"})
-    --- Also see $HOME/.config/nvim/lua/colorscheme.lua
+    --- Cmp colours
+    vim.api.nvim_set_hl(0, "CmpItemAbbr", { fg = "#d5c4a1" })
+    vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { fg = "#fbf1c7" })
+    vim.api.nvim_set_hl(0, "CmpItemAbbrFuzzy", { fg = "#ec5300" })
+    vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#8ec07c" })
   end
 }
