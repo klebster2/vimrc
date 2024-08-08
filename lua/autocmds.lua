@@ -12,6 +12,7 @@ vim.api.nvim_create_autocmd("FileType", {
         keymap('n', "<localleader>tt", "A # type: ignore<esc>", opts)
         keymap('n', "<localleader>c", "I#<esc>", opts)
         keymap('n', "<localleader>I", "<esc>:Isort", opts)
+        keymap('n', "<localleader>pyd", "!python -m doctest -v %")
         vim.opt_local.foldenable = true
         vim.opt_local.foldmethod = "syntax"
         vim.bo.shiftwidth = 4
@@ -24,7 +25,6 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     group = vim.api.nvim_create_augroup("Format", {clear=true}),
     pattern = {"*.py"},
     callback = function()
-        vim.cmd("!python -m doctest -v % | grep -P 'failed|error'")
     end,
 })
 
