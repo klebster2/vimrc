@@ -191,7 +191,7 @@ When within the NvimTree viewer (You can use the command mode `:NvimTreeToggle` 
 - `<g+?>` to open the help with all the predefined shortcuts for quick reference
 - `<q>` to close the file explorer
 
-For the NvimTree configuration, go to [`lua/plugins/nvim-tree-cfg.lua`](./lua/plugins/nvim-tree-cfg.lua)
+For the NvimTree configuration, go to [`lua/plugins/nvim-tree.lua`](./lua/plugins/nvim-tree.lua)
 
 Also note that some files and directories such as `.git/`, and `.gitignore` may be omitted from the NvimTree view due to how unusual it is for those files to be edited.
 
