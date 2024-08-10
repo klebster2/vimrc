@@ -82,7 +82,9 @@
 
 _The following section lists commands that will take you to configuration files._
 
-- `<leader>ev` to edit the init.lua file (at the location ~/.config/nvim/init.lua
+Use:
+
+- `<leader>ev` to edit the init.lua file - this is the main configuration file (at the location ~/.config/nvim/init.lua ) in this repository find it here: [`init.lua`](./init.lua)
 
 Some of the mappings listed below can be found within the following keymapping files:
 
