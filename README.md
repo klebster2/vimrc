@@ -30,7 +30,7 @@
    You can do this via `apt`, `apt-get`, `snap` or a package manager of your choosing. _Note: A package manager is usually dependent on your operating system. `apt`, `apt-get`, `snap` are relevant to Ubuntu._
 
    - [`jq`](https://jqlang.github.io/jq/) For querying json files.
-   - [`curl`](https://curl.se/) For downloading installation files
+   - [`curl`](https://curl.se/) For downloading installation files and plenary.nvim
    - [`npm`](https://www.npmjs.com/) (node package manager)
 
    To install all the above dependencies run:
