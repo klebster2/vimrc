@@ -92,8 +92,6 @@ To go to either one of the two keymappings.lua files, when in normal mode, use:
 
 - `<leader>em` to go to [`lua/keymappings.lua`](./lua/keymappings.lua) (the basic set of mappings that should work with native neovim).
 
-- `<leader>epm` to go to [`lua/plugins/keymappings.lua`](./lua/plugins/keymappings.lua) (the plugin-based mappings that cannot work without the plugins).
-
 If you are unsure what a 'leader' key is, first read this: [Learn Vimscript the Hard Way - Chapter 06 - Leaders](https://learnvimscriptthehardway.stevelosh.com/chapters/06.html)
 
 ## Useful commands
