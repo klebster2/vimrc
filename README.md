@@ -7,7 +7,8 @@
        - [2. Install neovim](#2-install-neovim)
        - [3. Clone the repo, and run install.sh](#3-clone-the-repo-and-run-installsh)
        - [4. That's it for now.](#4-thats-it-for-now)
-- [Usage notes and Useful commands](#usage-notes-and-useful-commands)
+- [Usage Notes](#usage-notes)
+   - [Configuration Commands](#configuration-commands)
    - [Useful commands](#useful-commands)
       - [Completion Menu Lsp and Cmp](#completion-menu-for-lsp-and-cmp)
          - [Completion Docs](#completion-docs)
@@ -26,13 +27,13 @@
 
 ### 1. Install the packages jq, curl, and npm
 
-   You can do this via `apt`, `apt-get`, `snap` or another package manager of your choosing.
+   You can do this via `apt`, `apt-get`, `snap` or a package manager of your choosing. _Note: A package manager is usually dependent on your operating system. `apt`, `apt-get`, `snap` are relevant to Ubuntu._
 
    - [`jq`](https://jqlang.github.io/jq/) For querying json files.
    - [`curl`](https://curl.se/) For downloading installation files
    - [`npm`](https://www.npmjs.com/) (node package manager)
 
-   To install all the above dependencies, run:
+   To install all the above dependencies run:
 
    ```bash
    apt-get install jq curl -y
@@ -40,7 +41,7 @@
    curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20
    ```
 
-   Use `sudo` with `apt-get` if you are not root.
+   Use `sudo` with `apt-get`, `apt` or `snap` if you are not root.
 
 ### 2. Install neovim
 
@@ -57,7 +58,7 @@
    nvim --version
    ```
 
-### 3. Clone the repo, and run install.sh
+### 3. Clone the repo, and run the `install.sh` shell script.
 
    Clone the repo to `~/.config/nvim` (the default neovim location)
 
@@ -73,11 +74,15 @@
 
 ### 4. That's it for now.
 
-   I hope you enjoy your neovim experience!
+   Enjoy your neovim experience!
 
-# Usage notes and Useful commands
+# Usage notes
 
-_The following section lists groups of useful commands, especially shortcuts._
+## Configuration Commands
+
+_The following section lists commands that will take you to configuration files._
+
+- `<leader>ev` to edit the init.lua file (at the location ~/.config/nvim/init.lua
 
 Some of the mappings listed below can be found within the following keymapping files:
 
