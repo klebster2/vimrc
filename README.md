@@ -99,7 +99,7 @@ If you are unsure what a 'leader' key is, first read this: [Learn Vimscript the 
 _Note that the following commands apply to Normal Mode only._
 
 - Use `gd` for **G**o to the **D**efinition.
-   - When the **C**ursor is on a **W**ord (**cw**ord), and that word is a function-call, you can type `gd` to go to the function **D**efinition.
+   - When the **C**ursor is on a **W**ord (**cw**ord), and that word is a function-call, or variable, you can type `gd` to go to the function **D**efinition.
 
 - Use `gf` for **G**o to the **F**ile.
    - When the Cursor is on a **F**ile (fullpath, or partial path), you can type `gf` to **G**o to the **F**ile.
