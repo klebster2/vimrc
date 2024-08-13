@@ -27,5 +27,4 @@ return {
       require("copilot_cmp").setup()
     end
   },
-  --#{ dir="~/.config/nvim/fasttext" }
 }

@@ -84,7 +84,7 @@ main() {
         set -e
     fi
     echo "* Installing dependencies for Neovim configuration."
-    nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+    nvim --headless -c 'Lazy install' -c 'quitall'
     nvim --headless -c 'LspInstall awk_ls bashls dockerls pyright grammarly' -c 'quitall'
     echo
     for file in ./*.zip*; do
