@@ -11,7 +11,6 @@ return {
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-cmdline",
     "octaltree/cmp-look",
-    "klebster2/cmp-rogets-thesaurus",
     "saadparwaiz1/cmp_luasnip",
     "nvim-lua/plenary.nvim",
     "L3MON4D3/LuaSnip", -- snippets for completion see https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip and luasnip ( $HOME/.config/nvim/snippets )
@@ -51,112 +50,112 @@ return {
     lspkind.init({
       symbol_map = {
         Copilot = "",
-        rogets_thesaurus = "",
+        --rogets_thesaurus = "",
       },
     })
 
     --- Fasttext fastapi
-    -- local source = {}
-    -- source.new = function()
-    --   return setmetatable({}, { __index = source })
-    -- end
+    local source = {}
+    source.new = function()
+      return setmetatable({}, { __index = source })
+    end
 
-    -- source.get_trigger_characters = function()
-    --   return { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-    --            'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
-    --            'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
-    --            'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
-    --            'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' }
-    -- end
+    source.get_trigger_characters = function()
+      return { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
+               'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+               'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+               'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+               'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' }
+    end
 
-    -- source.is_available = function()
-    --   return vim.api.nvim_get_mode().mode == 'i'
-    -- end
-    -- local curl = require "plenary.curl"
-    -- -- Define your API base URL
-    -- local api_base_url = 'http://localhost:8080'
+    source.is_available = function()
+      return vim.api.nvim_get_mode().mode == 'i'
+    end
+    local curl = require "plenary.curl"
+    -- Define your API base URL
+    local api_base_url = 'http://localhost:8080'
 
-    -- -- Utility function to fetch word neighbors
-    -- local function fetch_word_neighbors(word, language, drop_strange)
-    --   local response = curl.post(api_base_url .. "/get_word_neighbors/", {
-    --     body = vim.json.encode({
-    --       word = word,
-    --       language = language,
-    --       neighbors = 35,
-    --       dropstrange = true,
-    --     }),
-    --     headers = {
-    --       ["Content-Type"] = "application/json"
-    --     },
-    --     timeout = 2500
-    --   })
+    -- Utility function to fetch word neighbors
+    local function fetch_word_neighbors(word, language, drop_strange)
+      local response = curl.post(api_base_url .. "/get_word_neighbors/", {
+        body = vim.json.encode({
+          word = word,
+          language = language,
+          neighbors = 35,
+          dropstrange = true,
+        }),
+        headers = {
+          ["Content-Type"] = "application/json"
+        },
+        timeout = 2500
+      })
 
-    --   if response.status == 200 then
-    --     return vim.json.decode(response.body)
-    --   else
-    --     print("Failed to fetch word neighbors:", response.status)
-    --     return nil
-    --   end
-    -- end
+      if response.status == 200 then
+        return vim.json.decode(response.body)
+      else
+        print("Failed to fetch word neighbors:", response.status)
+        return nil
+      end
+    end
 
-    -- -- Utility function to fetch word etymology
-    -- local function fetch_word_etymology(word, language)
-    --   local response = curl.post(api_base_url .. "/get_word_etymology/", {
-    --     body = vim.json.encode({
-    --       word = word,
-    --       language = language
-    --     }),
-    --     headers = {
-    --       ["Content-Type"] = "application/json"
-    --     }
-    --   })
+    -- Utility function to fetch word etymology
+    local function fetch_word_etymology(word, language)
+      local response = curl.post(api_base_url .. "/get_word_etymology/", {
+        body = vim.json.encode({
+          word = word,
+          language = language
+        }),
+        headers = {
+          ["Content-Type"] = "application/json"
+        }
+      })
 
-    --   if response.status == 200 then
-    --     print(response.body)
-    --     return vim.json.decode(response.body)
-    --   else
-    --     print("Failed to fetch word etymology:", response.status)
-    --     return nil
-    --   end
-    -- end
+      if response.status == 200 then
+        print(response.body)
+        return vim.json.decode(response.body)
+      else
+        print("Failed to fetch word etymology:", response.status)
+        return nil
+      end
+    end
 
-    -- source.complete = function(self, request, callback)
-    --   local line = vim.fn.getline('.')
-    --   local original_start = vim.fn.col('.') - 1
-    --   local start = original_start
-    --   while start > 0 and string.match(line:sub(start, start), '%S') do
-    --     start = start - 1
-    --   end
-    --   local query_word = line:sub(start + 1, vim.fn.col('.') - 1)
-    --   if #query_word < 3 then return end
+    source.complete = function(self, request, callback)
+      local line = vim.fn.getline('.')
+      local original_start = vim.fn.col('.') - 1
+      local start = original_start
+      while start > 0 and string.match(line:sub(start, start), '%S') do
+        start = start - 1
+      end
+      local query_word = line:sub(start + 1, vim.fn.col('.') - 1)
+      if #query_word < 3 then return end
 
-    --   -- Assuming 'en' as default language for simplicity
-    --   local neighbors_data = fetch_word_neighbors(query_word, 'English', true)
+      -- Assuming 'en' as default language for simplicity
+      local neighbors_data = fetch_word_neighbors(query_word, 'English', true)
 
-    --   local items = {}
-    --   if neighbors_data and neighbors_data.neighbors then
-    --     for _, neighbor in ipairs(neighbors_data.neighbors) do
-    --       --vim.api.nvim_echo({{neighbor.neighbor, 'Comment'}}, true, {})
-    --       table.insert(items, {
-    --           label = query_word,
-    --           documentation = neighbor.etymology,
-    --           textEdit = {
-    --               newText = neighbor.neighbor,
-    --               filterText = neighbor.neighbor,
-    --               range = {
-    --                   ['start'] = {line = request.context.cursor.row - 1, character = original_start},
-    --                   ['end'] = {line = request.context.cursor.row - 1, character = request.context.cursor.col - 1},
-    --               },
-    --           },
-    --       })
-    --       callback({items = items, isIncomplete = true})
-    --     end
-    --   end
-    --   --callback({items = items, isIncomplete = false})
-    -- end
-    -- cmp.register_source('fasttext', source.new())
+      local items = {}
+      if neighbors_data and neighbors_data.neighbors then
+        for _, neighbor in ipairs(neighbors_data.neighbors) do
+          --vim.api.nvim_echo({{neighbor.neighbor, 'Comment'}}, true, {})
+          table.insert(items, {
+              label = query_word..' ['..neighbor.neighbor..']',
+              documentation = neighbor.etymology,
+              textEdit = {
+                  newText = neighbor.neighbor,
+                  filterText = neighbor.neighbor,
+                  range = {
+                      ['start'] = {line = request.context.cursor.row - 1, character = original_start},
+                      ['end'] = {line = request.context.cursor.row - 1, character = request.context.cursor.col - 1},
+                  },
+              },
+          })
+          callback({items = items, isIncomplete = true})
+        end
+      end
+      --callback({items = items, isIncomplete = false})
+    end
+    --cmp.register_source('fasttext', source.new())
 
-    require("cmp_rogets_thesaurus") ---- TODO - make this a plugin <<< $HOME/.config/nvim/lua/plugins/nvim-cmp/thesaurus.lua
+    --require("cmp_rogets_thesaurus")
 
     local default_language_servers = {
       "bashls",
@@ -183,7 +182,7 @@ return {
     for _, value in ipairs(default_language_servers) do
       lspconfig[value].setup {
         on_attach = on_attach,
-        flags = { debounce_text_changes = 120 },
+        flags = { debounce_text_changes = 400 },
         capabilities = capabilities,
       }
     end
@@ -216,7 +215,6 @@ return {
       Operator = "   OPER",
       TypeParameter = "   TYPE",
       Copilot = "   COPILOT",
-      rogets_thesaurus = "   THESAU",
     }
 
     --- Window options
@@ -236,8 +234,8 @@ return {
     }
 
     local kind_mapper = cmp.lsp.CompletionItemKind
-    kind_mapper.Copilot = 25
-    kind_mapper.Thesaurus = 26
+    --kind_mapper.Copilot = 25
+    --kind_mapper.Thesaurus = 26
 
     --- Set configuration for specific filetype.
     cmp.setup.cmdline({'/', '?'}, {
@@ -318,8 +316,8 @@ return {
             },
             max_item_count = 3, priority = 3, keyword_length = 6
         },
-        --{ name = "fasttext", max_item_count = 25, priority = 3, keyword_length = 4 },
-        { name = "rogets_thesaurus", max_item_count = 10, priority = 3, keyword_length = 4 },
+        --{ name = "fasttext", max_item_count = 50, priority = 3, keyword_length = 4 },
+        --{ name = "rogets_thesaurus", max_item_count = 10, priority = 3, keyword_length = 4 },
       },
       formatting = {
         fields = {
@@ -342,7 +340,7 @@ return {
             path = "ﱮ",
             buffer = "﬘",
             spell = "暈",
-            rogets_thesaurus = "",  -- Custom thesaurus
+            --rogets_thesaurus = "",  -- Custom thesaurus
           })[entry.source.name]
           return vim_item
       end,
