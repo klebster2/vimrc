@@ -83,18 +83,16 @@ main() {
         fi
         set -e
     fi
+
     echo "* Installing dependencies for Neovim configuration."
-    nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+    nvim --headless -c 'Lazy install' -c 'quitall'
     nvim --headless -c 'LspInstall awk_ls bashls dockerls pyright grammarly' -c 'quitall'
     echo
-    for file in ./*.zip*; do
+    for file in ./*.zip* ./nvim.appimage; do
         if [ -f "$file" ]; then
             rm -v ./*.zip*
         fi
     done
-    if [ -f ./nvim.appimage ]; then
-        rm -v ./nvim.appimage
-    fi
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then

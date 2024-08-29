@@ -7,7 +7,8 @@
        - [2. Install neovim](#2-install-neovim)
        - [3. Clone the repo, and run install.sh](#3-clone-the-repo-and-run-installsh)
        - [4. That's it for now.](#4-thats-it-for-now)
-- [Usage notes and Useful commands](#usage-notes-and-useful-commands)
+- [Usage Notes](#usage-notes)
+   - [Configuration Commands](#configuration-commands)
    - [Useful commands](#useful-commands)
       - [Completion Menu Lsp and Cmp](#completion-menu-for-lsp-and-cmp)
          - [Completion Docs](#completion-docs)
@@ -26,13 +27,13 @@
 
 ### 1. Install the packages jq, curl, and npm
 
-   You can do this via `apt`, `apt-get`, `snap` or another package manager of your choosing.
+   You can do this via `apt`, `apt-get`, `snap` or a package manager of your choosing. _Note: A package manager is usually dependent on your operating system. `apt`, `apt-get`, `snap` are relevant to Ubuntu._
 
    - [`jq`](https://jqlang.github.io/jq/) For querying json files.
-   - [`curl`](https://curl.se/) For downloading installation files
+   - [`curl`](https://curl.se/) For downloading installation files and plenary.nvim
    - [`npm`](https://www.npmjs.com/) (node package manager)
 
-   To install all the above dependencies, run:
+   To install all the above dependencies run:
 
    ```bash
    apt-get install jq curl -y
@@ -40,7 +41,7 @@
    curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20
    ```
 
-   Use `sudo` with `apt-get` if you are not root.
+   Use `sudo` with `apt-get`, `apt` or `snap` if you are not root.
 
 ### 2. Install neovim
 
@@ -57,7 +58,7 @@
    nvim --version
    ```
 
-### 3. Clone the repo, and run install.sh
+### 3. Clone the repo, and run the `install.sh` shell script.
 
    Clone the repo to `~/.config/nvim` (the default neovim location)
 
@@ -73,19 +74,23 @@
 
 ### 4. That's it for now.
 
-   I hope you enjoy your neovim experience!
+   Enjoy your neovim experience!
 
-# Usage notes and Useful commands
+# Usage notes
 
-_The following section lists groups of useful commands, especially shortcuts._
+## Configuration Commands
+
+_The following section lists commands that will take you to configuration files._
+
+Use:
+
+- `<leader>ev` to edit the init.lua file - this is the main configuration file (at the location ~/.config/nvim/init.lua ) in this repository find it here: [`init.lua`](./init.lua)
 
 Some of the mappings listed below can be found within the following keymapping files:
 
 To go to either one of the two keymappings.lua files, when in normal mode, use:
 
 - `<leader>em` to go to [`lua/keymappings.lua`](./lua/keymappings.lua) (the basic set of mappings that should work with native neovim).
-
-- `<leader>epm` to go to [`lua/plugins/keymappings.lua`](./lua/plugins/keymappings.lua) (the plugin-based mappings that cannot work without the plugins).
 
 If you are unsure what a 'leader' key is, first read this: [Learn Vimscript the Hard Way - Chapter 06 - Leaders](https://learnvimscriptthehardway.stevelosh.com/chapters/06.html)
 
@@ -94,7 +99,7 @@ If you are unsure what a 'leader' key is, first read this: [Learn Vimscript the 
 _Note that the following commands apply to Normal Mode only._
 
 - Use `gd` for **G**o to the **D**efinition.
-   - When the **C**ursor is on a **W**ord (**cw**ord), and that word is a function-call, you can type `gd` to go to the function **D**efinition.
+   - When the **C**ursor is on a **W**ord (**cw**ord), and that word is a function-call, or variable, you can type `gd` to go to the function **D**efinition.
 
 - Use `gf` for **G**o to the **F**ile.
    - When the Cursor is on a **F**ile (fullpath, or partial path), you can type `gf` to **G**o to the **F**ile.
@@ -184,7 +189,7 @@ When within the NvimTree viewer (You can use the command mode `:NvimTreeToggle` 
 - `<g+?>` to open the help with all the predefined shortcuts for quick reference
 - `<q>` to close the file explorer
 
-For the NvimTree configuration, go to [`lua/plugins/nvim-tree-cfg.lua`](./lua/plugins/nvim-tree-cfg.lua)
+For the NvimTree configuration, go to [`lua/plugins/nvim-tree.lua`](./lua/plugins/nvim-tree.lua)
 
 Also note that some files and directories such as `.git/`, and `.gitignore` may be omitted from the NvimTree view due to how unusual it is for those files to be edited.
 

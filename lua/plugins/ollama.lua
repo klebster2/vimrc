@@ -25,7 +25,7 @@ return {
   },
   ---@type Ollama.Config
   opts = {
-    model = "arcee-ai/arcee-scribe",
+    model = "codellama:13b",
     url = "http://127.0.0.1:11434",
     serve = {
       on_start = false,
@@ -39,7 +39,7 @@ return {
       Sample_Prompt = {
         prompt = "Show me the money.",
         input_label = "> ",
-        model = "arcee-ai/arcee-scribe",
+        model = "llama3:8b",
         action = "display",
       }
     }
