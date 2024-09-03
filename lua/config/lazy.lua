@@ -2,7 +2,7 @@ local fn = vim.fn
 
 require("conda-env")                 --> $HOME/.config/nvim/lua/conda-env.lua
 
--- Bootstrap lazy.nvim
+--- Bootstrap lazy.nvim
 local lazypath = fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -18,3 +18,9 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end
 vim.opt.rtp:prepend(lazypath)
+
+---@type function
+local lazy_setup = require("lazy").setup
+
+---@type table
+return lazy_setup

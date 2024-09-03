@@ -18,25 +18,6 @@ return {
       vim.g.WebDevIconsOS = 'Linux'
     end
 
-    local gitignore_files = function(path, ignore_files)
-      -- if exists .gitignore, read it and add to ignore_files
-      local gitignore_exists = vim.fn.filereadable(path .. "/.gitignore") == 1
-      if not gitignore_exists then
-        return ignore_files
-      end
-      local gitignore = vim.fn.glob(path .. "/.gitignore")
-      local lines = vim.fn.readfile(gitignore)
-      local _ignore_files = ignore_files
-      -- vim.cmd("echom 'gitignore: " .. gitignore .. "'")
-      if gitignore == "" then
-        return {}
-      end
-      for _, line in pairs(lines) do
-        _ignore_files[#_ignore_files + 1] = line
-        end
-      return _ignore_files
-    end
-
     local git_add = function()
       local node = lib.get_node_at_cursor()
       local gs = node.git_status.file
@@ -98,8 +79,8 @@ return {
         },
       },
       filters = {
-        custom = gitignore_files(vim.fn.getcwd(), {".git"}),
-          -- Get all fuzzy paths from .gitignore (current directory)
+        custom = {".git"},
+        -- Get all fuzzy paths from .gitignore (current directory)
       },
       actions = {
         open_file = {
