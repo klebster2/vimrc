@@ -1,6 +1,6 @@
 return {
   "tpope/vim-fugitive",
-  lazy = true,
+  lazy = false,
   config = function()
     local keymap = vim.api.nvim_set_keymap
     local opts = { noremap = true, silent = true }
@@ -13,4 +13,4 @@ return {
     keymap('n', '<leader>gc', ':Git commit<cr>', opts)
     keymap('n', '<leader>ga', ':Git add %<cr>', opts)
   end
-} -- github / git
+}

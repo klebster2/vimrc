@@ -12,7 +12,7 @@ vim.api.nvim_create_autocmd("FileType", {
         keymap('n', "<localleader>tt", "A # type: ignore<esc>", opts)
         keymap('n', "<localleader>c", "I#<esc>", opts)
         keymap('n', "<localleader>I", "<esc>:Isort", opts)
-        keymap('n', "<localleader>pyd", "!python -m doctest -v %")
+        keymap('n', "<localleader>pyd", "!python -m doctest -v %", opts)
         vim.opt_local.foldenable = true
         vim.opt_local.foldmethod = "syntax"
         vim.bo.shiftwidth = 4

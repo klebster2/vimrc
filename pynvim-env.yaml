@@ -6,7 +6,7 @@ dependencies:
   - python>=3.8
   - pip:
     - black==22.12.0
-    - isort==5.10.1
+    - isort>=5.7.0
     - jedi==0.18.1
     - msgpack==1.0.3
     - mypy==0.931

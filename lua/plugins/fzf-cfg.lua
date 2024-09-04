@@ -8,7 +8,6 @@ return {
       winopts = {
         hl = {
           border = "FloatBorder",
-          normal = "IncSearch",
         }
       }
     }
