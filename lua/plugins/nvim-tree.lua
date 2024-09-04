@@ -2,7 +2,8 @@ return {
   "nvim-tree/nvim-tree.lua",
   dependencies = {
     "nvim-tree/nvim-web-devicons", -- optional, for file icons
-  }, -- if using WSL2, Windows Terminal needs nerd font so install Consolas NF on the OS terminal
+  }, -- if using WSL2, Windows Terminal needs nerd font so install a NerdFont (e.g. Consolas NF in the Windows Terminal application)
+  -- E.g. After https://learn.microsoft.com/en-us/windows/wsl/install , go to https://learn.microsoft.com/en-us/windows/terminal/install
   config = function()
     local lib = require("nvim-tree.lib")
 
