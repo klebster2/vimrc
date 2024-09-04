@@ -1,4 +1,3 @@
--- NvimTree: For file / directory viewing
 return {
   "nvim-tree/nvim-tree.lua",
   dependencies = {
