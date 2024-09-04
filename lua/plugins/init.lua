@@ -29,11 +29,6 @@ return {
   },
   {
     "stsewd/isort.nvim",
-    --config = function()
-    --  require("isort").setup()
-    --  if vim.g.isort_on_save == nil then
-    --    vim.g.isort_on_save = 1
-    --  end
-    --end
+    lazy=false,
   }
 }
