@@ -17,7 +17,6 @@ return {
     "rafamadriz/friendly-snippets",
     "/tzachar/cmp-ai",
   },
-  --event = "InsertEnter",
   lazy=false,
   config = function()
     --- Setup nvim-cmp.
@@ -92,6 +91,7 @@ return {
       return vim.api.nvim_get_mode().mode == 'i'
     end
     local curl = require "plenary.curl"
+
     -- Define your API base URL
     local api_base_url = 'http://localhost:8080'
 
@@ -101,13 +101,13 @@ return {
         body = vim.json.encode({
           word = word,
           language = language,
-          neighbors = 35,
+          neighbors = 65,
           dropstrange = true,
         }),
         headers = {
           ["Content-Type"] = "application/json"
         },
-        timeout = 2500
+        timeout = 500
       })
 
       if response.status == 200 then
@@ -155,7 +155,6 @@ return {
       local items = {}
       if neighbors_data and neighbors_data.neighbors then
         for _, neighbor in ipairs(neighbors_data.neighbors) do
-          --vim.api.nvim_echo({{neighbor.neighbor, 'Comment'}}, true, {})
           table.insert(items, {
               label = query_word..' ['..neighbor.neighbor..']',
               documentation = neighbor.etymology,
@@ -171,9 +170,8 @@ return {
           callback({items = items, isIncomplete = true})
         end
       end
-      --callback({items = items, isIncomplete = false})
     end
-    --cmp.register_source('fasttext', source.new())
+    cmp.register_source('fasttext', source.new())
 
     --require("cmp_rogets_thesaurus")
 
@@ -235,6 +233,8 @@ return {
       Operator = "   OPER",
       TypeParameter = "   TYPE",
       Copilot = "   COPILOT",
+      ---rogets_thesaurus = "   THESAU",
+      fasttext = "ƒ FASTTEXT",
     }
 
     --- Window options
@@ -255,7 +255,8 @@ return {
 
     local kind_mapper = cmp.lsp.CompletionItemKind
     kind_mapper.cmp_ai = 26
-    --kind_mapper.Thesaurus = 26
+    ---kind_mapper.Copilot = 25
+    ---kind_mapper.Thesaurus = 26
 
     --- Set configuration for specific filetype.
     cmp.setup.cmdline({'/', '?'}, {
@@ -334,7 +335,7 @@ return {
         { name = "luasnip", max_item_count = 2, priority = 10 },
         { name = "treesitter", max_item_count = 10, priority = 10 },
         { name = "nvim_lsp", max_item_count = 10, priority = 10 },
-        { name = "path", max_item_count = 3, priority = 8 },
+        { name = "path", max_item_count = 10, priority = 8, keywork_length = 2 },
         { name = "cmdline", max_item_count = 3, priority = 6, keyword_length = 4 },
         {
             name = "spell",   --- check $HOME/.config/nvim/lua/options.lua
@@ -375,7 +376,7 @@ return {
             --rogets_thesaurus = "",  -- Custom thesaurus
             cmp_ai = "",
             OpenAI = "",
-
+            --fasttext = "ƒ",  -- Custom fasttext
           })[entry.source.name]
           return vim_item
       end,

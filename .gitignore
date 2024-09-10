@@ -13,3 +13,4 @@ Miniconda*
 nvim.appimage
 .undotree
 plugin/packer_compiled.lua
+.lazy-lock

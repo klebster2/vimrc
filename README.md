@@ -6,7 +6,8 @@
        - [1. Install the packages jq, curl, and npm](#1-install-the-packages-jq-curl-and-npm)
        - [2. Install neovim](#2-install-neovim)
        - [3. Clone the repo, and run install.sh](#3-clone-the-repo-and-run-installsh)
-       - [4. That's it for now.](#4-thats-it-for-now)
+       - [4. Install Ollama (optional)](#4-install-ollama-optional)
+       - [5. That's it for now.](#5-thats-it-for-now)
 - [Usage Notes](#usage-notes)
    - [Configuration Commands](#configuration-commands)
    - [Useful commands](#useful-commands)
@@ -27,7 +28,8 @@
 
 ### 1. Install the packages jq, curl, and npm
 
-   You can do this via `apt`, `apt-get`, `snap` or a package manager of your choosing. _Note: A package manager is usually dependent on your operating system. `apt`, `apt-get`, `snap` are relevant to Ubuntu._
+   You can do this via `apt`, `apt-get`, `snap` or a package manager of your choosing.
+   Note: A package manager is usually _dependent_ on your operating system. `apt`, `apt-get`, `snap` are automatically installed to Ubuntu.
 
    - [`jq`](https://jqlang.github.io/jq/) For querying json files.
    - [`curl`](https://curl.se/) For downloading installation files and plenary.nvim
@@ -40,8 +42,6 @@
    # Install node / node package manager - npm
    curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20
    ```
-
-   Use `sudo` with `apt-get`, `apt` or `snap` if you are not root.
 
 ### 2. Install neovim
 
@@ -72,7 +72,19 @@
    pushd ~/.config/nvim && ./install.sh && popd
    ```
 
-### 4. That's it for now.
+### 4. Install Ollama (optional)
+
+   Ollama is useful for generative AI applications.
+
+   One of the use cases is to generate code candidates using the neovim package: [ollama.nvim](https://github.com/nomnivore/ollama.nvim)
+
+   ```bash
+   curl -fsSL https://ollama.com/install.sh | sh
+   ```
+
+   Check your GPU Virtual RAM (VRAM) can hold a model defined in [ollama.lua](./lua/plugins/ollama.lua), under `opts.model`
+
+### 5. That's it for now.
 
    Enjoy your neovim experience!
 
@@ -80,7 +92,7 @@
 
 ## Configuration Commands
 
-_The following section lists commands that will take you to configuration files._
+The following section lists commands that will take you to configuration files.
 
 Use:
 
@@ -96,7 +108,7 @@ If you are unsure what a 'leader' key is, first read this: [Learn Vimscript the 
 
 ## Useful commands
 
-_Note that the following commands apply to Normal Mode only._
+Note that the following commands apply to **Normal Mode only**.
 
 - Use `gd` for **G**o to the **D**efinition.
    - When the **C**ursor is on a **W**ord (**cw**ord), and that word is a function-call, or variable, you can type `gd` to go to the function **D**efinition.
@@ -117,9 +129,10 @@ To jump to a configuration file (these will only work if you have a configuratio
 
 ### Completion menu for LSP and CMP
 
-_Note that this applies to completions in Insert Mode only, when the cmp popup menu is visible._
+Note that this applies to completions _in Insert Mode only_, when the cmp popup menu _is visible_.
 
 [Nvim-Cmp](https://github.com/hrsh7th/nvim-cmp) is an autocompletion engine.
+
 [LspConfig](https://github.com/neovim/nvim-lspconfig) is a NeoVim client that allows for configuring ([Language-Server-Protocol](https://microsoft.github.io/language-server-protocol/)s in NeoVim)
 
 - Read more about the NeoVim LSP client on the [NeoVim LSP help page](https://neovim.io/doc/user/lsp.html)
@@ -144,7 +157,7 @@ _Note that this applies to Insert Mode only (as above)._
 
 Also see `:help vim.lsp.*` for documentation on any of the LSP functions
 
-#### LSP Diagnostics
+#### Language Server Protocol (LSP) Diagnostics
 
 _Note that this applies to Normal Mode only._
 
@@ -157,7 +170,7 @@ Use:
 
 Also see `:help vim.diagnostic.*` for documentation on any of the Lsp diagnostics.
 
-_To see the configuration, go to the file_ [`lua/plugins/nvim-cmp-cfg.lua`](./lua/plugins/nvim-cmp-cfg.lua).
+To _see the configuration_, go to the file [`lua/plugins/nvim-cmp-cfg.lua`](./lua/plugins/nvim-cmp-cfg.lua).
 
 ### LuaSnip
 
@@ -195,8 +208,10 @@ Also note that some files and directories such as `.git/`, and `.gitignore` may 
 
 ### Fzf-Lua
 
-[Fzf](https://github.com/junegunn/fzf) is a powerful fuzzy-finder. It can be used to quickly find files using keybindings in the terminal such as `<Ctrl+r>` for history.
-Since the release of one of fzf's cousins [fzf.vim](https://github.com/junegunn/fzf.vim), a github user wrote an [Fzf-Lua](https://github.com/ibhagwan/fzf-lua/tree/main) plugin for neovim that is blazingly fast.
+[Fzf](https://github.com/junegunn/fzf) is a powerful fuzzy-finder.
+It can be used to quickly find files using keybindings in the terminal such as `<Ctrl+r>` for history.
+
+Since the release of one of fzf's cousins [fzf.vim](https://github.com/junegunn/fzf.vim), a github user wrote an [Fzf-Lua](https://github.com/ibhagwan/fzf-lua/tree/main) plugin which is blazingly fast.
 [_Allegedly_](https://www.reddit.com/r/neovim/comments/113ewaf/comment/j8qqf27/#t1_j8qqf27-comment-rtjson-content), it is even faster than [Telescope](https://github.com/nvim-telescope/telescope.nvim).
 
 Use:
