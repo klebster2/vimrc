@@ -15,6 +15,7 @@ return {
     "nvim-lua/plenary.nvim",
     "L3MON4D3/LuaSnip", -- snippets for completion see https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip and luasnip ( $HOME/.config/nvim/snippets )
     "rafamadriz/friendly-snippets",
+    "/tzachar/cmp-ai",
   },
   --event = "InsertEnter",
   lazy=false,
@@ -47,10 +48,29 @@ return {
       vim.keymap.set('n', 'gr', lsp.buf.references, bufopts)
     end
 
+    local cmp_ai = require('cmp_ai.config')
+    if not cmp_ai then return end
+    cmp_ai.setup({
+      max_lines = 1,
+      provider = 'OpenAI',
+      provider_options = {
+        model = 'gpt-4',
+      },
+      notify = true,
+      notify_callback = function(msg)
+        vim.notify(msg)
+      end,
+      run_on_every_keystroke = true,
+      ignored_file_types = {
+      },
+    })
+
+
     lspkind.init({
       symbol_map = {
         Copilot = "",
         --rogets_thesaurus = "",
+        cmp_ai = "",
       },
     })
 
@@ -234,7 +254,7 @@ return {
     }
 
     local kind_mapper = cmp.lsp.CompletionItemKind
-    --kind_mapper.Copilot = 25
+    kind_mapper.cmp_ai = 26
     --kind_mapper.Thesaurus = 26
 
     --- Set configuration for specific filetype.
@@ -283,6 +303,16 @@ return {
       experimental = { ghost_text = true, native_menu = false },
       mapping = cmp.mapping.preset.insert(
         {
+          --['<C-x>'] = cmp.mapping(
+          --  cmp.mapping.complete({
+          --    config = {
+          --      sources = cmp.config.sources({
+          --        { name = 'cmp_ai' },
+          --      }),
+          --    },
+          --  }),
+          --  { 'i' }
+          --),
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),     --- Mnemonic - back
           ["<C-f>"] = cmp.mapping.scroll_docs(4),      --- Mnemonic - forward
           ["<C-e>"] = cmp.mapping.abort(),             --- Mnemonic - escape
@@ -299,6 +329,7 @@ return {
       ),
       sources = {
         { name = "copilot", max_item_count = 10, priority = 10 },
+        { name = 'cmp_ai', max_item_count = 10, priority=10 },
         { name = "nvim_lua", max_item_count = 10, priority = 10 },
         { name = "luasnip", max_item_count = 2, priority = 10 },
         { name = "treesitter", max_item_count = 10, priority = 10 },
@@ -316,6 +347,7 @@ return {
             },
             max_item_count = 3, priority = 3, keyword_length = 6
         },
+
         --{ name = "fasttext", max_item_count = 50, priority = 3, keyword_length = 4 },
         --{ name = "rogets_thesaurus", max_item_count = 10, priority = 3, keyword_length = 4 },
       },
@@ -341,6 +373,9 @@ return {
             buffer = "﬘",
             spell = "暈",
             --rogets_thesaurus = "",  -- Custom thesaurus
+            cmp_ai = "",
+            OpenAI = "",
+
           })[entry.source.name]
           return vim_item
       end,

@@ -27,4 +27,5 @@ return {
       require("copilot_cmp").setup()
     end
   },
+  {"tzachar/cmp-ai", dependencies = "nvim-lua/plenary.nvim"},
 }
