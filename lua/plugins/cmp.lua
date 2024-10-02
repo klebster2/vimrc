@@ -15,7 +15,7 @@ return {
     "nvim-lua/plenary.nvim",
     "L3MON4D3/LuaSnip", -- snippets for completion see https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip and luasnip ( $HOME/.config/nvim/snippets )
     "rafamadriz/friendly-snippets",
-    "/tzachar/cmp-ai",
+    --"/tzachar/cmp-ai",
   },
   lazy=false,
   config = function()
@@ -330,7 +330,7 @@ return {
       ),
       sources = {
         { name = "copilot", max_item_count = 10, priority = 10 },
-        { name = 'cmp_ai', max_item_count = 10, priority=10 },
+        --{ name = 'cmp_ai', max_item_count = 10, priority=10 },
         { name = "nvim_lua", max_item_count = 10, priority = 10 },
         { name = "luasnip", max_item_count = 2, priority = 10 },
         { name = "treesitter", max_item_count = 10, priority = 10 },
@@ -374,8 +374,8 @@ return {
             buffer = "﬘",
             spell = "暈",
             --rogets_thesaurus = "",  -- Custom thesaurus
-            cmp_ai = "",
-            OpenAI = "",
+            --cmp_ai = "",
+            --OpenAI = "",
             --fasttext = "ƒ",  -- Custom fasttext
           })[entry.source.name]
           return vim_item

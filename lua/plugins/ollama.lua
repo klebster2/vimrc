@@ -35,7 +35,7 @@ return {
     },
   },
   opts = {
-    model = "codellama:34b",
+    model = "codellama:8b",
     url = "http://127.0.0.1:11434",
     serve = {
       on_start = true,
