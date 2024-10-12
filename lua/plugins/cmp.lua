@@ -15,11 +15,10 @@ return {
     "nvim-lua/plenary.nvim",
     "L3MON4D3/LuaSnip", -- snippets for completion see https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip and luasnip ( $HOME/.config/nvim/snippets )
     "rafamadriz/friendly-snippets",
-    --"/tzachar/cmp-ai",
+    "tzachar/cmp-tabnine",
   },
   lazy=false,
   config = function()
-    --- Setup nvim-cmp.
     local cmp = require("cmp");
     if not cmp then return end
     local luasnip = require("luasnip");
@@ -31,6 +30,7 @@ return {
     local cmp_nvim_lsp = require("cmp_nvim_lsp");
     if not cmp_nvim_lsp then return end
     local capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
+
     --- Use an on_attach function to only map the following keys
     --- after the language server attaches to the current buffer
     local on_attach = function(_, bufnr)
@@ -46,32 +46,6 @@ return {
       vim.keymap.set('n', '<leader>ca', lsp.buf.code_action, bufopts)
       vim.keymap.set('n', 'gr', lsp.buf.references, bufopts)
     end
-
-    local cmp_ai = require('cmp_ai.config')
-    if not cmp_ai then return end
-    cmp_ai.setup({
-      max_lines = 1,
-      provider = 'OpenAI',
-      provider_options = {
-        model = 'gpt-4',
-      },
-      notify = true,
-      notify_callback = function(msg)
-        vim.notify(msg)
-      end,
-      run_on_every_keystroke = true,
-      ignored_file_types = {
-      },
-    })
-
-
-    lspkind.init({
-      symbol_map = {
-        Copilot = "",
-        --rogets_thesaurus = "",
-        cmp_ai = "",
-      },
-    })
 
     --- Fasttext fastapi
     local source = {}
@@ -173,8 +147,6 @@ return {
     end
     cmp.register_source('fasttext', source.new())
 
-    --require("cmp_rogets_thesaurus")
-
     local default_language_servers = {
       "bashls",
       "clangd",
@@ -233,8 +205,9 @@ return {
       Operator = "   OPER",
       TypeParameter = "   TYPE",
       Copilot = "   COPILOT",
+      cmp_tabnine = "   TABNINE",
       ---rogets_thesaurus = "   THESAU",
-      fasttext = "ƒ FASTTEXT",
+      ---fasttext = "ƒ FASTTEXT",
     }
 
     --- Window options
@@ -254,8 +227,8 @@ return {
     }
 
     local kind_mapper = cmp.lsp.CompletionItemKind
-    kind_mapper.cmp_ai = 26
-    ---kind_mapper.Copilot = 25
+    kind_mapper.Copilot = 25
+    kind_mapper.cmp_tabnine = 26
     ---kind_mapper.Thesaurus = 26
 
     --- Set configuration for specific filetype.
@@ -304,16 +277,16 @@ return {
       experimental = { ghost_text = true, native_menu = false },
       mapping = cmp.mapping.preset.insert(
         {
-          --['<C-x>'] = cmp.mapping(
-          --  cmp.mapping.complete({
-          --    config = {
-          --      sources = cmp.config.sources({
-          --        { name = 'cmp_ai' },
-          --      }),
-          --    },
-          --  }),
-          --  { 'i' }
-          --),
+          ['<C-c>'] = cmp.mapping(
+            cmp.mapping.complete({
+              config = {
+                sources = cmp.config.sources({
+                  { name = 'copilot' },
+                }),
+              },
+            }),
+            { 'i' }
+          ),
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),     --- Mnemonic - back
           ["<C-f>"] = cmp.mapping.scroll_docs(4),      --- Mnemonic - forward
           ["<C-e>"] = cmp.mapping.abort(),             --- Mnemonic - escape
@@ -330,13 +303,13 @@ return {
       ),
       sources = {
         { name = "copilot", max_item_count = 10, priority = 10 },
-        --{ name = 'cmp_ai', max_item_count = 10, priority=10 },
-        { name = "nvim_lua", max_item_count = 10, priority = 10 },
-        { name = "luasnip", max_item_count = 2, priority = 10 },
-        { name = "treesitter", max_item_count = 10, priority = 10 },
-        { name = "nvim_lsp", max_item_count = 10, priority = 10 },
-        { name = "path", max_item_count = 10, priority = 8, keywork_length = 2 },
-        { name = "cmdline", max_item_count = 3, priority = 6, keyword_length = 4 },
+        { name = 'cmp_tabnine', max_item_count = 10, priority = 10  },
+        { name = "nvim_lua", max_item_count = 10, priority = 5 },
+        { name = "luasnip", max_item_count = 2, priority = 5 },
+        { name = "treesitter", max_item_count = 10, priority = 5 },
+        { name = "nvim_lsp", max_item_count = 10, priority = 5 },
+        { name = "path", max_item_count = 10, priority = 4, keywork_length = 2 },
+        { name = "cmdline", max_item_count = 3, priority = 3, keyword_length = 4 },
         {
             name = "spell",   --- check $HOME/.config/nvim/lua/options.lua
             option = {
@@ -348,7 +321,6 @@ return {
             },
             max_item_count = 3, priority = 3, keyword_length = 6
         },
-
         --{ name = "fasttext", max_item_count = 50, priority = 3, keyword_length = 4 },
         --{ name = "rogets_thesaurus", max_item_count = 10, priority = 3, keyword_length = 4 },
       },
@@ -359,13 +331,27 @@ return {
           cmp.ItemField.Kind,
         },
         format = function(entry, vim_item)
-          vim_item.kind = string.format(
-            "%s %s",
-            (lsp_symbols[vim_item.kind] or "!"),
-            (lspkind.presets.default[vim_item.kind] or "")
-          )
+          -- if you have lspkind installed, you can use it like
+          -- in the following line:
+          -- FIXME this is a hack, find a better way to do this
+          -- --- First check Copilot and cmp_tabnine are not the source
+          if entry.source.name == "copilot" or entry.source.name == "cmp_tabnine" then
+            vim_item.kind = ""
+            if entry.source.name == "cmp_tabnine" then
+              vim_item.kind = "   TABNINE "
+            else
+              vim_item.kind = "   COPILOT "
+            end
+          else
+            vim_item.kind = string.format(
+              "%s %s",
+              (lsp_symbols[vim_item.kind] or "?"),
+              (lspkind.presets.default[vim_item.kind] or "?")
+            )
+          end
           vim_item.menu = ({
-            Copilot = "", -- Copilot
+            copilot = "", -- Copilot
+            cmp_tabnine = "",
             nvim_lua = "", -- lua engine
             luasnip = "", -- snippets engine
             nvim_lsp = "", -- local context
@@ -374,8 +360,6 @@ return {
             buffer = "﬘",
             spell = "暈",
             --rogets_thesaurus = "",  -- Custom thesaurus
-            --cmp_ai = "",
-            --OpenAI = "",
             --fasttext = "ƒ",  -- Custom fasttext
           })[entry.source.name]
           return vim_item
@@ -384,19 +368,14 @@ return {
       sorting = {
         priority_weight = 2,
         comparators = {
+          require("copilot_cmp.comparators").prioritize,
+          require('cmp_tabnine.compare'),
+          cmp.config.compare.recently_used,
           cmp.config.compare.offset,
           cmp.config.exact,
           cmp.config.score,
           cmp.config.recently_used,
           cmp.config.locality,
-          function(entry1, entry2)
-            local kind1 = kind_mapper[entry1:get_kind()]
-            local kind2 = kind_mapper[entry2:get_kind()]
-            if kind1 < kind2 then
-              return true
-            end
-          end,
-          cmp.config.compare.recently_used,
         }
       }
     }
@@ -411,12 +390,13 @@ return {
         capabilities = capabilities
     }
     --- Also see $HOME/.config/nvim/lua/plugins/gruvbox.lua
-    vim.api.nvim_set_hl(0, "CmpItemMenuCopilot", { fg = "#8ec07c" })
-    vim.api.nvim_set_hl(0, "CmpItemKindCopilot", {fg ="#8ec07c"})
+    vim.api.nvim_set_hl(0, "CmpItemMenuCopilot", { fg = "#fe8019" })
+    vim.api.nvim_set_hl(0, "CmpItemKindCopilot", {fg ="#fe8019"})
     --- Cmp colours (matching gruvbox)
     vim.api.nvim_set_hl(0, "CmpItemAbbr", { fg = "#d5c4a1" })
     vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { fg = "#fbf1c7" })
-    vim.api.nvim_set_hl(0, "CmpItemAbbrFuzzy", { fg = "#ec5300" })
+    vim.api.nvim_set_hl(0, "CmpItemAbbrFuzzy", { fg = "#fbf1c7" })
     vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#8ec07c" })
+    vim.api.nvim_set_hl(0, "CmpItemKindTabNine", {fg ="#fe8019"})
   end
 }

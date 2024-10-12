@@ -17,3 +17,4 @@ local status, _ = pcall(lazy_setup, lazy_spec)
 if not status then
   print("Failed to lazy load plugins!")
 end
+
