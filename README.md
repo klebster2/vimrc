@@ -1,24 +1,25 @@
 # klebster2's vimrc
 
 # Table of Contents
+
 - [Setup](#setup)
-   - [Ubuntu Installation](#ubuntu-installation)
-       - [1. Install the packages jq, curl, and npm](#1-install-the-packages-jq-curl-and-npm)
-       - [2. Install neovim](#2-install-neovim)
-       - [3. Clone the repo, and run install.sh](#3-clone-the-repo-and-run-installsh)
-       - [4. Install Ollama (optional)](#4-install-ollama-optional)
-       - [5. That's it for now.](#5-thats-it-for-now)
+  - [Ubuntu Installation](#ubuntu-installation)
+    - [1. Install the packages jq, curl, and npm](#1-install-the-packages-jq-curl-and-npm)
+    - [2. Install neovim](#2-install-neovim)
+    - [3. Clone the repo, and run install.sh](#3-clone-the-repo-and-run-installsh)
+    - [4. Install Ollama (optional)](#4-install-ollama-optional)
+    - [5. That's it for now.](#5-thats-it-for-now)
 - [Usage Notes](#usage-notes)
-   - [Configuration Commands](#configuration-commands)
-   - [Useful commands](#useful-commands)
-      - [Completion Menu Lsp and Cmp](#completion-menu-for-lsp-and-cmp)
-         - [Completion Docs](#completion-docs)
-         - [LSP Diagnostics](#lsp-diagnostics)
-      - [Luasnip](#luasnip)
-      - [NvimTree](#nvimtree)
-      - [Fzf-Lua](#fzf-lua)
-      - [Nvim Spell](#nvim-spell)
-      - [Json File formatting](#json-file-formatting)
+  - [Configuration Commands](#configuration-commands)
+  - [Useful commands](#useful-commands)
+    - [Completion Menu Lsp and Cmp](#completion-menu-for-lsp-and-cmp)
+      - [Completion Docs](#completion-docs)
+      - [LSP Diagnostics](#lsp-diagnostics)
+    - [Luasnip](#luasnip)
+    - [NvimTree](#nvimtree)
+    - [Fzf-Lua](#fzf-lua)
+    - [Nvim Spell](#nvim-spell)
+    - [Json File formatting](#json-file-formatting)
 
 ---
 
@@ -28,65 +29,65 @@
 
 ### 1. Install the packages jq, curl, and npm
 
-   You can do this via `apt`, `apt-get`, `snap` or a package manager of your choosing.
-   Note: A package manager is usually _dependent_ on your operating system. `apt`, `apt-get`, `snap` are automatically installed to Ubuntu.
+You can do this via `apt`, `apt-get`, `snap` or a package manager of your choosing.
+Note: A package manager is usually _dependent_ on your operating system. `apt`, `apt-get`, `snap` are automatically installed to Ubuntu.
 
-   - [`jq`](https://jqlang.github.io/jq/) For querying json files.
-   - [`curl`](https://curl.se/) For downloading installation files and plenary.nvim
-   - [`npm`](https://www.npmjs.com/) (node package manager)
+- [`jq`](https://jqlang.github.io/jq/) For querying json files.
+- [`curl`](https://curl.se/) For downloading installation files and plenary.nvim
+- [`npm`](https://www.npmjs.com/) (node package manager)
 
-   To install all the above dependencies run:
+To install all the above dependencies run:
 
-   ```bash
-   apt-get install jq curl -y
-   # Install node / node package manager - npm
-   curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20
-   ```
+```bash
+apt-get install jq curl -y
+# Install node / node package manager - npm
+curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20
+```
 
 ### 2. Install neovim
 
-   You can use the following shell script.
+You can use the following shell script.
 
-   ```bash
-   curl -LO "https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
-   chgrp sudo nvim.appimage
-   chmod ugo+x nvim.appimage
-   ./nvim.appimage --appimage-extract
-   ./squashfs-root/AppRun --version
-   mv squashfs-root / || sudo mv squashfs-root /
-   ln -s /squashfs-root/AppRun /usr/bin/nvim || sudo ln -s /squashfs-root/AppRun /usr/bin/nvim
-   nvim --version
-   ```
+```bash
+curl -LO "https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
+chgrp sudo nvim.appimage
+chmod ugo+x nvim.appimage
+./nvim.appimage --appimage-extract
+./squashfs-root/AppRun --version
+mv squashfs-root / 2> /dev/null || sudo mv squashfs-root /
+ln -s /squashfs-root/AppRun /usr/bin/nvim 2> /dev/null || sudo ln -s /squashfs-root/AppRun /usr/bin/nvim
+nvim --version
+```
 
 ### 3. Clone the repo, and run the `install.sh` shell script.
 
-   Clone the repo to `~/.config/nvim` (the default neovim location)
+Clone the repo to `~/.config/nvim` (the default neovim location)
 
-   ```bash
-   mkdir -pv ~/.config && git clone "https://github.com/klebster2/vimrc" ~/.config/nvim
-   ```
+```bash
+mkdir -pv ~/.config && git clone "https://github.com/klebster2/vimrc" ~/.config/nvim
+```
 
-   Run the installation script [`install.sh`](./install.sh)
+Run the installation script [`install.sh`](./install.sh)
 
-   ```bash
-   pushd ~/.config/nvim && ./install.sh && popd
-   ```
+```bash
+pushd ~/.config/nvim && ./install.sh && popd
+```
 
 ### 4. Install Ollama (optional)
 
-   Ollama is useful for generative AI applications.
+Ollama is useful for generative AI applications.
 
-   One of the use cases is to generate code candidates using the neovim package: [ollama.nvim](https://github.com/nomnivore/ollama.nvim)
+One of the use cases is to generate code candidates using the neovim package: [ollama.nvim](https://github.com/nomnivore/ollama.nvim)
 
-   ```bash
-   curl -fsSL https://ollama.com/install.sh | sh
-   ```
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
 
-   Check your GPU Virtual RAM (VRAM) can hold a model defined in [ollama.lua](./lua/plugins/ollama.lua), under `opts.model`
+Check your GPU Virtual RAM (VRAM) can hold a model defined in [ollama.lua](./lua/plugins/ollama.lua), under `opts.model`
 
 ### 5. That's it for now.
 
-   Enjoy your neovim experience!
+Enjoy your neovim experience!
 
 # Usage notes
 
@@ -111,13 +112,15 @@ If you are unsure what a 'leader' key is, first read this: [Learn Vimscript the 
 Note that the following commands apply to **Normal Mode only**.
 
 - Use `gd` for **G**o to the **D**efinition.
-   - When the **C**ursor is on a **W**ord (**cw**ord), and that word is a function-call, or variable, you can type `gd` to go to the function **D**efinition.
+
+  - When the **C**ursor is on a **W**ord (**cw**ord), and that word is a function-call, or variable, you can type `gd` to go to the function **D**efinition.
 
 - Use `gf` for **G**o to the **F**ile.
-   - When the Cursor is on a **F**ile (fullpath, or partial path), you can type `gf` to **G**o to the **F**ile.
+
+  - When the Cursor is on a **F**ile (fullpath, or partial path), you can type `gf` to **G**o to the **F**ile.
 
 - To exit insert mode use `jk` typing them together quickly. Note that the default way to exit normal mode in vi, vim and neovim is `<ESC>`, but `<ESC>` won't work because in this configuration, because it has been unmapped.
-   - Learn Vimscript the Hard Way: ["A trick to learning something is to force yourself to use it."](https://learnvimscriptthehardway.stevelosh.com/chapters/10.html#learning-the-map). In other words, unmap and remap.
+  - Learn Vimscript the Hard Way: ["A trick to learning something is to force yourself to use it."](https://learnvimscriptthehardway.stevelosh.com/chapters/10.html#learning-the-map). In other words, unmap and remap.
 
 To jump to a configuration file (these will only work if you have a configuration file at that location), use:
 
@@ -129,7 +132,7 @@ To jump to a configuration file (these will only work if you have a configuratio
 
 ### Completion menu for LSP and CMP
 
-Note that this applies to completions _in Insert Mode only_, when the cmp popup menu _is visible_.
+Note that this applies to _Insert Mode_ completions only, and especially when the cmp popup menu _is visible_.
 
 [Nvim-Cmp](https://github.com/hrsh7th/nvim-cmp) is an autocompletion engine.
 
@@ -188,11 +191,12 @@ See the snippets file here: [`lua/plugins/snippets.lua`](./lua/plugins/snippets.
 
 [NvimTree](https://github.com/nvim-tree/nvim-tree.lua) is a plugin used for file / directory viewing.
 
-When within the NvimTree viewer (You can use the command mode `:NvimTreeToggle` to activate from normal mode, or  `:vertical split .`), use any of the defaults:
+To active the `NvimTree` view, use `<leader>vs`, with the default settings this is `<space>vs`.
+When within the NvimTree viewer, you can use any of the defaults:
 
 - `<SHIFT+r>` to **R**eread the files contained in the focused project
 - `<SHIFT+h>` to toggle the display of hidden files and folders beginning with a dot `.`. Note that some other files may be hidden by default (like git files / directories).
-- `<SHIFT+e>` to **E**xpand the *entire* file tree starting from the root folder (workspace)
+- `<SHIFT+e>` to **E**xpand the _entire_ file tree starting from the root folder (workspace)
 - `<f>` to **F**ind files (opening a search filter that will be applied)
 - `<SHIFT+w>` To collapse all open folders starting from the root folder
 - `<\s>` to open the file with the **S**ystem application set by default for that file type
@@ -211,7 +215,7 @@ Also note that some files and directories such as `.git/`, and `.gitignore` may 
 [Fzf](https://github.com/junegunn/fzf) is a powerful fuzzy-finder.
 It can be used to quickly find files using keybindings in the terminal such as `<Ctrl+r>` for history.
 
-Since the release of one of fzf's cousins [fzf.vim](https://github.com/junegunn/fzf.vim), a github user wrote an [Fzf-Lua](https://github.com/ibhagwan/fzf-lua/tree/main) plugin which is blazingly fast.
+Since the release of one of Fzf's cousins [fzf.vim](https://github.com/junegunn/fzf.vim), a github user wrote an [Fzf-Lua](https://github.com/ibhagwan/fzf-lua/tree/main) plugin which is blazingly fast.
 [_Allegedly_](https://www.reddit.com/r/neovim/comments/113ewaf/comment/j8qqf27/#t1_j8qqf27-comment-rtjson-content), it is even faster than [Telescope](https://github.com/nvim-telescope/telescope.nvim).
 
 Use:
@@ -224,11 +228,5 @@ Use:
 
 Use:
 
-- `<z>+<w>` to add a word to the dictionary.
-- `<leader>ss` to set spell (misspelled words will appear underlined)
-
-### Json File formatting
-
-Use:
-
-- `<localleader>j` inside a json file to format it with consistent indentation.
+- `<z>+<w>` to add the cword to the dictionary.
+- `<leader>ss` to `:set spell` (misspelled words will appear underlined)
