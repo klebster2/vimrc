@@ -7,7 +7,7 @@ vim.go.swapfile = false
 vim.go.backup = false
 --vim.go.foldlevelstart = 1
 --- backspace opt
-vim.go.backspace= "indent,eol,start"
+vim.go.backspace = "indent,eol,start"
 
 --- buffer
 ---- indentation
@@ -17,11 +17,11 @@ vim.opt.expandtab = true
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.wildmenu = true
-vim.opt.wildmode = {'list', 'longest'}
+vim.opt.wildmode = { "list", "longest" }
 vim.opt.mouse = nil
 vim.opt.spell = false
-vim.opt.spelllang = { 'en_gb' }  -- The default spell lang
-vim.opt.shell='bash --login'
+vim.opt.spelllang = { "en_gb" } -- The default spell lang
+vim.opt.shell = "bash --login"
 
 vim.cmd([[ filetype plugin indent on ]])
 vim.cmd([[ let tabwidth=4 ]])
