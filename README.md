@@ -1,4 +1,4 @@
-# klebster2's vimrc
+# klebster2's neovim configuration
 
 # Table of Contents
 
