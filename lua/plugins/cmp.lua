@@ -239,6 +239,6 @@ return {
 		vim.api.nvim_set_hl(0, "CmpItemAbbrFuzzy", { fg = "#f9f5d7", bg = "#bdae93" })
 		vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#8ec07c" })
 		vim.api.nvim_set_hl(0, "CmpItemKindTabNine", { fg = "#d3869b" })
-		vim.api.nvim_set_hl(0, "MyPmenuSel", { fg = "#282828", bg = "#d79921" })
+		vim.api.nvim_set_hl(0, "MyPmenuSel", { fg = "#282828", bg = "#fe8019" })
 	end,
 }
