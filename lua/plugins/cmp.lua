@@ -14,9 +14,11 @@ return {
 		"L3MON4D3/LuaSnip", -- snippets for completion see https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip and luasnip ( $HOME/.config/nvim/snippets )
 		"rafamadriz/friendly-snippets",
 		"tzachar/cmp-tabnine",
+		"klebster2/wordnet-cmp",
 	},
 	lazy = false,
 	config = function()
+		vim.g.wn_cmp_language = "en"
 		local cmp = require("cmp")
 		if not cmp then
 			return
