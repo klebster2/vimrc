@@ -18,6 +18,7 @@ local lazy_spec = {
 		{ import = "plugins" },
 		-- $HOME/.config/nvim/lua/plugins/init.lua
 		----  $HOME/.config/nvim/lua/plugins/
+		----  $HOME/.config/nvim/lua/plugins/cmp.lua
 	},
 }
 ---@type boolean

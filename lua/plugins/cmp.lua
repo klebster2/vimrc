@@ -41,160 +41,6 @@ return {
 		--- Use an on_attach function to only map the following keys
 		--- after the language server attaches to the current buffer
 
-		--- Fasttext fastapi
-		local source = {}
-		source.new = function()
-			return setmetatable({}, { __index = source })
-		end
-
-		source.get_trigger_characters = function()
-			return {
-				"a",
-				"b",
-				"c",
-				"d",
-				"e",
-				"f",
-				"g",
-				"h",
-				"i",
-				"j",
-				"k",
-				"l",
-				"m",
-				"n",
-				"o",
-				"p",
-				"q",
-				"r",
-				"s",
-				"t",
-				"u",
-				"v",
-				"w",
-				"x",
-				"y",
-				"z",
-				"A",
-				"B",
-				"C",
-				"D",
-				"E",
-				"F",
-				"G",
-				"H",
-				"I",
-				"J",
-				"K",
-				"L",
-				"M",
-				"N",
-				"O",
-				"P",
-				"Q",
-				"R",
-				"S",
-				"T",
-				"U",
-				"V",
-				"W",
-				"X",
-				"Y",
-				"Z",
-			}
-		end
-
-		source.is_available = function()
-			return vim.api.nvim_get_mode().mode == "i"
-		end
-		local curl = require("plenary.curl")
-
-		-- Define your API base URL
-		local api_base_url = "http://localhost:8080"
-
-		-- Utility function to fetch word neighbors
-		local function fetch_word_neighbors(word, language, drop_strange)
-			local response = curl.post(api_base_url .. "/get_word_neighbors/", {
-				body = vim.json.encode({
-					word = word,
-					language = language,
-					neighbors = 65,
-					dropstrange = true,
-				}),
-				headers = {
-					["Content-Type"] = "application/json",
-				},
-				timeout = 500,
-			})
-
-			if response.status == 200 then
-				return vim.json.decode(response.body)
-			else
-				print("Failed to fetch word neighbors:", response.status)
-				return nil
-			end
-		end
-
-		-- Utility function to fetch word etymology
-		local function fetch_word_etymology(word, language)
-			local response = curl.post(api_base_url .. "/get_word_etymology/", {
-				body = vim.json.encode({
-					word = word,
-					language = language,
-				}),
-				headers = {
-					["Content-Type"] = "application/json",
-				},
-			})
-
-			if response.status == 200 then
-				print(response.body)
-				return vim.json.decode(response.body)
-			else
-				print("Failed to fetch word etymology:", response.status)
-				return nil
-			end
-		end
-
-		source.complete = function(self, request, callback)
-			local line = vim.fn.getline(".")
-			local original_start = vim.fn.col(".") - 1
-			local start = original_start
-			while start > 0 and string.match(line:sub(start, start), "%S") do
-				start = start - 1
-			end
-			local query_word = line:sub(start + 1, vim.fn.col(".") - 1)
-			if #query_word < 3 then
-				return
-			end
-
-			-- Assuming 'en' as default language for simplicity
-			local neighbors_data = fetch_word_neighbors(query_word, "English", true)
-
-			local items = {}
-			if neighbors_data and neighbors_data.neighbors then
-				for _, neighbor in ipairs(neighbors_data.neighbors) do
-					table.insert(items, {
-						label = query_word .. " [" .. neighbor.neighbor .. "]",
-						documentation = neighbor.etymology,
-						textEdit = {
-							newText = neighbor.neighbor,
-							filterText = neighbor.neighbor,
-							range = {
-								["start"] = { line = request.context.cursor.row - 1, character = original_start },
-								["end"] = {
-									line = request.context.cursor.row - 1,
-									character = request.context.cursor.col - 1,
-								},
-							},
-						},
-					})
-					callback({ items = items, isIncomplete = true })
-				end
-			end
-		end
-		cmp.register_source("fasttext", source.new())
-
 		--- Works with 'Consolas NF' & 'DroidSansMono Nerd Font Mono'
 		local lsp_symbols = {
 			Text = "   TEXT",
@@ -224,8 +70,7 @@ return {
 			TypeParameter = "   TYPE",
 			Copilot = "   COPILOT",
 			cmp_tabnine = "   TABNINE",
-			---rogets_thesaurus = "   THESAU",
-			---fasttext = "ƒ FASTTEXT",
+			wordnet = "  WORDNET",
 		}
 
 		--- Window options
@@ -247,7 +92,7 @@ return {
 		local kind_mapper = cmp.lsp.CompletionItemKind
 		kind_mapper.Copilot = 25
 		kind_mapper.cmp_tabnine = 26
-		---kind_mapper.Thesaurus = 26
+		kind_mapper.wordnet = 26
 
 		--- Set configuration for specific filetype.
 		cmp.setup.cmdline({ "/", "?" }, {
@@ -279,6 +124,7 @@ return {
 			}),
 		})
 
+		-- Setup for README.md files:
 		cmp.setup({
 			snippet = {
 				expand = function(args)
@@ -303,12 +149,13 @@ return {
 			}),
 			sources = {
 				{ name = "copilot", max_item_count = 10, priority = 10 },
+				{ name = "wordnet", max_item_count = 10, priority = 10, keyword_length = 4 },
 				{ name = "cmp_tabnine", max_item_count = 10, priority = 10 },
 				{ name = "nvim_lua", max_item_count = 10, priority = 5 },
 				{ name = "luasnip", max_item_count = 2, priority = 5 },
 				{ name = "treesitter", max_item_count = 10, priority = 5 },
 				{ name = "nvim_lsp", max_item_count = 10, priority = 5 },
-				{ name = "path", max_item_count = 10, priority = 4, keywork_length = 2 },
+				{ name = "path", max_item_count = 10, priority = 4, keyword_length = 2 },
 				{ name = "cmdline", max_item_count = 3, priority = 3, keyword_length = 4 },
 				{
 					name = "spell", --- check $HOME/.config/nvim/lua/options.lua
@@ -323,8 +170,6 @@ return {
 					priority = 3,
 					keyword_length = 6,
 				},
-				--{ name = "fasttext", max_item_count = 50, priority = 3, keyword_length = 4 },
-				--{ name = "rogets_thesaurus", max_item_count = 10, priority = 3, keyword_length = 4 },
 			},
 			formatting = {
 				fields = {
@@ -337,12 +182,17 @@ return {
 					-- in the following line:
 					-- FIXME this is a hack, find a better way to do this
 					-- --- First check Copilot and cmp_tabnine are not the source
-					if entry.source.name == "copilot" or entry.source.name == "cmp_tabnine" then
-						vim_item.kind = ""
+					if
+						entry.source.name == "copilot"
+						or entry.source.name == "cmp_tabnine"
+						or entry.source.name == "wordnet"
+					then
 						if entry.source.name == "cmp_tabnine" then
-							vim_item.kind = "   TABNINE "
+							vim_item.kind = "   TABNINE"
+						elseif entry.source.name == "copilot" then
+							vim_item.kind = "   COPILOT"
 						else
-							vim_item.kind = "   COPILOT "
+							vim_item.kind = "暈WORDNET"
 						end
 					else
 						vim_item.kind = string.format(
@@ -361,8 +211,7 @@ return {
 						path = "ﱮ",
 						buffer = "﬘",
 						spell = "暈",
-						--rogets_thesaurus = "",  -- Custom thesaurus
-						--fasttext = "ƒ",  -- Custom fasttext
+						wordnet = "暈",
 					})[entry.source.name]
 					return vim_item
 				end,
@@ -385,10 +234,11 @@ return {
 		--- Colors for cmp (matching gruvbox)
 		vim.api.nvim_set_hl(0, "CmpItemMenuCopilot", { fg = "#fe8019" })
 		vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#d3869b" })
-		vim.api.nvim_set_hl(0, "CmpItemAbbr", { fg = "#d5c4a1" })
+		vim.api.nvim_set_hl(0, "CmpItemAbbr", { fg = "#bdae93" })
 		vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { fg = "#fbf1c7" })
-		vim.api.nvim_set_hl(0, "CmpItemAbbrFuzzy", { fg = "#fbf1c7" })
+		vim.api.nvim_set_hl(0, "CmpItemAbbrFuzzy", { fg = "#f9f5d7", bg = "#bdae93" })
 		vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#8ec07c" })
 		vim.api.nvim_set_hl(0, "CmpItemKindTabNine", { fg = "#d3869b" })
+		vim.api.nvim_set_hl(0, "MyPmenuSel", { fg = "#282828", bg = "#d79921" })
 	end,
 }
