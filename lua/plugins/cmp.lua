@@ -13,8 +13,7 @@ return {
 		"nvim-lua/plenary.nvim",
 		"L3MON4D3/LuaSnip", -- snippets for completion see https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip and luasnip ( $HOME/.config/nvim/snippets )
 		"rafamadriz/friendly-snippets",
-		"tzachar/cmp-tabnine",
-		"klebster2/wordnet-cmp",
+		--"klebster2/wordnet-cmp",
 	},
 	lazy = false,
 	config = function()
@@ -93,7 +92,6 @@ return {
 
 		local kind_mapper = cmp.lsp.CompletionItemKind
 		kind_mapper.Copilot = 25
-		kind_mapper.cmp_tabnine = 26
 		kind_mapper.wordnet = 26
 
 		--- Set configuration for specific filetype.
@@ -186,12 +184,9 @@ return {
 					-- --- First check Copilot and cmp_tabnine are not the source
 					if
 						entry.source.name == "copilot"
-						or entry.source.name == "cmp_tabnine"
 						or entry.source.name == "wordnet"
 					then
-						if entry.source.name == "cmp_tabnine" then
-							vim_item.kind = "   TABNINE"
-						elseif entry.source.name == "copilot" then
+						if entry.source.name == "copilot" then
 							vim_item.kind = "   COPILOT"
 						else
 							vim_item.kind = "暈WORDNET"
@@ -240,7 +235,6 @@ return {
 		vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { fg = "#fbf1c7" })
 		vim.api.nvim_set_hl(0, "CmpItemAbbrFuzzy", { fg = "#f9f5d7", bg = "#bdae93" })
 		vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#8ec07c" })
-		vim.api.nvim_set_hl(0, "CmpItemKindTabNine", { fg = "#d3869b" })
 		vim.api.nvim_set_hl(0, "MyPmenuSel", { fg = "#282828", bg = "#fe8019" })
 	end,
 }

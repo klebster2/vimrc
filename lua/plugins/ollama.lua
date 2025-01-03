@@ -35,10 +35,10 @@ return {
 		},
 	},
 	opts = {
-		model = "codellama:8b",
+		model = "qwen2.5-coder:14b",
 		url = "http://127.0.0.1:11434",
 		serve = {
-			on_start = true,
+			on_start = false,
 			command = "ollama",
 			args = { "serve" },
 			stop_command = "pkill",
@@ -47,7 +47,7 @@ return {
 		prompts = {
 			PEP484_docstrings = {
 				prompt = {
-					"Reformat the given function(s) with PEP 484 type annotations.",
+					"Reformat the given function(s) with PEP 484 type annotations and corresponding docstring (numpy format).",
 					"\n```python\n$sel```\n",
 					"\nProvide output in the form",
 					"\n\n",
