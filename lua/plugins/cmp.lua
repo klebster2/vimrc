@@ -70,7 +70,6 @@ return {
 			Operator = "   OPER",
 			TypeParameter = "   TYPE",
 			Copilot = "   COPILOT",
-			cmp_tabnine = "   TABNINE",
 			wordnet = "  WORDNET",
 		}
 
@@ -150,7 +149,6 @@ return {
 			sources = {
 				{ name = "copilot", max_item_count = 10, priority = 10 },
 				{ name = "wordnet", max_item_count = 10, priority = 10, keyword_length = 4 },
-				{ name = "cmp_tabnine", max_item_count = 10, priority = 10 },
 				{ name = "nvim_lua", max_item_count = 10, priority = 5 },
 				{ name = "luasnip", max_item_count = 2, priority = 5 },
 				{ name = "treesitter", max_item_count = 10, priority = 5 },
@@ -182,10 +180,7 @@ return {
 					-- in the following line:
 					-- FIXME this is a hack, find a better way to do this
 					-- --- First check Copilot and cmp_tabnine are not the source
-					if
-						entry.source.name == "copilot"
-						or entry.source.name == "wordnet"
-					then
+					if entry.source.name == "copilot" or entry.source.name == "wordnet" then
 						if entry.source.name == "copilot" then
 							vim_item.kind = "   COPILOT"
 						else
