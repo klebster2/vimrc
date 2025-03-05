@@ -41,8 +41,6 @@ return {
 		local capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
 		--- Use an on_attach function to only map the following keys
 		--- after the language server attaches to the current buffer
-
-		--- Works with 'Consolas NF' & 'DroidSansMono Nerd Font Mono'
 		local lsp_symbols = {
 			Text = "   TEXT",
 			Method = "   METH",
@@ -70,7 +68,7 @@ return {
 			Operator = "   OPER",
 			TypeParameter = "   TYPE",
 			Copilot = "   COPILOT",
-			wordnet = "  WORDNET",
+			--wordnet = "  WORDNET",
 		}
 
 		--- Window options
@@ -91,7 +89,7 @@ return {
 
 		local kind_mapper = cmp.lsp.CompletionItemKind
 		kind_mapper.Copilot = 25
-		kind_mapper.wordnet = 26
+		--kind_mapper.wordnet = 26
 
 		--- Set configuration for specific filetype.
 		cmp.setup.cmdline({ "/", "?" }, {
@@ -148,7 +146,7 @@ return {
 			}),
 			sources = {
 				{ name = "copilot", max_item_count = 10, priority = 10 },
-				{ name = "wordnet", max_item_count = 10, priority = 10, keyword_length = 4 },
+				--{ name = "wordnet", max_item_count = 10, priority = 10, keyword_length = 4 },
 				{ name = "nvim_lua", max_item_count = 10, priority = 5 },
 				{ name = "luasnip", max_item_count = 2, priority = 5 },
 				{ name = "treesitter", max_item_count = 10, priority = 5 },
@@ -184,7 +182,7 @@ return {
 						if entry.source.name == "copilot" then
 							vim_item.kind = "   COPILOT"
 						else
-							vim_item.kind = "暈WORDNET"
+							vim_item.kind = "暈 WORDNET"
 						end
 					else
 						vim_item.kind = string.format(
@@ -195,7 +193,6 @@ return {
 					end
 					vim_item.menu = ({
 						copilot = "", -- Copilot
-						cmp_tabnine = "",
 						nvim_lua = "", -- lua engine
 						luasnip = "", -- snippets engine
 						nvim_lsp = "", -- local context
@@ -203,7 +200,7 @@ return {
 						path = "ﱮ",
 						buffer = "﬘",
 						spell = "暈",
-						wordnet = "暈",
+						--wordnet = "暈",
 					})[entry.source.name]
 					return vim_item
 				end,
