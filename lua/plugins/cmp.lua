@@ -13,7 +13,6 @@ return {
 		"nvim-lua/plenary.nvim",
 		"L3MON4D3/LuaSnip", -- snippets for completion see https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip and luasnip ( $HOME/.config/nvim/snippets )
 		"rafamadriz/friendly-snippets",
-		--"klebster2/wordnet-cmp",
 	},
 	lazy = false,
 	config = function()
@@ -68,7 +67,6 @@ return {
 			Operator = "   OPER",
 			TypeParameter = "   TYPE",
 			Copilot = "   COPILOT",
-			--wordnet = "  WORDNET",
 		}
 
 		--- Window options
@@ -89,7 +87,6 @@ return {
 
 		local kind_mapper = cmp.lsp.CompletionItemKind
 		kind_mapper.Copilot = 25
-		--kind_mapper.wordnet = 26
 
 		--- Set configuration for specific filetype.
 		cmp.setup.cmdline({ "/", "?" }, {
@@ -146,7 +143,6 @@ return {
 			}),
 			sources = {
 				{ name = "copilot", max_item_count = 10, priority = 10 },
-				--{ name = "wordnet", max_item_count = 10, priority = 10, keyword_length = 4 },
 				{ name = "nvim_lua", max_item_count = 10, priority = 5 },
 				{ name = "luasnip", max_item_count = 2, priority = 5 },
 				{ name = "treesitter", max_item_count = 10, priority = 5 },
@@ -178,12 +174,8 @@ return {
 					-- in the following line:
 					-- FIXME this is a hack, find a better way to do this
 					-- --- First check Copilot and cmp_tabnine are not the source
-					if entry.source.name == "copilot" or entry.source.name == "wordnet" then
-						if entry.source.name == "copilot" then
-							vim_item.kind = "   COPILOT"
-						else
-							vim_item.kind = "暈 WORDNET"
-						end
+					if entry.source.name == "copilot" then
+						vim_item.kind = "   COPILOT"
 					else
 						vim_item.kind = string.format(
 							"%s %s",
@@ -200,7 +192,6 @@ return {
 						path = "ﱮ",
 						buffer = "﬘",
 						spell = "暈",
-						--wordnet = "暈",
 					})[entry.source.name]
 					return vim_item
 				end,
