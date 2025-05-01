@@ -1,7 +1,8 @@
 local function code_example_md(lang, code, use_start)
 	local language_prefix_md = "```" .. lang .. "\n"
 	if use_start then
-		return language_prefix_md .. code .. "\n```" .. "\n\n" .. language_prefix_md
+		-- Use start may prompt the LLM to add within the started code block
+		return language_prefix_md .. code .. "\n```" .. "\n\n```" .. language_prefix_md
 	else
 		return language_prefix_md .. code .. "\n```"
 	end
@@ -45,47 +46,49 @@ return {
 			stop_args = { "-SIGTERM", "ollama" },
 		},
 		prompts = {
-			PEP484_docstrings = {
-				prompt = {
-					"Reformat the given function(s) with PEP 484 type annotations and corresponding docstring (numpy format).",
-					"\n```python\n$sel```\n",
-					"\nProvide output in the form",
-					"\n\n",
-					code_example_md("python", "<code>"),
-				},
+			py_pep484_function_docstrings = {
+				prompt = "Reformat the given function(s)"
+					.. " conforming to PEP-484 annotations and corresponding docstring (Numpy format)."
+					.. code_example_md("$ftype", "$sel")
+					.. "\nProvide output with the format:"
+					.. "\n\n"
+					.. code_example_md("$ftype", "<code>", false),
 				input_label = "󱙺 ",
 				action = "display_replace",
 			},
-			Python_module_docstring = {
-				prompt = "Write a module docstring for the given module that describes what the script/lib does.",
+			py_pep257_module_docstring = {
+				prompt = "Write a module-level docstring for the code that describes what the script/lib does.",
 				input_label = "󱙺 ",
 				action = "display_replace",
 			},
-			Lua_typehints = {
-				prompt = {
-					"Add type hints to the given $ftype code:\n\n",
-					code_example_md("$ftype", "$sel"),
-					"in the form:",
-					"\n\n```$ftype\n---@type integer\nlocal x = 3\n```",
-				},
+			lua_typehints = {
+				prompt = "Add $ftype type hints to the given code" -- Generic
+					.. " ensuring comment annotations, structured types, with --@class/--@field and --@alias," --Lua
+					.. ", handling optional and vararg arguments, mark optional with ? or nil unions," -- Lua
+					.. " and keep annotations minimal and dry." -- Lua
+					.. "\n\n" -- Lua
+					.. code_example_md("$ftype", "$sel")
+					.. "\nProvide output with the format:"
+					.. "\n\n"
+					.. code_example_md("$ftype", "\n---@type integer\nlocal x = 3\n```"),
 				input_label = "󱙺 ",
 				action = "display_replace",
 			},
-			Generate_Code = false,
-			Modify_Code = {
+			generate_code = false,
+			modify_code = { -- Generic
 				prompt = "$input\n\n"
-					.. "Respond in this format:\n"
-					.. code_example_md("$ftype", "code", false) --- Used for stripping out the code block
+					.. "\nProvide output in the form:"
+					.. code_example_md("$ftype", "<code>", false) --- Used for stripping out the code block
 					.. "\n\n"
 					.. code_example_md("$ftype", "$sel", true),
 				input_label = "Instruction: ",
 				action = "display_replace",
 			},
-			Comments_Inline = {
+			comments_inline = { -- Generic
 				prompt = "Rewrite the code, adding terse inline comments that add information about the core functionality intended.\n"
 					.. "Do not change the code - even if it is obscure!\n\n"
 					.. "Respond in this format:\n\n" --- Used for stripping out the code block
-					.. code_example_md("$ftype", "code", false) --- Used for stripping out the code block
+					.. code_example_md("$ftype", "<code>", false) --- Used for stripping out the code block
 					.. "\n\n"
 					.. code_example_md("$ftype", "$sel", true),
 				input_label = "󱙺 ",
