@@ -27,20 +27,21 @@
 
 ## Ubuntu installation
 
-### 1. Install the packages jq, curl, and npm
+### 1. Install the packages jq, curl, npm, autotools-dev and autoconf
 
 You can do this via `apt`, `apt-get`, `snap` or a package manager of your choosing.
 Note: A package manager is usually _dependent_ on your operating system. `apt`, `apt-get`, `snap` are automatically installed to Ubuntu.
 
 - [`jq`](https://jqlang.github.io/jq/) For querying json files.
-- [`curl`](https://curl.se/) For downloading installation files and plenary.nvim
+- [`curl`](https://curl.se/) For downloading installation files, ollama.nvim, and plenary.nvim
 - [`npm`](https://www.npmjs.com/) (node package manager)
+- [`autotools-dev`](Used to build ctags - for tagbar)
+- [`autoconf`](Used to build ctags - for tagbar)
 
 To install all the above dependencies run:
 
 ```bash
-apt-get install jq curl -y
-# Install node / node package manager - npm
+apt-get install jq curl autotools-dev autoconf -y
 curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20
 ```
 
@@ -73,7 +74,20 @@ Run the installation script [`install.sh`](./install.sh)
 pushd ~/.config/nvim && ./install.sh && popd
 ```
 
-### 4. Install Ollama (optional)
+### 4. Install Tagbar Dependencies
+
+```bash
+git clone https://github.com/universal-ctags/ctags.git
+pushd ctags
+./autogen.sh
+./configure --prefix=$HOME/tools/ctags
+make -j && make install
+popd
+rm -r ctags
+
+```
+
+### 5. Install Ollama (optional)
 
 Ollama is useful for generative AI applications.
 

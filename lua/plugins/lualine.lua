@@ -1,17 +1,27 @@
--- Define a function to check that ollama is installed and working
-local function get_condition()
-	return package.loaded["ollama"] and require("ollama").status ~= nil
+local function get_ollama_condition()
+	if package.loaded["ollama"] and require("ollama").status ~= nil then
+		return "Ollama "
+	else
+		return ""
+	end
 end
 
--- Define a function to check the status and return the corresponding icon
 local function get_status_icon()
+	---@type string
 	local status = require("ollama").status()
-
+	vim.api.nvim_echo({ { status, "Normal" } }, false, {})
 	if status == "IDLE" then
-		return "OLLAMA IDLE"
+		return "Idle"
 	elseif status == "WORKING" then
-		return "OLLAMA BUSY"
+		return "Busy"
 	end
+end
+
+local function get_detailed_ollama_status()
+	if get_ollama_condition() == "" then
+		return ""
+	end
+	return get_ollama_condition() .. " " .. get_status_icon()
 end
 
 return {
@@ -38,10 +48,10 @@ return {
 				},
 			},
 			sections = {
-				lualine_a = { "mode" },
-				lualine_b = { "branch", "diff", "diagnostics" },
+				lualine_a = { "branch" },
+				lualine_b = { "diff", "diagnostics" },
 				lualine_c = { "filename" },
-				lualine_x = { "encoding", "fileformat", "filetype", get_status_icon, get_condition },
+				lualine_x = { "encoding", "fileformat", "filetype", get_detailed_ollama_status },
 				lualine_y = { "progress" },
 				lualine_z = { "location" },
 			},

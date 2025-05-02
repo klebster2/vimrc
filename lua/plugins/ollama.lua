@@ -7,7 +7,7 @@ local function code_example_md(lang, code, use_start)
 		return language_prefix_md .. code .. "\n```"
 	end
 end
-
+--- Create environment variable for ollama model
 return {
 	"nomnivore/ollama.nvim",
 	dependencies = {
@@ -19,19 +19,31 @@ return {
 		{
 			"<leader>oo",
 			":<c-u>lua require('ollama').prompt()<cr>",
-			desc = "ollama prompt",
+			desc = "Ollama prompt",
 			mode = { "n", "v" },
 		},
 		{
 			"<leader>oG",
 			":<c-u>lua require('ollama').prompt('Generate_Code')<cr>",
-			desc = "ollama Generate Code",
+			desc = "Ollama Generate Code",
 			mode = { "n", "v" },
 		},
 		{
 			"<leader>oR",
 			":<c-u>lua require('ollama').prompt('Raw')<cr>",
-			desc = "ollama Raw input",
+			desc = "Ollama Raw input",
+			mode = { "n", "v" },
+		},
+		{
+			"<leader>om",
+			":<c-u>lua require('ollama').prompt('OllamaModel')<cr>",
+			desc = "Ollama Model",
+			mode = { "n", "v" },
+		},
+		{
+			"<leader>osd",
+			":<c-u>lua require('ollama').prompt('OllamaServeStop')<cr>",
+			desc = "Ollama Shutdown",
 			mode = { "n", "v" },
 		},
 	},
@@ -84,9 +96,20 @@ return {
 				input_label = "Instruction: ",
 				action = "display_replace",
 			},
-			comments_inline = { -- Generic
+			comments_inline = { -- Generic (Explain in comments)
 				prompt = "Rewrite the code, adding terse inline comments that add information about the core functionality intended.\n"
-					.. "Do not change the code - even if it is obscure!\n\n"
+					.. "Do not change the code - even if it is obscure.\n\n"
+					.. "Respond in this format:\n\n" --- Used for stripping out the code block
+					.. code_example_md("$ftype", "code", false) --- Used for stripping out the code block
+					.. "\n\n"
+					.. code_example_md("$ftype", "$sel", true),
+				input_label = "󱙺 ",
+				action = "display_replace",
+			},
+			design_patterns_comment_inline = { -- Generic
+				prompt = "Improve the given code to implement a design pattern (Creational, Structural or Behaviourial).\n"
+					.. "Rewrite the code, adding terse inline comments that add information about the core functionality intended.\n"
+					.. "Try not to change the functionality of the code.\n"
 					.. "Respond in this format:\n\n" --- Used for stripping out the code block
 					.. code_example_md("$ftype", "<code>", false) --- Used for stripping out the code block
 					.. "\n\n"

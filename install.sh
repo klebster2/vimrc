@@ -84,6 +84,16 @@ main() {
         set -e
     fi
 
+    git clone https://github.com/universal-ctags/ctags.git --depth 1
+    cd ctags
+    ./autogen.sh
+    ./configure --prefix=$HOME/tools/ctags # install to where you have access
+    make -j || sudo make -j
+    make install || sudo make install
+
+    echo export PATH=$HOME/tools/ctags/bin:$PATH >> ~/.bash_profile
+    source ~/.bash_profile
+
     echo "* Installing dependencies for Neovim configuration."
     nvim --headless -c 'Lazy install' -c 'quitall'
     nvim --headless -c 'LspInstall awk_ls bashls dockerls pyright grammarly' -c 'quitall'

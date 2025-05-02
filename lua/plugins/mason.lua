@@ -27,12 +27,9 @@ return {
 		})
 		require("mason-tool-installer").setup({
 			ensure_installed = {
-				"black",
 				"eslint_d",
-				"isort",
 				"jq",
 				"prettier",
-				"pylint",
 				"stylua",
 			},
 		})

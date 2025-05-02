@@ -1,7 +1,9 @@
---- guard for distributions lacking the 'persistent_undo' feature.
 return {
+	---@type string
 	"mbbill/undotree",
+	---@type string
 	run = 'vim -u NONE -c "helptags undotree/doc" -c q',
+	---@type function
 	config = function()
 		vim.cmd([[
     if has('persistent_undo')

@@ -9,3 +9,4 @@ dependencies:
     - msgpack==1.0.3
     - mypy==0.931
     - pynvim==0.4.3
+    - isort

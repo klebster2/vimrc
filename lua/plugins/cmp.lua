@@ -37,9 +37,6 @@ return {
 		if not cmp_nvim_lsp then
 			return
 		end
-		local capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
-		--- Use an on_attach function to only map the following keys
-		--- after the language server attaches to the current buffer
 		local lsp_symbols = {
 			Text = "   TEXT",
 			Method = "   METH",
@@ -173,7 +170,6 @@ return {
 					-- if you have lspkind installed, you can use it like
 					-- in the following line:
 					-- FIXME this is a hack, find a better way to do this
-					-- --- First check Copilot and cmp_tabnine are not the source
 					if entry.source.name == "copilot" then
 						vim_item.kind = "   COPILOT"
 					else
@@ -200,7 +196,6 @@ return {
 				priority_weight = 2,
 				comparators = {
 					require("copilot_cmp.comparators").prioritize, -- Requires Copilot
-					require("cmp_tabnine.compare"), -- Requires tabnine
 					cmp.config.compare.recently_used,
 					cmp.config.compare.offset,
 					cmp.config.exact,

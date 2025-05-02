@@ -80,9 +80,10 @@ keymap("n", "<leader>tc", ":tabclose<cr>", opts)
 --- Inspired by stackoverflow post: http://stackoverflow.com/questions/9457233/unlimited-bash-history
 --- Example of time format in dotfiles:   https://github.com/klebster2/dotfiles/blob/c8a491b4b09a6509df4a49fe3f94eb9e211efbc3/bashrc#L26
 --- Example of histfile name in dotfiles: https://github.com/klebster2/dotfiles/blob/c8a491b4b09a6509df4a49fe3f94eb9e211efbc3/bashrc#L30
+--- You will need: `perl` installed on your system to run the command
 keymap(
 	"n",
-	"<leader>ebh",
+	"<leader>ebh", --- 'Edit Bash History'
 	":new<cr>:set buftype=nowrite<cr>:cnoremap <buffer> q q!<cr>:r!perl -pe 'use POSIX qw(strftime); s/^\\#(\\d+)/strftime \"\\#\\%F \\%H:\\%M:\\%S\", localtime($1)/e' $HISTFILE<cr>:setlocal readonly<cr>",
 	opts
 )
@@ -152,7 +153,7 @@ keymap("n", "<leader>eV", ":NvimTreeOpen $HOME/.config/nvim/lua/<cr>", opts)
 keymap("n", "<leader>ebf", ":vsplit $HOME/.bash_functions<cr>", opts)
 
 --- Get Etymology
---keymap('n', '<leader>ee', ':WiktionaryEtymology<cr>', opts)
+---keymap('n', '<leader>ee', ':WiktionaryEtymology<cr>', opts)
 
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, opts)
@@ -160,5 +161,5 @@ vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
 vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist, opts)
 
--- Go to this file: ( <leader>epm )
---keymap('n', '<leader>epm', ':e ~/.config/nvim/lua/plugins/keymappings.lua<cr>', opts)
+--- Go to this file: ( <leader>epm )
+---keymap('n', '<leader>epm', ':e ~/.config/nvim/lua/plugins/keymappings.lua<cr>', opts)
