@@ -1,12 +1,15 @@
-local function code_example_md(lang, code, use_start)
-	local language_prefix_md = "```" .. lang .. "\n"
-	if use_start then
-		-- Use start may prompt the LLM to add within the started code block
-		return language_prefix_md .. code .. "\n```" .. "\n\n```" .. language_prefix_md
-	else
-		return language_prefix_md .. code .. "\n```"
-	end
+local function _single_example(lang, selected_code)
+	return "```" .. lang .. "\n" .. selected_code .. "\n```"
 end
+local function provide_output_with_format_code_example_md(lang, selected_code, markdown_code_example)
+	return "\n\n"
+		.. _single_example(lang, selected_code)
+		.. "\n\nPlease provide output in the format:\n\n"
+		.. _single_example("$ftype", markdown_code_example)
+end
+
+--local function provide_output_in_the_format(a, b)
+--	return
 --- Create environment variable for ollama model
 return {
 	"nomnivore/ollama.nvim",
@@ -48,7 +51,8 @@ return {
 		},
 	},
 	opts = {
-		model = "qwen3:32b",
+		model = "qwen3:4b", -- Use one of the smallest models as smoke test
+		-- (change to larger model after validating)
 		url = "http://127.0.0.1:11434",
 		serve = {
 			on_start = false,
@@ -61,10 +65,7 @@ return {
 			py_pep484_function_docstrings = {
 				prompt = "Reformat the given function(s)"
 					.. " conforming to PEP-484 annotations and corresponding docstring (Numpy format)."
-					.. code_example_md("$ftype", "$sel")
-					.. "\nProvide output with the format:"
-					.. "\n\n"
-					.. code_example_md("$ftype", "<code>", false),
+					.. provide_output_with_format_code_example_md("$ftype", "$sel", "# python code"),
 				input_label = "󱙺 ",
 				action = "display_replace",
 			},
@@ -79,30 +80,24 @@ return {
 					.. ", handling optional and vararg arguments, mark optional with ? or nil unions," -- Lua
 					.. " and keep annotations minimal and dry." -- Lua
 					.. "\n\n" -- Lua
-					.. code_example_md("$ftype", "$sel")
-					.. "\nProvide output with the format:"
-					.. "\n\n"
-					.. code_example_md("$ftype", "\n---@type integer\nlocal x = 3\n```"),
+					.. provide_output_with_format_code_example_md(
+						"$ftype",
+						"$sel",
+						"\n---@type integer\nlocal x = 3\n```"
+					),
 				input_label = "󱙺 ",
 				action = "display_replace",
 			},
 			generate_code = false,
 			modify_code = { -- Generic
-				prompt = "$input\n\n"
-					.. "\nProvide output in the form:"
-					.. code_example_md("$ftype", "<code>", false) --- Used for stripping out the code block
-					.. "\n\n"
-					.. code_example_md("$ftype", "$sel", true),
+				prompt = "$input\n\n" .. provide_output_with_format_code_example_md("$ftype", "$sel", "<code>"),
 				input_label = "Instruction: ",
 				action = "display_replace",
 			},
 			comments_inline = { -- Generic (Explain in comments)
 				prompt = "Rewrite the code, adding terse inline comments that add information about the core functionality intended.\n"
 					.. "Do not change the code - even if it is obscure.\n\n"
-					.. "Respond in this format:\n\n" --- Used for stripping out the code block
-					.. code_example_md("$ftype", "code", false) --- Used for stripping out the code block
-					.. "\n\n"
-					.. code_example_md("$ftype", "$sel", true),
+					.. provide_output_with_format_code_example_md("$ftype", "$sel", "<code>"),
 				input_label = "󱙺 ",
 				action = "display_replace",
 			},
@@ -111,9 +106,7 @@ return {
 					.. "Rewrite the code, adding terse inline comments that add information about the core functionality intended.\n"
 					.. "Try not to change the functionality of the code.\n"
 					.. "Respond in this format:\n\n" --- Used for stripping out the code block
-					.. code_example_md("$ftype", "<code>", false) --- Used for stripping out the code block
-					.. "\n\n"
-					.. code_example_md("$ftype", "$sel", true),
+					.. provide_output_with_format_code_example_md("$ftype", "$sel", "comment\ncode\ncomment"),
 				input_label = "󱙺 ",
 				action = "display_replace",
 			},
