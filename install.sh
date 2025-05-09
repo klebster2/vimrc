@@ -15,11 +15,16 @@ check_decision() {
 }
 
 prompt_to_install_conda() {
-    os2kernel="$(uname -a | sed -r 's|.* (.*) .*?\/(.*)$|\2-\1|g')"
+    os2kernel="$(uname -a | rev | cut -d ' ' -f1 | rev)"
     IFS=', ' read -r -a array <<< "$(curl "https://repo.anaconda.com/miniconda/" \
         | awk -F'</*td>' '$2{print $2}' \
         | xargs -n5 | grep "${os2kernel}" | grep "py310" \
-        | sed -re 's/href=(.*?)>.*<\/a>/\1/g;s/<a//g')"
+        | sed 's/href=\([^>]*\).*/\1/g;s/<a//g')"
+
+    if [ "${#array[@]}" -eq 0 ]; then
+        echo "No conda installer found."
+        exit 1
+    fi
     # shellcheck disable=SC2145
     printf "Found conda installer: %s\n" "${array[@]}"
     url_conda_target="https://repo.continuum.io/miniconda/${array[0]}"
@@ -65,7 +70,7 @@ main() {
     if nvim -v > /dev/null 2>&1; then
         printf "* Found nvim already installed at %s\n" "$(which nvim)"
     else
-        printf "* Nvim not found!\n" && exit 1
+        echo "* Nvim not found!" && exit 1
     fi
     if ! (check_conda_is_installed); then
         prompt_to_install_conda
@@ -83,16 +88,6 @@ main() {
         fi
         set -e
     fi
-
-    git clone https://github.com/universal-ctags/ctags.git --depth 1
-    cd ctags
-    ./autogen.sh
-    ./configure --prefix=$HOME/tools/ctags # install to where you have access
-    make -j || sudo make -j
-    make install || sudo make install
-
-    echo export PATH=$HOME/tools/ctags/bin:$PATH >> ~/.bash_profile
-    source ~/.bash_profile
 
     echo "* Installing dependencies for Neovim configuration."
     nvim --headless -c 'Lazy install' -c 'quitall'

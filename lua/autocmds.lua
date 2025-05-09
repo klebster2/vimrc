@@ -52,7 +52,7 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("BufWritePost", {
 	pattern = { "*.sh", "*.bash" },
 	callback = function()
-		vim.cmd("!shellcheck % 2>/dev/null | grep -Pv '^$'")
+		vim.cmd("!shellcheck % 2>/dev/null")
 		-- check if is executable
 		if vim.fn.executable(vim.fn.expand("%")) == 1 then
 			vim.api.nvim_echo({ { "Executable permissions are set for " .. vim.fn.expand("%"), "Type" } }, true, {})

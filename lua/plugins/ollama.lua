@@ -51,7 +51,7 @@ return {
 		},
 	},
 	opts = {
-		model = "qwen3:4b", -- Use one of the smallest models as smoke test
+		model = "qwen3:16b", -- Use smaller model
 		-- (change to larger model after validating)
 		url = "http://127.0.0.1:11434",
 		serve = {
