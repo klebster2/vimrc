@@ -19,7 +19,7 @@ prompt_to_install_conda() {
     IFS=', ' read -r -a array <<< "$(curl "https://repo.anaconda.com/miniconda/" \
         | awk -F'</*td>' '$2{print $2}' \
         | xargs -n5 | grep "${os2kernel}" | grep "py310" \
-        | sed 's/href=\([^>]*\).*/\1/g;s/<a//g')"
+        | sed 's/href=\([^>]*\).*/\1/g;s/<a//g')" # Using vanilla sed is safer
 
     if [ "${#array[@]}" -eq 0 ]; then
         echo "No conda installer found."
@@ -31,16 +31,11 @@ prompt_to_install_conda() {
     curl -Lo "${array[0]}" "${url_conda_target}"
     sudo chmod +x "${array[0]}"
     bash "${array[0]}" || exit 1
-    check_decision "Install miniconda?" "${cmd}"
     rm "${array[0]}"
 }
 
-check_conda_is_installed() {
-    conda -V >/dev/null 2>&1
-}
 
 create_pynvim_conda_env() {
-    local _REINSTALL_CONDA="$1"
     echo
     echo "* Checking for conda environment location"
     environment_location="$(find / -mindepth 1 -maxdepth 3 -type d -iname "miniconda*" | head -n1)"
@@ -63,7 +58,9 @@ create_pynvim_conda_env() {
 
 
 main() {
-    set -euo pipefail
+    # Working on Ubuntu and Darwin
+    # NOTE: curl must be installed
+    set -euo pipefail # Stop processing if an error is encountered
     REINSTALL_CONDA=false
     echo "* Running nvim setup..."
     echo "* Checking whether nvim is already installed..."
@@ -72,7 +69,7 @@ main() {
     else
         echo "* Nvim not found!" && exit 1
     fi
-    if ! (check_conda_is_installed); then
+    if ! (conda -V >/dev/null 2>&1); then
         prompt_to_install_conda
         echo "Please rerun the installation script after first running . ${HOME}/.bashrc to see if the base conda env is activated"
         rm ./Miniconda*.sh && exit 1

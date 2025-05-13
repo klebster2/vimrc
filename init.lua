@@ -1,3 +1,4 @@
+local vim = vim
 --- Basic configuration (does not require plugins):
 require("basic")
 --- $HOME/.config/nvim/lua/basic.lua

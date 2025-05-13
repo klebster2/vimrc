@@ -1,66 +1,61 @@
-# klebster2's neovim configuration
+# klebster2's Neovim Configuration
 
-# Table of Contents
+Welcome to klebster2's Neovim configuration.
 
-- [Setup](#setup)
-  - [Ubuntu Installation](#ubuntu-installation)
-    - [1. Install the packages jq, curl, and npm](#1-install-the-packages-jq-curl-and-npm)
-    - [2. Install neovim](#2-install-neovim)
-    - [3. Clone the repo, and run install.sh](#3-clone-the-repo-and-run-installsh)
-    - [4. Install Ollama (optional)](#4-install-ollama-optional)
-    - [5. That's it for now.](#5-thats-it-for-now)
-- [Usage Notes](#usage-notes)
-  - [Configuration Commands](#configuration-commands)
-  - [Useful commands](#useful-commands)
-    - [Completion Menu Lsp and Cmp](#completion-menu-for-lsp-and-cmp)
-      - [Completion Docs](#completion-docs)
-      - [LSP Diagnostics](#lsp-diagnostics)
-    - [Luasnip](#luasnip)
-    - [NvimTree](#nvimtree)
-    - [Fzf-Lua](#fzf-lua)
-    - [Nvim Spell](#nvim-spell)
-    - [Json File formatting](#json-file-formatting)
+This setup is designed to be **powerful, customizable, and beginner-friendly**. Whether you're a new user or an experienced Vim/Neovim user, this guide will help you get started quickly and smoothly.
+
+## 📌 Table of Contents
+
+- [Getting Started](#getting-started)
+- [Installation](#installation)
+  - [Prerequisites](#prerequisites)
+  - [Setup](#setup)
+  - [Optional: Install Ollama](#optional-install-ollama)
+- [Tips and Shortcuts](#tips-and-shortcuts)
+- [License](#license)
 
 ---
 
-# Setup
+# Getting Started
 
-## Ubuntu installation
+This configuration is built with the following tools:
 
-### 1. Install the packages jq, curl, npm, autotools-dev and autoconf
+- **Neovim** (latest version)
+- **Lazy.nvim** (plugin manager)
+- **LSP & CMP** (for smart autocompletion)
+- **Treesitter** (for syntax highlighting)
+- **Fzf-Lua** (for fast file and command search - derived from [Fzf](https://github.com/junegunn/fzf))
+- **Ollama** (optional, for AI-powered code generation)
 
-You can do this via `apt`, `apt-get`, `snap` or a package manager of your choosing.
-Note: A package manager is usually _dependent_ on your operating system. `apt`, `apt-get`, `snap` are automatically installed to Ubuntu.
+## 🛠️ Installation
 
-- [`jq`](https://jqlang.github.io/jq/) For querying json files.
-- [`curl`](https://curl.se/) For downloading installation files, ollama.nvim, and plenary.nvim
-- [`npm`](https://www.npmjs.com/) (node package manager)
-- [`autotools-dev`](Used to build ctags - for tagbar)
-- [`autoconf`](Used to build ctags - for tagbar)
+### 🔧 Prerequisites
 
-To install all the above dependencies run:
+Before installing, ensure you have the following tools installed:
 
-```bash
-apt-get install jq curl autotools-dev autoconf -y
-curl -fsSL https://fnm.vercel.app/install | bash && . ~/.bashrc && fnm use --install-if-missing 20
-```
+[neovim](https://neovim.io)
 
-### 2. Install neovim
-
-You can use the following shell script.
+For instructions see up-to-date Neovim [Releases](https://github.com/neovim/neovim/releases). For unix based systems (Mac, Linux), you will need to know the kernel CPU architecture\*. \* Get the kernel using
 
 ```bash
-curl -LO "https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
-chgrp sudo nvim.appimage
-chmod ugo+x nvim.appimage
-./nvim.appimage --appimage-extract
-./squashfs-root/AppRun --version
-mv squashfs-root / 2> /dev/null || sudo mv squashfs-root /
-ln -s /squashfs-root/AppRun /usr/bin/nvim 2> /dev/null || sudo ln -s /squashfs-root/AppRun /usr/bin/nvim
-nvim --version
+uname -a | rev | cut -d ' ' -f1 | rev
 ```
 
-### 3. Clone the repo, and run the `install.sh` shell script.
+Other dependencies include [`jq`](https://jqlang.github.io/jq/) for querying json files; [`curl`](https://curl.se/) for downloading installation files, ollama.nvim, and plenary.nvim; [`npm`](https://www.npmjs.com/) (node package manager), `autotools-dev` and `autoconf`
+
+To install them, on Ubuntu, run:
+
+```bash
+sudo apt-get install jq curl autotools-dev autoconf git -y
+```
+
+On macOS (using Homebrew) run:
+
+```bash
+brew install neovim jq curl npm git autoconf
+```
+
+### Setup
 
 Clone the repo to `~/.config/nvim` (the default neovim location)
 
@@ -74,98 +69,80 @@ Run the installation script [`install.sh`](./install.sh)
 pushd ~/.config/nvim && ./install.sh && popd
 ```
 
-### 4. Install Tagbar Dependencies
-
-```bash
-git clone https://github.com/universal-ctags/ctags.git
-pushd ctags
-./autogen.sh
-./configure --prefix=$HOME/tools/ctags
-make -j && make install
-popd
-rm -r ctags
-
-```
-
-### 5. Install Ollama (optional)
+### Optional: Install Ollama
 
 Ollama is useful for generative AI applications.
 
-One of the use cases is to generate code candidates using the neovim package: [ollama.nvim](https://github.com/nomnivore/ollama.nvim)
+Generate code candidates using the neovim package: [ollama.nvim](https://github.com/nomnivore/ollama.nvim), or [avante.nvim](https://github.com/yetone/avante.nvim)
 
 ```bash
 curl -fsSL https://ollama.com/install.sh | sh
 ```
 
-Check your GPU Virtual RAM (VRAM) can hold a model defined in [ollama.lua](./lua/plugins/ollama.lua), under `opts.model`
+**IMPORTANT**
 
-### 5. That's it for now.
+Check your GPU Virtual RAM (VRAM) can hold a model defined in [`lua/plugins/ollama.lua`](./lua/plugins/ollama.lua), under `opts.model`, configure [`lua/plugins/avante.lua`](./lua/plugins/avante.lua) with the same model under `opts.ollama.model`.
 
-Enjoy your neovim experience!
+---
 
-# Usage notes
+##  Tips and Shortcuts
 
-## Configuration Commands
+Key combination remappings here are structured using Mnemonics - for instance - help by allowing the first letter of each word for each command.
 
-The following section lists commands that will take you to configuration files.
+**Shortcuts**
 
-Use:
+The following section lists commands that will take you to configuration files (both Neovim dependent and other configs)
 
-- `<leader>ev` to edit the init.lua file - this is the main configuration file (at the location ~/.config/nvim/init.lua ) in this repository find it here: [`init.lua`](./init.lua)
+If you do not know what `leader` key means, then just assume for now that it means the space `<space>` (as it is set in this configuration to space).
 
-Some of the mappings listed below can be found within the following keymapping files:
+- Use `<leader>ev` when in normal mode edits the [`init.lua`](init.lua) file - the main configuration file for neovim.
+- The configuration file should live by default at the following location `$HOME/.config/nvim/init.lua`. Some of the mappings listed below can be found within the following keymapping files:
+  - Use `<leader>em` to go to [`lua/keymappings.lua`](./lua/keymappings.lua) (the basic set of mappings that should work when running native neovim).
 
-To go to either one of the two keymappings.lua files, when in normal mode, use:
+Miscellaneous configuration file shortcuts (these will only work if you have a configuration file at that location), use:
 
-- `<leader>em` to go to [`lua/keymappings.lua`](./lua/keymappings.lua) (the basic set of mappings that should work with native neovim).
+- `<leader>et` for **E**dit **T**mux, to edit the tmux configuration file: `~/.tmux.conf`
+- `<leader>eb` for **E**dit **B**ash, to edit the bashrc file `~/.bashrc`
+- `<leader>ei` for **E**dit **I**nputrc, to edit the inputrc file `~/.inputrc`
 
-If you are unsure what a 'leader' key is, first read this: [Learn Vimscript the Hard Way - Chapter 06 - Leaders](https://learnvimscriptthehardway.stevelosh.com/chapters/06.html)
-
-## Useful commands
+**Generic commands**
 
 Note that the following commands apply to **Normal Mode only**.
 
-- Use `gd` for **G**o to the **D**efinition.
+- Use `gd` to **G**o to the **D**efinition. When the **C**ursor is on a **W**ord (**cw**ord), and that word is a function-call, or variable, you can type `gd` to go to the function **D**efinition or where the variable is set.
+- When the Cursor is on a **F**ile (fullpath, or partial path), you can type `gf` to **G**o to the **F**ile.
+- To exit **Insert Mode** use `jk` typing them together quickly. Note that the default way to exit normal mode in vi, vim and neovim is `<ESC>`.
 
-  - When the **C**ursor is on a **W**ord (**cw**ord), and that word is a function-call, or variable, you can type `gd` to go to the function **D**efinition.
+**Completion menu for LSP and CMP**
 
-- Use `gf` for **G**o to the **F**ile.
+Note that these completions apply to _Insert Mode_ and _Command Mode_ only, when the cmp popup menu _is visible_.
 
-  - When the Cursor is on a **F**ile (fullpath, or partial path), you can type `gf` to **G**o to the **F**ile.
-
-- To exit insert mode use `jk` typing them together quickly. Note that the default way to exit normal mode in vi, vim and neovim is `<ESC>`, but `<ESC>` won't work because in this configuration, because it has been unmapped.
-  - Learn Vimscript the Hard Way: ["A trick to learning something is to force yourself to use it."](https://learnvimscriptthehardway.stevelosh.com/chapters/10.html#learning-the-map). In other words, unmap and remap.
-
-To jump to a configuration file (these will only work if you have a configuration file at that location), use:
-
-- `<leader>et` for **E**dit **T**mux, to edit the tmux configuration file: `~/.tmux.conf`
-
-- `<leader>eb` for **E**dit **B**ash, to edit the bashrc file `~/.bashrc`
-
-- `<leader>ei` for **E**dit **I**nputrc, to edit the inputrc file `~/.inputrc`
-
-### Completion menu for LSP and CMP
-
-Note that this applies to _Insert Mode_ completions only, and especially when the cmp popup menu _is visible_.
-
-[Nvim-Cmp](https://github.com/hrsh7th/nvim-cmp) is an autocompletion engine.
-
+[Nvim-Cmp](https://github.com/hrsh7th/nvim-cmp) is the autocompletion engine used.
 [LspConfig](https://github.com/neovim/nvim-lspconfig) is a NeoVim client that allows for configuring ([Language-Server-Protocol](https://microsoft.github.io/language-server-protocol/)s in NeoVim)
 
 - Read more about the NeoVim LSP client on the [NeoVim LSP help page](https://neovim.io/doc/user/lsp.html)
 
 To jump to the subsequent completions using Lsp, Cmp, Luasnip, etc. use
 
-- `<CTRL+p>` for **P**rev
-- `<CTRL+n>` for **N**ext
+- `<CTRL+p>` for **P**rev completion option
+- `<CTRL+n>` for **N**ext completion option
+- `<CTRL+e>` to **E**xit the completion menu
+- `<CTRL+y>` to say _**Y**es_. E.g. the user wants to complete the text with the current option; confirm and insert the completion
+- `<CR>` to Accept the completion, replacing everything that was previously there
 
-Use
+**LuaSnip**
 
-- `<CTRL+e>` to **E**xit
-- `<CTRL+y>` to say _**Y**es_, the user wants to complete the text with the current option; confirm and insert the completion
-- `<CR>` to Accept the completion, replacing everying that was previously there
+[LuaSnip](https://github.com/L3MON4D3/LuaSnip) is a snippets engine, that permits the user to use snippet templates.
+These templates should ideally increase the speed of development while not sacrificing code quality.
 
-#### Completion Docs
+When completing a snippet, use
+
+- `<CTRL+k>` after selecting a luasnip option to jump to the **next** snippet jump point
+- `<CTRL+j>` to jump to the **previous** snippet jump point
+
+See the snippets file here: [`lua/plugins/snippets.lua`](./lua/plugins/snippets.lua)
+
+**Completion Docs**
 
 _Note that this applies to Insert Mode only (as above)._
 
@@ -174,7 +151,7 @@ _Note that this applies to Insert Mode only (as above)._
 
 Also see `:help vim.lsp.*` for documentation on any of the LSP functions
 
-#### Language Server Protocol (LSP) Diagnostics
+**Language Server Protocol (LSP) Diagnostics**
 
 _Note that this applies to Normal Mode only._
 
@@ -189,19 +166,14 @@ Also see `:help vim.diagnostic.*` for documentation on any of the Lsp diagnostic
 
 To _see the configuration_, go to the file [`lua/plugins/nvim-cmp-cfg.lua`](./lua/plugins/nvim-cmp-cfg.lua).
 
-### LuaSnip
+**Nvim Spell**
 
-[LuaSnip](https://github.com/L3MON4D3/LuaSnip) is a snippets engine, that permits the user to use snippet templates.
-These templates should ideally increase the speed of development while not sacrificing code quality.
+Use:
 
-When completing a snippet, use
+- `<z>+<w>` to add the cword to the dictionary.
+- `<leader>ss` to `:set spell` (misspelled words will appear underlined)
 
-- `<CTRL+k>` after selecting a luasnip option to jump to the **next** snippet jump point
-- `<CTRL+j>` to jump to the **previous** snippet jump point
-
-See the snippets file here: [`lua/plugins/snippets.lua`](./lua/plugins/snippets.lua)
-
-### NvimTree
+**NvimTree**
 
 [NvimTree](https://github.com/nvim-tree/nvim-tree.lua) is a plugin used for file / directory viewing.
 
@@ -224,7 +196,7 @@ For the NvimTree configuration, go to [`lua/plugins/nvim-tree.lua`](./lua/plugin
 
 Also note that some files and directories such as `.git/`, and `.gitignore` may be omitted from the NvimTree view due to how unusual it is for those files to be edited.
 
-### Fzf-Lua
+**Fzf-Lua**
 
 [Fzf](https://github.com/junegunn/fzf) is a powerful fuzzy-finder.
 It can be used to quickly find files using keybindings in the terminal such as `<Ctrl+r>` for history.
@@ -238,9 +210,6 @@ Use:
 - `<CTRL-t>` to search helptags
 - `<CTRL-x>` to grep the cword (word under the cursor)
 
-### Nvim Spell
+# License
 
-Use:
-
-- `<z>+<w>` to add the cword to the dictionary.
-- `<leader>ss` to `:set spell` (misspelled words will appear underlined)
+MIT License
