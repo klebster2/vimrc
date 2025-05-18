@@ -4,7 +4,6 @@ return {
 		lazy = true,
 	},
 	{ "wsdjeg/vim-lua" },
-	{ "gelguy/wilder.nvim" },
 	{ "preservim/tagbar" }, -- view python objects
 	{ "anuvyklack/windows.nvim" }, -- window resizer
 	{ "numToStr/Comment.nvim" },
@@ -16,6 +15,7 @@ return {
 		},
 		cmd = "Copilot",
 		event = "InsertEnter",
+		lazy = true,
 		config = function()
 			require("copilot").setup()
 		end,

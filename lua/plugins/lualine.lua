@@ -9,12 +9,24 @@ end
 local function get_status_icon()
 	---@type string
 	local status = require("ollama").status()
-	vim.api.nvim_echo({ { status, "Normal" } }, false, {})
 	if status == "IDLE" then
 		return "Idle"
 	elseif status == "WORKING" then
 		return "Busy"
 	end
+end
+
+--- Run `git remote -v` using fugitive
+local function get_git_remote()
+	local git_remote = vim.fn.system("git remote -v")
+	if git_remote == "" then
+		return ""
+	end
+	local remote = git_remote:match("origin%s+([%S]+)")
+	if remote == nil then
+		return ""
+	end
+	return remote
 end
 
 local function get_detailed_ollama_status()
@@ -48,7 +60,7 @@ return {
 				},
 			},
 			sections = {
-				lualine_a = { "branch" },
+				lualine_a = { "branch", get_git_remote },
 				lualine_b = { "diff", "diagnostics" },
 				lualine_c = { "filename" },
 				lualine_x = { "encoding", "fileformat", "filetype", get_detailed_ollama_status },

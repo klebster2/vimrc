@@ -1,3 +1,4 @@
+local vim = vim
 return {
 	"williamboman/mason.nvim",
 	dependencies = {
@@ -21,18 +22,6 @@ return {
 			"vimls",
 			"yamlls",
 		}
-		require("mason-lspconfig").setup({
-			ensure_installed = default_language_servers,
-			force_install = true,
-		})
-		require("mason-tool-installer").setup({
-			ensure_installed = {
-				"eslint_d",
-				"jq",
-				"prettier",
-				"stylua",
-			},
-		})
 		local lspconfig = require("lspconfig")
 		local cmp_nvim_lsp = require("cmp_nvim_lsp")
 		if not cmp_nvim_lsp then

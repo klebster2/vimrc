@@ -1,4 +1,3 @@
-local vim = vim
 local DEFAULT_MODEL = "qwen3:14b"
 local DEFAULT_PROVIDER = "ollama"
 
@@ -157,16 +156,4 @@ return {
 			ft = { "markdown", "Avante" },
 		},
 	},
-	--config = function()
-	--	if require("ollama") and require("avante") then
-	--		--vim.keymap.set("n", "", function()
-	--		--	local new_model = vim.fn.input("Enter new Ollama model (e.g., qwen3:14b): ")
-	--		--	if new_model ~= "" then
-	--		--		-- TODO: implement
-	--		--		require("ollama").opts.model = new_model
-	--		--		print("Ollama model updated to: " .. new_model)
-	--		--	end
-	--		--end, { desc = "Change Ollama model used by Avante and Ollama plugins:" })
-	--	end
-	--end,
 }

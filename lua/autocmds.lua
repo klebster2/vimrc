@@ -7,7 +7,7 @@ vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "python" },
 	callback = function()
 		vim.schedule(function()
-			keymap("n", "<localleader>pdb", "Iimport<space>pdb<return>pdb.set_trace()<esc>", opts)
+			keymap("n", "<localleader>pdb", "Iimport<space>pdb<return>pdb.set_trace()<esc><shift+v>kk==", opts)
 			keymap("n", "<localleader>pl", "A # pylint: disable=true<esc>", opts)
 			keymap("n", "<localleader>tt", "A # type: ignore<esc>", opts)
 			keymap("n", "<localleader>c", "I#<esc>", opts)
