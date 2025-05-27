@@ -5,8 +5,6 @@ return {
 	}, -- if using WSL2, Windows Terminal needs nerd font so install a NerdFont (e.g. Consolas NF in the Windows Terminal application)
 	-- E.g. After https://learn.microsoft.com/en-us/windows/wsl/install , go to https://learn.microsoft.com/en-us/windows/terminal/install
 	config = function()
-		local lib = require("nvim-tree.lib")
-
 		vim.g.webdevicons_enable = 1
 		vim.g.webdevicons_enable_nerdtree = 1
 		vim.g.webdevicons_enable_unite = 1
@@ -19,45 +17,41 @@ return {
 			vim.g.WebDevIconsOS = "Linux"
 		end
 
-		local git_add = function()
-			local node = lib.get_node_at_cursor()
-			local gs = node.git_status.file
-
-			-- If the file is untracked, unstaged or partially staged, we stage it
-			if gs == "??" or gs == "MM" or gs == "AM" or gs == " M" then
-				vim.cmd("silent !git add " .. node.absolute_path)
-
-			-- If the file is staged, we unstage
-			elseif gs == "M " or gs == "A " then
-				vim.cmd("silent !git restore --staged " .. node.absolute_path)
-			end
-		end
-
-		local function on_attach(bufnr)
+		local function my_on_attach(bufnr)
 			local api = require("nvim-tree.api")
-
-			local function opts(desc)
-				return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-			end
-
-			-- copy default mappings here from defaults in next section
-			vim.keymap.set("n", "<C-]>", api.tree.change_root_to_node, opts("CD"))
-			vim.keymap.set("n", "<C-e>", api.node.open.replace_tree_buffer, opts("Open: In Place"))
-			---
-			-- OR use all default mappings
+			-- keep the defaults first
 			api.config.mappings.default_on_attach(bufnr)
-
-			-- remove a default
-			vim.keymap.del("n", "<C-]>", { buffer = bufnr })
-
-			-- override a default
-			vim.keymap.set("n", "<C-e>", api.tree.reload, opts("Refresh"))
-
-			-- add your mappings
-			vim.keymap.set("n", "?", api.tree.toggle_help, opts("Help"))
-			vim.keymap.set("n", "ga", git_add, opts("Git Add"))
+			local function opts(desc)
+				return {
+					desc = "nvim-tree: " .. desc,
+					buffer = bufnr,
+					noremap = true,
+					silent = true,
+					nowait = true,
+				}
+			end
+			------------------------------------------------------------------
+			--  Press  “ga”  on any entry in the tree to stage / un-stage it
+			------------------------------------------------------------------
+			local function git_add()
+				local node = api.tree.get_node_under_cursor()
+				-- figure out the git status of the node (file or directory)
+				local gs = node.git_status.file
+				if gs == nil then -- it’s a directory → look at children
+					gs = (node.git_status.dir.direct and node.git_status.dir.direct[1])
+						or (node.git_status.dir.indirect and node.git_status.dir.indirect[1])
+				end
+				if gs == "??" or gs == "MM" or gs == "AM" or gs == " M" then
+					-- untracked / unstaged / partially-staged → stage it
+					vim.cmd("silent !git add " .. vim.fn.fnameescape(node.absolute_path))
+				elseif gs == "M " or gs == "A " then
+					-- already staged → un-stage it
+					vim.cmd("silent !git restore --staged " .. vim.fn.fnameescape(node.absolute_path))
+				end
+				api.tree.reload() -- refresh the icons immediately
+			end
+			vim.keymap.set("n", "ga", git_add, opts("git add / restore"))
 		end
-
 		require("nvim-tree").setup({ -- BEGIN_DEFAULT_OPTS
 			disable_netrw = true,
 			hijack_netrw = true,
@@ -95,9 +89,9 @@ return {
 			git = {
 				enable = true,
 				ignore = true,
-				timeout = 500,
+				timeout = 1000,
 			},
-			on_attach = on_attach,
+			on_attach = my_on_attach,
 		})
 	end,
 }
