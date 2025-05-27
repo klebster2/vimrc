@@ -27,9 +27,9 @@ This configuration is built with the following tools:
 - **Fzf-Lua** (for fast file and command search - derived from [Fzf](https://github.com/junegunn/fzf))
 - **Ollama** (optional, for AI-powered code generation)
 
-## 🛠️ Installation
+## Installation
 
-### 🔧 Prerequisites
+### Prerequisites
 
 Before installing, ensure you have the following tools installed:
 
