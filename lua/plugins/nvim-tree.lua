@@ -11,9 +11,10 @@ return {
 		vim.g.webdevicons_enable_nerdtree = 1
 		vim.g.webdevicons_enable_unite = 1
 
-		-- TODO: this needs fixing...
 		if vim.fn.has("win32") == 1 then
 			vim.g.WebDevIconsOS = "Windows"
+		elseif vim.fn.has("macunix") == 1 then
+			vim.g.WebDevIconsOS = "macos"
 		else
 			vim.g.WebDevIconsOS = "Linux"
 		end

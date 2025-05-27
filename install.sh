@@ -64,10 +64,29 @@ main() {
     REINSTALL_CONDA=false
     echo "* Running nvim setup..."
     echo "* Checking whether nvim is already installed..."
+
+    if [[ "$(uname)" == "Darwin" ]]; then
+      echo "Detected macOS. Installing dependencies with Homebrew..."
+
+      if ! command -v brew &> /dev/null; then
+        echo "Homebrew not found. Installing Homebrew..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      fi
+      brew install jq curl git
+      mkdir -p ~/.config
+    elif [[ "$(uname)" == "Linux" ]]; then
+      echo "Detected Linux. Installing dependencies with apt-get..."
+      sudo apt-get update
+      sudo apt-get install -y jq curl git
+    else
+      echo "Unsupported OS. Exiting."
+      exit 1
+    fi
+
     if nvim -v > /dev/null 2>&1; then
         printf "* Found nvim already installed at %s\n" "$(which nvim)"
     else
-        echo "* Nvim not found!" && exit 1
+        echo "* Nvim not found! Please follow the README.md instructions to install" && exit 1
     fi
     if ! (conda -V >/dev/null 2>&1); then
         prompt_to_install_conda

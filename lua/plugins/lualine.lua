@@ -9,7 +9,7 @@ end
 local function get_status_icon()
 	---@type string
 	local status = require("ollama").status()
-	vim.api.nvim_echo({ { status, "Normal" } }, false, {})
+	--vim.api.nvim_echo({ { status, "Normal" } }, false, {})
 	if status == "IDLE" then
 		return "Idle"
 	elseif status == "WORKING" then

@@ -1,4 +1,3 @@
-local vim = vim
 local DEFAULT_MODEL = "qwen3:14b"
 local DEFAULT_PROVIDER = "ollama"
 
@@ -6,18 +5,31 @@ local _PROMPT_PY_PEP484_NUMPY_DOCSTRING_FORMAT =
 	"Reformat the given function(s) conforming to PEP-484 annotations and corresponding docstring (Numpy format).\n\n"
 local _PROMPT_PY_PEP257_MODULE_LVL_DOCSTRING_FORMAT =
 	"Write a module-level docstring for the code that describes what the script/lib does.\n\n"
-local _PROMPT_LUA_TYPEHINTS = "Add $ftype type hints to the given code ensuring comment annotations, structured types,"
-	.. " with --@class/--@field and --@alias, handling optional and vararg arguments, marking optionals with ? or nil"
-	.. " unions, and keeping annotations minimal and dry.\n\n"
-local _PROMPT_GENERIC_TERSE_COMMENTS = "Rewrite the code, adding terse inline comments that add information about the"
-	.. " core functionality intended.\nDo not change the code - even if it is obscure.\n\n"
-local _PROMPT_GENERIC_DESIGN_PATTERN_SUGGESTION = "Improve the given code to implement a design pattern (Creational,"
-	.. " Structural or Behaviourial).\nRewrite the code, adding terse inline comments that add information about the core"
-	.. " functionality intended.\nTry not to change the functionality of the code.\n"
+local _PROMPT_LUA_TYPEHINTS = "Add $ftype type hints to the given code ensuring comment annotations, structured types, with --@class/--@field and --@alias," --Lua
+	.. ", handling optional and vararg arguments, marking optionals with ? or nil unions, and keeping annotations minimal and dry.\n\n"
+local _PROMPT_GENERIC_TERSE_COMMENTS = "Rewrite the code, adding terse inline comments that add information about the core functionality intended.\n"
+	.. "Do not change the code - even if it is obscure.\n\n"
+local _PROMPT_GENERIC_DESIGN_PATTERN_SUGGESTION = "Improve the given code to implement a design pattern (Creational, Structural or Behaviourial).\n"
+	.. "Rewrite the code, adding terse inline comments that add information about the core functionality intended.\nTry not to change the functionality of the code.\n"
+	.. "Respond in this format:\n\n" --- Used for stripping out the code block
 
+--[[
+Creates a code block with the given language and selected code.
+@param lang string - The programming language identifier (e.g., "lua", "python")
+@param selected_code string - The code snippet to format
+@return string - Formatted code block with triple backticks
+]]
 local function _single_example(lang, selected_code)
 	return "```" .. lang .. "\n" .. selected_code .. "\n```"
 end
+
+--[[
+Prepares an example for output formatting with markdown code example.
+@param lang string - Language identifier for code block
+@param selected_code string - Code snippet to format
+@param markdown_code_example string - Example of expected markdown format
+@return string - Formatted example with code block and output instructions
+]]
 local function provide_output_with_format_code_example_md(lang, selected_code, markdown_code_example)
 	return "\n\n"
 		.. _single_example(lang, selected_code)
@@ -25,19 +37,22 @@ local function provide_output_with_format_code_example_md(lang, selected_code, m
 		.. _single_example("$ftype", markdown_code_example)
 end
 
+--@type table
+local opts = {
+	provider = DEFAULT_PROVIDER, --@type string
+	ollama = {
+		model = DEFAULT_MODEL, --@type string
+	},
+	behaviour = {
+		enable_cursor_planning_model = true, --@type boolean
+	},
+}
+
 return {
 	"yetone/avante.nvim",
 	event = "VeryLazy",
 	version = false, -- Never set this value to "*"! Never!
-	opts = {
-		provider = DEFAULT_PROVIDER,
-		ollama = {
-			model = DEFAULT_MODEL,
-		},
-		behaviour = {
-			enable_cursor_planning_model = true,
-		},
-	},
+	opts = opts,
 	build = "make",
 	dependencies = {
 		"nvim-treesitter/nvim-treesitter",
@@ -157,16 +172,4 @@ return {
 			ft = { "markdown", "Avante" },
 		},
 	},
-	--config = function()
-	--	if require("ollama") and require("avante") then
-	--		--vim.keymap.set("n", "", function()
-	--		--	local new_model = vim.fn.input("Enter new Ollama model (e.g., qwen3:14b): ")
-	--		--	if new_model ~= "" then
-	--		--		-- TODO: implement
-	--		--		require("ollama").opts.model = new_model
-	--		--		print("Ollama model updated to: " .. new_model)
-	--		--	end
-	--		--end, { desc = "Change Ollama model used by Avante and Ollama plugins:" })
-	--	end
-	--end,
 }
