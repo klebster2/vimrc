@@ -8,7 +8,6 @@ return {
 	config = function()
 		require("mason").setup()
 		local default_language_servers = {
-			"bashls",
 			"clangd",
 			"cmake",
 			"grammarly",
