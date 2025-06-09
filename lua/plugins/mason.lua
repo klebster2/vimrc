@@ -1,9 +1,10 @@
 local vim = vim
 return {
-	"williamboman/mason.nvim",
+	"mason-org/mason.nvim",
 	dependencies = {
 		"williamboman/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
+
 	},
 	config = function()
 		require("mason").setup()
@@ -38,11 +39,11 @@ return {
 					vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 					local lsp = vim.lsp
 					local bufopts = { noremap = true, silent = true, buffer = bufnr }
-					vim.keymap.set("n", "lss", lsp.stop_client, bufopts) -- Stop client (especially useful for when unknown errors happen)
-					vim.keymap.set("n", "gd", lsp.buf.definition, bufopts) -- gjump definition
-					vim.keymap.set("n", "K", lsp.buf.hover, bufopts) -- jump to help for that opt the cursor is over
+					vim.keymap.set("n", "lss", lsp.stop_client, bufopts)          -- Stop client (especially useful for when unknown errors happen)
+					vim.keymap.set("n", "gd", lsp.buf.definition, bufopts)        -- gjump definition
+					vim.keymap.set("n", "K", lsp.buf.hover, bufopts)              -- jump to help for that opt the cursor is over
 					vim.keymap.set("n", "<leader>d", lsp.buf.type_definition, bufopts) -- jump to definition (<leader>D)
-					vim.keymap.set("n", "<leader>nn", lsp.buf.rename, bufopts) -- newname (<leader>nn)
+					vim.keymap.set("n", "<leader>nn", lsp.buf.rename, bufopts)    -- newname (<leader>nn)
 					vim.keymap.set("n", "<leader>ca", lsp.buf.code_action, bufopts)
 					vim.keymap.set("n", "gr", lsp.buf.references, bufopts)
 				end,

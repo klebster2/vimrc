@@ -16,7 +16,6 @@ return {
 	},
 	lazy = false,
 	config = function()
-		vim.g.wn_cmp_language = "en"
 		local cmp = require("cmp")
 		if not cmp then
 			return
@@ -127,7 +126,7 @@ return {
 			mapping = cmp.mapping.preset.insert({
 				["<C-b>"] = cmp.mapping.scroll_docs(-4), --- Mnemonic - back
 				["<C-f>"] = cmp.mapping.scroll_docs(4), --- Mnemonic - forward
-				["<C-e>"] = cmp.mapping.abort(), --- Mnemonic - escape
+				["<C-e>"] = cmp.mapping.abort(),     --- Mnemonic - escape
 				["<CR>"] = cmp.mapping.confirm({
 					behavior = cmp.ConfirmBehavior.Replace,
 					select = false,
@@ -139,13 +138,13 @@ return {
 				["<C-Space>"] = cmp.mapping.complete({ select = true }),
 			}),
 			sources = {
-				{ name = "copilot", max_item_count = 10, priority = 10 },
-				{ name = "nvim_lua", max_item_count = 10, priority = 5 },
-				{ name = "luasnip", max_item_count = 2, priority = 5 },
+				{ name = "copilot",    max_item_count = 10, priority = 10 },
+				{ name = "nvim_lua",   max_item_count = 10, priority = 5 },
+				{ name = "luasnip",    max_item_count = 2,  priority = 5 },
 				{ name = "treesitter", max_item_count = 10, priority = 5 },
-				{ name = "nvim_lsp", max_item_count = 10, priority = 5 },
-				{ name = "path", max_item_count = 10, priority = 4, keyword_length = 2 },
-				{ name = "cmdline", max_item_count = 3, priority = 3, keyword_length = 4 },
+				{ name = "nvim_lsp",   max_item_count = 10, priority = 5 },
+				{ name = "path",       max_item_count = 10, priority = 4, keyword_length = 2 },
+				{ name = "cmdline",    max_item_count = 3,  priority = 3, keyword_length = 4 },
 				{
 					name = "spell", --- check $HOME/.config/nvim/lua/options.lua
 					option = {
