@@ -1,17 +1,22 @@
-local DEFAULT_MODEL = "qwen3:14b"
+local DEFAULT_MODEL = "qwen3:32b"
 local DEFAULT_PROVIDER = "ollama"
 
 local _PROMPT_PY_PEP484_NUMPY_DOCSTRING_FORMAT =
-	"Reformat the given function(s) conforming to PEP-484 annotations and corresponding docstring (Numpy format).\n\n"
+"Reformat the given function(s) conforming to PEP-484 annotations and corresponding docstring (Numpy format).\n\n"
 local _PROMPT_PY_PEP257_MODULE_LVL_DOCSTRING_FORMAT =
-	"Write a module-level docstring for the code that describes what the script/lib does.\n\n"
-local _PROMPT_LUA_TYPEHINTS = "Add $ftype type hints to the given code ensuring comment annotations, structured types, with --@class/--@field and --@alias," --Lua
-	.. ", handling optional and vararg arguments, marking optionals with ? or nil unions, and keeping annotations minimal and dry.\n\n"
-local _PROMPT_GENERIC_TERSE_COMMENTS = "Rewrite the code, adding terse inline comments that add information about the core functionality intended.\n"
-	.. "Do not change the code - even if it is obscure.\n\n"
-local _PROMPT_GENERIC_DESIGN_PATTERN_SUGGESTION = "Improve the given code to implement a design pattern (Creational, Structural or Behaviourial).\n"
-	.. "Rewrite the code, adding terse inline comments that add information about the core functionality intended.\nTry not to change the functionality of the code.\n"
-	.. "Respond in this format:\n\n" --- Used for stripping out the code block
+"Write a module-level docstring for the code that describes what the script/lib does.\n\n"
+local _PROMPT_LUA_TYPEHINTS =
+		"Add $ftype type hints to the given code ensuring comment annotations, structured types, with --@class/--@field and --@alias," --Lua
+		..
+		", handling optional and vararg arguments, marking optionals with ? or nil unions, and keeping annotations minimal and dry.\n\n"
+local _PROMPT_GENERIC_TERSE_COMMENTS =
+		"Rewrite the code, adding terse inline comments that add information about the core functionality intended.\n"
+		.. "Do not change the code - even if it is obscure.\n\n"
+local _PROMPT_GENERIC_DESIGN_PATTERN_SUGGESTION =
+		"Improve the given code to implement a design pattern (Creational, Structural or Behaviourial).\n"
+		..
+		"Rewrite the code, adding terse inline comments that add information about the core functionality intended.\nTry not to change the functionality of the code.\n"
+		.. "Respond in this format:\n\n" --- Used for stripping out the code block
 
 --[[
 Creates a code block with the given language and selected code.
@@ -32,20 +37,29 @@ Prepares an example for output formatting with markdown code example.
 ]]
 local function provide_output_with_format_code_example_md(lang, selected_code, markdown_code_example)
 	return "\n\n"
-		.. _single_example(lang, selected_code)
-		.. "\n\nPlease provide output in the format:\n\n"
-		.. _single_example("$ftype", markdown_code_example)
+			.. _single_example(lang, selected_code)
+			.. "\n\nPlease provide output in the format:\n\n"
+			.. _single_example("$ftype", markdown_code_example)
 end
 
 --@type table
 local opts = {
 	provider = DEFAULT_PROVIDER, --@type string
 	ollama = {
-		model = DEFAULT_MODEL, --@type string
+		model = DEFAULT_MODEL,    --@type string
 	},
 	behaviour = {
 		enable_cursor_planning_model = true, --@type boolean
 	},
+}
+local config = {
+	windows = {
+		ask = {
+			floating = true,
+			border = "rounded",
+			start_insert = true
+		}
+	}
 }
 
 return {
@@ -54,18 +68,21 @@ return {
 	version = false, -- Never set this value to "*"! Never!
 	providers = opts,
 	build = "make",
+	config = function()
+		require("avante").setup({ opts, config })
+	end,
 	dependencies = {
 		"nvim-treesitter/nvim-treesitter",
 		"stevearc/dressing.nvim",
 		"nvim-lua/plenary.nvim",
 		"MunifTanjim/nui.nvim",
-		"echasnovski/mini.pick", -- for file_selector provider mini.pick
+		"echasnovski/mini.pick",       -- for file_selector provider mini.pick
 		"nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-		"hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
-		"ibhagwan/fzf-lua", -- for file_selector provider fzf
+		"hrsh7th/nvim-cmp",            -- autocompletion for avante commands and mentions
+		"ibhagwan/fzf-lua",            -- for file_selector provider fzf
 		"nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-		"zbirenbaum/copilot.lua", -- for providers='copilot'
-		{ -- ollama.nvim is not related to avante.nvim, just the ollama backend (and model selection)
+		"zbirenbaum/copilot.lua",      -- for providers='copilot'
+		{                              -- ollama.nvim is not related to avante.nvim, just the ollama backend (and model selection)
 			"nomnivore/ollama.nvim",
 			dependencies = {
 				"nvim-lua/plenary.nvim",
@@ -110,7 +127,7 @@ return {
 				prompts = {
 					py_pep484_function_docstrings = {
 						prompt = _PROMPT_PY_PEP484_NUMPY_DOCSTRING_FORMAT
-							.. provide_output_with_format_code_example_md("$ftype", "$sel", "# python code"),
+								.. provide_output_with_format_code_example_md("$ftype", "$sel", "# python code"),
 						input_label = "󱙺 ",
 						action = "display_replace",
 					},
@@ -136,13 +153,13 @@ return {
 					},
 					comments_inline = {
 						prompt = _PROMPT_GENERIC_TERSE_COMMENTS
-							.. provide_output_with_format_code_example_md("$ftype", "$sel", "<code>"),
+								.. provide_output_with_format_code_example_md("$ftype", "$sel", "<code>"),
 						input_label = "󱙺 ",
 						action = "display_replace",
 					},
 					design_patterns_comment_inline = {
 						prompt = _PROMPT_GENERIC_DESIGN_PATTERN_SUGGESTION --- Used for stripping out the code block
-							.. provide_output_with_format_code_example_md("$ftype", "$sel", "comment\ncode\ncomment"),
+								.. provide_output_with_format_code_example_md("$ftype", "$sel", "comment\ncode\ncomment"),
 						input_label = "󱙺 ",
 						action = "display_replace",
 					},
