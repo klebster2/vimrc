@@ -4,28 +4,38 @@ return {
 		lazy = true,
 	},
 	{ "wsdjeg/vim-lua" },
-	{ "preservim/tagbar" }, -- view python objects
+	{ "preservim/tagbar" },       -- view python objects
 	{ "anuvyklack/windows.nvim" }, -- window resizer
 	{ "numToStr/Comment.nvim" },
 	{ "sheerun/vim-polyglot" },
+	---{
+	---	"zbirenbaum/copilot.lua",
+	---	dependencies = {
+	---		"hrsh7th/nvim-cmp",
+	---	},
+	---	cmd = "Copilot",
+	---	event = "InsertEnter",
+	---	lazy = true,
+	---	config = function()
+	---		require("copilot").setup()
+	---	end,
+	---},
+	---{
+	---	"zbirenbaum/copilot-cmp",
+	---	after = { "copilot.lua" },
+	---	config = function()
+	---		require("copilot_cmp").setup()
+	---	end,
+	---},
 	{
-		"zbirenbaum/copilot.lua",
-		dependencies = {
-			"hrsh7th/nvim-cmp",
+		"mason-org/mason-lspconfig.nvim",
+		opts = {
+			ensure_installed = { "lua_ls", "pylint", "ruff" },
 		},
-		cmd = "Copilot",
-		event = "InsertEnter",
-		lazy = true,
-		config = function()
-			require("copilot").setup()
-		end,
-	},
-	{
-		"zbirenbaum/copilot-cmp",
-		after = { "copilot.lua" },
-		config = function()
-			require("copilot_cmp").setup()
-		end,
+		dependencies = {
+			{ "mason-org/mason.nvim", opts = {} },
+			"neovim/nvim-lspconfig",
+		},
 	},
 	{
 		"rshkarin/mason-nvim-lint",

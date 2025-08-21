@@ -138,7 +138,7 @@ return {
 				["<C-Space>"] = cmp.mapping.complete({ select = true }),
 			}),
 			sources = {
-				{ name = "copilot",    max_item_count = 10, priority = 10 },
+				--{ name = "copilot",    max_item_count = 10, priority = 10 },
 				{ name = "nvim_lua",   max_item_count = 10, priority = 5 },
 				{ name = "luasnip",    max_item_count = 2,  priority = 5 },
 				{ name = "treesitter", max_item_count = 10, priority = 5 },
@@ -169,17 +169,17 @@ return {
 					-- if you have lspkind installed, you can use it like
 					-- in the following line:
 					-- FIXME this is a hack, find a better way to do this
-					if entry.source.name == "copilot" then
-						vim_item.kind = "   COPILOT"
-					else
-						vim_item.kind = string.format(
-							"%s %s",
-							(lsp_symbols[vim_item.kind] or "?"),
-							(lspkind.presets.default[vim_item.kind] or "?")
-						)
-					end
+					--if entry.source.name == "copilot" then
+					--		vim_item.kind = "   COPILOT"
+					--else
+					vim_item.kind = string.format(
+						"%s %s",
+						(lsp_symbols[vim_item.kind] or "?"),
+						(lspkind.presets.default[vim_item.kind] or "?")
+					)
+					--end
 					vim_item.menu = ({
-						copilot = "", -- Copilot
+						--copilot = "", -- Copilot
 						nvim_lua = "", -- lua engine
 						luasnip = "", -- snippets engine
 						nvim_lsp = "", -- local context
@@ -194,7 +194,7 @@ return {
 			sorting = {
 				priority_weight = 2,
 				comparators = {
-					require("copilot_cmp.comparators").prioritize, -- Requires Copilot
+					--require("copilot_cmp.comparators").prioritize, -- Requires Copilot
 					cmp.config.compare.recently_used,
 					cmp.config.compare.offset,
 					cmp.config.exact,
