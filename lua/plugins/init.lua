@@ -8,25 +8,6 @@ return {
 	{ "anuvyklack/windows.nvim" }, -- window resizer
 	{ "numToStr/Comment.nvim" },
 	{ "sheerun/vim-polyglot" },
-	---{
-	---	"zbirenbaum/copilot.lua",
-	---	dependencies = {
-	---		"hrsh7th/nvim-cmp",
-	---	},
-	---	cmd = "Copilot",
-	---	event = "InsertEnter",
-	---	lazy = true,
-	---	config = function()
-	---		require("copilot").setup()
-	---	end,
-	---},
-	---{
-	---	"zbirenbaum/copilot-cmp",
-	---	after = { "copilot.lua" },
-	---	config = function()
-	---		require("copilot_cmp").setup()
-	---	end,
-	---},
 	{
 		"rshkarin/mason-nvim-lint",
 		dependencies = {
