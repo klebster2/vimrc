@@ -1,0 +1,12 @@
+name: pynvim
+channels:
+  - defaults
+dependencies:
+  - pip=21.2.2
+  - python>=3.8
+  - pip:
+    - jedi==0.18.1
+    - msgpack==1.0.3
+    - mypy==0.931
+    - pynvim==0.4.3
+    - isort
